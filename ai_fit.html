@@ -12,41 +12,91 @@
         body { -webkit-tap-highlight-color: transparent; }
 
         .tab-btn { transition: all 0.2s; }
-        .tab-btn.active {
-            background: rgba(99,102,241,0.18);
-            border-color: rgba(99,102,241,0.55);
-            color: #a5b4fc;
-        }
-        .tab-btn:not(.active) {
-            background: rgba(30,41,59,0.5);
-            border-color: rgba(71,85,105,0.4);
-            color: #64748b;
-        }
+        .tab-btn.active { background:rgba(99,102,241,0.18); border-color:rgba(99,102,241,0.55); color:#a5b4fc; }
+        .tab-btn:not(.active) { background:rgba(30,41,59,0.5); border-color:rgba(71,85,105,0.4); color:#64748b; }
 
-        .provider-btn {
-            background: rgba(30,41,59,0.6);
-            border-color: rgba(71,85,105,0.5);
-            color: #94a3b8;
-            transition: all 0.2s;
+        .provider-btn { background:rgba(30,41,59,0.6); border-color:rgba(71,85,105,0.5); color:#94a3b8; transition:all 0.2s; }
+        .provider-btn.active-provider { background:rgba(99,102,241,0.15); border-color:rgba(99,102,241,0.6); color:#a5b4fc; }
+
+        .entry-card { animation: fadeIn 0.25s ease; }
+        @keyframes fadeIn { from{opacity:0;transform:translateY(5px)} to{opacity:1;transform:translateY(0)} }
+
+        .tab-panel { display:none; }
+        .tab-panel.active { display:block; }
+
+        /* Modal backdrop */
+        #modalEdit { transition: opacity 0.2s; }
+        #modalEdit.hidden { display:none; }
+        #modalInner { transition: transform 0.25s ease, opacity 0.25s ease; }
+
+        /* Import input nascosto */
+        #importInput { display:none; }
+
+        /* Pasto tag */
+        .pasto-tag {
+            display:inline-flex; align-items:center; gap:4px;
+            background:rgba(99,102,241,0.12); border:1px solid rgba(99,102,241,0.3);
+            color:#a5b4fc; border-radius:8px; padding:2px 8px; font-size:11px;
         }
-        .provider-btn.active-provider {
-            background: rgba(99,102,241,0.15);
-            border-color: rgba(99,102,241,0.6);
-            color: #a5b4fc;
+        .pasto-tag button { color:#6366f1; line-height:1; padding:0; }
+        .pasto-tag button:hover { color:#f87171; }
+
+        /* Scroll testo pasto */
+        .testo-collassato { max-height:2.8rem; overflow:hidden; position:relative; }
+        .testo-collassato::after {
+            content:''; position:absolute; bottom:0; left:0; right:0; height:1.2rem;
+            background:linear-gradient(transparent, rgba(30,41,59,0.95));
         }
-
-        .entry-card { animation: fadeIn 0.3s ease; }
-        @keyframes fadeIn { from { opacity:0; transform:translateY(6px); } to { opacity:1; transform:translateY(0); } }
-
-        .tab-panel { display: none; }
-        .tab-panel.active { display: block; }
-
-        #btnSalva { transition: all 0.25s; }
     </style>
 </head>
 
 <body class="bg-slate-900 text-slate-100 min-h-screen antialiased flex flex-col pb-10">
 
+    <!-- ================================================================ -->
+    <!-- MODAL EDIT ENTRY                                                  -->
+    <!-- ================================================================ -->
+    <div id="modalEdit" class="hidden fixed inset-0 z-50 bg-black/70 flex items-end justify-center">
+        <div id="modalInner" class="bg-slate-800 w-full max-w-md rounded-t-3xl border-t border-slate-700 p-5 pb-8 shadow-2xl">
+            <div class="flex items-center justify-between mb-4">
+                <h3 class="text-base font-bold text-slate-200 flex items-center gap-2">
+                    <i data-lucide="pencil" class="w-4 h-4 text-indigo-400"></i> Modifica pasto
+                </h3>
+                <button onclick="chiudiModal()" class="text-slate-500 hover:text-slate-200 p-1.5 rounded-xl bg-slate-700/50">
+                    <i data-lucide="x" class="w-4 h-4"></i>
+                </button>
+            </div>
+
+            <!-- Data e Ora -->
+            <div class="grid grid-cols-2 gap-3 mb-3">
+                <div>
+                    <label class="text-[11px] font-semibold text-slate-400 uppercase tracking-wider">Data</label>
+                    <input type="date" id="editData" class="mt-1 w-full bg-slate-900 border border-slate-700 rounded-xl p-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 text-slate-200">
+                </div>
+                <div>
+                    <label class="text-[11px] font-semibold text-slate-400 uppercase tracking-wider">Ora</label>
+                    <input type="time" id="editOra" class="mt-1 w-full bg-slate-900 border border-slate-700 rounded-xl p-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 text-slate-200">
+                </div>
+            </div>
+
+            <!-- Testo pasto -->
+            <div class="mb-4">
+                <label class="text-[11px] font-semibold text-slate-400 uppercase tracking-wider">Testo del pasto</label>
+                <textarea id="editTesto" rows="4" class="mt-1 w-full bg-slate-900 border border-slate-700 rounded-xl p-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 text-slate-200 placeholder-slate-600 resize-none" placeholder="Descrivi il pasto da ricalcolare..."></textarea>
+                <p class="text-[10px] text-slate-500 mt-1.5 flex items-center gap-1"><i data-lucide="sparkles" class="w-3 h-3 text-indigo-400"></i> L'AI ricalcolerà i nutrienti basandosi su questo testo.</p>
+            </div>
+
+            <button id="btnSalvaModifica" onclick="salvaModifica()" class="w-full bg-indigo-600 hover:bg-indigo-500 text-white font-bold py-3 rounded-xl transition text-sm flex items-center justify-center gap-2">
+                <i data-lucide="sparkles" class="w-4 h-4"></i> Ricalcola e Salva
+            </button>
+        </div>
+    </div>
+
+    <!-- Input file nascosto per import -->
+    <input type="file" id="importInput" accept=".json" onchange="importaDB(event)">
+
+    <!-- ================================================================ -->
+    <!-- APP PRINCIPALE                                                     -->
+    <!-- ================================================================ -->
     <div class="w-full max-w-md mx-auto px-4 pt-6">
 
         <!-- Header -->
@@ -113,32 +163,20 @@
         </div>
 
         <!-- ============================================================ -->
-        <!-- TAB: OGGI -->
+        <!-- TAB: OGGI                                                     -->
         <!-- ============================================================ -->
         <div id="panel-oggi" class="tab-panel active">
 
-            <!-- Totale giornaliero cumulativo -->
+            <!-- Totale giornaliero -->
             <div id="boxTotaleGiorno" class="mb-4 p-3 bg-slate-800/50 border border-slate-700/40 rounded-2xl hidden">
                 <p class="text-[11px] font-semibold text-slate-400 uppercase tracking-wider mb-2 flex items-center gap-1.5">
                     <i data-lucide="sigma" class="w-3.5 h-3.5 text-indigo-400"></i> Totale di oggi
                 </p>
                 <div class="grid grid-cols-4 gap-2">
-                    <div class="text-center">
-                        <p class="text-base font-bold text-rose-400"><span id="totCalorie">0</span></p>
-                        <p class="text-[10px] text-slate-500">kcal</p>
-                    </div>
-                    <div class="text-center">
-                        <p class="text-base font-bold text-blue-400"><span id="totProteine">0</span>g</p>
-                        <p class="text-[10px] text-slate-500">prot</p>
-                    </div>
-                    <div class="text-center">
-                        <p class="text-base font-bold text-emerald-400"><span id="totCarbo">0</span>g</p>
-                        <p class="text-[10px] text-slate-500">carbo</p>
-                    </div>
-                    <div class="text-center">
-                        <p class="text-base font-bold text-amber-400"><span id="totGrassi">0</span>g</p>
-                        <p class="text-[10px] text-slate-500">grassi</p>
-                    </div>
+                    <div class="text-center"><p class="text-base font-bold text-rose-400"><span id="totCalorie">0</span></p><p class="text-[10px] text-slate-500">kcal</p></div>
+                    <div class="text-center"><p class="text-base font-bold text-blue-400"><span id="totProteine">0</span>g</p><p class="text-[10px] text-slate-500">prot</p></div>
+                    <div class="text-center"><p class="text-base font-bold text-emerald-400"><span id="totCarbo">0</span>g</p><p class="text-[10px] text-slate-500">carbo</p></div>
+                    <div class="text-center"><p class="text-base font-bold text-amber-400"><span id="totGrassi">0</span>g</p><p class="text-[10px] text-slate-500">grassi</p></div>
                 </div>
             </div>
 
@@ -155,7 +193,7 @@
                 <div id="stato" class="text-xs text-slate-400 text-center mt-2.5 italic hidden">L'AI sta analizzando i tuoi pasti...</div>
             </div>
 
-            <!-- Risultati Macro dell'ultima analisi -->
+            <!-- Risultati Macro -->
             <div id="boxRisultati" class="hidden">
                 <p class="text-[11px] font-semibold text-slate-400 uppercase tracking-wider mb-2 flex items-center gap-1.5">
                     <i data-lucide="pie-chart" class="w-3.5 h-3.5 text-blue-400"></i> Ultima analisi
@@ -163,31 +201,19 @@
                 <div class="grid grid-cols-2 gap-3 mb-4">
                     <div class="bg-slate-800/50 border border-slate-700/40 rounded-xl p-3 flex items-center gap-3">
                         <div class="bg-rose-500/10 p-2 rounded-lg text-rose-400"><i data-lucide="flame" class="w-5 h-5"></i></div>
-                        <div>
-                            <p class="text-[11px] font-medium text-slate-400 uppercase tracking-wider">Calorie</p>
-                            <p class="text-lg font-bold text-slate-100"><span id="resCalorie">0</span> <span class="text-xs text-slate-400 font-normal">kcal</span></p>
-                        </div>
+                        <div><p class="text-[11px] font-medium text-slate-400 uppercase tracking-wider">Calorie</p><p class="text-lg font-bold text-slate-100"><span id="resCalorie">0</span> <span class="text-xs text-slate-400 font-normal">kcal</span></p></div>
                     </div>
                     <div class="bg-slate-800/50 border border-slate-700/40 rounded-xl p-3 flex items-center gap-3">
                         <div class="bg-blue-500/10 p-2 rounded-lg text-blue-400"><i data-lucide="dumbbell" class="w-5 h-5"></i></div>
-                        <div>
-                            <p class="text-[11px] font-medium text-slate-400 uppercase tracking-wider">Proteine</p>
-                            <p class="text-lg font-bold text-blue-400"><span id="resProteine">0</span><span class="text-xs font-normal text-slate-400"> / 160g</span></p>
-                        </div>
+                        <div><p class="text-[11px] font-medium text-slate-400 uppercase tracking-wider">Proteine</p><p class="text-lg font-bold text-blue-400"><span id="resProteine">0</span><span class="text-xs font-normal text-slate-400"> / 160g</span></p></div>
                     </div>
                     <div class="bg-slate-800/50 border border-slate-700/40 rounded-xl p-3 flex items-center gap-3">
                         <div class="bg-emerald-500/10 p-2 rounded-lg text-emerald-400"><i data-lucide="wheat" class="w-5 h-5"></i></div>
-                        <div>
-                            <p class="text-[11px] font-medium text-slate-400 uppercase tracking-wider">Carboidrati</p>
-                            <p class="text-lg font-bold text-emerald-400"><span id="resCarbo">0</span> <span class="text-xs text-slate-400 font-normal">g</span></p>
-                        </div>
+                        <div><p class="text-[11px] font-medium text-slate-400 uppercase tracking-wider">Carboidrati</p><p class="text-lg font-bold text-emerald-400"><span id="resCarbo">0</span> <span class="text-xs text-slate-400 font-normal">g</span></p></div>
                     </div>
                     <div class="bg-slate-800/50 border border-slate-700/40 rounded-xl p-3 flex items-center gap-3">
                         <div class="bg-amber-500/10 p-2 rounded-lg text-amber-400"><i data-lucide="droplet" class="w-5 h-5"></i></div>
-                        <div>
-                            <p class="text-[11px] font-medium text-slate-400 uppercase tracking-wider">Grassi</p>
-                            <p class="text-lg font-bold text-amber-400"><span id="resGrassi">0</span> <span class="text-xs text-slate-400 font-normal">g</span></p>
-                        </div>
+                        <div><p class="text-[11px] font-medium text-slate-400 uppercase tracking-wider">Grassi</p><p class="text-lg font-bold text-amber-400"><span id="resGrassi">0</span> <span class="text-xs text-slate-400 font-normal">g</span></p></div>
                     </div>
                 </div>
 
@@ -210,10 +236,12 @@
         </div>
 
         <!-- ============================================================ -->
-        <!-- TAB: STORICO -->
+        <!-- TAB: STORICO                                                  -->
         <!-- ============================================================ -->
         <div id="panel-storico" class="tab-panel">
-            <div class="flex items-center justify-between mb-4">
+
+            <!-- Toolbar storico -->
+            <div class="flex items-center justify-between mb-3">
                 <p class="text-sm font-semibold text-slate-300 flex items-center gap-2">
                     <i data-lucide="book-open" class="w-4 h-4 text-blue-400"></i> Diario alimentare
                 </p>
@@ -221,20 +249,30 @@
                     <i data-lucide="trash-2" class="w-3.5 h-3.5"></i> Cancella tutto
                 </button>
             </div>
+
+            <!-- Import / Export -->
+            <div class="flex gap-2 mb-4">
+                <button onclick="esportaDB()" class="flex-1 flex items-center justify-center gap-1.5 py-2.5 rounded-xl text-xs font-bold border bg-slate-800/60 border-slate-700/50 text-slate-400 hover:text-emerald-400 hover:border-emerald-500/40 transition">
+                    <i data-lucide="download" class="w-3.5 h-3.5"></i> Esporta JSON
+                </button>
+                <button onclick="document.getElementById('importInput').click()" class="flex-1 flex items-center justify-center gap-1.5 py-2.5 rounded-xl text-xs font-bold border bg-slate-800/60 border-slate-700/50 text-slate-400 hover:text-blue-400 hover:border-blue-500/40 transition">
+                    <i data-lucide="upload" class="w-3.5 h-3.5"></i> Importa JSON
+                </button>
+            </div>
+
             <div id="listaStorico" class="space-y-3">
                 <p class="text-sm text-slate-500 text-center py-8">Nessun pasto salvato ancora.<br>Elabora e salva un'analisi dalla tab Oggi!</p>
             </div>
         </div>
 
         <!-- ============================================================ -->
-        <!-- TAB: TREND -->
+        <!-- TAB: TREND                                                    -->
         <!-- ============================================================ -->
         <div id="panel-trend" class="tab-panel">
             <p class="text-sm font-semibold text-slate-300 mb-4 flex items-center gap-2">
                 <i data-lucide="trending-up" class="w-4 h-4 text-indigo-400"></i> Andamento ultimi 7 giorni
             </p>
 
-            <!-- Grafico calorie -->
             <div class="bg-slate-800/40 border border-slate-700/50 rounded-2xl p-4 mb-4">
                 <p class="text-xs text-slate-400 font-semibold uppercase tracking-wider mb-3 flex items-center gap-1.5">
                     <i data-lucide="flame" class="w-3.5 h-3.5 text-rose-400"></i> Calorie giornaliere
@@ -242,7 +280,6 @@
                 <canvas id="trendCalorieChart" height="140"></canvas>
             </div>
 
-            <!-- Grafico macros -->
             <div class="bg-slate-800/40 border border-slate-700/50 rounded-2xl p-4 mb-4">
                 <p class="text-xs text-slate-400 font-semibold uppercase tracking-wider mb-3 flex items-center gap-1.5">
                     <i data-lucide="activity" class="w-3.5 h-3.5 text-blue-400"></i> Macronutrienti (g)
@@ -250,26 +287,13 @@
                 <canvas id="trendMacroChart" height="140"></canvas>
             </div>
 
-            <!-- Statistiche medie -->
-            <div id="statsBox" class="bg-slate-800/40 border border-slate-700/50 rounded-2xl p-4">
+            <div class="bg-slate-800/40 border border-slate-700/50 rounded-2xl p-4">
                 <p class="text-xs text-slate-400 font-semibold uppercase tracking-wider mb-3">Media settimanale</p>
                 <div class="grid grid-cols-2 gap-3">
-                    <div class="bg-slate-800/60 rounded-xl p-3 text-center">
-                        <p class="text-lg font-bold text-rose-400"><span id="mediaCalorie">—</span></p>
-                        <p class="text-[10px] text-slate-500 mt-0.5">kcal / giorno</p>
-                    </div>
-                    <div class="bg-slate-800/60 rounded-xl p-3 text-center">
-                        <p class="text-lg font-bold text-blue-400"><span id="mediaProteine">—</span>g</p>
-                        <p class="text-[10px] text-slate-500 mt-0.5">proteine / giorno</p>
-                    </div>
-                    <div class="bg-slate-800/60 rounded-xl p-3 text-center">
-                        <p class="text-lg font-bold text-emerald-400"><span id="mediaCarbo">—</span>g</p>
-                        <p class="text-[10px] text-slate-500 mt-0.5">carbo / giorno</p>
-                    </div>
-                    <div class="bg-slate-800/60 rounded-xl p-3 text-center">
-                        <p class="text-lg font-bold text-amber-400"><span id="mediaGrassi">—</span>g</p>
-                        <p class="text-[10px] text-slate-500 mt-0.5">grassi / giorno</p>
-                    </div>
+                    <div class="bg-slate-800/60 rounded-xl p-3 text-center"><p class="text-lg font-bold text-rose-400"><span id="mediaCalorie">—</span></p><p class="text-[10px] text-slate-500 mt-0.5">kcal / giorno</p></div>
+                    <div class="bg-slate-800/60 rounded-xl p-3 text-center"><p class="text-lg font-bold text-blue-400"><span id="mediaProteine">—</span>g</p><p class="text-[10px] text-slate-500 mt-0.5">proteine / giorno</p></div>
+                    <div class="bg-slate-800/60 rounded-xl p-3 text-center"><p class="text-lg font-bold text-emerald-400"><span id="mediaCarbo">—</span>g</p><p class="text-[10px] text-slate-500 mt-0.5">carbo / giorno</p></div>
+                    <div class="bg-slate-800/60 rounded-xl p-3 text-center"><p class="text-lg font-bold text-amber-400"><span id="mediaGrassi">—</span>g</p><p class="text-[10px] text-slate-500 mt-0.5">grassi / giorno</p></div>
                 </div>
             </div>
         </div>
@@ -288,19 +312,17 @@
         // STATO GLOBALE
         // ================================================================
         let currentProvider = localStorage.getItem('ai_provider') || 'openai';
-        let ultimaAnalisi = null; // risultato AI in attesa di salvataggio
+        let ultimaAnalisi   = null;
+        let editingId       = null;       // ID entry in modifica
         let trendCalorieChart = null;
-        let trendMacroChart = null;
+        let trendMacroChart   = null;
 
         // Chart.js donut
         const ctx = document.getElementById('macroChart').getContext('2d');
         let macroChart = new Chart(ctx, {
             type: 'doughnut',
-            data: {
-                labels: ['Proteine', 'Carboidrati', 'Grassi'],
-                datasets: [{ data: [0, 0, 0], backgroundColor: ['#3b82f6', '#10b981', '#f59e0b'], borderWidth: 0, hoverOffset: 4 }]
-            },
-            options: { plugins: { legend: { display: false } }, responsive: true, maintainAspectRatio: true }
+            data: { labels:['Proteine','Carboidrati','Grassi'], datasets:[{data:[0,0,0],backgroundColor:['#3b82f6','#10b981','#f59e0b'],borderWidth:0,hoverOffset:4}] },
+            options: { plugins:{legend:{display:false}}, responsive:true, maintainAspectRatio:true }
         });
 
         lucide.createIcons();
@@ -317,7 +339,6 @@
             if (savedModel) document.getElementById('geminiModel').value = savedModel;
 
             selectProvider(currentProvider, false);
-
             const activeKey = currentProvider === 'gemini' ? savedGemini : savedOpenAI;
             if (!activeKey) document.getElementById('settingsBox').classList.remove('hidden');
 
@@ -328,24 +349,21 @@
         // TAB NAVIGATION
         // ================================================================
         function switchTab(tab) {
-            ['oggi', 'storico', 'trend'].forEach(t => {
-                document.getElementById('panel-' + t).classList.remove('active');
-                document.getElementById('tab-' + t).classList.remove('active');
+            ['oggi','storico','trend'].forEach(t => {
+                document.getElementById('panel-'+t).classList.remove('active');
+                document.getElementById('tab-'+t).classList.remove('active');
             });
-            document.getElementById('panel-' + tab).classList.add('active');
-            document.getElementById('tab-' + tab).classList.add('active');
-
+            document.getElementById('panel-'+tab).classList.add('active');
+            document.getElementById('tab-'+tab).classList.add('active');
             if (tab === 'storico') renderStorico();
-            if (tab === 'trend') renderTrend();
+            if (tab === 'trend')   renderTrend();
             lucide.createIcons();
         }
 
         // ================================================================
         // SETTINGS / PROVIDER
         // ================================================================
-        function toggleSettings() {
-            document.getElementById('settingsBox').classList.toggle('hidden');
-        }
+        function toggleSettings() { document.getElementById('settingsBox').classList.toggle('hidden'); }
 
         function selectProvider(provider, save = true) {
             currentProvider = provider;
@@ -357,113 +375,102 @@
             document.getElementById('btnLabel').textContent = provider === 'gemini' ? 'Elabora con Gemini' : 'Elabora con OpenAI';
         }
 
-        function saveKey() {
-            localStorage.setItem('openai_apikey', document.getElementById('apiKey').value.trim());
-        }
-
-        function saveGeminiKey() {
-            localStorage.setItem('gemini_apikey', document.getElementById('geminiKey').value.trim());
-            localStorage.setItem('gemini_model', document.getElementById('geminiModel').value);
-        }
+        function saveKey()      { localStorage.setItem('openai_apikey', document.getElementById('apiKey').value.trim()); }
+        function saveGeminiKey(){ localStorage.setItem('gemini_apikey', document.getElementById('geminiKey').value.trim()); localStorage.setItem('gemini_model', document.getElementById('geminiModel').value); }
 
         // ================================================================
         // UI HELPERS
         // ================================================================
         function uiStart() {
             const btn = document.getElementById('btnInvia');
-            btn.disabled = true;
-            btn.classList.add('opacity-50', 'cursor-not-allowed');
+            btn.disabled = true; btn.classList.add('opacity-50','cursor-not-allowed');
             document.getElementById('stato').classList.remove('hidden');
         }
-
         function uiEnd() {
             const btn = document.getElementById('btnInvia');
-            btn.disabled = false;
-            btn.classList.remove('opacity-50', 'cursor-not-allowed');
+            btn.disabled = false; btn.classList.remove('opacity-50','cursor-not-allowed');
             document.getElementById('stato').classList.add('hidden');
         }
-
         function aggiornaUI(r) {
-            document.getElementById('resCalorie').innerText  = r.calorie   || 0;
-            document.getElementById('resProteine').innerText = r.proteine  || 0;
-            document.getElementById('resCarbo').innerText    = r.carboidrati || 0;
-            document.getElementById('resGrassi').innerText   = r.grassi    || 0;
-            macroChart.data.datasets[0].data = [r.proteine || 0, r.carboidrati || 0, r.grassi || 0];
+            document.getElementById('resCalorie').innerText  = r.calorie      || 0;
+            document.getElementById('resProteine').innerText = r.proteine     || 0;
+            document.getElementById('resCarbo').innerText    = r.carboidrati  || 0;
+            document.getElementById('resGrassi').innerText   = r.grassi       || 0;
+            macroChart.data.datasets[0].data = [r.proteine||0, r.carboidrati||0, r.grassi||0];
             macroChart.update();
             document.getElementById('settingsBox').classList.add('hidden');
-            // Mostra sezione risultati + pulsante salva
             document.getElementById('boxRisultati').classList.remove('hidden');
-            document.getElementById('btnSalva').classList.remove('hidden');
+
+            // Reset pulsante salva
+            const btn = document.getElementById('btnSalva');
+            btn.disabled = false;
+            btn.className = 'w-full bg-emerald-600 hover:bg-emerald-500 text-white font-bold py-3 px-4 rounded-xl shadow-lg shadow-emerald-600/20 active:scale-[0.98] transition flex items-center justify-center gap-2 text-sm cursor-pointer mb-2';
+            btn.innerHTML = '<i data-lucide="save" class="w-4 h-4"></i><span>Salva nel diario</span>';
             lucide.createIcons();
         }
 
         // ================================================================
-        // DISPATCHER AI
+        // DISPATCHER AI & CALLS
         // ================================================================
-        async function analizzaDatiConAI() {
-            if (currentProvider === 'gemini') await analizzaConGemini();
-            else await analizzaConOpenAI();
-        }
-
-        // ================================================================
-        // OPENAI
-        // ================================================================
-        async function analizzaConOpenAI() {
+        async function fetchOpenAI(testo) {
             const apiKey = document.getElementById('apiKey').value.trim();
-            const testo  = document.getElementById('testoInput').value.trim();
-            if (!apiKey) { alert('Inserisci la tua OpenAI API Key nelle impostazioni.'); document.getElementById('settingsBox').classList.remove('hidden'); return; }
-            if (!testo)  { alert('Scrivi cosa hai mangiato prima di cliccare!'); return; }
-            uiStart();
-            try {
-                const response = await fetch('https://api.openai.com/v1/chat/completions', {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${apiKey}` },
-                    body: JSON.stringify({
-                        model: 'gpt-4o-mini',
-                        response_format: { type: 'json_object' },
-                        messages: [
-                            { role: 'system', content: "Sei un nutrizionista sportivo. Analizza il testo dell'utente che descrive i suoi pasti. Calcola calorie, proteine, carboidrati e grassi totali in grammi. Rispondi esclusivamente con un oggetto JSON pulito con queste chiavi numeriche intere: 'calorie', 'proteine', 'carboidrati', 'grassi'." },
-                            { role: 'user', content: testo }
-                        ]
-                    })
-                });
-                const data = await response.json();
-                if (data.error) throw new Error(data.error.message);
-                const r = JSON.parse(data.choices[0].message.content);
-                ultimaAnalisi = { ...r, testo };
-                aggiornaUI(r);
-            } catch (e) { console.error(e); alert('Errore OpenAI: ' + e.message); }
-            finally { uiEnd(); }
+            if (!apiKey) throw new Error('Inserisci la tua OpenAI API Key nelle impostazioni.');
+            const response = await fetch('https://api.openai.com/v1/chat/completions', {
+                method: 'POST',
+                headers: { 'Content-Type':'application/json', 'Authorization':`Bearer ${apiKey}` },
+                body: JSON.stringify({
+                    model: 'gpt-4o-mini',
+                    response_format: { type:'json_object' },
+                    messages: [
+                        { role:'system', content:"Sei un nutrizionista sportivo. Analizza il testo dell'utente che descrive i suoi pasti. Calcola calorie, proteine, carboidrati e grassi totali in grammi. Rispondi esclusivamente con un oggetto JSON pulito con queste chiavi numeriche intere: 'calorie', 'proteine', 'carboidrati', 'grassi'." },
+                        { role:'user', content:testo }
+                    ]
+                })
+            });
+            const data = await response.json();
+            if (data.error) throw new Error(data.error.message);
+            return JSON.parse(data.choices[0].message.content);
         }
 
-        // ================================================================
-        // GEMINI
-        // ================================================================
-        async function analizzaConGemini() {
+        async function fetchGemini(testo) {
             const apiKey = document.getElementById('geminiKey').value.trim();
             const model  = document.getElementById('geminiModel').value;
+            if (!apiKey) throw new Error('Inserisci la tua Gemini API Key nelle impostazioni.');
+            const prompt = `Sei un nutrizionista sportivo. Analizza i seguenti pasti. Calcola calorie, proteine, carboidrati e grassi totali in grammi. Rispondi SOLO con JSON valido (senza markdown) con chiavi: "calorie","proteine","carboidrati","grassi".\n\nPasti: ${testo}`;
+            const url = `https://generativelanguage.googleapis.com/v1beta/models/${model}:generateContent?key=${apiKey}`;
+            const response = await fetch(url, {
+                method: 'POST',
+                headers: { 'Content-Type':'application/json' },
+                body: JSON.stringify({ contents:[{parts:[{text:prompt}]}], generationConfig:{responseMimeType:'application/json'} })
+            });
+            const data = await response.json();
+            if (data.error) throw new Error(data.error.message);
+            const rawText = data.candidates?.[0]?.content?.parts?.[0]?.text;
+            if (!rawText) throw new Error('Risposta vuota da Gemini.');
+            const cleaned = rawText.replace(/```json?/gi,'').replace(/```/g,'').trim();
+            return JSON.parse(cleaned);
+        }
+
+        async function analizzaDatiConAI() {
             const testo  = document.getElementById('testoInput').value.trim();
-            if (!apiKey) { alert('Inserisci la tua Gemini API Key nelle impostazioni.'); document.getElementById('settingsBox').classList.remove('hidden'); return; }
             if (!testo)  { alert('Scrivi cosa hai mangiato prima di cliccare!'); return; }
             uiStart();
             try {
-                const prompt = `Sei un nutrizionista sportivo. Analizza i seguenti pasti. Calcola calorie, proteine, carboidrati e grassi totali in grammi. Rispondi SOLO con JSON valido (senza markdown) con chiavi: "calorie","proteine","carboidrati","grassi".\n\nPasti: ${testo}`;
-                const url = `https://generativelanguage.googleapis.com/v1beta/models/${model}:generateContent?key=${apiKey}`;
-                const response = await fetch(url, {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ contents: [{ parts: [{ text: prompt }] }], generationConfig: { responseMimeType: 'application/json' } })
-                });
-                const data = await response.json();
-                if (data.error) throw new Error(data.error.message);
-                const rawText = data.candidates?.[0]?.content?.parts?.[0]?.text;
-                if (!rawText) throw new Error('Risposta vuota da Gemini.');
-                const cleaned = rawText.replace(/```json?/gi,'').replace(/```/g,'').trim();
-                const r = JSON.parse(cleaned);
-                ultimaAnalisi = { ...r, testo };
+                const r = currentProvider === 'gemini' ? await fetchGemini(testo) : await fetchOpenAI(testo);
+                ultimaAnalisi = { ...r, testo, pasti: testoInPasti(testo) };
                 aggiornaUI(r);
-            } catch (e) { console.error(e); alert('Errore Gemini: ' + e.message); }
-            finally { uiEnd(); }
+            } catch(e) {
+                console.error(e); 
+                alert(`Errore ${currentProvider}: ` + e.message);
+                if(e.message.includes('API Key') || e.message.includes('Key')) document.getElementById('settingsBox').classList.remove('hidden');
+            } finally {
+                uiEnd();
+            }
+        }
+
+        // Converte testo libero in array di pasti (split per . , e newline)
+        function testoInPasti(testo) {
+            return testo.split(/[.\n]+/).map(s => s.trim()).filter(s => s.length > 3);
         }
 
         // ================================================================
@@ -472,19 +479,17 @@
         function caricaLog() {
             try { return JSON.parse(localStorage.getItem('fit_log') || '[]'); } catch { return []; }
         }
-
-        function salvaLog(log) {
-            localStorage.setItem('fit_log', JSON.stringify(log));
-        }
+        function salvaLog(log) { localStorage.setItem('fit_log', JSON.stringify(log)); }
 
         function salvaEntry() {
             if (!ultimaAnalisi) return;
             const now = new Date();
             const entry = {
-                id: now.getTime().toString(),
-                data: now.toISOString().slice(0,10),
-                ora: now.toTimeString().slice(0,5),
-                testo: ultimaAnalisi.testo || '',
+                id:          now.getTime().toString(),
+                data:        now.toISOString().slice(0,10),
+                ora:         now.toTimeString().slice(0,5),
+                testo:       ultimaAnalisi.testo || '',
+                pasti:       ultimaAnalisi.pasti || [],
                 calorie:     parseInt(ultimaAnalisi.calorie)     || 0,
                 proteine:    parseInt(ultimaAnalisi.proteine)    || 0,
                 carboidrati: parseInt(ultimaAnalisi.carboidrati) || 0,
@@ -495,14 +500,11 @@
             salvaLog(log);
             ultimaAnalisi = null;
 
-            // Feedback visivo pulsante
             const btn = document.getElementById('btnSalva');
-            btn.classList.remove('bg-emerald-600','hover:bg-emerald-500');
-            btn.classList.add('bg-slate-700','cursor-default');
-            btn.innerHTML = '<i data-lucide="check" class="w-4 h-4"></i><span>Salvato!</span>';
             btn.disabled = true;
+            btn.className = 'w-full bg-slate-700 text-slate-400 font-bold py-3 px-4 rounded-xl transition flex items-center justify-center gap-2 text-sm mb-2';
+            btn.innerHTML = '<i data-lucide="check" class="w-4 h-4"></i><span>Salvato!</span>';
             lucide.createIcons();
-
             aggiornaTotaleGiorno();
         }
 
@@ -512,18 +514,11 @@
         function aggiornaTotaleGiorno() {
             const oggi = new Date().toISOString().slice(0,10);
             const log  = caricaLog().filter(e => e.data === oggi);
-            if (log.length === 0) {
-                document.getElementById('boxTotaleGiorno').classList.add('hidden');
-                return;
-            }
-            const tot = log.reduce((acc, e) => {
-                acc.calorie     += e.calorie;
-                acc.proteine    += e.proteine;
-                acc.carboidrati += e.carboidrati;
-                acc.grassi      += e.grassi;
-                return acc;
-            }, { calorie:0, proteine:0, carboidrati:0, grassi:0 });
-
+            if (log.length === 0) { document.getElementById('boxTotaleGiorno').classList.add('hidden'); return; }
+            const tot = log.reduce((acc,e) => {
+                acc.calorie+=e.calorie; acc.proteine+=e.proteine;
+                acc.carboidrati+=e.carboidrati; acc.grassi+=e.grassi; return acc;
+            }, {calorie:0,proteine:0,carboidrati:0,grassi:0});
             document.getElementById('totCalorie').innerText  = tot.calorie;
             document.getElementById('totProteine').innerText = tot.proteine;
             document.getElementById('totCarbo').innerText    = tot.carboidrati;
@@ -541,52 +536,53 @@
                 container.innerHTML = '<p class="text-sm text-slate-500 text-center py-8">Nessun pasto salvato ancora.<br>Elabora e salva un\'analisi dalla tab Oggi!</p>';
                 return;
             }
-            container.innerHTML = log.slice(0,30).map(e => `
+            container.innerHTML = log.slice(0,50).map(e => {
+                const testoHtml = e.testo
+                    ? `<p class="text-xs text-slate-500 mb-2 leading-relaxed">${escHtml(e.testo)}</p>`
+                    : '';
+                return `
                 <div class="entry-card bg-slate-800/60 border border-slate-700/40 rounded-2xl p-3">
-                    <div class="flex items-start justify-between gap-2 mb-2">
+                    <div class="flex items-center justify-between gap-2 mb-2">
                         <div class="flex items-center gap-2">
                             <span class="text-[11px] font-bold text-indigo-400 bg-indigo-400/10 px-2 py-0.5 rounded-lg">${formatData(e.data)}</span>
                             <span class="text-[11px] text-slate-500">${e.ora}</span>
                         </div>
-                        <button onclick="eliminaEntry('${e.id}')" class="text-slate-600 hover:text-rose-400 transition p-1 rounded-lg">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"/><path d="M10 11v6"/><path d="M14 11v6"/><path d="M9 6V4a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v2"/></svg>
-                        </button>
+                        <div class="flex items-center gap-1">
+                            <button onclick="apriModalEdit('${e.id}')" class="text-slate-600 hover:text-indigo-400 transition p-1.5 rounded-lg" title="Modifica">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
+                            </button>
+                            <button onclick="eliminaEntry('${e.id}')" class="text-slate-600 hover:text-rose-400 transition p-1.5 rounded-lg" title="Elimina">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"/><path d="M10 11v6"/><path d="M14 11v6"/><path d="M9 6V4a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v2"/></svg>
+                            </button>
+                        </div>
                     </div>
-                    <p class="text-xs text-slate-400 mb-3 line-clamp-2">${e.testo || '—'}</p>
+                    ${testoHtml}
                     <div class="grid grid-cols-4 gap-1.5">
-                        <div class="bg-rose-500/10 rounded-lg p-1.5 text-center">
-                            <p class="text-sm font-bold text-rose-400">${e.calorie}</p>
-                            <p class="text-[9px] text-slate-500">kcal</p>
-                        </div>
-                        <div class="bg-blue-500/10 rounded-lg p-1.5 text-center">
-                            <p class="text-sm font-bold text-blue-400">${e.proteine}g</p>
-                            <p class="text-[9px] text-slate-500">prot</p>
-                        </div>
-                        <div class="bg-emerald-500/10 rounded-lg p-1.5 text-center">
-                            <p class="text-sm font-bold text-emerald-400">${e.carboidrati}g</p>
-                            <p class="text-[9px] text-slate-500">carbo</p>
-                        </div>
-                        <div class="bg-amber-500/10 rounded-lg p-1.5 text-center">
-                            <p class="text-sm font-bold text-amber-400">${e.grassi}g</p>
-                            <p class="text-[9px] text-slate-500">grassi</p>
-                        </div>
+                        <div class="bg-rose-500/10 rounded-lg p-1.5 text-center"><p class="text-sm font-bold text-rose-400">${e.calorie}</p><p class="text-[9px] text-slate-500">kcal</p></div>
+                        <div class="bg-blue-500/10 rounded-lg p-1.5 text-center"><p class="text-sm font-bold text-blue-400">${e.proteine}g</p><p class="text-[9px] text-slate-500">prot</p></div>
+                        <div class="bg-emerald-500/10 rounded-lg p-1.5 text-center"><p class="text-sm font-bold text-emerald-400">${e.carboidrati}g</p><p class="text-[9px] text-slate-500">carbo</p></div>
+                        <div class="bg-amber-500/10 rounded-lg p-1.5 text-center"><p class="text-sm font-bold text-amber-400">${e.grassi}g</p><p class="text-[9px] text-slate-500">grassi</p></div>
                     </div>
-                </div>
-            `).join('');
+                </div>`;
+            }).join('');
+        }
+
+        function escHtml(s) {
+            return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
         }
 
         function formatData(iso) {
-            const [y, m, d] = iso.split('-');
+            const [y,m,d] = iso.split('-');
             const oggi = new Date().toISOString().slice(0,10);
             if (iso === oggi) return 'Oggi';
-            const ieri = new Date(Date.now() - 86400000).toISOString().slice(0,10);
+            const ieri = new Date(Date.now()-86400000).toISOString().slice(0,10);
             if (iso === ieri) return 'Ieri';
             return `${d}/${m}`;
         }
 
         function eliminaEntry(id) {
-            const log = caricaLog().filter(e => e.id !== id);
-            salvaLog(log);
+            if (!confirm('Eliminare questa entry?')) return;
+            salvaLog(caricaLog().filter(e => e.id !== id));
             renderStorico();
             aggiornaTotaleGiorno();
         }
@@ -600,97 +596,185 @@
         }
 
         // ================================================================
+        // MODAL EDIT
+        // ================================================================
+        function apriModalEdit(id) {
+            const log   = caricaLog();
+            const entry = log.find(e => e.id === id);
+            if (!entry) return;
+            editingId = id;
+
+            document.getElementById('editData').value  = entry.data;
+            document.getElementById('editOra').value   = entry.ora;
+            document.getElementById('editTesto').value = entry.testo || '';
+            
+            const btn = document.getElementById('btnSalvaModifica');
+            btn.innerHTML = `<i data-lucide="sparkles" class="w-4 h-4"></i> Ricalcola e Salva`;
+            btn.disabled = false;
+
+            const modal = document.getElementById('modalEdit');
+            modal.classList.remove('hidden');
+            setTimeout(() => { modal.style.opacity = '1'; }, 10);
+            lucide.createIcons();
+        }
+
+        function chiudiModal() {
+            document.getElementById('modalEdit').classList.add('hidden');
+            editingId = null;
+        }
+
+        document.getElementById('modalEdit').addEventListener('click', function(e){
+            if (e.target === this) chiudiModal();
+        });
+
+        async function salvaModifica() {
+            if (!editingId) return;
+            const testo = document.getElementById('editTesto').value.trim();
+            if (!testo) { alert('Il testo del pasto non può essere vuoto.'); return; }
+
+            const log = caricaLog();
+            const idx = log.findIndex(e => e.id === editingId);
+            if (idx === -1) return;
+
+            const btn = document.getElementById('btnSalvaModifica');
+            btn.disabled = true;
+            btn.innerHTML = `<svg class="animate-spin -ml-1 mr-2 h-4 w-4 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path></svg> Ricalcolo AI in corso...`;
+
+            try {
+                const r = currentProvider === 'gemini' ? await fetchGemini(testo) : await fetchOpenAI(testo);
+                
+                log[idx] = {
+                    ...log[idx],
+                    data:        document.getElementById('editData').value,
+                    ora:         document.getElementById('editOra').value,
+                    testo:       testo,
+                    pasti:       testoInPasti(testo),
+                    calorie:     parseInt(r.calorie)  || 0,
+                    proteine:    parseInt(r.proteine) || 0,
+                    carboidrati: parseInt(r.carboidrati)|| 0,
+                    grassi:      parseInt(r.grassi)   || 0,
+                };
+                salvaLog(log);
+                chiudiModal();
+                renderStorico();
+                aggiornaTotaleGiorno();
+            } catch (e) {
+                console.error(e);
+                alert(`Errore durante il ricalcolo (${currentProvider}): ` + e.message);
+                btn.disabled = false;
+                btn.innerHTML = `<i data-lucide="sparkles" class="w-4 h-4"></i> Ricalcola e Salva`;
+                lucide.createIcons();
+            }
+        }
+
+        // ================================================================
+        // IMPORT / EXPORT
+        // ================================================================
+        function esportaDB() {
+            const log  = caricaLog();
+            const json = JSON.stringify({ version:1, exportDate: new Date().toISOString(), entries: log }, null, 2);
+            const blob = new Blob([json], { type:'application/json' });
+            const url  = URL.createObjectURL(blob);
+            const a    = document.createElement('a');
+            a.href     = url;
+            a.download = `nutritracker_${new Date().toISOString().slice(0,10)}.json`;
+            a.click();
+            URL.revokeObjectURL(url);
+        }
+
+        function importaDB(event) {
+            const file = event.target.files[0];
+            if (!file) return;
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                try {
+                    const parsed = JSON.parse(e.target.result);
+                    // Supporta sia array diretto che oggetto con entries
+                    const entries = Array.isArray(parsed) ? parsed : (parsed.entries || []);
+                    if (!Array.isArray(entries) || entries.length === 0) throw new Error('Nessun dato trovato nel file.');
+
+                    const scelta = confirm(`Trovate ${entries.length} entry.\n\nPremi OK per UNIRE al diario esistente.\nPremi Annulla per SOSTITUIRE il diario.`);
+                    let log = caricaLog();
+                    if (scelta) {
+                        // Unisci: aggiungi solo entry con id non esistente
+                        const existingIds = new Set(log.map(e => e.id));
+                        const nuove = entries.filter(e => !existingIds.has(e.id));
+                        log = [...log, ...nuove].sort((a,b) => b.id.localeCompare(a.id));
+                        alert(`Importate ${nuove.length} nuove entry (${entries.length - nuove.length} già presenti ignorate).`);
+                    } else {
+                        log = entries.sort((a,b) => b.id.localeCompare(a.id));
+                        alert(`Diario sostituito con ${log.length} entry.`);
+                    }
+                    salvaLog(log);
+                    renderStorico();
+                    aggiornaTotaleGiorno();
+                } catch(err) {
+                    alert('Errore importazione: ' + err.message);
+                }
+                event.target.value = ''; // Reset input per permettere re-import
+            };
+            reader.readAsText(file);
+        }
+
+        // ================================================================
         // TREND – RENDER
         // ================================================================
         function renderTrend() {
-            const log = caricaLog();
-            // Costruisce ultimi 7 giorni
+            const log  = caricaLog();
             const days = [];
-            for (let i = 6; i >= 0; i--) {
-                const d = new Date(Date.now() - i * 86400000);
+            for (let i=6; i>=0; i--) {
+                const d = new Date(Date.now() - i*86400000);
                 days.push(d.toISOString().slice(0,10));
             }
-
-            // Raggruppa per giorno (somma)
             const byDay = {};
-            days.forEach(d => { byDay[d] = { calorie:0, proteine:0, carboidrati:0, grassi:0, count:0 }; });
+            days.forEach(d => { byDay[d] = {calorie:0,proteine:0,carboidrati:0,grassi:0,count:0}; });
             log.forEach(e => {
                 if (byDay[e.data] !== undefined) {
-                    byDay[e.data].calorie     += e.calorie;
-                    byDay[e.data].proteine    += e.proteine;
-                    byDay[e.data].carboidrati += e.carboidrati;
-                    byDay[e.data].grassi      += e.grassi;
+                    byDay[e.data].calorie+=e.calorie; byDay[e.data].proteine+=e.proteine;
+                    byDay[e.data].carboidrati+=e.carboidrati; byDay[e.data].grassi+=e.grassi;
                     byDay[e.data].count++;
                 }
             });
 
-            const labels    = days.map(d => formatData(d));
-            const calorie   = days.map(d => byDay[d].calorie);
-            const proteine  = days.map(d => byDay[d].proteine);
-            const carbo     = days.map(d => byDay[d].carboidrati);
-            const grassi    = days.map(d => byDay[d].grassi);
+            const labels   = days.map(d => formatData(d));
+            const calorie  = days.map(d => byDay[d].calorie);
+            const proteine = days.map(d => byDay[d].proteine);
+            const carbo    = days.map(d => byDay[d].carboidrati);
+            const grassi   = days.map(d => byDay[d].grassi);
 
-            const chartDefaults = {
-                tension: 0.35, fill: true, borderWidth: 2, pointRadius: 4, pointHoverRadius: 6
-            };
-            const gridColor  = 'rgba(71,85,105,0.25)';
-            const tickColor  = '#64748b';
+            const cd = { tension:0.35, fill:true, borderWidth:2, pointRadius:4, pointHoverRadius:6 };
+            const gc = 'rgba(71,85,105,0.25)';
+            const tc = '#64748b';
             const commonOpts = {
-                responsive: true,
-                plugins: { legend: { display: false } },
-                scales: {
-                    x: { grid: { color: gridColor }, ticks: { color: tickColor, font: { size: 10 } } },
-                    y: { grid: { color: gridColor }, ticks: { color: tickColor, font: { size: 10 } }, beginAtZero: true }
+                responsive:true,
+                plugins:{legend:{display:false}},
+                scales:{
+                    x:{grid:{color:gc},ticks:{color:tc,font:{size:10}}},
+                    y:{grid:{color:gc},ticks:{color:tc,font:{size:10}},beginAtZero:true}
                 }
             };
 
-            // Grafico Calorie
-            const ctxCal = document.getElementById('trendCalorieChart');
             if (trendCalorieChart) trendCalorieChart.destroy();
-            trendCalorieChart = new Chart(ctxCal, {
-                type: 'line',
-                data: {
-                    labels,
-                    datasets: [{
-                        ...chartDefaults,
-                        label: 'Calorie',
-                        data: calorie,
-                        borderColor: '#f87171',
-                        backgroundColor: 'rgba(248,113,113,0.08)',
-                        pointBackgroundColor: '#f87171'
-                    }]
-                },
+            trendCalorieChart = new Chart(document.getElementById('trendCalorieChart'), {
+                type:'line',
+                data:{labels,datasets:[{...cd,label:'Calorie',data:calorie,borderColor:'#f87171',backgroundColor:'rgba(248,113,113,0.08)',pointBackgroundColor:'#f87171'}]},
                 options: commonOpts
             });
 
-            // Grafico Macros
-            const ctxMac = document.getElementById('trendMacroChart');
             if (trendMacroChart) trendMacroChart.destroy();
-            trendMacroChart = new Chart(ctxMac, {
-                type: 'line',
-                data: {
-                    labels,
-                    datasets: [
-                        { ...chartDefaults, label: 'Proteine', data: proteine, borderColor: '#60a5fa', backgroundColor: 'rgba(96,165,250,0.07)', pointBackgroundColor: '#60a5fa' },
-                        { ...chartDefaults, label: 'Carbo',    data: carbo,    borderColor: '#34d399', backgroundColor: 'rgba(52,211,153,0.07)',  pointBackgroundColor: '#34d399' },
-                        { ...chartDefaults, label: 'Grassi',   data: grassi,   borderColor: '#fbbf24', backgroundColor: 'rgba(251,191,36,0.07)',  pointBackgroundColor: '#fbbf24' }
-                    ]
-                },
-                options: {
-                    ...commonOpts,
-                    plugins: {
-                        legend: {
-                            display: true,
-                            labels: { color: '#94a3b8', font: { size: 10 }, boxWidth: 10, padding: 12 }
-                        }
-                    }
-                }
+            trendMacroChart = new Chart(document.getElementById('trendMacroChart'), {
+                type:'line',
+                data:{labels,datasets:[
+                    {...cd,label:'Proteine',data:proteine,borderColor:'#60a5fa',backgroundColor:'rgba(96,165,250,0.07)',pointBackgroundColor:'#60a5fa'},
+                    {...cd,label:'Carbo',   data:carbo,   borderColor:'#34d399',backgroundColor:'rgba(52,211,153,0.07)' ,pointBackgroundColor:'#34d399'},
+                    {...cd,label:'Grassi',  data:grassi,  borderColor:'#fbbf24',backgroundColor:'rgba(251,191,36,0.07)' ,pointBackgroundColor:'#fbbf24'}
+                ]},
+                options:{...commonOpts,plugins:{legend:{display:true,labels:{color:'#94a3b8',font:{size:10},boxWidth:10,padding:12}}}}
             });
 
-            // Medie (solo giorni con dati)
-            const daysWithData = days.filter(d => byDay[d].count > 0);
-            if (daysWithData.length > 0) {
-                const avg = k => Math.round(daysWithData.reduce((s,d) => s + byDay[d][k], 0) / daysWithData.length);
+            const dwd = days.filter(d => byDay[d].count > 0);
+            if (dwd.length > 0) {
+                const avg = k => Math.round(dwd.reduce((s,d)=>s+byDay[d][k],0)/dwd.length);
                 document.getElementById('mediaCalorie').innerText  = avg('calorie');
                 document.getElementById('mediaProteine').innerText = avg('proteine');
                 document.getElementById('mediaCarbo').innerText    = avg('carboidrati');
