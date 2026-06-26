@@ -146,7 +146,43 @@
                     <option value="gemini-2.5-pro">gemini-2.5-pro (potente)</option>
                 </select>
             </div>
-            <p class="text-[11px] text-slate-400 mt-3">Le chiavi vengono memorizzate solo sul tuo dispositivo (localStorage).</p>
+            
+            <!-- Target Nutrizionali -->
+            <div class="border-t border-slate-700 mt-4 pt-4">
+                <label class="text-[11px] font-semibold text-slate-400 uppercase tracking-wider block mb-3">Target giornalieri</label>
+                <div class="grid grid-cols-2 gap-3">
+                    <div>
+                        <label class="text-[11px] font-semibold text-slate-400 uppercase tracking-wider">Target Calorie</label>
+                        <div class="flex items-center gap-2 mt-1">
+                            <input type="number" id="targetCalorie" oninput="saveTarget()" class="flex-1 bg-slate-900 border border-slate-700 rounded-xl p-3 text-sm focus:outline-none focus:ring-2 focus:ring-rose-500 text-slate-200" placeholder="2000" min="0">
+                            <span class="text-xs text-slate-500">kcal</span>
+                        </div>
+                    </div>
+                    <div>
+                        <label class="text-[11px] font-semibold text-slate-400 uppercase tracking-wider">Target Proteine</label>
+                        <div class="flex items-center gap-2 mt-1">
+                            <input type="number" id="targetProteine" oninput="saveTarget()" class="flex-1 bg-slate-900 border border-slate-700 rounded-xl p-3 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 text-slate-200" placeholder="160" min="0">
+                            <span class="text-xs text-slate-500">g</span>
+                        </div>
+                    </div>
+                    <div>
+                        <label class="text-[11px] font-semibold text-slate-400 uppercase tracking-wider">Target Carboidrati</label>
+                        <div class="flex items-center gap-2 mt-1">
+                            <input type="number" id="targetCarbo" oninput="saveTarget()" class="flex-1 bg-slate-900 border border-slate-700 rounded-xl p-3 text-sm focus:outline-none focus:ring-2 focus:ring-emerald-500 text-slate-200" placeholder="200" min="0">
+                            <span class="text-xs text-slate-500">g</span>
+                        </div>
+                    </div>
+                    <div>
+                        <label class="text-[11px] font-semibold text-slate-400 uppercase tracking-wider">Target Grassi</label>
+                        <div class="flex items-center gap-2 mt-1">
+                            <input type="number" id="targetGrassi" oninput="saveTarget()" class="flex-1 bg-slate-900 border border-slate-700 rounded-xl p-3 text-sm focus:outline-none focus:ring-2 focus:ring-amber-500 text-slate-200" placeholder="70" min="0">
+                            <span class="text-xs text-slate-500">g</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <p class="text-[11px] text-slate-400 mt-3">Le chiavi e i target vengono memorizzati solo sul tuo dispositivo (localStorage).</p>
         </div>
 
         <!-- Tab Navigation -->
@@ -169,14 +205,50 @@
 
             <!-- Totale giornaliero -->
             <div id="boxTotaleGiorno" class="mb-4 p-3 bg-slate-800/50 border border-slate-700/40 rounded-2xl hidden">
-                <p class="text-[11px] font-semibold text-slate-400 uppercase tracking-wider mb-2 flex items-center gap-1.5">
+                <p class="text-[11px] font-semibold text-slate-400 uppercase tracking-wider mb-3 flex items-center gap-1.5">
                     <i data-lucide="sigma" class="w-3.5 h-3.5 text-indigo-400"></i> Totale di oggi
                 </p>
-                <div class="grid grid-cols-4 gap-2">
-                    <div class="text-center"><p class="text-base font-bold text-rose-400"><span id="totCalorie">0</span></p><p class="text-[10px] text-slate-500">kcal</p></div>
-                    <div class="text-center"><p class="text-base font-bold text-blue-400"><span id="totProteine">0</span>g</p><p class="text-[10px] text-slate-500">prot</p></div>
-                    <div class="text-center"><p class="text-base font-bold text-emerald-400"><span id="totCarbo">0</span>g</p><p class="text-[10px] text-slate-500">carbo</p></div>
-                    <div class="text-center"><p class="text-base font-bold text-amber-400"><span id="totGrassi">0</span>g</p><p class="text-[10px] text-slate-500">grassi</p></div>
+                <div class="grid grid-cols-2 gap-3">
+                    <div class="bg-slate-900/50 rounded-xl p-2.5">
+                        <div class="flex items-center justify-between mb-1.5">
+                            <p class="text-[10px] font-semibold text-slate-400">CALORIE</p>
+                            <p class="text-xs text-slate-500" id="percCalorie">-</p>
+                        </div>
+                        <p class="text-base font-bold text-rose-400 mb-1.5"><span id="totCalorie">0</span><span class="text-xs text-slate-500 font-normal"> / <span id="targetCalorieVal">—</span> kcal</span></p>
+                        <div class="w-full h-2 bg-slate-800 rounded-full overflow-hidden">
+                            <div id="barCalorie" class="h-full bg-gradient-to-r from-rose-500 to-rose-600 rounded-full" style="width: 0%;"></div>
+                        </div>
+                    </div>
+                    <div class="bg-slate-900/50 rounded-xl p-2.5">
+                        <div class="flex items-center justify-between mb-1.5">
+                            <p class="text-[10px] font-semibold text-slate-400">PROTEINE</p>
+                            <p class="text-xs text-slate-500" id="percProteine">-</p>
+                        </div>
+                        <p class="text-base font-bold text-blue-400 mb-1.5"><span id="totProteine">0</span><span class="text-xs text-slate-500 font-normal"> / <span id="targetProteineVal">—</span> g</span></p>
+                        <div class="w-full h-2 bg-slate-800 rounded-full overflow-hidden">
+                            <div id="barProteine" class="h-full bg-gradient-to-r from-blue-500 to-blue-600 rounded-full" style="width: 0%;"></div>
+                        </div>
+                    </div>
+                    <div class="bg-slate-900/50 rounded-xl p-2.5">
+                        <div class="flex items-center justify-between mb-1.5">
+                            <p class="text-[10px] font-semibold text-slate-400">CARBOIDRATI</p>
+                            <p class="text-xs text-slate-500" id="percCarbo">-</p>
+                        </div>
+                        <p class="text-base font-bold text-emerald-400 mb-1.5"><span id="totCarbo">0</span><span class="text-xs text-slate-500 font-normal"> / <span id="targetCarboVal">—</span> g</span></p>
+                        <div class="w-full h-2 bg-slate-800 rounded-full overflow-hidden">
+                            <div id="barCarbo" class="h-full bg-gradient-to-r from-emerald-500 to-emerald-600 rounded-full" style="width: 0%;"></div>
+                        </div>
+                    </div>
+                    <div class="bg-slate-900/50 rounded-xl p-2.5">
+                        <div class="flex items-center justify-between mb-1.5">
+                            <p class="text-[10px] font-semibold text-slate-400">GRASSI</p>
+                            <p class="text-xs text-slate-500" id="percGrassi">-</p>
+                        </div>
+                        <p class="text-base font-bold text-amber-400 mb-1.5"><span id="totGrassi">0</span><span class="text-xs text-slate-500 font-normal"> / <span id="targetGrassiVal">—</span> g</span></p>
+                        <div class="w-full h-2 bg-slate-800 rounded-full overflow-hidden">
+                            <div id="barGrassi" class="h-full bg-gradient-to-r from-amber-500 to-amber-600 rounded-full" style="width: 0%;"></div>
+                        </div>
+                    </div>
                 </div>
             </div>
 
@@ -282,9 +354,23 @@
 
             <div class="bg-slate-800/40 border border-slate-700/50 rounded-2xl p-4 mb-4">
                 <p class="text-xs text-slate-400 font-semibold uppercase tracking-wider mb-3 flex items-center gap-1.5">
-                    <i data-lucide="activity" class="w-3.5 h-3.5 text-blue-400"></i> Macronutrienti (g)
+                    <i data-lucide="dumbbell" class="w-3.5 h-3.5 text-blue-400"></i> Proteine (g)
                 </p>
-                <canvas id="trendMacroChart" height="140"></canvas>
+                <canvas id="trendProteineChart" height="100"></canvas>
+            </div>
+
+            <div class="bg-slate-800/40 border border-slate-700/50 rounded-2xl p-4 mb-4">
+                <p class="text-xs text-slate-400 font-semibold uppercase tracking-wider mb-3 flex items-center gap-1.5">
+                    <i data-lucide="wheat" class="w-3.5 h-3.5 text-emerald-400"></i> Carboidrati (g)
+                </p>
+                <canvas id="trendCarboChart" height="100"></canvas>
+            </div>
+
+            <div class="bg-slate-800/40 border border-slate-700/50 rounded-2xl p-4 mb-4">
+                <p class="text-xs text-slate-400 font-semibold uppercase tracking-wider mb-3 flex items-center gap-1.5">
+                    <i data-lucide="droplet" class="w-3.5 h-3.5 text-amber-400"></i> Grassi (g)
+                </p>
+                <canvas id="trendGrassiChart" height="100"></canvas>
             </div>
 
             <div class="bg-slate-800/40 border border-slate-700/50 rounded-2xl p-4">
@@ -315,7 +401,13 @@
         let ultimaAnalisi   = null;
         let editingId       = null;       // ID entry in modifica
         let trendCalorieChart = null;
-        let trendMacroChart   = null;
+        let trendProteineChart = null;
+        let trendCarboChart = null;
+        let trendGrassiChart = null;
+        let targetCalorie   = 0;          // Target giornaliero calorie
+        let targetProteine  = 0;          // Target giornaliero proteine
+        let targetCarbo     = 0;          // Target giornaliero carboidrati
+        let targetGrassi    = 0;          // Target giornaliero grassi
 
         // Chart.js donut
         const ctx = document.getElementById('macroChart').getContext('2d');
@@ -337,6 +429,16 @@
             if (savedGemini) document.getElementById('geminiKey').value = savedGemini;
             const savedModel = localStorage.getItem('gemini_model');
             if (savedModel) document.getElementById('geminiModel').value = savedModel;
+
+            // Carica target
+            targetCalorie = parseInt(localStorage.getItem('target_calorie')) || 2000;
+            targetProteine = parseInt(localStorage.getItem('target_proteine')) || 160;
+            targetCarbo = parseInt(localStorage.getItem('target_carbo')) || 200;
+            targetGrassi = parseInt(localStorage.getItem('target_grassi')) || 70;
+            document.getElementById('targetCalorie').value = targetCalorie;
+            document.getElementById('targetProteine').value = targetProteine;
+            document.getElementById('targetCarbo').value = targetCarbo;
+            document.getElementById('targetGrassi').value = targetGrassi;
 
             selectProvider(currentProvider, false);
             const activeKey = currentProvider === 'gemini' ? savedGemini : savedOpenAI;
@@ -377,6 +479,17 @@
 
         function saveKey()      { localStorage.setItem('openai_apikey', document.getElementById('apiKey').value.trim()); }
         function saveGeminiKey(){ localStorage.setItem('gemini_apikey', document.getElementById('geminiKey').value.trim()); localStorage.setItem('gemini_model', document.getElementById('geminiModel').value); }
+        function saveTarget()   {
+            targetCalorie = parseInt(document.getElementById('targetCalorie').value) || 0;
+            targetProteine = parseInt(document.getElementById('targetProteine').value) || 0;
+            targetCarbo = parseInt(document.getElementById('targetCarbo').value) || 0;
+            targetGrassi = parseInt(document.getElementById('targetGrassi').value) || 0;
+            localStorage.setItem('target_calorie', targetCalorie);
+            localStorage.setItem('target_proteine', targetProteine);
+            localStorage.setItem('target_carbo', targetCarbo);
+            localStorage.setItem('target_grassi', targetGrassi);
+            aggiornaTotaleGiorno();
+        }
 
         // ================================================================
         // UI HELPERS
@@ -523,6 +636,49 @@
             document.getElementById('totProteine').innerText = tot.proteine;
             document.getElementById('totCarbo').innerText    = tot.carboidrati;
             document.getElementById('totGrassi').innerText   = tot.grassi;
+            
+            // Aggiorna target e barre di progresso
+            document.getElementById('targetCalorieVal').innerText = targetCalorie || '—';
+            document.getElementById('targetProteineVal').innerText = targetProteine || '—';
+            document.getElementById('targetCarboVal').innerText = targetCarbo || '—';
+            document.getElementById('targetGrassiVal').innerText = targetGrassi || '—';
+            
+            if (targetCalorie > 0) {
+                const percCalorie = Math.min((tot.calorie / targetCalorie) * 100, 100);
+                document.getElementById('barCalorie').style.width = percCalorie + '%';
+                document.getElementById('percCalorie').innerText = Math.round(percCalorie) + '%';
+            } else {
+                document.getElementById('barCalorie').style.width = '0%';
+                document.getElementById('percCalorie').innerText = '—';
+            }
+            
+            if (targetProteine > 0) {
+                const percProteine = Math.min((tot.proteine / targetProteine) * 100, 100);
+                document.getElementById('barProteine').style.width = percProteine + '%';
+                document.getElementById('percProteine').innerText = Math.round(percProteine) + '%';
+            } else {
+                document.getElementById('barProteine').style.width = '0%';
+                document.getElementById('percProteine').innerText = '—';
+            }
+            
+            if (targetCarbo > 0) {
+                const percCarbo = Math.min((tot.carboidrati / targetCarbo) * 100, 100);
+                document.getElementById('barCarbo').style.width = percCarbo + '%';
+                document.getElementById('percCarbo').innerText = Math.round(percCarbo) + '%';
+            } else {
+                document.getElementById('barCarbo').style.width = '0%';
+                document.getElementById('percCarbo').innerText = '—';
+            }
+            
+            if (targetGrassi > 0) {
+                const percGrassi = Math.min((tot.grassi / targetGrassi) * 100, 100);
+                document.getElementById('barGrassi').style.width = percGrassi + '%';
+                document.getElementById('percGrassi').innerText = Math.round(percGrassi) + '%';
+            } else {
+                document.getElementById('barGrassi').style.width = '0%';
+                document.getElementById('percGrassi').innerText = '—';
+            }
+            
             document.getElementById('boxTotaleGiorno').classList.remove('hidden');
         }
 
@@ -719,6 +875,80 @@
         // ================================================================
         // TREND – RENDER
         // ================================================================
+        
+        // Plugin per disegnare linee tratteggiate dei target per le calorie
+        const calorieTargetLinePlugin = {
+            id: 'calorieTargetLine',
+            afterDatasetsDraw(chart) {
+                const ctx = chart.ctx;
+                const yScale = chart.scales.y;
+                const xScale = chart.scales.x;
+                const targetValue = chart.options.plugins.calorieTargetLine?.value;
+                const targetColor = chart.options.plugins.calorieTargetLine?.color || '#888888';
+                
+                if (!targetValue || targetValue === 0) return;
+                
+                const y = yScale.getPixelForValue(targetValue);
+                if (isNaN(y)) return;
+                
+                ctx.save();
+                ctx.strokeStyle = targetColor;
+                ctx.lineWidth = 1.5;
+                ctx.setLineDash([5, 5]);
+                ctx.globalAlpha = 0.6;
+                ctx.beginPath();
+                ctx.moveTo(xScale.left, y);
+                ctx.lineTo(xScale.right, y);
+                ctx.stroke();
+                
+                // Label del target
+                ctx.font = 'bold 10px sans-serif';
+                ctx.fillStyle = targetColor;
+                ctx.globalAlpha = 0.8;
+                ctx.textAlign = 'right';
+                ctx.fillText(`Target: ${targetValue}`, xScale.right - 8, y - 5);
+                
+                ctx.restore();
+            }
+        };
+        
+        // Plugin per disegnare linee tratteggiate dei target nei grafici macro singoli
+        const singleTargetLinePlugin = {
+            id: 'singleTargetLine',
+            afterDatasetsDraw(chart) {
+                const ctx = chart.ctx;
+                const yScale = chart.scales.y;
+                const xScale = chart.scales.x;
+                const targetValue = chart.options.plugins.singleTargetLine?.value;
+                const targetColor = chart.options.plugins.singleTargetLine?.color || '#888888';
+                const targetLabel = chart.options.plugins.singleTargetLine?.label || 'Target';
+                
+                if (!targetValue || targetValue === 0) return;
+                
+                const y = yScale.getPixelForValue(targetValue);
+                if (isNaN(y)) return;
+                
+                ctx.save();
+                ctx.strokeStyle = targetColor;
+                ctx.lineWidth = 1.5;
+                ctx.setLineDash([5, 5]);
+                ctx.globalAlpha = 0.6;
+                ctx.beginPath();
+                ctx.moveTo(xScale.left, y);
+                ctx.lineTo(xScale.right, y);
+                ctx.stroke();
+                
+                // Label del target
+                ctx.font = 'bold 10px sans-serif';
+                ctx.fillStyle = targetColor;
+                ctx.globalAlpha = 0.8;
+                ctx.textAlign = 'right';
+                ctx.fillText(`${targetLabel}: ${targetValue}g`, xScale.right - 8, y - 5);
+                
+                ctx.restore();
+            }
+        };
+        
         function renderTrend() {
             const log  = caricaLog();
             const days = [];
@@ -742,7 +972,6 @@
             const carbo    = days.map(d => byDay[d].carboidrati);
             const grassi   = days.map(d => byDay[d].grassi);
 
-            const cd = { tension:0.35, fill:true, borderWidth:2, pointRadius:4, pointHoverRadius:6 };
             const gc = 'rgba(71,85,105,0.25)';
             const tc = '#64748b';
             const commonOpts = {
@@ -756,22 +985,67 @@
 
             if (trendCalorieChart) trendCalorieChart.destroy();
             trendCalorieChart = new Chart(document.getElementById('trendCalorieChart'), {
-                type:'line',
-                data:{labels,datasets:[{...cd,label:'Calorie',data:calorie,borderColor:'#f87171',backgroundColor:'rgba(248,113,113,0.08)',pointBackgroundColor:'#f87171'}]},
-                options: commonOpts
+                type:'bar',
+                data:{labels,datasets:[{label:'Calorie',data:calorie,backgroundColor:'#f87171',borderColor:'#f87171',borderWidth:1,borderRadius:6}]},
+                options: {
+                    ...commonOpts,
+                    plugins: {
+                        ...commonOpts.plugins,
+                        calorieTargetLine: { value: targetCalorie > 0 ? targetCalorie : 0, color: '#f87171' }
+                    }
+                },
+                plugins: [calorieTargetLinePlugin]
             });
 
-            if (trendMacroChart) trendMacroChart.destroy();
-            trendMacroChart = new Chart(document.getElementById('trendMacroChart'), {
-                type:'line',
-                data:{labels,datasets:[
-                    {...cd,label:'Proteine',data:proteine,borderColor:'#60a5fa',backgroundColor:'rgba(96,165,250,0.07)',pointBackgroundColor:'#60a5fa'},
-                    {...cd,label:'Carbo',   data:carbo,   borderColor:'#34d399',backgroundColor:'rgba(52,211,153,0.07)' ,pointBackgroundColor:'#34d399'},
-                    {...cd,label:'Grassi',  data:grassi,  borderColor:'#fbbf24',backgroundColor:'rgba(251,191,36,0.07)' ,pointBackgroundColor:'#fbbf24'}
-                ]},
-                options:{...commonOpts,plugins:{legend:{display:true,labels:{color:'#94a3b8',font:{size:10},boxWidth:10,padding:12}}}}
+            // Grafico Proteine
+            if (trendProteineChart) trendProteineChart.destroy();
+            trendProteineChart = new Chart(document.getElementById('trendProteineChart'), {
+                type:'bar',
+                data:{labels,datasets:[{label:'Proteine',data:proteine,backgroundColor:'#60a5fa',borderColor:'#60a5fa',borderWidth:1,borderRadius:4}]},
+                options:{
+                    ...commonOpts,
+                    plugins:{
+                        ...commonOpts.plugins,
+                        legend:{display:false},
+                        singleTargetLine: { value: targetProteine > 0 ? targetProteine : 0, color: '#60a5fa', label: 'Target' }
+                    }
+                },
+                plugins: [singleTargetLinePlugin]
+            });
+            
+            // Grafico Carboidrati
+            if (trendCarboChart) trendCarboChart.destroy();
+            trendCarboChart = new Chart(document.getElementById('trendCarboChart'), {
+                type:'bar',
+                data:{labels,datasets:[{label:'Carboidrati',data:carbo,backgroundColor:'#34d399',borderColor:'#34d399',borderWidth:1,borderRadius:4}]},
+                options:{
+                    ...commonOpts,
+                    plugins:{
+                        ...commonOpts.plugins,
+                        legend:{display:false},
+                        singleTargetLine: { value: targetCarbo > 0 ? targetCarbo : 0, color: '#34d399', label: 'Target' }
+                    }
+                },
+                plugins: [singleTargetLinePlugin]
+            });
+            
+            // Grafico Grassi
+            if (trendGrassiChart) trendGrassiChart.destroy();
+            trendGrassiChart = new Chart(document.getElementById('trendGrassiChart'), {
+                type:'bar',
+                data:{labels,datasets:[{label:'Grassi',data:grassi,backgroundColor:'#fbbf24',borderColor:'#fbbf24',borderWidth:1,borderRadius:4}]},
+                options:{
+                    ...commonOpts,
+                    plugins:{
+                        ...commonOpts.plugins,
+                        legend:{display:false},
+                        singleTargetLine: { value: targetGrassi > 0 ? targetGrassi : 0, color: '#fbbf24', label: 'Target' }
+                    }
+                },
+                plugins: [singleTargetLinePlugin]
             });
 
+            // Media settimanale
             const dwd = days.filter(d => byDay[d].count > 0);
             if (dwd.length > 0) {
                 const avg = k => Math.round(dwd.reduce((s,d)=>s+byDay[d][k],0)/dwd.length);
