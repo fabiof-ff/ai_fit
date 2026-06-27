@@ -138,6 +138,30 @@
             height: 1.2rem;
             background: linear-gradient(transparent, rgba(30, 41, 59, 0.95));
         }
+
+        /* Barra di scorrimento personalizzata in stile Slate dell'app */
+        .custom-scrollbar::-webkit-scrollbar {
+            width: 6px;
+            /* Sottile e discreta */
+        }
+
+        .custom-scrollbar::-webkit-scrollbar-track {
+            background: rgba(15, 23, 42, 0.3);
+            /* Uguale a bg-slate-950 con opacità */
+            border-radius: 10px;
+        }
+
+        .custom-scrollbar::-webkit-scrollbar-thumb {
+            background: rgba(71, 85, 105, 0.4);
+            /* Colore border-slate-700/50 per integrarsi con i bordi */
+            border-radius: 10px;
+            border: 1px solid rgba(15, 23, 42, 0.1);
+        }
+
+        .custom-scrollbar::-webkit-scrollbar-thumb:hover {
+            background: rgba(99, 102, 241, 0.4);
+            /* Cambia colore sul viola/indigo quando ci passi sopra, stile tab attive */
+        }
     </style>
 </head>
 
@@ -478,10 +502,13 @@
                 </button>
             </div>
 
-            <div id="listaStorico" class="space-y-3">
-                <p class="text-sm text-slate-500 text-center py-8">Nessun pasto salvato ancora.<br>Elabora e salva
-                    un'analisi dalla tab Oggi!</p>
+            <div class="max-h-[450px] overflow-y-auto pr-1 custom-scrollbar">
+                <div id="listaStorico" class="space-y-3">
+                    <p class="text-sm text-slate-500 text-center py-8">Nessun pasto salvato ancora.<br>Elabora e salva
+                        un'analisi dalla tab Oggi!</p>
+                </div>
             </div>
+
         </div>
 
         <div id="panel-trend" class="tab-panel">
