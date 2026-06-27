@@ -1896,7 +1896,9 @@
             // Rigenera le icone se necessario
             if (typeof lucide !== 'undefined') lucide.createIcons();
         }
-        // Funzione per aprire la finestra di modifica del pasto
+
+
+        // Funzione per aprire la finestra di modifica del pasto (Compatibile sia con OpenAI che con Gemini)
         window.apriModalModifica = function (dataPasto, pastoId) {
             const db = JSON.parse(localStorage.getItem('nutriDB')) || [];
             const giorno = db.find(g => g.data === dataPasto);
@@ -1905,58 +1907,99 @@
             const pasto = giorno.pasti.find(p => p.id === pastoId);
             if (!pasto) return;
 
-            // Chiediamo all'utente il nuovo testo del pasto tramite un prompt nativo rapido e sicuro
+            // Chiediamo all'utente il nuovo testo del pasto tramite un prompt nativo
             const nuovoTesto = prompt("Modifica la descrizione del pasto:", pasto.testo);
 
             // Se l'utente annulla o lascia vuoto, non fare nulla
             if (nuovoTesto === null || nuovoTesto.trim() === "") return;
 
-            // Mostriamo un alert di attesa mentre l'AI ricalcola i dati del singolo pasto modificato
-            alert("L'applicazione ricalcolerà ora i valori nutrizionali del pasto con l'AI. Premi OK per iniziare.");
+            // 1. Rileva il provider attivo e le credenziali scelte dall'utente nelle opzioni
+            const provider = localStorage.getItem('ai_provider') || 'openai';
+            let apiKey = "";
+            let url = "";
+            let bodyPayload = {};
+            let modelloSelezionato = "";
 
-            // Prepariamo i dati per invocare la tua API (OpenAI)
-            // Nota: cambiamo temporaneamente il testo del bottone principale o usiamo la tua logica esistente
+            if (provider === 'openai') {
+                apiKey = localStorage.getItem('openai_apikey');
+                if (!apiKey) return alert("Inserisci la tua OpenAI API Key nelle impostazioni!");
+
+                // Legge il modello OpenAI dalle opzioni
+                modelloSelezionato = localStorage.getItem('openai_model') || localStorage.getItem('ai_model') || 'gpt-4o-mini';
+                url = 'https://api.openai.com/v1/chat/completions';
+            } else {
+                apiKey = localStorage.getItem('gemini_apikey');
+                if (!apiKey) return alert("Inserisci la tua Gemini API Key nelle impostazioni!");
+
+                // Legge il modello Gemini dalle opzioni
+                modelloSelezionato = localStorage.getItem('gemini_model') || localStorage.getItem('ai_model') || 'gemini-2.0-flash';
+                url = `https://generativelanguage.googleapis.com/v1beta/models/${modelloSelezionato}:generateContent?key=${apiKey}`;
+            }
+
+            // Mostriamo l'avviso di attesa
+            alert(`L'applicazione ricalcolerà ora i valori con ${provider === 'gemini' ? 'Gemini' : 'OpenAI'}. Premi OK per iniziare.`);
+
             const statoEdit = document.getElementById('stato');
             if (statoEdit) {
                 statoEdit.innerText = "Ricalcolo macro in corso...";
                 statoEdit.classList.remove('hidden');
             }
 
-            // Usiamo fetch o la tua logica preesistente per interrogare OpenAI (rielaborando il prompt)
-            // Per renderlo immediato e non invasivo, simuliamo lo stesso comportamento di analizzaDatiConAI
-            const apiKey = localStorage.getItem('openai_api_key') || "";
+            // Costruiamo il prompt standard per l'analisi dei macronutrienti
+            const promptAI = `Analizza questo pasto: "${nuovoTesto}". Sei un esperto nutrizionista. Analizza il testo inserito dall'utente contenente alimenti. Calcola Calorie totali, Proteine (g), Carboidrati (g), Grassi (g) Ritorna SOLO un oggetto JSON valido (senza markdown, senza racchiuderlo in blocchi di codice come \`\`\`json) con questa struttura esatta: {"calorie": numero, "proteine": numero, "carboidrati": numero, "grassi": numero}`;
 
-            // Costruiamo il prompt per mantenere la consistenza con la tua app
-            const promptAI = `Analizza questo pasto modificato: "${nuovoTesto}". Ritorna SOLO un oggetto JSON valido (senza markdown o blocchi di codice) con questa struttura esatta: {"calorie": numero, "proteine": numero, "carboidrati": numero, "grassi": numero}`;
+            // 2. Configura il payload della richiesta in base al modello e provider scelti
+            if (provider === 'openai') {
+                bodyPayload = {
+                    model: modelloSelezionato,
+                    messages: [{ role: "user", content: promptAI }],
+                    temperature: 0.2
+                };
+            } else {
+                bodyPayload = {
+                    contents: [{ parts: [{ text: promptAI }] }],
+                    generationConfig: {
+                        responseMimeType: "application/json"
+                    }
+                };
+            }
 
-            fetch('https://api.openai.com/v1/chat/completments' || 'https://api.openai.com/v1/chat/completions', {
+            // Effettua la chiamata API mirata
+            fetch(url, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
-                    'Authorization': `Bearer ${apiKey}`
+                    ...(provider === 'openai' && { 'Authorization': `Bearer ${apiKey}` })
                 },
-                body: JSON.stringify({
-                    model: "gpt-4o-mini" || "gpt-3.5-turbo",
-                    messages: [{ role: "user", content: promptAI }],
-                    temperature: 0.2
-                })
+                body: JSON.stringify(bodyPayload)
             })
-                .then(res => res.json())
+                .then(res => {
+                    if (!res.ok) throw new Error(`Risposta del server non valida da ${provider}`);
+                    return res.json();
+                })
                 .then(dataResponse => {
                     try {
-                        let content = dataResponse.choices[0].message.content.trim();
-                        // Pulizia da eventuale markdown introdotto dall'AI
+                        let content = "";
+
+                        // Estrae il testo di risposta in base alla struttura del provider scelto
+                        if (provider === 'openai') {
+                            content = dataResponse.choices[0].message.content.trim();
+                        } else {
+                            content = dataResponse.candidates[0].content.parts[0].text.trim();
+                        }
+
+                        // Pulizia da eventuale markdown residuo
                         if (content.startsWith("```json")) content = content.replace("```json", "").replace("```", "");
                         if (content.startsWith("```")) content = content.replace("```", "").replace("```", "");
 
                         const macro = JSON.parse(content);
 
-                        // Aggiorna il pasto specifico dentro il database
+                        // Aggiorna il pasto specifico dentro il database locale
                         pasto.testo = nuovoTesto;
-                        pasto.calorie = macro.calorie || 0;
-                        pasto.proteine = macro.proteine || 0;
-                        pasto.carboidrati = macro.carboidrati || 0;
-                        pasto.grassi = macro.grassi || 0;
+                        pasto.calorie = Number(macro.calorie) || 0;
+                        pasto.proteine = Number(macro.proteine) || 0;
+                        pasto.carboidrati = Number(macro.carboidrati) || 0;
+                        pasto.grassi = Number(macro.grassi) || 0;
 
                         // Ricalcola i macro totali della giornata per riflettere la modifica
                         giorno.calorie = giorno.pasti.reduce((sum, p) => sum + p.calorie, 0);
@@ -1964,10 +2007,10 @@
                         giorno.carboidrati = giorno.pasti.reduce((sum, p) => sum + p.carboidrati, 0);
                         giorno.grassi = giorno.pasti.reduce((sum, p) => sum + p.grassi, 0);
 
-                        // Salva nel localStorage corretto
+                        // Salva nel localStorage del browser
                         localStorage.setItem('nutriDB', JSON.stringify(db));
 
-                        // Aggiorna l'interfaccia grafica
+                        // Aggiorna l'interfaccia grafica in tempo reale
                         aggiornaTotaleGiorno();
                         renderStorico();
                         if (document.getElementById('panel-trend').classList.contains('active')) renderTrend();
@@ -1975,12 +2018,12 @@
                         alert("Pasto modificato e ricalcolato con successo!");
                     } catch (e) {
                         console.error(e);
-                        alert("Errore durante la lettura della risposta dell'AI. Riprova.");
+                        alert("Errore durante la lettura dei dati dall'AI. Verifica la risposta.");
                     }
                 })
                 .catch(err => {
                     console.error(err);
-                    alert("Errore di connessione con le API di OpenAI.");
+                    alert(`Errore di connessione con le API di ${provider === 'gemini' ? 'Gemini' : 'OpenAI'}. Verifica la chiave inserita.`);
                 })
                 .finally(() => {
                     if (statoEdit) statoEdit.classList.add('hidden');
