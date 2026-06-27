@@ -1183,12 +1183,12 @@
                         </span>
                         
                         <div class="flex items-center gap-2 relative z-30">
-                            <button onclick="window.apriModalModifica && window.apriModalModifica('${giorno.data}', ${p.id}) || console.error('Funzione apriModalModifica non trovata!')" 
+                            <button onclick="apriModalModifica('${giorno.data}', ${p.id})" 
                                     class="text-slate-400 hover:text-blue-400 p-2 rounded-lg bg-slate-800/80 border border-slate-700/50 transition cursor-pointer flex items-center justify-center" 
                                     title="Modifica pasto">
                                 <i data-lucide="pencil" class="w-3.5 h-3.5 pointer-events-none"></i>
                             </button>
-                            <button onclick="window.eliminaPasto && window.eliminaPasto('${giorno.data}', ${p.id}) || console.error('Funzione eliminaPasto non trovata!')" 
+                            <button onclick="eliminaPasto('${giorno.data}', ${p.id})" 
                                     class="text-slate-400 hover:text-rose-400 p-2 rounded-lg bg-slate-800/80 border border-slate-700/50 transition cursor-pointer flex items-center justify-center" 
                                     title="Elimina pasto">
                                 <i data-lucide="trash" class="w-3.5 h-3.5 pointer-events-none"></i>
