@@ -815,13 +815,17 @@
         // GESTIONE PESO
         // ================================================================
         function caricaPesoDelGiorno() {
-            const oggiStr = ottieniDataOggi();
+            const inputPesoValore = document.getElementById('input-peso-valore');
+            if (!inputPesoValore) return; // Protezione se l'elemento non viene trovato
+
+            const dataSelezionata = document.getElementById('input-peso-data')?.value || ottieniDataOggi();
             const db = JSON.parse(localStorage.getItem('nutriDB')) || [];
-            const recordOggi = db.find(x => x.data === oggiStr);
-            if (recordOggi && recordOggi.peso) {
-                document.getElementById('inputPeso').value = recordOggi.peso;
+            const giornoEsistente = db.find(g => g.data === dataSelezionata);
+
+            if (giornoEsistente && giornoEsistente.peso) {
+                inputPesoValore.value = giornoEsistente.peso;
             } else {
-                document.getElementById('inputPeso').value = '';
+                inputPesoValore.value = '';
             }
         }
 
@@ -1154,86 +1158,76 @@
         // RENDER DELLA SEZIONE STORICO
         // ================================================================
         function renderStorico() {
-            const container = document.getElementById('listaStorico');
             const db = JSON.parse(localStorage.getItem('nutriDB')) || [];
+            const lista = document.getElementById('listaStorico');
+            if (!lista) return;
 
             if (db.length === 0) {
-                container.innerHTML = `<p class="text-sm text-slate-500 text-center py-8">Nessun pasto salvato ancora.<br>Elabora e salva un'analisi dalla tab Oggi!</p>`;
+                lista.innerHTML = `<p class="text-sm text-slate-500 text-center py-8">Nessun pasto salvato ancora.<br>Elabora e salva un'analisi dalla tab Oggi!</p>`;
                 return;
             }
 
-            // Ordina per data decrescente
+            // Ordina le date dalla più recente alla più vecchia
             const dbOrdinato = [...db].sort((a, b) => new Date(b.data) - new Date(a.data));
 
             let html = "";
             dbOrdinato.forEach(giorno => {
-                const cVal = Math.round(giorno.calorie || 0);
-                const pVal = Math.round(giorno.proteine || 0);
-                const cbVal = Math.round(giorno.carboidrati || 0);
-                const gVal = Math.round(giorno.grassi || 0);
-
                 let pastiHtml = "";
                 if (giorno.pasti && giorno.pasti.length > 0) {
                     giorno.pasti.forEach(p => {
                         pastiHtml += `
-                        <div class="bg-slate-900/60 p-2.5 rounded-xl border border-slate-800/80 flex flex-col gap-1.5 relative group">
-                            <div class="flex items-center justify-between">
-                                <span class="text-[10px] font-bold text-slate-500 flex items-center gap-1"><i data-lucide="clock" class="w-3 h-3"></i> ${p.ora || '--:--'}</span>
-                                <div class="flex items-center gap-1.5 opacity-60 group-hover:opacity-100 transition">
-                                    <button onclick="apriModalModifica(${giorno.id}, ${p.id})" class="text-slate-400 hover:text-indigo-400 p-1"><i data-lucide="pencil" class="w-3 h-3"></i></button>
-                                    <button onclick="eliminaSingoloPasto(${giorno.id}, ${p.id})" class="text-slate-400 hover:text-rose-400 p-1"><i data-lucide="trash" class="w-3 h-3"></i></button>
-                                </div>
-                            </div>
-                            <p class="text-xs text-slate-300 font-normal leading-relaxed overflow-x-auto pr-1">${p.testo}</p>
-                            <div class="flex flex-wrap gap-1.5 mt-0.5">
-                                <span class="pasto-tag"><i data-lucide="flame" class="w-3 h-3 text-rose-400"></i>${Math.round(p.calorie)} kcal</span>
-                                <span class="pasto-tag"><i data-lucide="dumbbell" class="w-3 h-3 text-blue-400"></i>${Math.round(p.proteine)}g P</span>
-                                <span class="pasto-tag"><i data-lucide="wheat" class="w-3 h-3 text-emerald-400"></i>${Math.round(p.carboidrati)}g C</span>
-                                <span class="pasto-tag"><i data-lucide="droplet" class="w-3 h-3 text-amber-400"></i>${Math.round(p.grassi)}g G</span>
-                            </div>
-                        </div>`;
+                <div class="bg-slate-900/40 border border-slate-700/30 rounded-xl p-3 space-y-1.5 relative group">
+                    <div class="flex justify-between items-start gap-2">
+                        <span class="text-[10px] font-bold text-indigo-400 bg-indigo-500/10 px-1.5 py-0.5 rounded flex items-center gap-1">
+                            <i data-lucide="clock" class="w-3 h-3"></i> ${p.ora || '--:--'}
+                        </span>
+                        
+                        <div class="flex items-center gap-2 relative z-30">
+                            <button onclick="window.apriModalModifica && window.apriModalModifica('${giorno.data}', ${p.id}) || console.error('Funzione apriModalModifica non trovata!')" 
+                                    class="text-slate-400 hover:text-blue-400 p-2 rounded-lg bg-slate-800/80 border border-slate-700/50 transition cursor-pointer flex items-center justify-center" 
+                                    title="Modifica pasto">
+                                <i data-lucide="pencil" class="w-3.5 h-3.5 pointer-events-none"></i>
+                            </button>
+                            <button onclick="window.eliminaPasto && window.eliminaPasto('${giorno.data}', ${p.id}) || console.error('Funzione eliminaPasto non trovata!')" 
+                                    class="text-slate-400 hover:text-rose-400 p-2 rounded-lg bg-slate-800/80 border border-slate-700/50 transition cursor-pointer flex items-center justify-center" 
+                                    title="Elimina pasto">
+                                <i data-lucide="trash" class="w-3.5 h-3.5 pointer-events-none"></i>
+                            </button>
+                        </div>
+                    </div>
+                    <p class="text-xs text-slate-300 font-normal leading-relaxed overflow-x-auto pr-1 whitespace-pre-wrap">${p.testo}</p>
+                    <div class="flex flex-wrap gap-1.5 mt-0.5">
+                        <span class="pasto-tag"><i data-lucide="flame" class="w-3 h-3 text-rose-400"></i>${Math.round(p.calorie)} kcal</span>
+                        <span class="pasto-tag"><i data-lucide="dumbbell" class="w-3 h-3 text-blue-400"></i>${Math.round(p.proteine)}g P</span>
+                        <span class="pasto-tag"><i data-lucide="wheat" class="w-3 h-3 text-emerald-400"></i>${Math.round(p.carboidrati)}g C</span>
+                        <span class="pasto-tag"><i data-lucide="droplet" class="w-3 h-3 text-amber-400"></i>${Math.round(p.grassi)}g G</span>
+                    </div>
+                </div>`;
                     });
                 } else {
-                    pastiHtml = `<p class="text-[11px] text-slate-600 italic">Nessun singolo blocco pasto registrato per questa data.</p>`;
+                    pastiHtml = `<p class="text-xs text-slate-500 italic py-1 pl-1">Nessun singolo pasto registrato (solo macro totali o peso).</p>`;
                 }
 
                 html += `
-                <div class="entry-card bg-slate-800/60 border border-slate-700/40 rounded-2xl p-4 shadow-xl">
-                    <div class="flex justify-between items-center mb-3 border-b border-slate-700/40 pb-2.5">
-                        <div class="flex items-center gap-2">
-                            <span class="text-xs font-bold text-slate-300">${giorno.data}</span>
-                            ${giorno.peso ? `<span class="text-[10px] bg-indigo-500/10 text-indigo-300 border border-indigo-500/20 px-1.5 py-0.5 rounded flex items-center gap-1"><i data-lucide="scale" class="w-3 h-3"></i> ${giorno.peso} kg</span>` : ''}
-                        </div>
-                        <button onclick="eliminaInteroGiorno(${giorno.id})" class="text-slate-500 hover:text-rose-400 transition p-1"><i data-lucide="calendar-x" class="w-3.5 h-3.5"></i></button>
-                    </div>
-                    <div class="grid grid-cols-4 gap-2 mb-3 bg-slate-900/40 p-2 rounded-xl text-center border border-slate-800/50">
-                        <div>
-                            <p class="text-[9px] text-slate-500 uppercase font-medium">Kcal</p>
-                            <p class="text-xs font-bold text-rose-400">${cVal}</p>
-                        </div>
-                        <div>
-                            <p class="text-[9px] text-slate-500 uppercase font-medium">Prot</p>
-                            <p class="text-xs font-bold text-blue-400">${pVal}g</p>
-                        </div>
-                        <div>
-                            <p class="text-[9px] text-slate-500 uppercase font-medium">Carbo</p>
-                            <p class="text-xs font-bold text-emerald-400">${cbVal}g</p>
-                        </div>
-                        <div>
-                            <p class="text-[9px] text-slate-500 uppercase font-medium">Grass</p>
-                            <p class="text-xs font-bold text-amber-400">${gVal}g</p>
-                        </div>
-                    </div>
-                    <div class="space-y-2.5">
-                        ${pastiHtml}
-                    </div>
-                </div>`;
+        <div class="entry-card bg-slate-800/60 border border-slate-700/40 rounded-2xl p-4 shadow-xl">
+            <div class="flex justify-between items-center mb-3 border-b border-slate-700/40 pb-2.5">
+                <div class="flex items-center gap-2">
+                    <span class="text-xs font-bold text-slate-300">${giorno.data}</span>
+                    ${giorno.peso ? `<span class="text-[10px] bg-indigo-500/10 text-indigo-300 border border-indigo-500/20 px-1.5 py-0.5 rounded flex items-center gap-1"><i data-lucide="scale" class="w-3 h-3"></i> ${giorno.peso} kg</span>` : ''}
+                </div>
+                <button onclick="eliminaInteroGiorno(${giorno.id || 0})" class="text-slate-500 hover:text-rose-400 transition p-1" title="Elimina intero giorno">
+                    <i data-lucide="calendar-x" class="w-4 h-4"></i>
+                </button>
+            </div>
+            <div class="space-y-2.5">
+                ${pastiHtml}
+            </div>
+        </div>`;
             });
 
-            container.innerHTML = html;
-            lucide.createIcons();
+            lista.innerHTML = html;
+            if (typeof lucide !== 'undefined') lucide.createIcons();
         }
-
         // ================================================================
         // ELIMINAZIONI ED EDITING MODAL STORICO
         // ================================================================
@@ -1902,6 +1896,123 @@
             // Rigenera le icone se necessario
             if (typeof lucide !== 'undefined') lucide.createIcons();
         }
+        // Funzione per aprire la finestra di modifica del pasto
+        window.apriModalModifica = function (dataPasto, pastoId) {
+            const db = JSON.parse(localStorage.getItem('nutriDB')) || [];
+            const giorno = db.find(g => g.data === dataPasto);
+            if (!giorno || !giorno.pasti) return;
+
+            const pasto = giorno.pasti.find(p => p.id === pastoId);
+            if (!pasto) return;
+
+            // Chiediamo all'utente il nuovo testo del pasto tramite un prompt nativo rapido e sicuro
+            const nuovoTesto = prompt("Modifica la descrizione del pasto:", pasto.testo);
+
+            // Se l'utente annulla o lascia vuoto, non fare nulla
+            if (nuovoTesto === null || nuovoTesto.trim() === "") return;
+
+            // Mostriamo un alert di attesa mentre l'AI ricalcola i dati del singolo pasto modificato
+            alert("L'applicazione ricalcolerà ora i valori nutrizionali del pasto con l'AI. Premi OK per iniziare.");
+
+            // Prepariamo i dati per invocare la tua API (OpenAI)
+            // Nota: cambiamo temporaneamente il testo del bottone principale o usiamo la tua logica esistente
+            const statoEdit = document.getElementById('stato');
+            if (statoEdit) {
+                statoEdit.innerText = "Ricalcolo macro in corso...";
+                statoEdit.classList.remove('hidden');
+            }
+
+            // Usiamo fetch o la tua logica preesistente per interrogare OpenAI (rielaborando il prompt)
+            // Per renderlo immediato e non invasivo, simuliamo lo stesso comportamento di analizzaDatiConAI
+            const apiKey = localStorage.getItem('openai_api_key') || "";
+
+            // Costruiamo il prompt per mantenere la consistenza con la tua app
+            const promptAI = `Analizza questo pasto modificato: "${nuovoTesto}". Ritorna SOLO un oggetto JSON valido (senza markdown o blocchi di codice) con questa struttura esatta: {"calorie": numero, "proteine": numero, "carboidrati": numero, "grassi": numero}`;
+
+            fetch('https://api.openai.com/v1/chat/completments' || 'https://api.openai.com/v1/chat/completions', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${apiKey}`
+                },
+                body: JSON.stringify({
+                    model: "gpt-4o-mini" || "gpt-3.5-turbo",
+                    messages: [{ role: "user", content: promptAI }],
+                    temperature: 0.2
+                })
+            })
+                .then(res => res.json())
+                .then(dataResponse => {
+                    try {
+                        let content = dataResponse.choices[0].message.content.trim();
+                        // Pulizia da eventuale markdown introdotto dall'AI
+                        if (content.startsWith("```json")) content = content.replace("```json", "").replace("```", "");
+                        if (content.startsWith("```")) content = content.replace("```", "").replace("```", "");
+
+                        const macro = JSON.parse(content);
+
+                        // Aggiorna il pasto specifico dentro il database
+                        pasto.testo = nuovoTesto;
+                        pasto.calorie = macro.calorie || 0;
+                        pasto.proteine = macro.proteine || 0;
+                        pasto.carboidrati = macro.carboidrati || 0;
+                        pasto.grassi = macro.grassi || 0;
+
+                        // Ricalcola i macro totali della giornata per riflettere la modifica
+                        giorno.calorie = giorno.pasti.reduce((sum, p) => sum + p.calorie, 0);
+                        giorno.proteine = giorno.pasti.reduce((sum, p) => sum + p.proteine, 0);
+                        giorno.carboidrati = giorno.pasti.reduce((sum, p) => sum + p.carboidrati, 0);
+                        giorno.grassi = giorno.pasti.reduce((sum, p) => sum + p.grassi, 0);
+
+                        // Salva nel localStorage corretto
+                        localStorage.setItem('nutriDB', JSON.stringify(db));
+
+                        // Aggiorna l'interfaccia grafica
+                        aggiornaTotaleGiorno();
+                        renderStorico();
+                        if (document.getElementById('panel-trend').classList.contains('active')) renderTrend();
+
+                        alert("Pasto modificato e ricalcolato con successo!");
+                    } catch (e) {
+                        console.error(e);
+                        alert("Errore durante la lettura della risposta dell'AI. Riprova.");
+                    }
+                })
+                .catch(err => {
+                    console.error(err);
+                    alert("Errore di connessione con le API di OpenAI.");
+                })
+                .finally(() => {
+                    if (statoEdit) statoEdit.classList.add('hidden');
+                });
+        };
+
+        // Funzione per eliminare un singolo pasto specifico dallo Storico
+        window.eliminaPasto = function (dataPasto, pastoId) {
+            if (!confirm("Sei sicuro di voler eliminare questo pasto? I macro giornalieri verranno ricalcolati.")) return;
+
+            let db = JSON.parse(localStorage.getItem('nutriDB')) || [];
+            let giorno = db.find(g => g.data === dataPasto);
+
+            if (giorno && giorno.pasti) {
+                // Filtra via il pasto rimosso
+                giorno.pasti = giorno.pasti.filter(p => p.id !== pastoId);
+
+                // Ricalcola i macro totali di quel giorno sottraendo il pasto eliminato
+                giorno.calorie = giorno.pasti.reduce((sum, p) => sum + p.calorie, 0);
+                giorno.proteine = giorno.pasti.reduce((sum, p) => sum + p.proteine, 0);
+                giorno.carboidrati = giorno.pasti.reduce((sum, p) => sum + p.carboidrati, 0);
+                giorno.grassi = giorno.pasti.reduce((sum, p) => sum + p.grassi, 0);
+
+                // Salva le modifiche nel localStorage
+                localStorage.setItem('nutriDB', JSON.stringify(db));
+
+                // Aggiorna tutta l'interfaccia utente
+                aggiornaTotaleGiorno();
+                renderStorico();
+                if (document.getElementById('panel-trend').classList.contains('active')) renderTrend();
+            }
+        };
     </script>
 </body>
 
