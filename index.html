@@ -501,6 +501,56 @@
                 <i data-lucide="trending-up" class="w-4 h-4 text-indigo-400"></i> Andamento ultimi 7 giorni
             </p>
 
+            <div class="bg-slate-800/40 border border-slate-700/50 rounded-2xl p-4 mb-4">
+                <p class="text-xs text-slate-400 font-semibold uppercase tracking-wider mb-3">Media complessiva </p>
+                <div class="grid grid-cols-2 gap-3">
+                    <div class="bg-slate-800/60 rounded-xl p-3 text-left">
+                        <div class="flex justify-between items-baseline mb-1">
+                            <p class="text-[10px] text-slate-500 uppercase font-semibold">Calorie</p>
+                            <p class="text-xs font-bold text-rose-400"><span id="mediaCalorie">—</span><span
+                                    class="text-[10px] font-normal text-slate-500"> / <span
+                                        id="trendTargetCalorie">—</span></span></p>
+                        </div>
+                        <div class="w-full h-1.5 bg-slate-900 rounded-full overflow-hidden mt-1">
+                            <div id="barMediaCalorie" class="h-full bg-rose-500 rounded-full" style="width: 0%;"></div>
+                        </div>
+                    </div>
+                    <div class="bg-slate-800/60 rounded-xl p-3 text-left">
+                        <div class="flex justify-between items-baseline mb-1">
+                            <p class="text-[10px] text-slate-500 uppercase font-semibold">Proteine</p>
+                            <p class="text-xs font-bold text-blue-400"><span id="mediaProteine">—</span><span
+                                    class="text-[10px] font-normal text-slate-500">g / <span
+                                        id="trendTargetProteine">—</span>g</span></p>
+                        </div>
+                        <div class="w-full h-1.5 bg-slate-900 rounded-full overflow-hidden mt-1">
+                            <div id="barMediaProteine" class="h-full bg-blue-500 rounded-full" style="width: 0%;"></div>
+                        </div>
+                    </div>
+                    <div class="bg-slate-800/60 rounded-xl p-3 text-left">
+                        <div class="flex justify-between items-baseline mb-1">
+                            <p class="text-[10px] text-slate-500 uppercase font-semibold">Carboidrati</p>
+                            <p class="text-xs font-bold text-emerald-400"><span id="mediaCarbo">—</span><span
+                                    class="text-[10px] font-normal text-slate-500">g / <span
+                                        id="trendTargetCarbo">—</span>g</span></p>
+                        </div>
+                        <div class="w-full h-1.5 bg-slate-900 rounded-full overflow-hidden mt-1">
+                            <div id="barMediaCarbo" class="h-full bg-emerald-500 rounded-full" style="width: 0%;"></div>
+                        </div>
+                    </div>
+                    <div class="bg-slate-800/60 rounded-xl p-3 text-left">
+                        <div class="flex justify-between items-baseline mb-1">
+                            <p class="text-[10px] text-slate-500 uppercase font-semibold">Grassi</p>
+                            <p class="text-xs font-bold text-amber-400"><span id="mediaGrassi">—</span><span
+                                    class="text-[10px] font-normal text-slate-500">g / <span
+                                        id="trendTargetGrassi">—</span>g</span></p>
+                        </div>
+                        <div class="w-full h-1.5 bg-slate-900 rounded-full overflow-hidden mt-1">
+                            <div id="barMediaGrassi" class="h-full bg-amber-500 rounded-full" style="width: 0%;"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
             <div id="trendGiornalieroContainer" class="space-y-4">
                 <div class="bg-slate-800/40 border border-slate-700/50 rounded-2xl p-4">
                     <p
@@ -555,8 +605,7 @@
                 <div class="bg-slate-800/40 border border-slate-700/50 rounded-2xl p-4">
                     <p
                         class="text-xs text-slate-400 font-semibold uppercase tracking-wider mb-3 flex items-center gap-1.5">
-                        <i data-lucide="wheat" class="w-3.5 h-3.5 text-emerald-400"></i> Carboidrati
-                        (g)
+                        <i data-lucide="wheat" class="w-3.5 h-3.5 text-emerald-400"></i> Carboidrati (g)
                     </p>
                     <canvas id="weekCarboChart" height="100"></canvas>
                 </div>
@@ -570,55 +619,6 @@
                 </div>
             </div>
 
-            <div class="bg-slate-800/40 border border-slate-700/50 rounded-2xl p-4 mt-4">
-                <p class="text-xs text-slate-400 font-semibold uppercase tracking-wider mb-3">Media complessiva </p>
-                <div class="grid grid-cols-2 gap-3">
-                    <div class="bg-slate-800/60 rounded-xl p-3 text-left">
-                        <div class="flex justify-between items-baseline mb-1">
-                            <p class="text-[10px] text-slate-500 uppercase font-semibold">Calorie</p>
-                            <p class="text-xs font-bold text-rose-400"><span id="mediaCalorie">—</span><span
-                                    class="text-[10px] font-normal text-slate-500"> / <span
-                                        id="trendTargetCalorie">—</span></span></p>
-                        </div>
-                        <div class="w-full h-1.5 bg-slate-900 rounded-full overflow-hidden mt-1">
-                            <div id="barMediaCalorie" class="h-full bg-rose-500 rounded-full" style="width: 0%;"></div>
-                        </div>
-                    </div>
-                    <div class="bg-slate-800/60 rounded-xl p-3 text-left">
-                        <div class="flex justify-between items-baseline mb-1">
-                            <p class="text-[10px] text-slate-500 uppercase font-semibold">Proteine</p>
-                            <p class="text-xs font-bold text-blue-400"><span id="mediaProteine">—</span><span
-                                    class="text-[10px] font-normal text-slate-500">g / <span
-                                        id="trendTargetProteine">—</span>g</span></p>
-                        </div>
-                        <div class="w-full h-1.5 bg-slate-900 rounded-full overflow-hidden mt-1">
-                            <div id="barMediaProteine" class="h-full bg-blue-500 rounded-full" style="width: 0%;"></div>
-                        </div>
-                    </div>
-                    <div class="bg-slate-800/60 rounded-xl p-3 text-left">
-                        <div class="flex justify-between items-baseline mb-1">
-                            <p class="text-[10px] text-slate-500 uppercase font-semibold">Carboidrati</p>
-                            <p class="text-xs font-bold text-emerald-400"><span id="mediaCarbo">—</span><span
-                                    class="text-[10px] font-normal text-slate-500">g / <span
-                                        id="trendTargetCarbo">—</span>g</span></p>
-                        </div>
-                        <div class="w-full h-1.5 bg-slate-900 rounded-full overflow-hidden mt-1">
-                            <div id="barMediaCarbo" class="h-full bg-emerald-500 rounded-full" style="width: 0%;"></div>
-                        </div>
-                    </div>
-                    <div class="bg-slate-800/60 rounded-xl p-3 text-left">
-                        <div class="flex justify-between items-baseline mb-1">
-                            <p class="text-[10px] text-slate-500 uppercase font-semibold">Grassi</p>
-                            <p class="text-xs font-bold text-amber-400"><span id="mediaGrassi">—</span><span
-                                    class="text-[10px] font-normal text-slate-500">g / <span
-                                        id="trendTargetGrassi">—</span>g</span></p>
-                        </div>
-                        <div class="w-full h-1.5 bg-slate-900 rounded-full overflow-hidden mt-1">
-                            <div id="barMediaGrassi" class="h-full bg-amber-500 rounded-full" style="width: 0%;"></div>
-                        </div>
-                    </div>
-                </div>
-            </div>
         </div>
     </div>
 
