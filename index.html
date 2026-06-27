@@ -427,20 +427,30 @@
             </div>
 
             <div class="bg-slate-800/80 rounded-2xl border border-slate-700/60 p-4 shadow-xl mb-5 backdrop-blur">
-                <label class="block text-sm font-semibold text-slate-300 mb-2 flex items-center gap-2">
-                    <i data-lucide="pencil" class="w-4 h-4 text-blue-400"></i> Cosa hai mangiato?
-                </label>
+                <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 mb-3">
+                    <label class="text-sm font-semibold text-slate-300 flex items-center gap-2">
+                        <i data-lucide="pencil" class="w-4 h-4 text-blue-400"></i> Cosa hai mangiato?
+                    </label>
+                    <div class="flex items-center gap-2">
+                        <label class="text-[10px] font-bold text-slate-500 uppercase tracking-wider">Data:</label>
+                        <input type="date" id="input-pasto-data"
+                            class="bg-slate-900 border border-slate-700 rounded-xl px-2.5 py-1 text-xs text-slate-100 focus:outline-none focus:ring-2 focus:ring-blue-500 transition">
+                    </div>
+                </div>
                 <textarea id="testoInput" rows="4"
                     class="w-full bg-slate-900/90 border border-slate-700 rounded-xl p-3 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 text-slate-100 placeholder-slate-500 resize-none"
-                    placeholder="Es: Stamattina yogurt greco e banana. A pranzo pasta al pesto e coscia di pollo..."></textarea>
+                    placeholder="Es: Stamattina yogurt greco..."></textarea>
                 <button onclick="analizzaDatiConAI()" id="btnInvia"
                     class="mt-3 w-full bg-blue-600 hover:bg-blue-500 text-white font-bold py-3 px-4 rounded-xl shadow-lg shadow-blue-600/20 active:scale-[0.98] transition flex items-center justify-center gap-2 text-sm cursor-pointer">
-                    <span id="btnLabel">Elabora con OpenAI</span>
+                    <span id="btnLabel">Elabora con AI</span>
                     <i data-lucide="sparkles" class="w-4 h-4"></i>
                 </button>
                 <div id="stato" class="text-xs text-slate-400 text-center mt-2.5 italic hidden">L'AI sta analizzando i
                     tuoi pasti...</div>
             </div>
+
+            <div id="stato" class="text-xs text-slate-400 text-center mt-2.5 italic hidden">L'AI sta analizzando i
+                tuoi pasti...</div>
 
             <div id="boxRisultati" class="hidden">
                 <p
@@ -450,7 +460,8 @@
                 <div class="grid grid-cols-2 gap-3 mb-4">
                     <div class="bg-slate-800/50 border border-slate-700/40 rounded-xl p-3 flex items-center gap-3">
                         <div class="bg-rose-500/10 p-2 rounded-lg text-rose-400"><i data-lucide="flame"
-                                class="w-5 h-5"></i></div>
+                                class="w-5 h-5"></i>
+                        </div>
                         <div>
                             <p class="text-[11px] font-medium text-slate-400 uppercase tracking-wider">Calorie</p>
                             <p class="text-lg font-bold text-slate-100"><span id="resCalorie">0</span> <span
@@ -504,107 +515,110 @@
             </div>
         </div>
 
-        <div id="panel-storico" class="tab-panel">
 
-            <div class="flex items-center justify-between mb-3">
-                <p class="text-sm font-semibold text-slate-300 flex items-center gap-2">
-                    <i data-lucide="book-open" class="w-4 h-4 text-blue-400"></i> Diario alimentare
-                </p>
-                <button onclick="confermaReset()"
-                    class="text-[11px] text-slate-500 hover:text-rose-400 transition flex items-center gap-1">
-                    <i data-lucide="trash-2" class="w-3.5 h-3.5"></i> Cancella tutto
-                </button>
-            </div>
+    </div>
 
-            <div class="flex gap-2 mb-4">
-                <button onclick="esportaDB()"
-                    class="flex-1 flex items-center justify-center gap-1.5 py-2.5 rounded-xl text-xs font-bold border bg-slate-800/60 border-slate-700/50 text-slate-400 hover:text-emerald-400 hover:border-emerald-500/40 transition">
-                    <i data-lucide="download" class="w-3.5 h-3.5"></i> Esporta dati
-                </button>
-                <button onclick="document.getElementById('importInput').click()"
-                    class="flex-1 flex items-center justify-center gap-1.5 py-2.5 rounded-xl text-xs font-bold border bg-slate-800/60 border-slate-700/50 text-slate-400 hover:text-blue-400 hover:border-blue-500/40 transition">
-                    <i data-lucide="upload" class="w-3.5 h-3.5"></i> Importa dati
-                </button>
-            </div>
+    <div id="panel-storico" class="tab-panel p-4 max-w-lg mx-auto w-full">
 
-            <div class="max-h-[450px] overflow-y-auto pr-1 custom-scrollbar">
-                <div id="listaStorico" class="space-y-3">
-                    <p class="text-sm text-slate-500 text-center py-8">Nessun pasto salvato ancora.<br>Elabora e salva
-                        un'analisi dalla tab Oggi!</p>
-                </div>
-            </div>
-
+        <div class="flex items-center justify-between mb-3">
+            <p class="text-sm font-semibold text-slate-300 flex items-center gap-2">
+                <i data-lucide="book-open" class="w-4 h-4 text-blue-400"></i> Diario alimentare
+            </p>
+            <button onclick="confermaReset()"
+                class="text-[11px] text-slate-500 hover:text-rose-400 transition flex items-center gap-1">
+                <i data-lucide="trash-2" class="w-3.5 h-3.5"></i> Cancella tutto
+            </button>
         </div>
 
-        <div id="panel-trend" class="tab-panel">
+        <div class="flex gap-2 mb-4">
+            <button onclick="esportaDB()"
+                class="flex-1 flex items-center justify-center gap-1.5 py-2.5 rounded-xl text-xs font-bold border bg-slate-800/60 border-slate-700/50 text-slate-400 hover:text-emerald-400 hover:border-emerald-500/40 transition">
+                <i data-lucide="download" class="w-3.5 h-3.5"></i> Esporta dati
+            </button>
+            <button onclick="document.getElementById('importInput').click()"
+                class="flex-1 flex items-center justify-center gap-1.5 py-2.5 rounded-xl text-xs font-bold border bg-slate-800/60 border-slate-700/50 text-slate-400 hover:text-blue-400 hover:border-blue-500/40 transition">
+                <i data-lucide="upload" class="w-3.5 h-3.5"></i> Importa dati
+            </button>
+        </div>
 
-            <div class="flex bg-slate-950 p-1 rounded-xl mb-4 border border-slate-800">
-                <button id="subtab-giorni" onclick="switchTrendView('giorni')"
-                    class="sub-tab-btn flex-1 py-1.5 rounded-lg text-xs font-semibold active">
-                    7 Giorni
-                </button>
-                <button id="subtab-settimane" onclick="switchTrendView('settimane')"
-                    class="sub-tab-btn flex-1 py-1.5 rounded-lg text-xs font-semibold">
-                    8 Settimane
-                </button>
+        <div class="max-h-[450px] overflow-y-auto pr-1 custom-scrollbar">
+            <div id="listaStorico" class="space-y-3">
+                <p class="text-sm text-slate-500 text-center py-8">Nessun pasto salvato ancora.<br>Elabora e salva
+                    un'analisi dalla tab Oggi!</p>
             </div>
+        </div>
 
-            <p id="trendTitle" class="text-sm font-semibold text-slate-300 mb-4 flex items-center gap-2">
-                <i data-lucide="trending-up" class="w-4 h-4 text-indigo-400"></i> Andamento ultimi 7 giorni
-            </p>
+    </div>
 
-            <div class="bg-slate-800/40 border border-slate-700/50 rounded-2xl p-4 mb-4">
-                <p class="text-xs text-slate-400 font-semibold uppercase tracking-wider mb-3">Media complessiva </p>
-                <div class="grid grid-cols-2 gap-3">
-                    <div class="bg-slate-800/60 rounded-xl p-3 text-left">
-                        <div class="flex justify-between items-baseline mb-1">
-                            <p class="text-[10px] text-slate-500 uppercase font-semibold">Calorie</p>
-                            <p class="text-xs font-bold text-rose-400"><span id="mediaCalorie">—</span><span
-                                    class="text-[10px] font-normal text-slate-500"> / <span
-                                        id="trendTargetCalorie">—</span></span></p>
-                        </div>
-                        <div class="w-full h-1.5 bg-slate-900 rounded-full overflow-hidden mt-1">
-                            <div id="barMediaCalorie" class="h-full bg-rose-500 rounded-full" style="width: 0%;"></div>
-                        </div>
+    <div id="panel-trend" class="tab-panel p-4 max-w-lg mx-auto w-full">
+
+        <div class="flex bg-slate-950 p-1 rounded-xl mb-4 border border-slate-800">
+            <button id="subtab-giorni" onclick="switchTrendView('giorni')"
+                class="sub-tab-btn flex-1 py-1.5 rounded-lg text-xs font-semibold active">
+                7 Giorni
+            </button>
+            <button id="subtab-settimane" onclick="switchTrendView('settimane')"
+                class="sub-tab-btn flex-1 py-1.5 rounded-lg text-xs font-semibold">
+                8 Settimane
+            </button>
+        </div>
+
+        <p id="trendTitle" class="text-sm font-semibold text-slate-300 mb-4 flex items-center gap-2">
+            <i data-lucide="trending-up" class="w-4 h-4 text-indigo-400"></i> Andamento ultimi 7 giorni
+        </p>
+
+        <div class="bg-slate-800/40 border border-slate-700/50 rounded-2xl p-4 mb-4">
+            <p class="text-xs text-slate-400 font-semibold uppercase tracking-wider mb-3">Media complessiva </p>
+            <div class="grid grid-cols-2 gap-3">
+                <div class="bg-slate-800/60 rounded-xl p-3 text-left">
+                    <div class="flex justify-between items-baseline mb-1">
+                        <p class="text-[10px] text-slate-500 uppercase font-semibold">Calorie</p>
+                        <p class="text-xs font-bold text-rose-400"><span id="mediaCalorie">—</span><span
+                                class="text-[10px] font-normal text-slate-500"> / <span
+                                    id="trendTargetCalorie">—</span></span></p>
                     </div>
-                    <div class="bg-slate-800/60 rounded-xl p-3 text-left">
-                        <div class="flex justify-between items-baseline mb-1">
-                            <p class="text-[10px] text-slate-500 uppercase font-semibold">Proteine</p>
-                            <p class="text-xs font-bold text-blue-400"><span id="mediaProteine">—</span><span
-                                    class="text-[10px] font-normal text-slate-500">g / <span
-                                        id="trendTargetProteine">—</span>g</span></p>
-                        </div>
-                        <div class="w-full h-1.5 bg-slate-900 rounded-full overflow-hidden mt-1">
-                            <div id="barMediaProteine" class="h-full bg-blue-500 rounded-full" style="width: 0%;"></div>
-                        </div>
+                    <div class="w-full h-1.5 bg-slate-900 rounded-full overflow-hidden mt-1">
+                        <div id="barMediaCalorie" class="h-full bg-rose-500 rounded-full" style="width: 0%;"></div>
                     </div>
-                    <div class="bg-slate-800/60 rounded-xl p-3 text-left">
-                        <div class="flex justify-between items-baseline mb-1">
-                            <p class="text-[10px] text-slate-500 uppercase font-semibold">Carboidrati</p>
-                            <p class="text-xs font-bold text-emerald-400"><span id="mediaCarbo">—</span><span
-                                    class="text-[10px] font-normal text-slate-500">g / <span
-                                        id="trendTargetCarbo">—</span>g</span></p>
-                        </div>
-                        <div class="w-full h-1.5 bg-slate-900 rounded-full overflow-hidden mt-1">
-                            <div id="barMediaCarbo" class="h-full bg-emerald-500 rounded-full" style="width: 0%;"></div>
-                        </div>
+                </div>
+                <div class="bg-slate-800/60 rounded-xl p-3 text-left">
+                    <div class="flex justify-between items-baseline mb-1">
+                        <p class="text-[10px] text-slate-500 uppercase font-semibold">Proteine</p>
+                        <p class="text-xs font-bold text-blue-400"><span id="mediaProteine">—</span><span
+                                class="text-[10px] font-normal text-slate-500">g / <span
+                                    id="trendTargetProteine">—</span>g</span></p>
                     </div>
-                    <div class="bg-slate-800/60 rounded-xl p-3 text-left">
-                        <div class="flex justify-between items-baseline mb-1">
-                            <p class="text-[10px] text-slate-500 uppercase font-semibold">Grassi</p>
-                            <p class="text-xs font-bold text-amber-400"><span id="mediaGrassi">—</span><span
-                                    class="text-[10px] font-normal text-slate-500">g / <span
-                                        id="trendTargetGrassi">—</span>g</span></p>
-                        </div>
-                        <div class="w-full h-1.5 bg-slate-900 rounded-full overflow-hidden mt-1">
-                            <div id="barMediaGrassi" class="h-full bg-amber-500 rounded-full" style="width: 0%;"></div>
-                        </div>
+                    <div class="w-full h-1.5 bg-slate-900 rounded-full overflow-hidden mt-1">
+                        <div id="barMediaProteine" class="h-full bg-blue-500 rounded-full" style="width: 0%;"></div>
+                    </div>
+                </div>
+                <div class="bg-slate-800/60 rounded-xl p-3 text-left">
+                    <div class="flex justify-between items-baseline mb-1">
+                        <p class="text-[10px] text-slate-500 uppercase font-semibold">Carboidrati</p>
+                        <p class="text-xs font-bold text-emerald-400"><span id="mediaCarbo">—</span><span
+                                class="text-[10px] font-normal text-slate-500">g / <span
+                                    id="trendTargetCarbo">—</span>g</span></p>
+                    </div>
+                    <div class="w-full h-1.5 bg-slate-900 rounded-full overflow-hidden mt-1">
+                        <div id="barMediaCarbo" class="h-full bg-emerald-500 rounded-full" style="width: 0%;"></div>
+                    </div>
+                </div>
+                <div class="bg-slate-800/60 rounded-xl p-3 text-left">
+                    <div class="flex justify-between items-baseline mb-1">
+                        <p class="text-[10px] text-slate-500 uppercase font-semibold">Grassi</p>
+                        <p class="text-xs font-bold text-amber-400"><span id="mediaGrassi">—</span><span
+                                class="text-[10px] font-normal text-slate-500">g / <span
+                                    id="trendTargetGrassi">—</span>g</span></p>
+                    </div>
+                    <div class="w-full h-1.5 bg-slate-900 rounded-full overflow-hidden mt-1">
+                        <div id="barMediaGrassi" class="h-full bg-amber-500 rounded-full" style="width: 0%;"></div>
                     </div>
                 </div>
             </div>
+        </div>
 
-            <div id="trendGiornalieroContainer" class="space-y-4">
-                <!-- 
+        <div id="trendGiornalieroContainer" class="space-y-4">
+            <!-- 
                 <div class="bg-slate-800/40 border border-slate-700/50 rounded-2xl p-4">
                     <p
                         class="text-xs text-slate-400 font-semibold uppercase tracking-wider mb-3 flex items-center gap-1.5">
@@ -616,99 +630,90 @@
                 </div> 
                 -->
 
-                <div class="bg-slate-800/40 border border-slate-700/50 rounded-2xl p-4">
-                    <p
-                        class="text-xs text-slate-400 font-semibold uppercase tracking-wider mb-3 flex items-center gap-1.5">
-                        <i data-lucide="flame" class="w-3.5 h-3.5 text-rose-400"></i> Calorie
-                    </p>
-                    <div class="h-48 w-full">
-                        <canvas id="trendCalorieChart"></canvas>
-                    </div>
-                </div>
-
-                <div class="bg-slate-800/40 border border-slate-700/50 rounded-2xl p-4">
-                    <p
-                        class="text-xs text-slate-400 font-semibold uppercase tracking-wider mb-3 flex items-center gap-1.5">
-                        <i data-lucide="dumbbell" class="w-3.5 h-3.5 text-blue-400"></i> Proteine
-                    </p>
-                    <div class="h-48 w-full">
-                        <canvas id="trendProteineChart"></canvas>
-                    </div>
-                </div>
-
-                <div class="bg-slate-800/40 border border-slate-700/50 rounded-2xl p-4">
-                    <p
-                        class="text-xs text-slate-400 font-semibold uppercase tracking-wider mb-3 flex items-center gap-1.5">
-                        <i data-lucide="wheat" class="w-3.5 h-3.5 text-emerald-400"></i> Carboidrati
-                    </p>
-                    <div class="h-48 w-full">
-                        <canvas id="trendCarboChart"></canvas>
-                    </div>
-                </div>
-
-                <div class="bg-slate-800/40 border border-slate-700/50 rounded-2xl p-4">
-                    <p
-                        class="text-xs text-slate-400 font-semibold uppercase tracking-wider mb-3 flex items-center gap-1.5">
-                        <i data-lucide="droplet" class="w-3.5 h-3.5 text-amber-400"></i> Grassi
-                    </p>
-                    <div class="h-48 w-full">
-                        <canvas id="trendGrassiChart"></canvas>
-                    </div>
+            <div class="bg-slate-800/40 border border-slate-700/50 rounded-2xl p-4">
+                <p class="text-xs text-slate-400 font-semibold uppercase tracking-wider mb-3 flex items-center gap-1.5">
+                    <i data-lucide="flame" class="w-3.5 h-3.5 text-rose-400"></i> Calorie
+                </p>
+                <div class="h-48 w-full">
+                    <canvas id="trendCalorieChart"></canvas>
                 </div>
             </div>
 
-            <div id="trendSettimaneContainer" class="space-y-4 hidden">
-                <div class="bg-slate-800/40 border border-slate-700/50 rounded-2xl p-4">
-                    <p
-                        class="text-xs text-slate-400 font-semibold uppercase tracking-wider mb-3 flex items-center gap-1.5">
-                        <i data-lucide="scale" class="w-3.5 h-3.5 text-indigo-400"></i> Peso Medio Settimanale
-                    </p>
-                    <div class="h-48 w-full">
-                        <canvas id="weekPesoChart"></canvas>
-                    </div>
+            <div class="bg-slate-800/40 border border-slate-700/50 rounded-2xl p-4">
+                <p class="text-xs text-slate-400 font-semibold uppercase tracking-wider mb-3 flex items-center gap-1.5">
+                    <i data-lucide="dumbbell" class="w-3.5 h-3.5 text-blue-400"></i> Proteine
+                </p>
+                <div class="h-48 w-full">
+                    <canvas id="trendProteineChart"></canvas>
                 </div>
+            </div>
 
-                <div class="bg-slate-800/40 border border-slate-700/50 rounded-2xl p-4">
-                    <p
-                        class="text-xs text-slate-400 font-semibold uppercase tracking-wider mb-3 flex items-center gap-1.5">
-                        <i data-lucide="flame" class="w-3.5 h-3.5 text-rose-400"></i> Calorie
-                    </p>
-                    <div class="h-48 w-full">
-                        <canvas id="weekCalorieChart"></canvas>
-                    </div>
+            <div class="bg-slate-800/40 border border-slate-700/50 rounded-2xl p-4">
+                <p class="text-xs text-slate-400 font-semibold uppercase tracking-wider mb-3 flex items-center gap-1.5">
+                    <i data-lucide="wheat" class="w-3.5 h-3.5 text-emerald-400"></i> Carboidrati
+                </p>
+                <div class="h-48 w-full">
+                    <canvas id="trendCarboChart"></canvas>
                 </div>
+            </div>
 
-                <div class="bg-slate-800/40 border border-slate-700/50 rounded-2xl p-4">
-                    <p
-                        class="text-xs text-slate-400 font-semibold uppercase tracking-wider mb-3 flex items-center gap-1.5">
-                        <i data-lucide="dumbbell" class="w-3.5 h-3.5 text-blue-400"></i> Proteine
-                    </p>
-                    <div class="h-48 w-full">
-                        <canvas id="weekProteineChart"></canvas>
-                    </div>
-                </div>
-
-                <div class="bg-slate-800/40 border border-slate-700/50 rounded-2xl p-4">
-                    <p
-                        class="text-xs text-slate-400 font-semibold uppercase tracking-wider mb-3 flex items-center gap-1.5">
-                        <i data-lucide="wheat" class="w-3.5 h-3.5 text-emerald-400"></i> Carboidrati (g)
-                    </p>
-                    <div class="h-48 w-full">
-                        <canvas id="weekCarboChart"></canvas>
-                    </div>
-                </div>
-
-                <div class="bg-slate-800/40 border border-slate-700/50 rounded-2xl p-4">
-                    <p
-                        class="text-xs text-slate-400 font-semibold uppercase tracking-wider mb-3 flex items-center gap-1.5">
-                        <i data-lucide="droplet" class="w-3.5 h-3.5 text-amber-400"></i> Grassi
-                    </p>
-                    <div class="h-48 w-full">
-                        <canvas id="weekGrassiChart"></canvas>
-                    </div>
+            <div class="bg-slate-800/40 border border-slate-700/50 rounded-2xl p-4">
+                <p class="text-xs text-slate-400 font-semibold uppercase tracking-wider mb-3 flex items-center gap-1.5">
+                    <i data-lucide="droplet" class="w-3.5 h-3.5 text-amber-400"></i> Grassi
+                </p>
+                <div class="h-48 w-full">
+                    <canvas id="trendGrassiChart"></canvas>
                 </div>
             </div>
         </div>
+
+        <div id="trendSettimaneContainer" class="space-y-4 hidden">
+            <div class="bg-slate-800/40 border border-slate-700/50 rounded-2xl p-4">
+                <p class="text-xs text-slate-400 font-semibold uppercase tracking-wider mb-3 flex items-center gap-1.5">
+                    <i data-lucide="scale" class="w-3.5 h-3.5 text-indigo-400"></i> Peso Medio Settimanale
+                </p>
+                <div class="h-48 w-full">
+                    <canvas id="weekPesoChart"></canvas>
+                </div>
+            </div>
+
+            <div class="bg-slate-800/40 border border-slate-700/50 rounded-2xl p-4">
+                <p class="text-xs text-slate-400 font-semibold uppercase tracking-wider mb-3 flex items-center gap-1.5">
+                    <i data-lucide="flame" class="w-3.5 h-3.5 text-rose-400"></i> Calorie
+                </p>
+                <div class="h-48 w-full">
+                    <canvas id="weekCalorieChart"></canvas>
+                </div>
+            </div>
+
+            <div class="bg-slate-800/40 border border-slate-700/50 rounded-2xl p-4">
+                <p class="text-xs text-slate-400 font-semibold uppercase tracking-wider mb-3 flex items-center gap-1.5">
+                    <i data-lucide="dumbbell" class="w-3.5 h-3.5 text-blue-400"></i> Proteine
+                </p>
+                <div class="h-48 w-full">
+                    <canvas id="weekProteineChart"></canvas>
+                </div>
+            </div>
+
+            <div class="bg-slate-800/40 border border-slate-700/50 rounded-2xl p-4">
+                <p class="text-xs text-slate-400 font-semibold uppercase tracking-wider mb-3 flex items-center gap-1.5">
+                    <i data-lucide="wheat" class="w-3.5 h-3.5 text-emerald-400"></i> Carboidrati (g)
+                </p>
+                <div class="h-48 w-full">
+                    <canvas id="weekCarboChart"></canvas>
+                </div>
+            </div>
+
+            <div class="bg-slate-800/40 border border-slate-700/50 rounded-2xl p-4">
+                <p class="text-xs text-slate-400 font-semibold uppercase tracking-wider mb-3 flex items-center gap-1.5">
+                    <i data-lucide="droplet" class="w-3.5 h-3.5 text-amber-400"></i> Grassi
+                </p>
+                <div class="h-48 w-full">
+                    <canvas id="weekGrassiChart"></canvas>
+                </div>
+            </div>
+        </div>
+    </div>
     </div>
 
     <script>
@@ -798,6 +803,10 @@
             if (document.getElementById('input-peso-data')) {
                 document.getElementById('input-peso-data').value = ottieniDataOggi();
             }
+            // Imposta di default la data di oggi anche per il pasto
+            if (document.getElementById('input-pasto-data')) {
+                document.getElementById('input-pasto-data').value = new Date().toISOString().split('T')[0];
+            }
         };
 
         // ================================================================
@@ -834,13 +843,13 @@
             const pesoVal = parseFloat(document.getElementById('inputPeso').value) || null;
             let db = JSON.parse(localStorage.getItem('nutriDB')) || [];
 
-            let recordOggi = db.find(x => x.data === oggiStr);
+            let recordOggi = db.find(x => x.data === dataPasto);
             if (recordOggi) {
                 recordOggi.peso = pesoVal;
             } else {
                 db.push({
                     id: Date.now(),
-                    data: oggiStr,
+                    data: dataPasto,
                     calorie: 0,
                     proteine: 0,
                     carboidrati: 0,
@@ -1102,57 +1111,73 @@
         // ================================================================
         // SALVATAGGIO DEI DATI NEL DIARIO LOCALE
         // ================================================================
-        function salvaEntry() {
-            if (!ultimaAnalisi) return;
+        window.salvaEntry = function () {
+            // 1. Controllo di sicurezza
+            if (!ultimaAnalisi) {
+                alert("Nessuna analisi da salvare!");
+                return;
+            }
 
-            const oggiStr = ottieniDataOggi();
+            // 2. Recupero dati in sicurezza
+            const inputData = document.getElementById('input-pasto-data');
+            if (!inputData) {
+                alert("Errore: Selettore data non trovato.");
+                return;
+            }
+
+            const dataPasto = inputData.value || ottieniDataOggi();
             const oraStr = new Date().toLocaleTimeString('it-IT', { hour: '2-digit', minute: '2-digit' });
-            const testoPasto = document.getElementById('testoInput').value.trim();
+            const testoInput = document.getElementById('testoInput');
+            const testoPasto = testoInput ? testoInput.value.trim() : "";
 
             let db = JSON.parse(localStorage.getItem('nutriDB')) || [];
-            let recordOggi = db.find(x => x.data === oggiStr);
+            let record = db.find(x => x.data === dataPasto);
 
             const nuovoPasto = {
                 id: Date.now(),
                 ora: oraStr,
                 testo: testoPasto,
-                calorie: ultimaAnalisi.calorie || 0,
-                proteine: ultimaAnalisi.proteine || 0,
-                carboidrati: ultimaAnalisi.carboidrati || 0,
-                grassi: ultimaAnalisi.grassi || 0
+                calorie: Number(ultimaAnalisi.calorie) || 0,
+                proteine: Number(ultimaAnalisi.proteine) || 0,
+                carboidrati: Number(ultimaAnalisi.carboidrati) || 0,
+                grassi: Number(ultimaAnalisi.grassi) || 0
             };
 
-            if (recordOggi) {
-                recordOggi.calorie = (recordOggi.calorie || 0) + nuovoPasto.calorie;
-                recordOggi.proteine = (recordOggi.proteine || 0) + nuovoPasto.proteine;
-                recordOggi.carboidrati = (recordOggi.carboidrati || 0) + nuovoPasto.carboidrati;
-                recordOggi.grassi = (recordOggi.grassi || 0) + nuovoPasto.grassi;
-                if (!recordOggi.pasti) recordOggi.pasti = [];
-                recordOggi.pasti.push(nuovoPasto);
+            // 3. Logica di aggiornamento DB
+            if (record) {
+                record.calorie = (record.calorie || 0) + nuovoPasto.calorie;
+                record.proteine = (record.proteine || 0) + nuovoPasto.proteine;
+                record.carboidrati = (record.carboidrati || 0) + nuovoPasto.carboidrati;
+                record.grassi = (record.grassi || 0) + nuovoPasto.grassi;
+                if (!record.pasti) record.pasti = [];
+                record.pasti.push(nuovoPasto);
             } else {
-                const pesoVal = parseFloat(document.getElementById('inputPeso').value) || null;
+                // CORRETTO: Usiamo dataPasto e nuovoPasto.grassi (niente più typo)
                 db.push({
                     id: Date.now(),
-                    data: oggiStr,
+                    data: dataPasto,
                     calorie: nuovoPasto.calorie,
                     proteine: nuovoPasto.proteine,
                     carboidrati: nuovoPasto.carboidrati,
-                    grassi: nuevoPasto.grassi,
+                    grassi: nuovoPasto.grassi,
                     pasti: [nuovoPasto],
-                    peso: pesoVal
+                    peso: parseFloat(document.getElementById('inputPeso')?.value) || null
                 });
             }
 
+            // 4. Salvataggio e pulizia
             localStorage.setItem('nutriDB', JSON.stringify(db));
 
-            // Reset UI
-            document.getElementById('testoInput').value = "";
-            document.getElementById('boxRisultati').classList.add('hidden');
+            if (testoInput) testoInput.value = "";
+            const boxRis = document.getElementById('boxRisultati');
+            if (boxRis) boxRis.classList.add('hidden');
+
             ultimaAnalisi = null;
 
             aggiornaTotaleGiorno();
-            alert("Pasto registrato con successo nel diario!");
-        }
+            renderStorico(); // Aggiunto per aggiornare anche la lista storica
+            alert("Pasto registrato con successo!");
+        };
 
         // ================================================================
         // RENDER DELLA SEZIONE STORICO
