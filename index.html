@@ -235,36 +235,11 @@
                 </h3>
                 <span class="text-[10px] bg-slate-700 px-2 py-0.5 rounded text-slate-400">Salvata in locale</span>
             </div>
-            <p class="text-[11px] font-semibold text-slate-400 uppercase tracking-wider mb-2">Scegli il provider AI</p>
-            <div class="flex gap-2 mb-4">
-                <button id="btnOpenAI" onclick="selectProvider('openai')"
-                    class="flex-1 flex items-center justify-center gap-1.5 py-2 rounded-xl text-xs font-bold border provider-btn active-provider">
-                    <i data-lucide="zap" class="w-3.5 h-3.5"></i> OpenAI
-                </button>
-                <button id="btnGemini" onclick="selectProvider('gemini')"
-                    class="flex-1 flex items-center justify-center gap-1.5 py-2 rounded-xl text-xs font-bold border provider-btn">
-                    <i data-lucide="stars" class="w-3.5 h-3.5"></i> Gemini
-                </button>
-            </div>
-            <div id="sectionOpenAI">
-                <label class="text-[11px] font-semibold text-slate-400 uppercase tracking-wider">OpenAI API Key</label>
-                <input type="password" id="apiKey" oninput="saveKey()"
-                    class="mt-1 w-full bg-slate-900 border border-slate-700 rounded-xl p-3 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 text-slate-200"
-                    placeholder="sk-proj-...">
-            </div>
-            <div id="sectionGemini" class="hidden">
+            <div class="mb-4">
                 <label class="text-[11px] font-semibold text-slate-400 uppercase tracking-wider">Gemini API Key</label>
                 <input type="password" id="geminiKey" oninput="saveGeminiKey()"
                     class="mt-1 w-full bg-slate-900 border border-slate-700 rounded-xl p-3 text-sm focus:outline-none focus:ring-2 focus:ring-purple-500 text-slate-200"
                     placeholder="AIza...">
-                <label class="text-[11px] font-semibold text-slate-400 uppercase tracking-wider mt-3 block">Modello
-                    Gemini</label>
-                <select id="geminiModel" onchange="saveGeminiKey()"
-                    class="mt-1 w-full bg-slate-900 border border-slate-700 rounded-xl p-3 text-sm focus:outline-none focus:ring-2 focus:ring-purple-500 text-slate-200">
-                    <option value="gemini-2.0-flash">gemini-2.0-flash (veloce)</option>
-                    <option value="gemini-2.5-flash">gemini-2.5-flash (bilanciato)</option>
-                    <option value="gemini-2.5-pro">gemini-2.5-pro (potente)</option>
-                </select>
             </div>
 
             <div class="border-t border-slate-700 mt-4 pt-4">
@@ -324,9 +299,61 @@
                 </div>
             </div>
 
-            <p class="text-[11px] text-slate-400 mt-3">Le chiavi e i target vengono memorizzati solo sul tuo dispositivo
-                (localStorage).</p>
-        </div>
+            <div class="border-t border-slate-700 mt-4 pt-4">
+                    <button type="button" onclick="toggleAiTargetBox()"
+                        class="w-full bg-slate-700/50 hover:bg-slate-700 text-slate-200 font-bold py-2.5 rounded-xl transition text-xs flex items-center justify-center gap-1.5 cursor-pointer">
+                        <i data-lucide="brain-circuit" class="w-4 h-4 text-purple-400"></i> Calcola target con AI
+                    </button>
+                    
+                    <div id="aiTargetBox" class="hidden mt-3 p-3 bg-slate-900/60 rounded-xl border border-slate-700/50 space-y-3">
+                        <p class="text-xs font-semibold text-slate-300">Generatore Target AI</p>
+                        
+                        <div class="grid grid-cols-2 gap-2">
+                            <div>
+                                <label class="text-[10px] font-bold text-slate-500 uppercase tracking-wider block">Peso (kg)</label>
+                                <input type="number" id="aiPeso" placeholder="es. 75" class="mt-1 w-full bg-slate-800 border border-slate-700 rounded-lg p-2 text-xs text-slate-200 focus:outline-none focus:ring-1 focus:ring-purple-500">
+                            </div>
+                            <div>
+                                <label class="text-[10px] font-bold text-slate-500 uppercase tracking-wider block">Altezza (cm)</label>
+                                <input type="number" id="aiAltezza" placeholder="es. 180" class="mt-1 w-full bg-slate-800 border border-slate-700 rounded-lg p-2 text-xs text-slate-200 focus:outline-none focus:ring-1 focus:ring-purple-500">
+                            </div>
+                        </div>
+                        
+                        <div>
+                            <label class="text-[10px] font-bold text-slate-500 uppercase tracking-wider block">Stile di allenamento / Attività</label>
+                            <input type="text" id="aiAttivita" placeholder="es. Palestra 3 volte a settimana, lavoro sedentario" class="mt-1 w-full bg-slate-800 border border-slate-700 rounded-lg p-2 text-xs text-slate-200 focus:outline-none focus:ring-1 focus:ring-purple-500">
+                        </div>
+                        
+                        <div>
+                            <label class="text-[10px] font-bold text-slate-500 uppercase tracking-wider block">Obiettivo principale</label>
+                            <input type="text" id="aiObiettivo" placeholder="es. Aumentare massa muscolare magra" class="mt-1 w-full bg-slate-800 border border-slate-700 rounded-lg p-2 text-xs text-slate-200 focus:outline-none focus:ring-1 focus:ring-purple-500">
+                        </div>
+
+                        <button type="button" onclick="generaTargetConAI()" id="btnGeneraTargetAI"
+                            class="w-full bg-purple-600 hover:bg-purple-500 text-white font-bold py-2 rounded-lg transition text-xs flex items-center justify-center gap-1.5 cursor-pointer">
+                            <i data-lucide="sparkles" class="w-3.5 h-3.5"></i> Calcola target
+                        </button>
+                        <div id="statoTargetAI" class="text-[11px] text-slate-400 text-center italic hidden">L'AI sta calcolando i tuoi target...</div>
+
+                        <div id="aiTargetResults" class="hidden space-y-2 p-2 bg-slate-800/80 rounded-lg border border-purple-500/20 text-xs">
+                            <p class="font-bold text-purple-400">Suggerimento Target AI:</p>
+                            <div class="grid grid-cols-2 gap-1.5 text-slate-300">
+                                <div>Calorie: <span id="sugCal" class="font-bold text-slate-100">0</span> kcal</div>
+                                <div>Peso Target: <span id="sugPeso" class="font-bold text-slate-100">0</span> kg</div>
+                                <div>Proteine: <span id="sugProt" class="font-bold text-slate-100">0</span> g</div>
+                                <div>Carbo: <span id="sugCarb" class="font-bold text-slate-100">0</span> g</div>
+                                <div>Grassi: <span id="sugFat" class="font-bold text-slate-100">0</span> g</div>
+                            </div>
+                            <button type="button" onclick="applicaTargetSuggeriti()" class="w-full mt-2 bg-emerald-600 hover:bg-emerald-500 text-white font-bold py-1.5 rounded text-xs transition cursor-pointer">
+                                Applica questi target
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <p class="text-[11px] text-slate-400 mt-3">Le chiavi e i target vengono memorizzati solo sul tuo dispositivo
+                    (localStorage).</p>
+            </div>
 
         <div class="flex gap-2 mb-5">
             <button id="tab-oggi" onclick="switchTab('oggi')"
@@ -477,7 +504,7 @@
                     placeholder="Es: Stamattina yogurt greco..."></textarea>
                 <button onclick="analizzaDatiConAI()" id="btnInvia"
                     class="mt-3 w-full bg-blue-600 hover:bg-blue-500 text-white font-bold py-3 px-4 rounded-xl shadow-lg shadow-blue-600/20 active:scale-[0.98] transition flex items-center justify-center gap-2 text-sm cursor-pointer">
-                    <span id="btnLabel">Elabora con AI</span>
+                    <span id="btnLabel">Elabora con Gemini</span>
                     <i data-lucide="sparkles" class="w-4 h-4"></i>
                 </button>
                 <div id="stato" class="text-xs text-slate-400 text-center mt-2.5 italic hidden">L'AI sta analizzando i
@@ -823,9 +850,13 @@
 
     <script>
         // ================================================================
+        // CONFIGURAZIONE AI
+        // ================================================================
+        const GEMINI_MODEL = "gemini-2.5-flash-lite";
+
+        // ================================================================
         // STATO GLOBALE
         // ================================================================
-        let currentProvider = localStorage.getItem('ai_provider') || 'openai';
         let trendView = 'giorni'; // 'giorni' o 'settimane'
         let ultimaAnalisi = null;
         let editingId = null; // ID entry in modifica
@@ -884,14 +915,8 @@
         // INIT
         // ================================================================
         window.onload = function () {
-            const savedOpenAI = localStorage.getItem('openai_apikey');
-            if (savedOpenAI) document.getElementById('apiKey').value = savedOpenAI;
-
             const savedGemini = localStorage.getItem('gemini_apikey');
             if (savedGemini) document.getElementById('geminiKey').value = savedGemini;
-
-            const savedModel = localStorage.getItem('gemini_model');
-            if (savedModel) document.getElementById('geminiModel').value = savedModel;
 
             // Carica target
             targetCalorie = parseInt(localStorage.getItem('target_calorie')) || 2000;
@@ -907,10 +932,7 @@
             document.getElementById('targetGrassi').value = targetGrassi;
             document.getElementById('targetPeso').value = localStorage.getItem('targetPeso') || "";
 
-            selectProvider(currentProvider, false);
-
-            const activeKey = currentProvider === 'gemini' ? savedGemini : savedOpenAI;
-            if (!activeKey) document.getElementById('settingsBox').classList.remove('hidden');
+            if (!savedGemini) document.getElementById('settingsBox').classList.remove('hidden');
 
             aggiornaTotaleGiorno();
             caricaPesoDelGiorno();
@@ -1053,43 +1075,9 @@
             document.getElementById('settingsBox').classList.toggle('hidden');
         }
 
-        function selectProvider(provider, closeSettings = false) {
-            currentProvider = provider;
-            localStorage.setItem('ai_provider', provider);
-
-            const btnOpenAI = document.getElementById('btnOpenAI');
-            const btnGemini = document.getElementById('btnGemini');
-            const secOpenAI = document.getElementById('sectionOpenAI');
-            const secGemini = document.getElementById('sectionGemini');
-            const btnInviaLabel = document.getElementById('btnLabel');
-
-            if (provider === 'openai') {
-                btnOpenAI.classList.add('active-provider');
-                btnGemini.classList.remove('active-provider');
-                secOpenAI.classList.remove('hidden');
-                secGemini.classList.add('hidden');
-                btnInviaLabel.innerText = "Elabora con OpenAI";
-            } else {
-                btnOpenAI.classList.remove('active-provider');
-                btnGemini.classList.add('active-provider');
-                secOpenAI.classList.add('hidden');
-                secGemini.classList.remove('hidden');
-                btnInviaLabel.innerText = "Elabora con Gemini";
-            }
-
-            if (closeSettings) toggleSettings();
-        }
-
-        function saveKey() {
-            const val = document.getElementById('apiKey').value.trim();
-            localStorage.setItem('openai_apikey', val);
-        }
-
         function saveGeminiKey() {
             const keyVal = document.getElementById('geminiKey').value.trim();
-            const modelVal = document.getElementById('geminiModel').value;
             localStorage.setItem('gemini_apikey', keyVal);
-            localStorage.setItem('gemini_model', modelVal);
         }
 
         function saveTarget() {
@@ -1203,21 +1191,10 @@
             const testo = document.getElementById('testoInput').value.trim();
             if (!testo) return alert("Inserisci una descrizione degli alimenti consumati!");
 
-            const provider = currentProvider;
-            let apiKey = "";
-
-            if (provider === 'openai') {
-                apiKey = localStorage.getItem('openai_apikey');
-                if (!apiKey) {
-                    toggleSettings();
-                    return alert("Inserisci la tua OpenAI API Key nelle impostazioni!");
-                }
-            } else {
-                apiKey = localStorage.getItem('gemini_apikey');
-                if (!apiKey) {
-                    toggleSettings();
-                    return alert("Inserisci la tua Gemini API Key nelle impostazioni!");
-                }
+            const apiKey = localStorage.getItem('gemini_apikey');
+            if (!apiKey) {
+                toggleSettings();
+                return alert("Inserisci la tua Gemini API Key nelle impostazioni!");
             }
 
             document.getElementById('stato').classList.remove('hidden');
@@ -1227,50 +1204,23 @@
             const promptSistema = `Sei un esperto nutrizionista. Analizza il testo inserito dall'utente contenente alimenti. Calcola Calorie totali, Proteine (g), Carboidrati (g), Grassi (g). Rispondi ESCLUSIVAMENTE con un oggetto JSON valido (senza markdown, senza racchiuderlo in codice tipo \`\`\`json) avente le seguenti chiavi numeriche: "calorie", "proteine", "carboidrati", "grassi". Sii realistico e preciso nelle stime.`;
 
             try {
-                let jsonRes = null;
-                if (provider === 'openai') {
-                    const response = await fetch('https://api.openai.com/v1/chat/completions', {
-                        method: 'POST',
-                        headers: {
-                            'Content-Type': 'application/json',
-                            'Authorization': `Bearer ${apiKey}`
-                        },
-                        body: JSON.stringify({
-                            model: 'gpt-4o-mini',
-                            messages: [
-                                { role: 'system', content: promptSistema },
-                                { role: 'user', content: testo }
-                            ],
+                const response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/${GEMINI_MODEL}:generateContent?key=${apiKey}`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        contents: [{
+                            parts: [{ text: promptSistema + "\n\nTesto utente da analizzare:\n" + testo }]
+                        }],
+                        generationConfig: {
+                            responseMimeType: "application/json",
                             temperature: 0.2
-                        })
-                    });
-                    if (!response.ok) throw new Error("Errore risposta server OpenAI API");
-                    const data = await response.json();
-                    let rawContent = data.choices[0].message.content.trim();
-                    if (rawContent.startsWith("```")) {
-                        rawContent = rawContent.replace(/```json|```/g, "").trim();
-                    }
-                    jsonRes = JSON.parse(rawContent);
-                } else {
-                    const geminiModel = localStorage.getItem('gemini_model') || 'gemini-2.0-flash';
-                    const response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/${geminiModel}:generateContent?key=${apiKey}`, {
-                        method: 'POST',
-                        headers: { 'Content-Type': 'application/json' },
-                        body: JSON.stringify({
-                            contents: [{
-                                parts: [{ text: promptSistema + "\n\nTesto utente da analizzare:\n" + testo }]
-                            }],
-                            generationConfig: {
-                                responseMimeType: "application/json",
-                                temperature: 0.2
-                            }
-                        })
-                    });
-                    if (!response.ok) throw new Error("Errore risposta server Gemini API");
-                    const data = await response.json();
-                    const rawContent = data.candidates[0].content.parts[0].text.trim();
-                    jsonRes = JSON.parse(rawContent);
-                }
+                        }
+                    })
+                });
+                if (!response.ok) throw new Error("Errore risposta server Gemini API");
+                const data = await response.json();
+                const rawContent = data.candidates[0].content.parts[0].text.trim();
+                const jsonRes = JSON.parse(rawContent);
 
                 mostraRisultati(jsonRes);
             } catch (err) {
@@ -1299,13 +1249,9 @@
             const targetGrassi = document.getElementById('targetGrassiVal').innerText;
 
             // Recupera credenziali di configurazione
-            const provider = localStorage.getItem('ai_provider');
-            const openAIKey = localStorage.getItem('openai_apikey');
             const geminiKey = localStorage.getItem('gemini_apikey');
-            // Prende il modello impostato o forza il lite / flash se preferisci
-            const geminiModel = document.getElementById('geminiModel')?.value || 'gemini-2.5-flash-lite';
 
-            if ((provider === 'openai' && !openAIKey) || (provider === 'gemini' && !geminiKey)) {
+            if (!geminiKey) {
                 alert("Inserisci prima la tua API Key nelle impostazioni (icona ingranaggio in alto).");
                 return;
             }
@@ -1330,35 +1276,16 @@
             try {
                 let rispostaTesto = "";
 
-                if (provider === 'openai') {
-                    const response = await fetch('https://api.openai.com/v1/chat/completions', {
-                        method: 'POST',
-                        headers: {
-                            'Content-Type': 'application/json',
-                            'Authorization': `Bearer ${openAIKey}`
-                        },
-                        body: JSON.stringify({
-                            model: 'gpt-4o-mini',
-                            messages: [{ role: 'user', content: prompt }],
-                            temperature: 0.7
-                        })
-                    });
-                    const data = await response.json();
-                    if (data.error) throw new Error(data.error.message);
-                    rispostaTesto = data.choices[0].message.content;
-
-                } else if (provider === 'gemini') {
-                    const response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/${geminiModel}:generateContent?key=${geminiKey}`, {
-                        method: 'POST',
-                        headers: { 'Content-Type': 'application/json' },
-                        body: JSON.stringify({
-                            contents: [{ parts: [{ text: prompt }] }]
-                        })
-                    });
-                    const data = await response.json();
-                    if (data.error) throw new Error(data.error.message);
-                    rispostaTesto = data.candidates[0].content.parts[0].text;
-                }
+                const response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/${GEMINI_MODEL}:generateContent?key=${geminiKey}`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        contents: [{ parts: [{ text: prompt }] }]
+                    })
+                });
+                const data = await response.json();
+                if (data.error) throw new Error(data.error.message);
+                rispostaTesto = data.candidates[0].content.parts[0].text;
 
                 // Formatta la risposta sostituendo gli a capo con dei tag <br> per l'HTML
                 testoSuggerimenti.innerHTML = rispostaTesto.replace(/\n/g, '<br>');
@@ -1612,10 +1539,8 @@
             const nuovoTesto = document.getElementById('editTesto').value.trim();
 
             if (!nuovoTesto || !nuovaData) return alert("Compila i campi richiesti!");
-
-            const provider = currentProvider;
-            const apiKey = provider === 'openai' ? localStorage.getItem('openai_apikey') : localStorage.getItem('gemini_apikey');
-            if (!apiKey) return alert("API Key mancante!");
+            const apiKey = localStorage.getItem('gemini_apikey');
+            if (!apiKey) return alert("Gemini API Key mancante nelle impostazioni!");
 
             const btn = document.getElementById('btnSalvaModifica');
             btn.disabled = true;
@@ -1624,32 +1549,16 @@
             const promptSistema = `Sei un esperto nutrizionista. Analizza il testo inserito dall'utente contenente alimenti. Calcola Calorie totali, Proteine (g), Carboidrati (g), Grassi (g). Rispondi ESCLUSIVAMENTE con un oggetto JSON valido (senza markdown, senza racchiuderlo in codice tipo \`\`\`json) avente le seguenti chiavi numeriche: "calorie", "proteine", "carboidrati", "grassi". Sii realistico e preciso nelle stime.`;
 
             try {
-                let jsonRes = null;
-                if (provider === 'openai') {
-                    const response = await fetch('[https://api.openai.com/v1/chat/completions](https://api.openai.com/v1/chat/completions)', {
-                        method: 'POST',
-                        headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${apiKey}` },
-                        body: JSON.stringify({
-                            model: 'gpt-4o-mini',
-                            messages: [{ role: 'system', content: promptSistema }, { role: 'user', content: nuovoTesto }],
-                            temperature: 0.2
-                        })
-                    });
-                    let raw = (await response.json()).choices[0].message.content.trim();
-                    if (raw.startsWith("```")) raw = raw.replace(/```json|```/g, "").trim();
-                    jsonRes = JSON.parse(raw);
-                } else {
-                    const geminiModel = localStorage.getItem('gemini_model') || 'gemini-2.0-flash';
-                    const response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/${geminiModel}:generateContent?key=${apiKey}`, {
-                        method: 'POST',
-                        headers: { 'Content-Type': 'application/json' },
-                        body: JSON.stringify({
-                            contents: [{ parts: [{ text: promptSistema + "\n\nTesto utente da analizzare:\n" + nuovoTesto }] }],
-                            generationConfig: { responseMimeType: "application/json", temperature: 0.2 }
-                        })
-                    });
-                    jsonRes = JSON.parse((await response.json()).candidates[0].content.parts[0].text.trim());
-                }
+                const response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/${GEMINI_MODEL}:generateContent?key=${apiKey}`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        contents: [{ parts: [{ text: promptSistema + "\n\nTesto utente da analizzare:\n" + nuovoTesto }] }],
+                        generationConfig: { responseMimeType: "application/json", temperature: 0.2 }
+                    })
+                });
+                if (!response.ok) throw new Error("Risposta del server non valida da Gemini");
+                const jsonRes = JSON.parse((await response.json()).candidates[0].content.parts[0].text.trim());
 
                 let db = JSON.parse(localStorage.getItem('nutriDB')) || [];
                 let vecchioGiorno = db.find(x => x.id === giornoId);
@@ -2627,31 +2536,12 @@
             // Se l'utente annulla o lascia vuoto, non fare nulla
             if (nuovoTesto === null || nuovoTesto.trim() === "") return;
 
-            // 1. Rileva il provider attivo e le credenziali scelte dall'utente nelle opzioni
-            const provider = localStorage.getItem('ai_provider') || 'openai';
-            let apiKey = "";
-            let url = "";
-            let bodyPayload = {};
-            let modelloSelezionato = "";
-
-            if (provider === 'openai') {
-                apiKey = localStorage.getItem('openai_apikey');
-                if (!apiKey) return alert("Inserisci la tua OpenAI API Key nelle impostazioni!");
-
-                // Legge il modello OpenAI dalle opzioni
-                modelloSelezionato = localStorage.getItem('openai_model') || localStorage.getItem('ai_model') || 'gpt-4o-mini';
-                url = 'https://api.openai.com/v1/chat/completions';
-            } else {
-                apiKey = localStorage.getItem('gemini_apikey');
-                if (!apiKey) return alert("Inserisci la tua Gemini API Key nelle impostazioni!");
-
-                // Legge il modello Gemini dalle opzioni
-                modelloSelezionato = localStorage.getItem('gemini_model') || localStorage.getItem('ai_model') || 'gemini-2.0-flash';
-                url = `https://generativelanguage.googleapis.com/v1beta/models/${modelloSelezionato}:generateContent?key=${apiKey}`;
-            }
+            // 1. Rileva le credenziali
+            const apiKey = localStorage.getItem('gemini_apikey');
+            if (!apiKey) return alert("Inserisci la tua Gemini API Key nelle impostazioni!");
 
             // Mostriamo l'avviso di attesa
-            alert(`L'applicazione ricalcolerà ora i valori con ${provider === 'gemini' ? 'Gemini' : 'OpenAI'}. Premi OK per iniziare.`);
+            alert("L'applicazione ricalcolerà ora i valori con Gemini. Premi OK per iniziare.");
 
             const statoEdit = document.getElementById('stato');
             if (statoEdit) {
@@ -2662,45 +2552,31 @@
             // Costruiamo il prompt standard per l'analisi dei macronutrienti
             const promptAI = `Analizza questo pasto: "${nuovoTesto}". Sei un esperto nutrizionista. Analizza il testo inserito dall'utente contenente alimenti. Calcola Calorie totali, Proteine (g), Carboidrati (g), Grassi (g) Ritorna SOLO un oggetto JSON valido (senza markdown, senza racchiuderlo in blocchi di codice come \`\`\`json) con questa struttura esatta: {"calorie": numero, "proteine": numero, "carboidrati": numero, "grassi": numero}`;
 
-            // 2. Configura il payload della richiesta in base al modello e provider scelti
-            if (provider === 'openai') {
-                bodyPayload = {
-                    model: modelloSelezionato,
-                    messages: [{ role: "user", content: promptAI }],
-                    temperature: 0.2
-                };
-            } else {
-                bodyPayload = {
-                    contents: [{ parts: [{ text: promptAI }] }],
-                    generationConfig: {
-                        responseMimeType: "application/json"
-                    }
-                };
-            }
+            // 2. Configura il payload della richiesta
+            const bodyPayload = {
+                contents: [{ parts: [{ text: promptAI }] }],
+                generationConfig: {
+                    responseMimeType: "application/json"
+                }
+            };
 
-            // Effettua la chiamata API mirata
+            const url = `https://generativelanguage.googleapis.com/v1beta/models/${GEMINI_MODEL}:generateContent?key=${apiKey}`;
+
+            // Effettua la chiamata API
             fetch(url, {
                 method: 'POST',
                 headers: {
-                    'Content-Type': 'application/json',
-                    ...(provider === 'openai' && { 'Authorization': `Bearer ${apiKey}` })
+                    'Content-Type': 'application/json'
                 },
                 body: JSON.stringify(bodyPayload)
             })
                 .then(res => {
-                    if (!res.ok) throw new Error(`Risposta del server non valida da ${provider}`);
+                    if (!res.ok) throw new Error("Risposta del server non valida da Gemini");
                     return res.json();
                 })
                 .then(dataResponse => {
                     try {
-                        let content = "";
-
-                        // Estrae il testo di risposta in base alla struttura del provider scelto
-                        if (provider === 'openai') {
-                            content = dataResponse.choices[0].message.content.trim();
-                        } else {
-                            content = dataResponse.candidates[0].content.parts[0].text.trim();
-                        }
+                        let content = dataResponse.candidates[0].content.parts[0].text.trim();
 
                         // Pulizia da eventuale markdown residuo
                         if (content.startsWith("```json")) content = content.replace("```json", "").replace("```", "");
@@ -2743,7 +2619,7 @@
                 })
                 .catch(err => {
                     console.error(err);
-                    alert(`Errore di connessione con le API di ${provider === 'gemini' ? 'Gemini' : 'OpenAI'}. Verifica la chiave inserita.`);
+                    alert("Errore di connessione con le API di Gemini. Verifica la chiave inserita.");
                 })
                 .finally(() => {
                     if (statoEdit) statoEdit.classList.add('hidden');
@@ -2781,6 +2657,110 @@
                     }
                 }
             }
+        };
+
+        // ================================================================
+        // SUPPORTO AI PER DEFINIZIONE TARGET
+        // ================================================================
+        window.toggleAiTargetBox = function () {
+            const box = document.getElementById('aiTargetBox');
+            if (box) {
+                box.classList.toggle('hidden');
+                if (!box.classList.contains('hidden')) {
+                    const currentWeightVal = document.getElementById('targetPeso')?.value;
+                    const aiPesoInput = document.getElementById('aiPeso');
+                    if (currentWeightVal && aiPesoInput && !aiPesoInput.value) {
+                        aiPesoInput.value = currentWeightVal;
+                    }
+                }
+            }
+        };
+
+        let targetSuggeritiAI = null;
+
+        window.generaTargetConAI = async function () {
+            const peso = document.getElementById('aiPeso').value.trim();
+            const altezza = document.getElementById('aiAltezza').value.trim();
+            const attivita = document.getElementById('aiAttivita').value.trim();
+            const obiettivo = document.getElementById('aiObiettivo').value.trim();
+
+            if (!peso || !altezza || !attivita || !obiettivo) {
+                alert("Compila tutte le informazioni necessarie per consentire all'AI il calcolo!");
+                return;
+            }
+
+            const apiKey = localStorage.getItem('gemini_apikey');
+            if (!apiKey) {
+                return alert("Inserisci prima la tua Gemini API Key nelle impostazioni!");
+            }
+
+            const btn = document.getElementById('btnGeneraTargetAI');
+            const stato = document.getElementById('statoTargetAI');
+            const resultsBox = document.getElementById('aiTargetResults');
+
+            btn.disabled = true;
+            btn.style.opacity = "0.6";
+            stato.classList.remove('hidden');
+            resultsBox.classList.add('hidden');
+
+            const promptAI = `Sei un esperto nutrizionista e trainer sportivo. Calcola i target ideali giornalieri di calorie (kcal), proteine (g), carboidrati (g), grassi (g) e suggerisci un peso target (kg) indicativo basato sui dati dell'utente:
+- Peso attuale: ${peso} kg
+- Altezza: ${altezza} cm
+- Stile di vita e livello di attività fisica: ${attivita}
+- Obiettivo principale: ${obiettivo}
+
+Rispondi ESCLUSIVAMENTE con un oggetto JSON valido (senza markdown, senza racchiuderlo in codice tipo \`\`\`json) contenente le seguenti chiavi numeriche: "calorie", "proteine", "carboidrati", "grassi", "pesoTarget". Sii accurato e realistico nei calcoli (es. proteine circa 1.6-2.2g per kg per aumento massa, grassi circa 0.8-1g per kg, calorie calibrate sul TDEE calcolato).`;
+
+            try {
+                const response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/${GEMINI_MODEL}:generateContent?key=${apiKey}`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        contents: [{ parts: [{ text: promptAI }] }],
+                        generationConfig: {
+                            responseMimeType: "application/json",
+                            temperature: 0.2
+                        }
+                    })
+                });
+
+                if (!response.ok) throw new Error("Errore nella risposta da Gemini API");
+                const data = await response.json();
+                const textResponse = data.candidates[0].content.parts[0].text.trim();
+                const suggested = JSON.parse(textResponse);
+
+                targetSuggeritiAI = suggested;
+
+                document.getElementById('sugCal').innerText = Math.round(suggested.calorie) || 0;
+                document.getElementById('sugPeso').innerText = suggested.pesoTarget || 0;
+                document.getElementById('sugProt').innerText = Math.round(suggested.proteine) || 0;
+                document.getElementById('sugCarb').innerText = Math.round(suggested.carboidrati) || 0;
+                document.getElementById('sugFat').innerText = Math.round(suggested.grassi) || 0;
+
+                resultsBox.classList.remove('hidden');
+            } catch (error) {
+                console.error(error);
+                alert("Si è verificato un errore nel calcolo dei target con l'AI. Verifica la chiave API e la connessione.");
+            } finally {
+                btn.disabled = false;
+                btn.style.opacity = "1";
+                stato.classList.add('hidden');
+            }
+        };
+
+        window.applicaTargetSuggeriti = function () {
+            if (!targetSuggeritiAI) return;
+
+            document.getElementById('targetCalorie').value = Math.round(targetSuggeritiAI.calorie) || 2000;
+            document.getElementById('targetProteine').value = Math.round(targetSuggeritiAI.proteine) || 160;
+            document.getElementById('targetCarbo').value = Math.round(targetSuggeritiAI.carboidrati) || 200;
+            document.getElementById('targetGrassi').value = Math.round(targetSuggeritiAI.grassi) || 70;
+            document.getElementById('targetPeso').value = targetSuggeritiAI.pesoTarget || "";
+
+            saveTarget();
+
+            document.getElementById('aiTargetBox').classList.add('hidden');
+            alert("Nuovi target AI applicati e salvati correttamente!");
         };
     </script>
 </body>
