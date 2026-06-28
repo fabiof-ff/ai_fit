@@ -552,13 +552,18 @@
                 class="sub-tab-btn flex-1 py-1.5 rounded-lg text-xs font-semibold">
                 8 Settimane
             </button>
+            <button id="subtab-mesi" onclick="switchTrendView('mesi')"
+                class="sub-tab-btn flex-1 py-1.5 rounded-lg text-xs font-semibold">
+                Storico Mensile
+            </button>
         </div>
 
         <p id="trendTitle" class="text-sm font-semibold text-slate-300 mb-4 flex items-center gap-2">
             <i data-lucide="trending-up" class="w-4 h-4 text-indigo-400"></i> Andamento ultimi 7 giorni
         </p>
 
-        <div class="bg-slate-800/40 border border-slate-700/50 rounded-2xl p-4 mb-4">
+        <div id="trendMediaComplessivaContainer"
+            class="bg-slate-800/40 border border-slate-700/50 rounded-2xl p-4 mb-4">
             <p class="text-xs text-slate-400 font-semibold uppercase tracking-wider mb-3">Media complessiva </p>
             <div class="grid grid-cols-2 gap-3">
 
@@ -721,6 +726,53 @@
                 </div>
             </div>
         </div>
+
+        <div id="trendMesiContainer" class="space-y-4 hidden">
+            <div class="bg-slate-800/40 border border-slate-700/50 rounded-2xl p-4">
+                <p class="text-xs text-slate-400 font-semibold uppercase tracking-wider mb-3 flex items-center gap-1.5">
+                    <i data-lucide="scale" class="w-3.5 h-3.5 text-indigo-400"></i> Peso Medio Mensile
+                </p>
+                <div class="h-48 w-full">
+                    <canvas id="monthPesoChart"></canvas>
+                </div>
+            </div>
+
+            <div class="bg-slate-800/40 border border-slate-700/50 rounded-2xl p-4">
+                <p class="text-xs text-slate-400 font-semibold uppercase tracking-wider mb-3 flex items-center gap-1.5">
+                    <i data-lucide="flame" class="w-3.5 h-3.5 text-rose-400"></i> Calorie Medie Mensili
+                </p>
+                <div class="h-48 w-full">
+                    <canvas id="monthCalorieChart"></canvas>
+                </div>
+            </div>
+
+            <div class="bg-slate-800/40 border border-slate-700/50 rounded-2xl p-4">
+                <p class="text-xs text-slate-400 font-semibold uppercase tracking-wider mb-3 flex items-center gap-1.5">
+                    <i data-lucide="dumbbell" class="w-3.5 h-3.5 text-blue-400"></i> Proteine Medie Mensili
+                </p>
+                <div class="h-48 w-full">
+                    <canvas id="monthProteineChart"></canvas>
+                </div>
+            </div>
+
+            <div class="bg-slate-800/40 border border-slate-700/50 rounded-2xl p-4">
+                <p class="text-xs text-slate-400 font-semibold uppercase tracking-wider mb-3 flex items-center gap-1.5">
+                    <i data-lucide="wheat" class="w-3.5 h-3.5 text-emerald-400"></i> Carboidrati Medi Mensili
+                </p>
+                <div class="h-48 w-full">
+                    <canvas id="monthCarboChart"></canvas>
+                </div>
+            </div>
+
+            <div class="bg-slate-800/40 border border-slate-700/50 rounded-2xl p-4">
+                <p class="text-xs text-slate-400 font-semibold uppercase tracking-wider mb-3 flex items-center gap-1.5">
+                    <i data-lucide="droplet" class="w-3.5 h-3.5 text-amber-400"></i> Grassi Medi Mensili
+                </p>
+                <div class="h-48 w-full">
+                    <canvas id="monthGrassiChart"></canvas>
+                </div>
+            </div>
+        </div>
     </div>
 
     <div id="panel-storico" class="tab-panel p-4 max-w-lg mx-auto w-full">
@@ -777,6 +829,12 @@
         let weekProteineChart = null;
         let weekCarboChart = null;
         let weekGrassiChart = null;
+
+        let monthPesoChart = null;
+        let monthCalorieChart = null;
+        let monthProteineChart = null;
+        let monthCarboChart = null;
+        let monthGrassiChart = null;
 
         let targetCalorie = 0; // Target giornaliero calorie
         let targetProteine = 0; // Target giornaliero proteine
@@ -918,25 +976,64 @@
             document.getElementById('tab-' + tab).classList.add('active');
 
             if (tab === 'storico') renderStorico();
-            if (tab === 'trend') renderTrend();
+            if (tab === 'trend') {
+                const contMedia = document.getElementById('trendMediaComplessivaContainer');
+                if (contMedia) {
+                    contMedia.classList.toggle('hidden', trendView === 'mesi');
+                }
+                // Ripristina il grafico corretto in base al sotto-tab che era attivo
+                if (trendView === 'mesi') {
+                    renderTrendMensile();
+                } else {
+                    renderTrend();
+                }
+            }
             lucide.createIcons();
         }
 
         function switchTrendView(view) {
             trendView = view;
+
+            // Gestione classi attive sui 3 bottoni
             document.getElementById('subtab-giorni').classList.toggle('active', view === 'giorni');
             document.getElementById('subtab-settimane').classList.toggle('active', view === 'settimane');
+            document.getElementById('subtab-mesi').classList.toggle('active', view === 'mesi');
+
+            // Mostra o nasconde i relativi contenitori HTML
             document.getElementById('trendGiornalieroContainer').classList.toggle('hidden', view !== 'giorni');
             document.getElementById('trendSettimaneContainer').classList.toggle('hidden', view !== 'settimane');
 
-            document.getElementById('trendTitle').innerHTML = view === 'giorni'
-                ? `<i data-lucide="trending-up" class="w-4 h-4 text-indigo-400"></i> Andamento ultimi 7 giorni`
-                : `<i data-lucide="calendar" class="w-4 h-4 text-blue-400"></i> Andamento ultime 8 settimane (Media/Giorno)`;
+            const contMesi = document.getElementById('trendMesiContainer');
+            if (contMesi) {
+                contMesi.classList.toggle('hidden', view !== 'mesi');
+            }
+
+            const contMedia = document.getElementById('trendMediaComplessivaContainer');
+            if (contMedia) {
+                contMedia.classList.toggle('hidden', view === 'mesi');
+            }
+
+            // Cambia il titolo dinamico in alto
+            const trendTitleEl = document.getElementById('trendTitle');
+            if (trendTitleEl) {
+                if (view === 'giorni') {
+                    trendTitleEl.innerHTML = `<i data-lucide="trending-up" class="w-4 h-4 text-indigo-400"></i> Andamento ultimi 7 giorni`;
+                } else if (view === 'settimane') {
+                    trendTitleEl.innerHTML = `<i data-lucide="calendar" class="w-4 h-4 text-blue-400"></i> Andamento ultime 8 settimane (Media/Giorno)`;
+                } else if (view === 'mesi') {
+                    trendTitleEl.innerHTML = `<i data-lucide="bar-chart-2" class="w-4 h-4 text-emerald-400"></i> Storico Mensile (Dall'inizio)`;
+                }
+            }
 
             lucide.createIcons();
-            renderTrend();
-        }
 
+            // Seleziona quale funzione di rendering eseguire
+            if (view === 'mesi') {
+                renderTrendMensile();
+            } else {
+                renderTrend();
+            }
+        }
         // ================================================================
         // SETTINGS / PROVIDER
         // ================================================================
@@ -999,12 +1096,15 @@
             // Aggiorna la variabile globale leggendo il valore inserito (usa il fallback se vuoto)
             pesoTarget = parseFloat(pesoInput) || 75;
 
-            // Ricalcola e ridisegna il grafico inserendo le funzioni di aggiornamento della dashboard 
-            if (typeof aggiornaGrafici === 'function') {
-                aggiornaGrafici();
-
-                aggiornaTotaleGiorno();
+            // Ricalcola e ridisegna il grafico
+            if (document.getElementById('panel-trend').classList.contains('active')) {
+                if (trendView === 'mesi') {
+                    renderTrendMensile();
+                } else {
+                    renderTrend();
+                }
             }
+            aggiornaTotaleGiorno();
         }
 
         // ================================================================
@@ -2059,6 +2159,310 @@
                 });
             }
         }
+
+        function renderTrendMensile() {
+            const db = JSON.parse(localStorage.getItem('nutriDB')) || [];
+
+            const calcolaBarraETarget = (attuale, target) => {
+                if (!target || target <= 0) return { barra: '0%', freccia: '100%' };
+                if (attuale > target) {
+                    return {
+                        barra: '100%',
+                        freccia: ((target / attuale) * 100) + '%'
+                    };
+                } else {
+                    return {
+                        barra: ((attuale / target) * 100) + '%',
+                        freccia: '100%'
+                    };
+                }
+            };
+
+            // 1. Group by month
+            const grouped = {};
+            db.forEach(entry => {
+                if (!entry.data) return;
+                const dateParts = entry.data.split('-');
+                if (dateParts.length < 2) return;
+                const key = `${dateParts[0]}-${dateParts[1]}`; // YYYY-MM
+
+                if (!grouped[key]) {
+                    grouped[key] = {
+                        calorieSum: 0,
+                        proteineSum: 0,
+                        carboidratiSum: 0,
+                        grassiSum: 0,
+                        daysWithCal: 0,
+                        pesoSum: 0,
+                        daysWithPeso: 0
+                    };
+                }
+
+                if (entry.calorie > 0 || entry.proteine > 0 || entry.carboidrati > 0 || entry.grassi > 0) {
+                    grouped[key].calorieSum += (entry.calorie || 0);
+                    grouped[key].proteineSum += (entry.proteine || 0);
+                    grouped[key].carboidratiSum += (entry.carboidrati || 0);
+                    grouped[key].grassiSum += (entry.grassi || 0);
+                    grouped[key].daysWithCal += 1;
+                }
+
+                if (entry.peso && entry.peso > 0) {
+                    grouped[key].pesoSum += entry.peso;
+                    grouped[key].daysWithPeso += 1;
+                }
+            });
+
+            // 2. Sort months chronologically
+            const monthKeys = Object.keys(grouped).sort();
+            const labels = [];
+            const datiPeso = [];
+            const datiCalorie = [];
+            const datiProteine = [];
+            const datiCarboidrati = [];
+            const datiGrassi = [];
+
+            const mesiNomi = ["Gen", "Feb", "Mar", "Apr", "Mag", "Giu", "Lug", "Ago", "Set", "Ott", "Nov", "Dic"];
+
+            monthKeys.forEach(key => {
+                const parts = key.split('-');
+                const anno = parts[0];
+                const meseIdx = parseInt(parts[1], 10) - 1;
+                const label = `${mesiNomi[meseIdx]} ${anno.substring(2)}`;
+                labels.push(label);
+
+                const mData = grouped[key];
+
+                const avgCal = mData.daysWithCal > 0 ? Math.round(mData.calorieSum / mData.daysWithCal) : 0;
+                const avgProt = mData.daysWithCal > 0 ? Math.round(mData.proteineSum / mData.daysWithCal) : 0;
+                const avgCarb = mData.daysWithCal > 0 ? Math.round(mData.carboidratiSum / mData.daysWithCal) : 0;
+                const avgFat = mData.daysWithCal > 0 ? Math.round(mData.grassiSum / mData.daysWithCal) : 0;
+                const avgPeso = mData.daysWithPeso > 0 ? parseFloat((mData.pesoSum / mData.daysWithPeso).toFixed(1)) : null;
+
+                datiCalorie.push(avgCal);
+                datiProteine.push(avgProt);
+                datiCarboidrati.push(avgCarb);
+                datiGrassi.push(avgFat);
+                datiPeso.push(avgPeso);
+            });
+
+            // 3. Overall average on all active days of the database
+            const giorniAttivi = db.filter(g => g.calorie > 0 || g.proteine > 0 || g.carboidrati > 0 || g.grassi > 0);
+            if (giorniAttivi.length > 0) {
+                const sum = (chiave) => giorniAttivi.reduce((acc, current) => acc + (current[chiave] || 0), 0);
+                const avgCal = Math.round(sum('calorie') / giorniAttivi.length);
+                const avgProt = Math.round(sum('proteine') / giorniAttivi.length);
+                const avgCarb = Math.round(sum('carboidrati') / giorniAttivi.length);
+                const avgFat = Math.round(sum('grassi') / giorniAttivi.length);
+
+                document.getElementById('mediaCalorie').innerText = avgCal;
+                document.getElementById('mediaProteine').innerText = avgProt + 'g';
+                document.getElementById('mediaCarbo').innerText = avgCarb + 'g';
+                document.getElementById('mediaGrassi').innerText = avgFat + 'g';
+
+                // Calorie progress bar
+                const resCal = calcolaBarraETarget(avgCal, targetCalorie);
+                document.getElementById('barMediaCalorie').style.width = resCal.barra;
+                document.getElementById('arrowTargetCalorie').style.left = resCal.freccia;
+
+                // Proteine progress bar
+                const resProt = calcolaBarraETarget(avgProt, targetProteine);
+                document.getElementById('barMediaProteine').style.width = resProt.barra;
+                document.getElementById('arrowTargetProteine').style.left = resProt.freccia;
+
+                // Carbo progress bar
+                const resCarb = calcolaBarraETarget(avgCarb, targetCarbo);
+                document.getElementById('barMediaCarbo').style.width = resCarb.barra;
+                document.getElementById('arrowTargetCarbo').style.left = resCarb.freccia;
+
+                // Grassi progress bar
+                const resFat = calcolaBarraETarget(avgFat, targetGrassi);
+                document.getElementById('barMediaGrassi').style.width = resFat.barra;
+                document.getElementById('arrowTargetGrassi').style.left = resFat.freccia;
+            } else {
+                ['mediaCalorie', 'mediaProteine', 'mediaCarbo', 'mediaGrassi'].forEach(id => document.getElementById(id).innerText = '—');
+                ['barMediaCalorie', 'barMediaProteine', 'barMediaCarbo', 'barMediaGrassi'].forEach(id => document.getElementById(id).style.width = '0%');
+                ['arrowTargetCalorie', 'arrowTargetProteine', 'arrowTargetCarbo', 'arrowTargetGrassi'].forEach(id => document.getElementById(id).style.left = '100%');
+            }
+
+            const opzioniComuni = {
+                plugins: { legend: { display: false } },
+                responsive: true,
+                maintainAspectRatio: false,
+                scales: {
+                    y: { grid: { color: 'rgba(71,85,105,0.08)' }, ticks: { color: '#64748b', font: { size: 9 } } },
+                    x: { grid: { display: false }, ticks: { color: '#64748b', font: { size: 9 } } }
+                }
+            };
+
+            // PESO MENSILE Chart
+            if (monthPesoChart) monthPesoChart.destroy();
+            let pTarget = parseFloat(localStorage.getItem('targetPeso')) || 75;
+            const arrayPesi = datiPeso.filter(p => p !== null && p !== undefined && p > 0);
+            let yMin = undefined;
+            let yMax = undefined;
+            if (arrayPesi.length > 0) {
+                const tuttiIValori = [...arrayPesi, pTarget];
+                const minReale = Math.min(...tuttiIValori);
+                const maxReale = Math.max(...tuttiIValori);
+                yMin = Math.round(minReale * 0.97);
+                yMax = Math.round(maxReale * 1.03);
+            }
+
+            monthPesoChart = new Chart(document.getElementById('monthPesoChart').getContext('2d'), {
+                type: 'line',
+                data: {
+                    labels: labels,
+                    datasets: [
+                        {
+                            label: 'Peso Reale',
+                            data: datiPeso,
+                            borderColor: '#6366f1',
+                            backgroundColor: 'rgba(99, 102, 241, 0.05)',
+                            borderWidth: 2,
+                            tension: 0.3,
+                            spanGaps: true
+                        },
+                        {
+                            label: 'Obiettivo',
+                            data: labels.map(() => pTarget),
+                            borderColor: '#6366f1',
+                            borderWidth: 1.5,
+                            borderDash: [5, 5],
+                            fill: false,
+                            pointRadius: 0,
+                            pointHoverRadius: 0
+                        }
+                    ]
+                },
+                options: {
+                    ...opzioniComuni,
+                    scales: {
+                        ...opzioniComuni.scales,
+                        y: {
+                            ...((opzioniComuni.scales && opzioniComuni.scales.y) || {}),
+                            min: yMin,
+                            max: yMax,
+                            ticks: {
+                                ...((opzioniComuni.scales && opzioniComuni.scales.y && opzioniComuni.scales.y.ticks) || {}),
+                                precision: 0
+                            }
+                        }
+                    }
+                }
+            });
+
+            // CALORIE MENSILI Chart
+            if (monthCalorieChart) monthCalorieChart.destroy();
+            monthCalorieChart = new Chart(document.getElementById('monthCalorieChart').getContext('2d'), {
+                data: {
+                    labels: labels,
+                    datasets: [
+                        {
+                            type: 'line',
+                            label: 'Target',
+                            data: labels.map(() => targetCalorie),
+                            borderColor: '#f43f5e',
+                            borderWidth: 2,
+                            borderDash: [5, 5],
+                            pointRadius: 0,
+                            fill: false
+                        },
+                        {
+                            type: 'bar',
+                            label: 'Consumate',
+                            data: datiCalorie,
+                            backgroundColor: '#f43f5e',
+                            borderRadius: 4
+                        }
+                    ]
+                },
+                options: opzioniComuni
+            });
+
+            // PROTEINE MENSILI Chart
+            if (monthProteineChart) monthProteineChart.destroy();
+            monthProteineChart = new Chart(document.getElementById('monthProteineChart').getContext('2d'), {
+                data: {
+                    labels: labels,
+                    datasets: [
+                        {
+                            type: 'line',
+                            label: 'Target',
+                            data: labels.map(() => targetProteine),
+                            borderColor: '#3b82f6',
+                            borderWidth: 2,
+                            borderDash: [5, 5],
+                            pointRadius: 0,
+                            fill: false
+                        },
+                        {
+                            type: 'bar',
+                            label: 'Consumate',
+                            data: datiProteine,
+                            backgroundColor: '#3b82f6',
+                            borderRadius: 4
+                        }
+                    ]
+                },
+                options: opzioniComuni
+            });
+
+            // CARBOIDRATI MENSILI Chart
+            if (monthCarboChart) monthCarboChart.destroy();
+            monthCarboChart = new Chart(document.getElementById('monthCarboChart').getContext('2d'), {
+                data: {
+                    labels: labels,
+                    datasets: [
+                        {
+                            type: 'line',
+                            label: 'Target',
+                            data: labels.map(() => targetCarbo),
+                            borderColor: '#10b981',
+                            borderWidth: 2,
+                            borderDash: [5, 5],
+                            pointRadius: 0,
+                            fill: false
+                        },
+                        {
+                            type: 'bar',
+                            label: 'Consumati',
+                            data: datiCarboidrati,
+                            backgroundColor: '#10b981',
+                            borderRadius: 4
+                        }
+                    ]
+                },
+                options: opzioniComuni
+            });
+
+            // GRASSI MENSILI Chart
+            if (monthGrassiChart) monthGrassiChart.destroy();
+            monthGrassiChart = new Chart(document.getElementById('monthGrassiChart').getContext('2d'), {
+                data: {
+                    labels: labels,
+                    datasets: [
+                        {
+                            type: 'line',
+                            label: 'Target',
+                            data: labels.map(() => targetGrassi),
+                            borderColor: '#f59e0b',
+                            borderWidth: 2,
+                            borderDash: [5, 5],
+                            pointRadius: 0,
+                            fill: false
+                        },
+                        {
+                            type: 'bar',
+                            label: 'Consumati',
+                            data: datiGrassi,
+                            backgroundColor: '#f59e0b',
+                            borderRadius: 4
+                        }
+                    ]
+                },
+                options: opzioniComuni
+            });
+        }
         // ================================================================
         // ESPORTAZIONE / IMPORTAZIONE JSON DATABASE
         // ================================================================
@@ -2091,7 +2495,13 @@
                         aggiornaTotaleGiorno();
                         caricaPesoDelGiorno();
                         if (document.getElementById('panel-storico').classList.contains('active')) renderStorico();
-                        if (document.getElementById('panel-trend').classList.contains('active')) renderTrend();
+                        if (document.getElementById('panel-trend').classList.contains('active')) {
+                            if (trendView === 'mesi') {
+                                renderTrendMensile();
+                            } else {
+                                renderTrend();
+                            }
+                        }
                     } else {
                         alert("Formato file non valido. Deve essere un array JSON.");
                     }
@@ -2146,7 +2556,13 @@
 
             // Se i pannelli Storico o Trend sono attivi, li aggiorna al volo
             if (document.getElementById('panel-storico').classList.contains('active')) renderStorico();
-            if (document.getElementById('panel-trend').classList.contains('active')) renderTrend();
+            if (document.getElementById('panel-trend').classList.contains('active')) {
+                if (trendView === 'mesi') {
+                    renderTrendMensile();
+                } else {
+                    renderTrend();
+                }
+            }
 
             alert(`Peso di ${pesoFlessibile} kg salvato correttamente per il giorno ${dataSelezionata}!`);
 
@@ -2273,7 +2689,13 @@
                         // Aggiorna l'interfaccia grafica in tempo reale
                         aggiornaTotaleGiorno();
                         renderStorico();
-                        if (document.getElementById('panel-trend').classList.contains('active')) renderTrend();
+                        if (document.getElementById('panel-trend').classList.contains('active')) {
+                            if (trendView === 'mesi') {
+                                renderTrendMensile();
+                            } else {
+                                renderTrend();
+                            }
+                        }
 
                         alert("Pasto modificato e ricalcolato con successo!");
                     } catch (e) {
@@ -2313,7 +2735,13 @@
                 // Aggiorna tutta l'interfaccia utente
                 aggiornaTotaleGiorno();
                 renderStorico();
-                if (document.getElementById('panel-trend').classList.contains('active')) renderTrend();
+                if (document.getElementById('panel-trend').classList.contains('active')) {
+                    if (trendView === 'mesi') {
+                        renderTrendMensile();
+                    } else {
+                        renderTrend();
+                    }
+                }
             }
         };
     </script>
