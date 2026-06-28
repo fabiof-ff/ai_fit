@@ -716,7 +716,6 @@
 
     </div>
 
-
     </div>
 
     <script>
@@ -1631,9 +1630,19 @@
                 });
 
             } else {
+
                 // Modalità 8 Settimane
                 const etichetteSettimane = [];
                 const datiSettimane = [];
+
+                // Funzione interna per calcolare il numero della settimana dell'anno (ISO-8601)
+                const getWeekNumber = (date) => {
+                    const d = new Date(Date.UTC(date.getFullYear(), date.getMonth(), date.getDate()));
+                    const dayNum = d.getUTCDay() || 7;
+                    d.setUTCDate(d.getUTCDate() + 4 - dayNum);
+                    const yearStart = new Date(Date.UTC(d.getUTCFullYear(), 0, 1));
+                    return Math.ceil((((d - yearStart) / 86400000) + 1) / 7);
+                };
 
                 for (let w = 7; w >= 0; w--) {
                     const fineSettimana = new Date();
@@ -1641,7 +1650,14 @@
                     const inizioSettimana = new Date(fineSettimana);
                     inizioSettimana.setDate(inizioSettimana.getDate() - 6);
 
-                    etichetteSettimane.push("S" + (8 - w));
+                    // Calcola il numero della settimana basandosi sulla data d'inizio della settimana
+                    const numSettimana = getWeekNumber(inizioSettimana);
+
+                    // Puoi scegliere il formato che preferisci per l'etichetta dell'asse X:
+                    etichetteSettimane.push(numSettimana);
+
+                    // In alternativa, se vuoi solo il numero o un formato tipo "W26":
+                    // etichetteSettimane.push("W" + numSettimana);
 
                     // Filtra i record inseriti in questa settimana
                     const recordSettimanali = db.filter(x => {
