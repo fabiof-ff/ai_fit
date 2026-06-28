@@ -367,9 +367,12 @@
                         <p class="text-base font-bold text-rose-400 mb-1.5"><span id="totCalorie">0</span><span
                                 class="text-xs text-slate-500 font-normal"> / <span id="targetCalorieVal">—</span>
                                 kcal</span></p>
-                        <div class="w-full h-2 bg-slate-800 rounded-full overflow-hidden">
+                        <div class="w-full h-2 bg-slate-800 rounded-full relative mt-1.5">
                             <div id="barCalorie" class="h-full bg-gradient-to-r from-rose-500 to-rose-600 rounded-full"
                                 style="width: 0%;"></div>
+                            <span id="arrowCalorie"
+                                class="absolute top-[-6px] left-[100%] -translate-x-1/2 w-0 h-0 border-l-[5px] border-l-transparent border-r-[5px] border-r-transparent border-t-[6px] border-t-rose-400 transition-all duration-300"
+                                title="Target"></span>
                         </div>
                     </div>
                     <div class="bg-slate-900/50 rounded-xl p-2.5">
@@ -380,9 +383,12 @@
                         <p class="text-base font-bold text-blue-400 mb-1.5"><span id="totProteine">0</span><span
                                 class="text-xs text-slate-500 font-normal"> / <span id="targetProteineVal">—</span>
                                 g</span></p>
-                        <div class="w-full h-2 bg-slate-800 rounded-full overflow-hidden">
+                        <div class="w-full h-2 bg-slate-800 rounded-full relative mt-1.5">
                             <div id="barProteine" class="h-full bg-gradient-to-r from-blue-500 to-blue-600 rounded-full"
                                 style="width: 0%;"></div>
+                            <span id="arrowProteine"
+                                class="absolute top-[-6px] left-[100%] -translate-x-1/2 w-0 h-0 border-l-[5px] border-l-transparent border-r-[5px] border-r-transparent border-t-[6px] border-t-blue-500 transition-all duration-300"
+                                title="Target"></span>
                         </div>
                     </div>
                     <div class="bg-slate-900/50 rounded-xl p-2.5">
@@ -393,10 +399,13 @@
                         <p class="text-base font-bold text-emerald-400 mb-1.5"><span id="totCarbo">0</span><span
                                 class="text-xs text-slate-500 font-normal"> / <span id="targetCarboVal">—</span>
                                 g</span></p>
-                        <div class="w-full h-2 bg-slate-800 rounded-full overflow-hidden">
+                        <div class="w-full h-2 bg-slate-800 rounded-full relative mt-1.5">
                             <div id="barCarbo"
                                 class="h-full bg-gradient-to-r from-emerald-500 to-emerald-600 rounded-full"
                                 style="width: 0%;"></div>
+                            <span id="arrowCarbo"
+                                class="absolute top-[-6px] left-[100%] -translate-x-1/2 w-0 h-0 border-l-[5px] border-l-transparent border-r-[5px] border-r-transparent border-t-[6px] border-t-emerald-500 transition-all duration-300"
+                                title="Target"></span>
                         </div>
                     </div>
                     <div class="bg-slate-900/50 rounded-xl p-2.5">
@@ -407,9 +416,12 @@
                         <p class="text-base font-bold text-amber-400 mb-1.5"><span id="totGrassi">0</span><span
                                 class="text-xs text-slate-500 font-normal"> / <span id="targetGrassiVal">—</span>
                                 g</span></p>
-                        <div class="w-full h-2 bg-slate-800 rounded-full overflow-hidden">
+                        <div class="w-full h-2 bg-slate-800 rounded-full relative mt-1.5">
                             <div id="barGrassi" class="h-full bg-gradient-to-r from-amber-500 to-amber-600 rounded-full"
                                 style="width: 0%;"></div>
+                            <span id="arrowGrassi"
+                                class="absolute top-[-6px] left-[100%] -translate-x-1/2 w-0 h-0 border-l-[5px] border-l-transparent border-r-[5px] border-r-transparent border-t-[6px] border-t-amber-400 transition-all duration-300"
+                                title="Target"></span>
                         </div>
                     </div>
                 </div>
@@ -1149,10 +1161,36 @@
                 document.getElementById('percCarbo').innerText = pCarb + '%';
                 document.getElementById('percGrassi').innerText = pFat + '%';
 
-                document.getElementById('barCalorie').style.width = Math.min(pCal, 100) + '%';
-                document.getElementById('barProteine').style.width = Math.min(pProt, 100) + '%';
-                document.getElementById('barCarbo').style.width = Math.min(pCarb, 100) + '%';
-                document.getElementById('barGrassi').style.width = Math.min(pFat, 100) + '%';
+                const calcolaBarraETargetDati = (attuale, target) => {
+                    if (!target || target <= 0) return { barra: '0%', freccia: '100%' };
+                    if (attuale > target) {
+                        return {
+                            barra: '100%',
+                            freccia: ((target / attuale) * 100) + '%'
+                        };
+                    } else {
+                        return {
+                            barra: ((attuale / target) * 100) + '%',
+                            freccia: '100%'
+                        };
+                    }
+                };
+
+                const resCal = calcolaBarraETargetDati(cal, targetCalorie);
+                document.getElementById('barCalorie').style.width = resCal.barra;
+                document.getElementById('arrowCalorie').style.left = resCal.freccia;
+
+                const resProt = calcolaBarraETargetDati(prot, targetProteine);
+                document.getElementById('barProteine').style.width = resProt.barra;
+                document.getElementById('arrowProteine').style.left = resProt.freccia;
+
+                const resCarb = calcolaBarraETargetDati(carb, targetCarbo);
+                document.getElementById('barCarbo').style.width = resCarb.barra;
+                document.getElementById('arrowCarbo').style.left = resCarb.freccia;
+
+                const resFat = calcolaBarraETargetDati(fat, targetGrassi);
+                document.getElementById('barGrassi').style.width = resFat.barra;
+                document.getElementById('arrowGrassi').style.left = resFat.freccia;
             } else {
                 document.getElementById('boxTotaleGiorno').classList.add('hidden');
             }
