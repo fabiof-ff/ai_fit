@@ -269,55 +269,56 @@
             <div class="border-t border-slate-700 mt-4 pt-4">
                 <label class="text-[11px] font-semibold text-slate-400 uppercase tracking-wider block mb-3">Target
                     giornalieri</label>
-                <div class="grid grid-cols-2 gap-2 sm:gap-3">
-                    <div>
-                        <label class="text-[11px] font-semibold text-slate-400 uppercase tracking-wider">Target
-                            Calorie</label>
-                        <div class="flex items-center gap-1.5 mt-1">
-                            <input type="number" id="targetCalorie" oninput="saveTarget()"
-                                class="flex-1 bg-slate-900 border border-slate-700 rounded-xl p-2 text-xs sm:text-sm focus:outline-none focus:ring-2 focus:ring-rose-500 text-slate-200"
-                                placeholder="2000" min="0">
-                            <span class="text-xs text-slate-500">kcal</span>
+                <div class="space-y-2">
+                    <!-- Riga 1: Peso e Calorie (2 colonne) -->
+                    <div class="grid grid-cols-2 gap-2">
+                        <div class="flex items-center justify-between bg-slate-900 border border-slate-700/60 py-2 px-3 rounded-xl">
+                            <span class="text-[10px] font-semibold text-slate-400 uppercase tracking-wider">Target Peso</span>
+                            <div class="flex items-center gap-1">
+                                <input type="number" id="targetPeso" oninput="saveTarget()" step="0.1"
+                                    class="w-12 bg-slate-950 border border-slate-800 rounded-lg py-1 px-1.5 text-center text-xs focus:outline-none focus:ring-1 focus:ring-indigo-500 text-slate-200"
+                                    placeholder="75" min="0">
+                                <span class="text-[10px] text-slate-500">kg</span>
+                            </div>
+                        </div>
+                        <div class="flex items-center justify-between bg-slate-900 border border-slate-700/60 py-2 px-3 rounded-xl">
+                            <span class="text-[10px] font-semibold text-slate-400 uppercase tracking-wider">Calorie</span>
+                            <div class="flex items-center gap-1">
+                                <input type="number" id="targetCalorie" oninput="saveTarget()"
+                                    class="w-14 bg-slate-950 border border-slate-800 rounded-lg py-1 px-1.5 text-center text-xs focus:outline-none focus:ring-1 focus:ring-rose-500 text-slate-200"
+                                    placeholder="2000" min="0">
+                                <span class="text-[10px] text-slate-500">kcal</span>
+                            </div>
                         </div>
                     </div>
-                    <div>
-                        <label class="text-[11px] font-semibold text-slate-400 uppercase tracking-wider">Target
-                            Proteine</label>
-                        <div class="flex items-center gap-1.5 mt-1">
-                            <input type="number" id="targetProteine" oninput="saveTarget()"
-                                class="flex-1 bg-slate-900 border border-slate-700 rounded-xl p-2 text-xs sm:text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 text-slate-200"
-                                placeholder="160" min="0">
-                            <span class="text-xs text-slate-500">g</span>
+                    <!-- Riga 2: Proteine, Carboidrati, Grassi (3 colonne) -->
+                    <div class="grid grid-cols-3 gap-2">
+                        <div class="flex flex-col items-center bg-slate-900 border border-slate-700/60 py-1.5 px-2 rounded-xl">
+                            <span class="text-[9px] font-semibold text-slate-400 uppercase tracking-wider mb-1">Proteine</span>
+                            <div class="flex items-center gap-1">
+                                <input type="number" id="targetProteine" oninput="saveTarget()"
+                                    class="w-10 bg-slate-950 border border-slate-800 rounded-lg py-0.5 px-1 text-center text-xs focus:outline-none focus:ring-1 focus:ring-blue-500 text-slate-200"
+                                    placeholder="160" min="0">
+                                <span class="text-[9px] text-slate-500">g</span>
+                            </div>
                         </div>
-                    </div>
-                    <div>
-                        <label class="text-[11px] font-semibold text-slate-400 uppercase tracking-wider">Target
-                            Carboidrati</label>
-                        <div class="flex items-center gap-1.5 mt-1">
-                            <input type="number" id="targetCarbo" oninput="saveTarget()"
-                                class="flex-1 bg-slate-900 border border-slate-700 rounded-xl p-2 text-xs sm:text-sm focus:outline-none focus:ring-2 focus:ring-emerald-500 text-slate-200"
-                                placeholder="200" min="0">
-                            <span class="text-xs text-slate-500">g</span>
+                        <div class="flex flex-col items-center bg-slate-900 border border-slate-700/60 py-1.5 px-2 rounded-xl">
+                            <span class="text-[9px] font-semibold text-slate-400 uppercase tracking-wider mb-1">Carboidrati</span>
+                            <div class="flex items-center gap-1">
+                                <input type="number" id="targetCarbo" oninput="saveTarget()"
+                                    class="w-10 bg-slate-950 border border-slate-800 rounded-lg py-0.5 px-1 text-center text-xs focus:outline-none focus:ring-1 focus:ring-emerald-500 text-slate-200"
+                                    placeholder="200" min="0">
+                                <span class="text-[9px] text-slate-500">g</span>
+                            </div>
                         </div>
-                    </div>
-                    <div>
-                        <label class="text-[11px] font-semibold text-slate-400 uppercase tracking-wider">Target
-                            Grassi</label>
-                        <div class="flex items-center gap-1.5 mt-1">
-                            <input type="number" id="targetGrassi" oninput="saveTarget()"
-                                class="flex-1 bg-slate-900 border border-slate-700 rounded-xl p-2 text-xs sm:text-sm focus:outline-none focus:ring-2 focus:ring-amber-500 text-slate-200"
-                                placeholder="70" min="0">
-                            <span class="text-xs text-slate-500">g</span>
-                        </div>
-                    </div>
-                    <div>
-                        <label class="text-[11px] font-semibold text-slate-400 uppercase tracking-wider">Target
-                            Peso</label>
-                        <div class="flex items-center gap-1.5 mt-1">
-                            <input type="number" id="targetPeso" oninput="saveTarget()" step="0.1"
-                                class="flex-1 bg-slate-900 border border-slate-700 rounded-xl p-2 text-xs sm:text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 text-slate-200"
-                                placeholder="75" min="0">
-                            <span class="text-xs text-slate-500">kg</span>
+                        <div class="flex flex-col items-center bg-slate-900 border border-slate-700/60 py-1.5 px-2 rounded-xl">
+                            <span class="text-[9px] font-semibold text-slate-400 uppercase tracking-wider mb-1">Grassi</span>
+                            <div class="flex items-center gap-1">
+                                <input type="number" id="targetGrassi" oninput="saveTarget()"
+                                    class="w-10 bg-slate-950 border border-slate-800 rounded-lg py-0.5 px-1 text-center text-xs focus:outline-none focus:ring-1 focus:ring-amber-500 text-slate-200"
+                                    placeholder="70" min="0">
+                                <span class="text-[9px] text-slate-500">g</span>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -627,6 +628,18 @@
                 class="sub-tab-btn flex-1 py-1.5 rounded-lg text-xs font-semibold">
                 Storico Mensile
             </button>
+        </div>
+
+        <!-- Pulsante di analisi dell'andamento con AI -->
+        <div class="mb-4">
+            <button id="btnAnalisiTrendAI" onclick="analizzaTrendConAI()"
+                class="w-full bg-slate-700/50 hover:bg-slate-700 border border-slate-600/30 text-slate-200 font-bold py-2.5 px-4 rounded-xl shadow-lg transition active:scale-[0.98] flex items-center justify-center gap-2 text-xs cursor-pointer">
+                <i data-lucide="sparkles" class="w-4 h-4 text-indigo-400"></i>
+                <span id="btnAnalisiTrendLabel">Chiedi parere ad AI sull'andamento</span>
+            </button>
+            <div id="boxAnalisiTrendAI" class="mt-3 p-3.5 bg-slate-800/80 rounded-xl border border-slate-700/50 hidden text-xs leading-relaxed text-slate-300">
+                <p id="testoAnalisiTrendAI"></p>
+            </div>
         </div>
 
         <p id="trendTitle" class="text-sm font-semibold text-slate-300 mb-4 flex items-center gap-2">
@@ -2929,6 +2942,147 @@ Rispondi ESCLUSIVAMENTE con un oggetto JSON valido (senza markdown, senza racchi
                 }
             }, 200);
         }
+
+        // ================================================================
+        // ANALISI ANDAMENTO STORICO CON AI
+        // ================================================================
+        window.analizzaTrendConAI = async function () {
+            const geminiKey = localStorage.getItem('gemini_apikey');
+            if (!geminiKey) {
+                await customAlert("API Key mancante", "Inserisci prima la tua API Key nelle impostazioni (icona ingranaggio in alto).");
+                return;
+            }
+
+            const btn = document.getElementById('btnAnalisiTrendAI');
+            const label = document.getElementById('btnAnalisiTrendLabel');
+            const box = document.getElementById('boxAnalisiTrendAI');
+            const testo = document.getElementById('testoAnalisiTrendAI');
+
+            btn.disabled = true;
+            btn.style.opacity = "0.6";
+            const prevLabelHTML = label.innerHTML;
+            label.innerHTML = `<i data-lucide="loader-2" class="w-3.5 h-3.5 animate-spin"></i> Analisi in corso...`;
+            if (typeof lucide !== 'undefined') lucide.createIcons();
+
+            box.classList.remove('hidden');
+            testo.innerHTML = `<span class="italic text-slate-400">L'AI sta analizzando i tuoi andamenti storici...</span>`;
+
+            // Raccogli i dati del database nutriDB
+            const db = JSON.parse(localStorage.getItem('nutriDB')) || [];
+            if (db.length === 0) {
+                btn.disabled = false;
+                btn.style.opacity = "1";
+                label.innerHTML = prevLabelHTML;
+                if (typeof lucide !== 'undefined') lucide.createIcons();
+                testo.innerHTML = `<span class="italic text-rose-400">Nessun dato presente nel diario per effettuare l'analisi.</span>`;
+                return;
+            }
+
+            // 1. Raccoglie dati a BREVE PERIODO (Ultimi 7 Giorni reali)
+            let datiBrevePeriodo = "";
+            let giorniRegistratiCount = 0;
+            for (let i = 6; i >= 0; i--) {
+                const d = new Date();
+                d.setDate(d.getDate() - i);
+                const costr = `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`;
+                const trovato = db.find(x => x.data === costr);
+                if (trovato && (trovato.calorie > 0 || trovato.proteine > 0 || trovato.pasti.length > 0)) {
+                    datiBrevePeriodo += `- Data ${costr}: Calorie ${Math.round(trovato.calorie)} kcal, Proteine ${Math.round(trovato.proteine)}g, Carbo ${Math.round(trovato.carboidrati)}g, Grassi ${Math.round(trovato.grassi)}g, Peso ${trovato.peso || 'non registrato'} kg\n`;
+                    giorniRegistratiCount++;
+                } else {
+                    datiBrevePeriodo += `- Data ${costr}: Nessun dato registrato (ignora questo giorno dall'analisi)\n`;
+                }
+            }
+
+            // 2. Raccoglie dati a MEDIO PERIODO (Ultime 8 Settimane medie)
+            let datiMedioPeriodo = "";
+            let settimaneRegistrateCount = 0;
+            const getWeekNumber = (date) => {
+                const d = new Date(Date.UTC(date.getFullYear(), date.getMonth(), date.getDate()));
+                const dayNum = d.getUTCDay() || 7;
+                d.setUTCDate(d.getUTCDate() + 4 - dayNum);
+                const yearStart = new Date(Date.UTC(d.getUTCFullYear(), 0, 1));
+                return Math.ceil((((d - yearStart) / 86400000) + 1) / 7);
+            };
+
+            for (let w = 7; w >= 0; w--) {
+                const fineSettimana = new Date();
+                fineSettimana.setDate(fineSettimana.getDate() - (w * 7));
+                const inizioSettimana = new Date(fineSettimana);
+                inizioSettimana.setDate(inizioSettimana.getDate() - 6);
+
+                const numSettimana = getWeekNumber(inizioSettimana);
+                const recordSettimanali = db.filter(x => {
+                    const d = new Date(x.data);
+                    return d >= inizioSettimana.setHours(0, 0, 0, 0) && d <= fineSettimana.setHours(23, 59, 59, 999);
+                });
+
+                const recordAttivi = recordSettimanali.filter(r => r.calorie > 0 || r.proteine > 0);
+                const recordConPeso = recordSettimanali.filter(r => r.peso && r.peso > 0);
+
+                if (recordAttivi.length > 0) {
+                    const mediaC = recordAttivi.reduce((a, b) => a + (b.calorie || 0), 0) / recordAttivi.length;
+                    const mediaP = recordAttivi.reduce((a, b) => a + (b.proteine || 0), 0) / recordAttivi.length;
+                    const mediaCb = recordAttivi.reduce((a, b) => a + (b.carboidrati || 0), 0) / recordAttivi.length;
+                    const mediaG = recordAttivi.reduce((a, b) => a + (b.grassi || 0), 0) / recordAttivi.length;
+                    const mediaPeso = recordConPeso.length > 0 ? recordConPeso.reduce((a, b) => a + b.peso, 0) / recordConPeso.length : null;
+
+                    datiMedioPeriodo += `- Settimana ${numSettimana} (da ${inizioSettimana.toLocaleDateString('it-IT')} a ${fineSettimana.toLocaleDateString('it-IT')}): Calorie medie ${Math.round(mediaC)} kcal/giorno, Proteine ${Math.round(mediaP)}g, Carbo ${Math.round(mediaCb)}g, Grassi ${Math.round(mediaG)}g, Peso medio ${mediaPeso ? mediaPeso.toFixed(1) + ' kg' : 'non registrato'}\n`;
+                    settimaneRegistrateCount++;
+                } else {
+                    datiMedioPeriodo += `- Settimana ${numSettimana} (da ${inizioSettimana.toLocaleDateString('it-IT')} a ${fineSettimana.toLocaleDateString('it-IT')}): Nessun dato registrato (ignora questa settimana dall'analisi)\n`;
+                }
+            }
+
+            const promptAI = `Sei un esperto nutrizionista clinico e trainer sportivo. Analizza l'andamento recente dei pasti e del peso corporeo dell'utente su due finestre temporali rispetto ai suoi target impostati.
+
+Target attuali dell'utente:
+- Calorie: ${targetCalorie} kcal
+- Proteine: ${targetProteine} g
+- Carboidrati: ${targetCarbo} g
+- Grassi: ${targetGrassi} g
+- Peso Target: ${pesoTarget} kg
+
+Dati a BREVE PERIODO (Ultimi 7 Giorni, di cui ${giorniRegistratiCount} con dati effettivi):
+${datiBrevePeriodo}
+
+Dati a MEDIO PERIODO (Ultime 8 Settimane, di cui ${settimaneRegistrateCount} con dati effettivi):
+${datiMedioPeriodo}
+
+            REGOLE CRITICHE PER L'ANALISI:
+            1. Sii sintetico ma esplicativo (massimo 2-3 frasi chiare per sezione).
+            2. NON riportare analisi giorno per giorno o settimana per settimana. NON ripetere, elencare o citare date o dati specifici ricevuti, ma limitati a riassumere l'andamento globale con un tono costruttivo e motivante.
+            3. Considera solo i giorni/settimane in cui ci sono delle registrazioni effettive.
+            4. Se la costanza di inserimento è bassa, incoraggia brevemente l'utente a registrare con più regolarità.
+
+            Fornisci una valutazione separata e compatta, strutturata esattamente come segue (massimo 2-3 frasi per sezione, usa il grassetto per i titoli):
+
+            **Breve Periodo**: [Valutazione chiara e discorsiva sull'andamento calorico e macronutrienti recente].
+            **Medio Periodo**: [Valutazione chiara e discorsiva sulla tendenza del peso rispetto al target].
+            **Consiglio**: [Un suggerimento pratico, motivante e immediato per ottimizzare i progressi o la costanza].`;
+
+            try {
+                const response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/${GEMINI_MODEL}:generateContent?key=${geminiKey}`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        contents: [{ parts: [{ text: promptAI }] }]
+                    })
+                });
+                if (!response.ok) throw new Error("Errore risposta server Gemini API");
+                const data = await response.json();
+                const rawResponse = data.candidates[0].content.parts[0].text;
+                testo.innerHTML = rawResponse.replace(/\n/g, '<br>');
+            } catch (err) {
+                console.error(err);
+                testo.innerHTML = `<span class="italic text-rose-400">Si è verificato un errore durante l'analisi. Verifica la tua connessione internet o la chiave API.</span>`;
+            } finally {
+                btn.disabled = false;
+                btn.style.opacity = "1";
+                label.innerHTML = prevLabelHTML;
+                if (typeof lucide !== 'undefined') lucide.createIcons();
+            }
+        };
     </script>
 </body>
 
