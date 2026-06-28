@@ -248,8 +248,8 @@
             </div>
             <div class="flex items-center gap-2">
                 <button onclick="cycleLang()" id="btnLangToggle" title="Cambia lingua / Change language"
-                    class="text-slate-400 hover:text-slate-200 p-2 rounded-xl bg-slate-700/30 hover:bg-slate-700/60 transition text-xs font-bold">
-                    🌐 <span id="langLabel">IT</span>
+                    class="text-slate-400 hover:text-slate-200 px-2.5 py-1.5 rounded-xl bg-slate-700/30 hover:bg-slate-700/60 transition text-xs font-bold flex items-center gap-1.5">
+                    <span id="langFlag">🇮🇹</span> <span id="langLabel">IT</span>
                 </button>
                 <button onclick="toggleSettings()"
                     class="text-slate-400 hover:text-slate-200 p-2 rounded-xl bg-slate-700/30 hover:bg-slate-700/60 transition">
@@ -270,14 +270,6 @@
                 <input type="password" id="geminiKey" oninput="saveGeminiKey()"
                     class="mt-1 w-full bg-slate-900 border border-slate-700 rounded-xl p-3 text-sm focus:outline-none focus:ring-2 focus:ring-purple-500 text-slate-200"
                     placeholder="AIza...">
-            </div>
-            <div class="mb-4">
-                <label data-i18n="label_language" class="text-[11px] font-semibold text-slate-400 uppercase tracking-wider">Lingua / Language</label>
-                <select id="appLanguage" onchange="changeLanguage(this.value)"
-                    class="mt-1 w-full bg-slate-900 border border-slate-700 rounded-xl p-3 text-sm focus:outline-none focus:ring-2 focus:ring-purple-500 text-slate-200 cursor-pointer">
-                    <option value="it">Italiano</option>
-                    <option value="en">English</option>
-                </select>
             </div>
 
             <div class="border-t border-slate-700 mt-4 pt-4">
@@ -1128,12 +1120,12 @@
         window.changeLanguage = function (lang) {
             window.currentLang = lang;
             localStorage.setItem('app_lang', lang);
-            const selectLang = document.getElementById('appLanguage');
-            if (selectLang) selectLang.value = lang;
 
             // 0. Aggiorna il badge lingua nel header
             const langLabel = document.getElementById('langLabel');
             if (langLabel) langLabel.innerText = lang.toUpperCase();
+            const langFlag = document.getElementById('langFlag');
+            if (langFlag) langFlag.innerText = lang === 'it' ? '🇮🇹' : '🇬🇧';
 
             // 1. Aggiorna tutti gli elementi statici con data-i18n
             document.querySelectorAll('[data-i18n]').forEach(el => {
