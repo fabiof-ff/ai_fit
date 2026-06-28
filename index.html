@@ -1252,6 +1252,14 @@
             const grassi = document.getElementById('totGrassi').innerText;
             const targetGrassi = document.getElementById('targetGrassiVal').innerText;
 
+            // Recupera l'elenco dei pasti di oggi dal database locale
+            const dataOggi = ottieniDataOggi();
+            const db = JSON.parse(localStorage.getItem('nutriDB')) || [];
+            const giornoOggi = db.find(g => g.data === dataOggi);
+            const pastiDellaGiornata = giornoOggi && giornoOggi.pasti && giornoOggi.pasti.length > 0
+                ? giornoOggi.pasti.map(p => `- [${p.ora || ''}] ${p.testo} (${p.calorie} kcal)`).join('\n')
+                : "Nessun pasto registrato ancora oggi.";
+
             // Recupera credenziali di configurazione
             const geminiKey = localStorage.getItem('gemini_apikey');
 
@@ -1275,6 +1283,11 @@
     - Proteine: ${proteine}g consumate su un target di ${targetProteine}g.
     - Carboidrati: ${carbo}g consumati su un target di ${targetCarbo}g.
     - Grassi: ${grassi}g consumati su un target di ${targetGrassi}g.
+    
+    Pasti consumati oggi:
+    ${pastiDellaGiornata}
+    
+    Analizza i pasti consumati oggi per comprendere il contesto (ad esempio, quali pasti principali come colazione, pranzo, cena o spuntini sono già stati effettuati, o l'orario e la tipologia di alimenti scelti) ed evita assolutamente di proporre pasti che sono già stati consumati (es. non suggerire un pranzo completo se l'utente ha già pranzato, o non suggerire pasta a cena se ha già raggiunto o superato i target di carbo). Fornisci invece spunti mirati per gli spuntini mancanti o per la cena/colazione qualora manchino all'appello.
     Rispondi in massimo 3 o 4 frasi, in modo molto compatto, usando elenchi puntati se necessario. Sii motivante.`;
 
             try {
