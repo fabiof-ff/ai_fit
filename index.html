@@ -323,14 +323,15 @@
                 class="tab-btn flex-1 flex items-center justify-center gap-1.5 py-2.5 rounded-xl text-xs font-bold border active">
                 <i data-lucide="utensils" class="w-3.5 h-3.5"></i> Dati
             </button>
-            <button id="tab-storico" onclick="switchTab('storico')"
-                class="tab-btn flex-1 flex items-center justify-center gap-1.5 py-2.5 rounded-xl text-xs font-bold border">
-                <i data-lucide="clock" class="w-3.5 h-3.5"></i> Storico
-            </button>
             <button id="tab-trend" onclick="switchTab('trend')"
                 class="tab-btn flex-1 flex items-center justify-center gap-1.5 py-2.5 rounded-xl text-xs font-bold border">
                 <i data-lucide="trending-up" class="w-3.5 h-3.5"></i> Trend
             </button>
+            <button id="tab-storico" onclick="switchTab('storico')"
+                class="tab-btn flex-1 flex items-center justify-center gap-1.5 py-2.5 rounded-xl text-xs font-bold border">
+                <i data-lucide="clock" class="w-3.5 h-3.5"></i> Storico
+            </button>
+
         </div>
 
         <div id="panel-oggi" class="tab-panel active">
@@ -518,38 +519,6 @@
 
     </div>
 
-    <div id="panel-storico" class="tab-panel p-4 max-w-lg mx-auto w-full">
-
-        <div class="flex items-center justify-between mb-3">
-            <p class="text-sm font-semibold text-slate-300 flex items-center gap-2">
-                <i data-lucide="book-open" class="w-4 h-4 text-blue-400"></i> Diario alimentare
-            </p>
-            <button onclick="confermaReset()"
-                class="text-[11px] text-slate-500 hover:text-rose-400 transition flex items-center gap-1">
-                <i data-lucide="trash-2" class="w-3.5 h-3.5"></i> Cancella tutto
-            </button>
-        </div>
-
-        <div class="flex gap-2 mb-4">
-            <button onclick="esportaDB()"
-                class="flex-1 flex items-center justify-center gap-1.5 py-2.5 rounded-xl text-xs font-bold border bg-slate-800/60 border-slate-700/50 text-slate-400 hover:text-emerald-400 hover:border-emerald-500/40 transition">
-                <i data-lucide="download" class="w-3.5 h-3.5"></i> Esporta dati
-            </button>
-            <button onclick="document.getElementById('importInput').click()"
-                class="flex-1 flex items-center justify-center gap-1.5 py-2.5 rounded-xl text-xs font-bold border bg-slate-800/60 border-slate-700/50 text-slate-400 hover:text-blue-400 hover:border-blue-500/40 transition">
-                <i data-lucide="upload" class="w-3.5 h-3.5"></i> Importa dati
-            </button>
-        </div>
-
-        <div class="max-h-[450px] overflow-y-auto pr-1 custom-scrollbar">
-            <div id="listaStorico" class="space-y-3">
-                <p class="text-sm text-slate-500 text-center py-8">Nessun pasto salvato ancora.<br>Elabora e salva
-                    un'analisi dalla tab Oggi!</p>
-            </div>
-        </div>
-
-    </div>
-
     <div id="panel-trend" class="tab-panel p-4 max-w-lg mx-auto w-full">
 
         <div class="flex bg-slate-950 p-1 rounded-xl mb-4 border border-slate-800">
@@ -594,7 +563,7 @@
                 </div>
                 <div class="bg-slate-800/60 rounded-xl p-3 text-left">
                     <div class="flex justify-between items-baseline mb-1">
-                        <p class="text-[10px] text-slate-500 uppercase font-semibold">Carboidrati</p>
+                        <p class="text-[10px] text-slate-500 uppercase font-semibold">Carbo</p>
                         <p class="text-xs font-bold text-emerald-400"><span id="mediaCarbo">—</span><span
                                 class="text-[10px] font-normal text-slate-500">g / <span
                                     id="trendTargetCarbo">—</span>g</span></p>
@@ -714,6 +683,40 @@
             </div>
         </div>
     </div>
+
+    <div id="panel-storico" class="tab-panel p-4 max-w-lg mx-auto w-full">
+
+        <div class="flex items-center justify-between mb-3">
+            <p class="text-sm font-semibold text-slate-300 flex items-center gap-2">
+                <i data-lucide="book-open" class="w-4 h-4 text-blue-400"></i> Diario alimentare
+            </p>
+            <button onclick="confermaReset()"
+                class="text-[11px] text-slate-500 hover:text-rose-400 transition flex items-center gap-1">
+                <i data-lucide="trash-2" class="w-3.5 h-3.5"></i> Cancella tutto
+            </button>
+        </div>
+
+        <div class="flex gap-2 mb-4">
+            <button onclick="esportaDB()"
+                class="flex-1 flex items-center justify-center gap-1.5 py-2.5 rounded-xl text-xs font-bold border bg-slate-800/60 border-slate-700/50 text-slate-400 hover:text-emerald-400 hover:border-emerald-500/40 transition">
+                <i data-lucide="download" class="w-3.5 h-3.5"></i> Esporta dati
+            </button>
+            <button onclick="document.getElementById('importInput').click()"
+                class="flex-1 flex items-center justify-center gap-1.5 py-2.5 rounded-xl text-xs font-bold border bg-slate-800/60 border-slate-700/50 text-slate-400 hover:text-blue-400 hover:border-blue-500/40 transition">
+                <i data-lucide="upload" class="w-3.5 h-3.5"></i> Importa dati
+            </button>
+        </div>
+
+        <div class="max-h-[450px] overflow-y-auto pr-1 custom-scrollbar">
+            <div id="listaStorico" class="space-y-3">
+                <p class="text-sm text-slate-500 text-center py-8">Nessun pasto salvato ancora.<br>Elabora e salva
+                    un'analisi dalla tab Oggi!</p>
+            </div>
+        </div>
+
+    </div>
+
+
     </div>
 
     <script>
