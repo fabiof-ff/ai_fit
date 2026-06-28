@@ -308,13 +308,17 @@
                     <div id="aiTargetBox" class="hidden mt-3 p-3 bg-slate-900/60 rounded-xl border border-slate-700/50 space-y-3">
                         <p class="text-xs font-semibold text-slate-300">Generatore Target AI</p>
                         
-                        <div class="grid grid-cols-2 gap-2">
+                        <div class="grid grid-cols-3 gap-2">
                             <div>
-                                <label class="text-[10px] font-bold text-slate-500 uppercase tracking-wider block">Peso (kg)</label>
+                                <label class="text-[9px] font-bold text-slate-500 uppercase tracking-wider block">Peso Att. (kg)</label>
                                 <input type="number" id="aiPeso" placeholder="es. 75" class="mt-1 w-full bg-slate-800 border border-slate-700 rounded-lg p-2 text-xs text-slate-200 focus:outline-none focus:ring-1 focus:ring-purple-500">
                             </div>
                             <div>
-                                <label class="text-[10px] font-bold text-slate-500 uppercase tracking-wider block">Altezza (cm)</label>
+                                <label class="text-[9px] font-bold text-slate-500 uppercase tracking-wider block">Peso Des. (kg)</label>
+                                <input type="number" id="aiPesoTarget" placeholder="es. 70" class="mt-1 w-full bg-slate-800 border border-slate-700 rounded-lg p-2 text-xs text-slate-200 focus:outline-none focus:ring-1 focus:ring-purple-500">
+                            </div>
+                            <div>
+                                <label class="text-[9px] font-bold text-slate-500 uppercase tracking-wider block">Altezza (cm)</label>
                                 <input type="number" id="aiAltezza" placeholder="es. 180" class="mt-1 w-full bg-slate-800 border border-slate-700 rounded-lg p-2 text-xs text-slate-200 focus:outline-none focus:ring-1 focus:ring-purple-500">
                             </div>
                         </div>
@@ -2667,10 +2671,26 @@
             if (box) {
                 box.classList.toggle('hidden');
                 if (!box.classList.contains('hidden')) {
-                    const currentWeightVal = document.getElementById('targetPeso')?.value;
                     const aiPesoInput = document.getElementById('aiPeso');
-                    if (currentWeightVal && aiPesoInput && !aiPesoInput.value) {
-                        aiPesoInput.value = currentWeightVal;
+                    if (aiPesoInput && !aiPesoInput.value) {
+                        const db = JSON.parse(localStorage.getItem('nutriDB')) || [];
+                        const giorniConPeso = db.filter(g => g.peso).sort((a, b) => new Date(b.data) - new Date(a.data));
+                        if (giorniConPeso.length > 0) {
+                            aiPesoInput.value = giorniConPeso[0].peso;
+                        } else {
+                            const currentTargetWeightVal = document.getElementById('targetPeso')?.value;
+                            if (currentTargetWeightVal) {
+                                aiPesoInput.value = currentTargetWeightVal;
+                            }
+                        }
+                    }
+
+                    const aiPesoTargetInput = document.getElementById('aiPesoTarget');
+                    if (aiPesoTargetInput && !aiPesoTargetInput.value) {
+                        const currentTargetWeightVal = document.getElementById('targetPeso')?.value;
+                        if (currentTargetWeightVal) {
+                            aiPesoTargetInput.value = currentTargetWeightVal;
+                        }
                     }
                 }
             }
@@ -2680,6 +2700,7 @@
 
         window.generaTargetConAI = async function () {
             const peso = document.getElementById('aiPeso').value.trim();
+            const pesoTargetInput = document.getElementById('aiPesoTarget').value.trim();
             const altezza = document.getElementById('aiAltezza').value.trim();
             const attivita = document.getElementById('aiAttivita').value.trim();
             const obiettivo = document.getElementById('aiObiettivo').value.trim();
@@ -2705,11 +2726,12 @@
 
             const promptAI = `Sei un esperto nutrizionista e trainer sportivo. Calcola i target ideali giornalieri di calorie (kcal), proteine (g), carboidrati (g), grassi (g) e suggerisci un peso target (kg) indicativo basato sui dati dell'utente:
 - Peso attuale: ${peso} kg
+${pesoTargetInput ? `- Peso target desiderato dall'utente: ${pesoTargetInput} kg` : ''}
 - Altezza: ${altezza} cm
 - Stile di vita e livello di attività fisica: ${attivita}
 - Obiettivo principale: ${obiettivo}
 
-Rispondi ESCLUSIVAMENTE con un oggetto JSON valido (senza markdown, senza racchiuderlo in codice tipo \`\`\`json) contenente le seguenti chiavi numeriche: "calorie", "proteine", "carboidrati", "grassi", "pesoTarget". Sii accurato e realistico nei calcoli (es. proteine circa 1.6-2.2g per kg per aumento massa, grassi circa 0.8-1g per kg, calorie calibrate sul TDEE calcolato).`;
+Rispondi ESCLUSIVAMENTE con un oggetto JSON valido (senza markdown, senza racchiuderlo in codice tipo \`\`\`json) contenente le seguenti chiavi numeriche: "calorie", "proteine", "carboidrati", "grassi", "pesoTarget". Il "pesoTarget" restituito deve essere possibilmente allineato a quello desiderato dell'utente se fornito, oppure ottimizzato/calibrato se irrealistico o non salutare a breve/medio termine. Sii accurato e realistico nei calcoli (es. proteine circa 1.6-2.2g per kg per aumento massa, grassi circa 0.8-1g per kg, calorie calibrate sul TDEE calcolato).`;
 
             try {
                 const response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/${GEMINI_MODEL}:generateContent?key=${apiKey}`, {
