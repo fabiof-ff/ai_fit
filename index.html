@@ -539,6 +539,7 @@
         <div class="bg-slate-800/40 border border-slate-700/50 rounded-2xl p-4 mb-4">
             <p class="text-xs text-slate-400 font-semibold uppercase tracking-wider mb-3">Media complessiva </p>
             <div class="grid grid-cols-2 gap-3">
+
                 <div class="bg-slate-800/60 rounded-xl p-3 text-left">
                     <div class="flex justify-between items-baseline mb-1">
                         <p class="text-[10px] text-slate-500 uppercase font-semibold">Calorie</p>
@@ -546,43 +547,59 @@
                                 class="text-[10px] font-normal text-slate-500"> / <span
                                     id="trendTargetCalorie">—</span></span></p>
                     </div>
-                    <div class="w-full h-1.5 bg-slate-900 rounded-full overflow-hidden mt-1">
+                    <div class="w-full h-2 bg-slate-900 rounded-full relative mt-2">
                         <div id="barMediaCalorie" class="h-full bg-rose-500 rounded-full" style="width: 0%;"></div>
+                        <span id="arrowTargetCalorie"
+                            class="absolute top-[-6px] left-[100%] -translate-x-1/2 w-0 h-0 border-l-[5px] border-l-transparent border-r-[5px] border-r-transparent border-t-[6px] border-t-rose-400 transition-all duration-300"
+                            title="Target"></span>
                     </div>
                 </div>
+
                 <div class="bg-slate-800/60 rounded-xl p-3 text-left">
                     <div class="flex justify-between items-baseline mb-1">
                         <p class="text-[10px] text-slate-500 uppercase font-semibold">Proteine</p>
                         <p class="text-xs font-bold text-blue-400"><span id="mediaProteine">—</span><span
-                                class="text-[10px] font-normal text-slate-500">g / <span
-                                    id="trendTargetProteine">—</span>g</span></p>
+                                class="text-[10px] font-normal text-slate-500"> / <span
+                                    id="trendTargetProteine">—</span></p>
                     </div>
-                    <div class="w-full h-1.5 bg-slate-900 rounded-full overflow-hidden mt-1">
+                    <div class="w-full h-2 bg-slate-900 rounded-full relative mt-2">
                         <div id="barMediaProteine" class="h-full bg-blue-500 rounded-full" style="width: 0%;"></div>
+                        <span id="arrowTargetProteine"
+                            class="absolute top-[-6px] left-[100%] -translate-x-1/2 w-0 h-0 border-l-[5px] border-l-transparent border-r-[5px] border-r-transparent border-t-[6px] border-t-blue-500 transition-all duration-300"
+                            title="Target"></span>
                     </div>
                 </div>
+
                 <div class="bg-slate-800/60 rounded-xl p-3 text-left">
                     <div class="flex justify-between items-baseline mb-1">
                         <p class="text-[10px] text-slate-500 uppercase font-semibold">Carbo</p>
                         <p class="text-xs font-bold text-emerald-400"><span id="mediaCarbo">—</span><span
-                                class="text-[10px] font-normal text-slate-500">g / <span
-                                    id="trendTargetCarbo">—</span>g</span></p>
+                                class="text-[10px] font-normal text-slate-500"> / <span
+                                    id="trendTargetCarbo">—</span></span></p>
                     </div>
-                    <div class="w-full h-1.5 bg-slate-900 rounded-full overflow-hidden mt-1">
+                    <div class="w-full h-2 bg-slate-900 rounded-full relative mt-2">
                         <div id="barMediaCarbo" class="h-full bg-emerald-500 rounded-full" style="width: 0%;"></div>
+                        <span id="arrowTargetCarbo"
+                            class="absolute top-[-6px] left-[100%] -translate-x-1/2 w-0 h-0 border-l-[5px] border-l-transparent border-r-[5px] border-r-transparent border-t-[6px] border-t-emerald-500 transition-all duration-300"
+                            title="Target"></span>
                     </div>
                 </div>
+
                 <div class="bg-slate-800/60 rounded-xl p-3 text-left">
                     <div class="flex justify-between items-baseline mb-1">
                         <p class="text-[10px] text-slate-500 uppercase font-semibold">Grassi</p>
                         <p class="text-xs font-bold text-amber-400"><span id="mediaGrassi">—</span><span
-                                class="text-[10px] font-normal text-slate-500">g / <span
-                                    id="trendTargetGrassi">—</span>g</span></p>
+                                class="text-[10px] font-normal text-slate-500"> / <span
+                                    id="trendTargetGrassi">—</span></span></p>
                     </div>
-                    <div class="w-full h-1.5 bg-slate-900 rounded-full overflow-hidden mt-1">
+                    <div class="w-full h-2 bg-slate-900 rounded-full relative mt-2">
                         <div id="barMediaGrassi" class="h-full bg-amber-500 rounded-full" style="width: 0%;"></div>
+                        <span id="arrowTargetGrassi"
+                            class="absolute top-[-6px] left-[100%] -translate-x-1/2 w-0 h-0 border-l-[5px] border-l-transparent border-r-[5px] border-r-transparent border-t-[6px] border-t-amber-400 transition-all duration-300"
+                            title="Target"></span>
                     </div>
                 </div>
+
             </div>
         </div>
 
@@ -1447,6 +1464,24 @@
         function renderTrend() {
             const db = JSON.parse(localStorage.getItem('nutriDB')) || [];
 
+            // Spostiamo la funzione qui in alto così è accessibile sia dai 7 giorni che dalle 8 settimane
+            const calcolaBarraETarget = (attuale, target) => {
+                if (!target || target <= 0) return { barra: '0%', freccia: '100%' };
+                if (attuale > target) {
+                    // Se superi il target, la barra è piena (100%) e il triangolo si sposta indietro
+                    return {
+                        barra: '100%',
+                        freccia: ((target / attuale) * 100) + '%'
+                    };
+                } else {
+                    // Se sei sotto il target, il triangolo è alla fine (100%) e la barra mostra la percentuale
+                    return {
+                        barra: ((attuale / target) * 100) + '%',
+                        freccia: '100%'
+                    };
+                }
+            };
+
             if (trendView === 'giorni') {
                 // Genera ultime 7 date reali
                 const etichetteGiorni = [];
@@ -1479,13 +1514,30 @@
                     document.getElementById('mediaCarbo').innerText = avgCarb + 'g';
                     document.getElementById('mediaGrassi').innerText = avgFat + 'g';
 
-                    document.getElementById('barMediaCalorie').style.width = (targetCalorie > 0 ? Math.min((avgCal / targetCalorie) * 100, 100) : 0) + '%';
-                    document.getElementById('barMediaProteine').style.width = (targetProteine > 0 ? Math.min((avgProt / targetProteine) * 100, 100) : 0) + '%';
-                    document.getElementById('barMediaCarbo').style.width = (targetCarbo > 0 ? Math.min((avgCarb / targetCarbo) * 100, 100) : 0) + '%';
-                    document.getElementById('barMediaGrassi').style.width = (targetGrassi > 0 ? Math.min((avgFat / targetGrassi) * 100, 100) : 0) + '%';
+                    // Calorie (7 Giorni)
+                    const resCal = calcolaBarraETarget(avgCal, targetCalorie);
+                    document.getElementById('barMediaCalorie').style.width = resCal.barra;
+                    document.getElementById('arrowTargetCalorie').style.left = resCal.freccia;
+
+                    // Proteine (7 Giorni)
+                    const resProt = calcolaBarraETarget(avgProt, targetProteine);
+                    document.getElementById('barMediaProteine').style.width = resProt.barra;
+                    document.getElementById('arrowTargetProteine').style.left = resProt.freccia;
+
+                    // Carbo (7 Giorni)
+                    const resCarb = calcolaBarraETarget(avgCarb, targetCarbo);
+                    document.getElementById('barMediaCarbo').style.width = resCarb.barra;
+                    document.getElementById('arrowTargetCarbo').style.left = resCarb.freccia;
+
+                    // Grassi (7 Giorni)
+                    const resFat = calcolaBarraETarget(avgFat, targetGrassi);
+                    document.getElementById('barMediaGrassi').style.width = resFat.barra;
+                    document.getElementById('arrowTargetGrassi').style.left = resFat.freccia;
+
                 } else {
                     ['mediaCalorie', 'mediaProteine', 'mediaCarbo', 'mediaGrassi'].forEach(id => document.getElementById(id).innerText = '—');
                     ['barMediaCalorie', 'barMediaProteine', 'barMediaCarbo', 'barMediaGrassi'].forEach(id => document.getElementById(id).style.width = '0%');
+                    ['arrowTargetCalorie', 'arrowTargetProteine', 'arrowTargetCarbo', 'arrowTargetGrassi'].forEach(id => document.getElementById(id).style.left = '100%');
                 }
 
                 const opzioniComuni = {
@@ -1498,25 +1550,6 @@
                     }
                 };
 
-                // GRAFICO PESO (7 GIORNI)
-                // if (trendPesoChart) trendPesoChart.destroy();
-                //trendPesoChart = new Chart(document.getElementById('trendPesoChart').getContext('2d'), {
-                //   type: 'line',
-                //   data: {
-                //       labels: etichetteGiorni,
-                //       datasets: [{
-                //           data: ultimiGiorni.map(g => g.peso || null),
-                //           borderColor: '#818cf8',
-                //           backgroundColor: 'rgba(129, 140, 248, 0.05)',
-                //           borderWidth: 2,
-                //           tension: 0.3,
-                //           spanGaps: true
-                //       }]
-                //   },
-                //   options: opzioniComuni
-                //});
-
-                // Altri grafici dei macro 7 Giorni
                 // CALORIE 7 GIORNI con Linea Target
                 if (trendCalorieChart) trendCalorieChart.destroy();
                 trendCalorieChart = new Chart(document.getElementById('trendCalorieChart').getContext('2d'), {
@@ -1635,7 +1668,6 @@
                 const etichetteSettimane = [];
                 const datiSettimane = [];
 
-                // Funzione interna per calcolare il numero della settimana dell'anno (ISO-8601)
                 const getWeekNumber = (date) => {
                     const d = new Date(Date.UTC(date.getFullYear(), date.getMonth(), date.getDate()));
                     const dayNum = d.getUTCDay() || 7;
@@ -1650,22 +1682,14 @@
                     const inizioSettimana = new Date(fineSettimana);
                     inizioSettimana.setDate(inizioSettimana.getDate() - 6);
 
-                    // Calcola il numero della settimana basandosi sulla data d'inizio della settimana
                     const numSettimana = getWeekNumber(inizioSettimana);
-
-                    // Puoi scegliere il formato che preferisci per l'etichetta dell'asse X:
                     etichetteSettimane.push(numSettimana);
 
-                    // In alternativa, se vuoi solo il numero o un formato tipo "W26":
-                    // etichetteSettimane.push("W" + numSettimana);
-
-                    // Filtra i record inseriti in questa settimana
                     const recordSettimanali = db.filter(x => {
                         const d = new Date(x.data);
                         return d >= inizioSettimana.setHours(0, 0, 0, 0) && d <= fineSettimana.setHours(23, 59, 59, 999);
                     });
 
-                    // Calcola le medie esatte
                     const recordAttivi = recordSettimanali.filter(r => r.calorie > 0 || r.proteine > 0 || r.carboidrati > 0 || r.grassi > 0);
                     const recordConPeso = recordSettimanali.filter(r => r.peso && r.peso > 0);
 
@@ -1691,13 +1715,31 @@
                     document.getElementById('mediaCarbo').innerText = avgCarb + 'g';
                     document.getElementById('mediaGrassi').innerText = avgFat + 'g';
 
-                    document.getElementById('barMediaCalorie').style.width = (targetCalorie > 0 ? Math.min((avgCal / targetCalorie) * 100, 100) : 0) + '%';
-                    document.getElementById('barMediaProteine').style.width = (targetProteine > 0 ? Math.min((avgProt / targetProteine) * 100, 100) : 0) + '%';
-                    document.getElementById('barMediaCarbo').style.width = (targetCarbo > 0 ? Math.min((avgCarb / targetCarbo) * 100, 100) : 0) + '%';
-                    document.getElementById('barMediaGrassi').style.width = (targetGrassi > 0 ? Math.min((avgFat / targetGrassi) * 100, 100) : 0) + '%';
+                    // RICALCOLO DINAMICO ANCHE PER LE 8 SETTIMANE:
+                    // Calorie (8 Settimane)
+                    const resCal = calcolaBarraETarget(avgCal, targetCalorie);
+                    document.getElementById('barMediaCalorie').style.width = resCal.barra;
+                    document.getElementById('arrowTargetCalorie').style.left = resCal.freccia;
+
+                    // Proteine (8 Settimane)
+                    const resProt = calcolaBarraETarget(avgProt, targetProteine);
+                    document.getElementById('barMediaProteine').style.width = resProt.barra;
+                    document.getElementById('arrowTargetProteine').style.left = resProt.freccia;
+
+                    // Carbo (8 Settimane)
+                    const resCarb = calcolaBarraETarget(avgCarb, targetCarbo);
+                    document.getElementById('barMediaCarbo').style.width = resCarb.barra;
+                    document.getElementById('arrowTargetCarbo').style.left = resCarb.freccia;
+
+                    // Grassi (8 Settimane)
+                    const resFat = calcolaBarraETarget(avgFat, targetGrassi);
+                    document.getElementById('barMediaGrassi').style.width = resFat.barra;
+                    document.getElementById('arrowTargetGrassi').style.left = resFat.freccia;
+
                 } else {
                     ['mediaCalorie', 'mediaProteine', 'mediaCarbo', 'mediaGrassi'].forEach(id => document.getElementById(id).innerText = '—');
                     ['barMediaCalorie', 'barMediaProteine', 'barMediaCarbo', 'barMediaGrassi'].forEach(id => document.getElementById(id).style.width = '0%');
+                    ['arrowTargetCalorie', 'arrowTargetProteine', 'arrowTargetCarbo', 'arrowTargetGrassi'].forEach(id => document.getElementById(id).style.left = '100%');
                 }
 
                 const opzioniComuni = {
@@ -1728,7 +1770,6 @@
                     options: opzioniComuni
                 });
 
-                // Altri grafici dei macro 8 Settimane
                 // CALORIE 8 SETTIMANE con Linea Target
                 if (weekCalorieChart) weekCalorieChart.destroy();
                 weekCalorieChart = new Chart(document.getElementById('weekCalorieChart').getContext('2d'), {
@@ -1842,7 +1883,6 @@
                 });
             }
         }
-
         // ================================================================
         // ESPORTAZIONE / IMPORTAZIONE JSON DATABASE
         // ================================================================
