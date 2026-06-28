@@ -311,6 +311,16 @@
                             <span class="text-xs text-slate-500">g</span>
                         </div>
                     </div>
+                    <div>
+                        <label class="text-[11px] font-semibold text-slate-400 uppercase tracking-wider">Target
+                            Peso</label>
+                        <div class="flex items-center gap-2 mt-1">
+                            <input type="number" id="targetPeso" oninput="saveTarget()" step="0.1"
+                                class="flex-1 bg-slate-900 border border-slate-700 rounded-xl p-3 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 text-slate-200"
+                                placeholder="75" min="0">
+                            <span class="text-xs text-slate-500">kg</span>
+                        </div>
+                    </div>
                 </div>
             </div>
 
@@ -772,6 +782,7 @@
         let targetProteine = 0; // Target giornaliero proteine
         let targetCarbo = 0; // Target giornaliero carboidrati
         let targetGrassi = 0; // Target giornaliero grassi
+        let pesoTarget = 75; // Legge il valore salvato, altrimenti usa 75
 
         // Chart.js donut
         const ctx = document.getElementById('macroChart').getContext('2d');
@@ -817,11 +828,14 @@
             targetProteine = parseInt(localStorage.getItem('target_proteine')) || 160;
             targetCarbo = parseInt(localStorage.getItem('target_carbo')) || 200;
             targetGrassi = parseInt(localStorage.getItem('target_grassi')) || 70;
+            pesoTarget = parseFloat(localStorage.getItem('targetPeso')) || 75;
+
 
             document.getElementById('targetCalorie').value = targetCalorie;
             document.getElementById('targetProteine').value = targetProteine;
             document.getElementById('targetCarbo').value = targetCarbo;
             document.getElementById('targetGrassi').value = targetGrassi;
+            document.getElementById('targetPeso').value = localStorage.getItem('targetPeso') || "";
 
             selectProvider(currentProvider, false);
 
@@ -974,13 +988,23 @@
             targetProteine = parseInt(document.getElementById('targetProteine').value) || 0;
             targetCarbo = parseInt(document.getElementById('targetCarbo').value) || 0;
             targetGrassi = parseInt(document.getElementById('targetGrassi').value) || 0;
+            pesoInput = parseInt(document.getElementById('targetPeso').value);
 
             localStorage.setItem('target_calorie', targetCalorie);
             localStorage.setItem('target_proteine', targetProteine);
             localStorage.setItem('target_carbo', targetCarbo);
             localStorage.setItem('target_grassi', targetGrassi);
+            localStorage.setItem('targetPeso', pesoInput);
 
-            aggiornaTotaleGiorno();
+            // Aggiorna la variabile globale leggendo il valore inserito (usa il fallback se vuoto)
+            pesoTarget = parseFloat(pesoInput) || 75;
+
+            // Ricalcola e ridisegna il grafico inserendo le funzioni di aggiornamento della dashboard 
+            if (typeof aggiornaGrafici === 'function') {
+                aggiornaGrafici();
+
+                aggiornaTotaleGiorno();
+            }
         }
 
         // ================================================================
@@ -1857,20 +1881,69 @@
 
                 // GRAFICO PESO MEDIO (8 SETTIMANE)
                 if (weekPesoChart) weekPesoChart.destroy();
+
+                // 1. Definisci o recupera il peso target (sostituisci con la tua variabile reale se ne hai una)
+                let pesoTarget = parseFloat(localStorage.getItem('targetPeso')) || 75; // Legge il valore salvato, altrimenti usa 75
+
+                // 2. Estrai i valori del peso reale e filtra
+                const arrayPesi = datiSettimane.map(s => s.peso).filter(p => p !== null && p !== undefined && p > 0);
+
+                let yMin = undefined;
+                let yMax = undefined;
+
+                if (arrayPesi.length > 0) {
+                    // Includiamo anche il pesoTarget nel calcolo dei limiti dell'asse Y
+                    const tuttiIValori = [...arrayPesi, pesoTarget];
+                    const minReale = Math.min(...tuttiIValori);
+                    const maxReale = Math.max(...tuttiIValori);
+
+                    // Calcolo dei limiti con il +/- 5% arrotondato all'unità
+                    yMin = Math.round(minReale * 0.97);
+                    yMax = Math.round(maxReale * 1.03);
+                }
+
                 weekPesoChart = new Chart(document.getElementById('weekPesoChart').getContext('2d'), {
                     type: 'line',
                     data: {
                         labels: etichetteSettimane,
-                        datasets: [{
-                            data: datiSettimane.map(s => s.peso),
-                            borderColor: '#6366f1',
-                            backgroundColor: 'rgba(99, 102, 241, 0.05)',
-                            borderWidth: 2,
-                            tension: 0.3,
-                            spanGaps: true
-                        }]
+                        datasets: [
+                            {
+                                label: 'Peso Reale', // Etichetta facoltativa per la legenda
+                                data: datiSettimane.map(s => s.peso),
+                                borderColor: '#6366f1',
+                                backgroundColor: 'rgba(99, 102, 241, 0.05)',
+                                borderWidth: 2,
+                                tension: 0.3,
+                                spanGaps: true
+                            },
+                            {
+                                label: 'Obiettivo',
+                                // Creiamo un array lungo quanto le settimane, tutto riempito con il valore del target
+                                data: etichetteSettimane.map(() => pesoTarget),
+                                borderColor: '#6366f1', // Colore rosso/arancione per il target
+                                borderWidth: 1.5,
+                                borderDash: [5, 5], // Rende la linea tratteggiata
+                                fill: false, // Nessun riempimento sotto la linea
+                                pointRadius: 0, // Nasconde i pallini dei punti per lasciarla come linea pulita
+                                pointHoverRadius: 0
+                            }
+                        ]
                     },
-                    options: opzioniComuni
+                    options: {
+                        ...opzioniComuni,
+                        scales: {
+                            ...opzioniComuni.scales,
+                            y: {
+                                ...((opzioniComuni.scales && opzioniComuni.scales.y) || {}),
+                                min: yMin,
+                                max: yMax,
+                                ticks: {
+                                    ...((opzioniComuni.scales && opzioniComuni.scales.y && opzioniComuni.scales.y.ticks) || {}),
+                                    precision: 0
+                                }
+                            }
+                        }
+                    }
                 });
 
                 // CALORIE 8 SETTIMANE con Linea Target
