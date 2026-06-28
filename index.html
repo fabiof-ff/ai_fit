@@ -503,9 +503,16 @@
                             class="bg-slate-900 border border-slate-700 rounded-xl px-2.5 py-1 text-xs text-slate-100 focus:outline-none focus:ring-2 focus:ring-blue-500 transition">
                     </div>
                 </div>
-                <textarea id="testoInput" rows="4"
-                    class="w-full bg-slate-900/90 border border-slate-700 rounded-xl p-3 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 text-slate-100 placeholder-slate-500 resize-none"
-                    placeholder="Es: Stamattina yogurt greco..."></textarea>
+                <div class="relative">
+                    <textarea id="testoInput" rows="4"
+                        class="w-full bg-slate-900/90 border border-slate-700 rounded-xl p-3 pr-12 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 text-slate-100 placeholder-slate-500 resize-none"
+                        placeholder="Es: Stamattina yogurt greco..."></textarea>
+                    <button type="button" id="btnMic" onclick="toggleVoiceDictation()"
+                        class="absolute bottom-3 right-3 text-slate-400 hover:text-indigo-400 p-2 rounded-xl bg-slate-800/80 hover:bg-slate-800 border border-slate-700/50 transition duration-200 cursor-pointer flex items-center justify-center animate-none"
+                        title="Dettatura vocale">
+                        <i id="iconMic" data-lucide="mic" class="w-4 h-4"></i>
+                    </button>
+                </div>
                 <button onclick="analizzaDatiConAI()" id="btnInvia"
                     class="mt-3 w-full bg-blue-600 hover:bg-blue-500 text-white font-bold py-3 px-4 rounded-xl shadow-lg shadow-blue-600/20 active:scale-[0.98] transition flex items-center justify-center gap-2 text-sm cursor-pointer">
                     <span id="btnLabel">Elabora con Gemini</span>
@@ -514,9 +521,6 @@
                 <div id="stato" class="text-xs text-slate-400 text-center mt-2.5 italic hidden">L'AI sta analizzando i
                     tuoi pasti...</div>
             </div>
-
-            <div id="stato" class="text-xs text-slate-400 text-center mt-2.5 italic hidden">L'AI sta analizzando i
-                tuoi pasti...</div>
 
             <div id="boxRisultati" class="hidden">
                 <p
@@ -2796,6 +2800,73 @@ Rispondi ESCLUSIVAMENTE con un oggetto JSON valido (senza markdown, senza racchi
 
             document.getElementById('aiTargetBox').classList.add('hidden');
             alert("Nuovi target AI applicati e salvati correttamente!");
+        };
+
+        // ================================================================
+        // DETTATURA VOCALE SPEECH TO TEXT
+        // ================================================================
+        let voiceRecognition = null;
+        let isVoiceListening = false;
+
+        window.toggleVoiceDictation = function () {
+            const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+            if (!SpeechRecognition) {
+                alert("La dettatura vocale non è supportata da questo browser. Prova con Google Chrome o Safari.");
+                return;
+            }
+
+            const btnMic = document.getElementById('btnMic');
+            const textarea = document.getElementById('testoInput');
+
+            if (!voiceRecognition) {
+                voiceRecognition = new SpeechRecognition();
+                voiceRecognition.lang = 'it-IT';
+                voiceRecognition.continuous = false;
+                voiceRecognition.interimResults = false;
+
+                voiceRecognition.onstart = function () {
+                    isVoiceListening = true;
+                    btnMic.classList.remove('text-slate-400', 'hover:text-indigo-400', 'bg-slate-800/80');
+                    btnMic.classList.add('text-red-400', 'bg-red-500/10', 'border-red-500/30', 'animate-pulse');
+                    textarea.placeholder = "Ascolto in corso... parla ora";
+                };
+
+                voiceRecognition.onerror = function (event) {
+                    console.error("Errore riconoscimento vocale:", event.error);
+                    stopListeningState();
+                };
+
+                voiceRecognition.onend = function () {
+                    stopListeningState();
+                };
+
+                voiceRecognition.onresult = function (event) {
+                    const transcript = event.results[0][0].transcript;
+                    if (textarea.value.trim() === "") {
+                        textarea.value = transcript;
+                    } else {
+                        textarea.value += " " + transcript;
+                    }
+                    textarea.dispatchEvent(new Event('input'));
+                };
+            }
+
+            function stopListeningState() {
+                isVoiceListening = false;
+                btnMic.classList.add('text-slate-400', 'hover:text-indigo-400', 'bg-slate-800/80');
+                btnMic.classList.remove('text-red-400', 'bg-red-500/10', 'border-red-500/30', 'animate-pulse');
+                textarea.placeholder = "Es: Stamattina yogurt greco...";
+            }
+
+            if (isVoiceListening) {
+                voiceRecognition.stop();
+            } else {
+                try {
+                    voiceRecognition.start();
+                } catch (e) {
+                    console.error(e);
+                }
+            }
         };
     </script>
 </body>
