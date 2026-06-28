@@ -168,7 +168,7 @@
             class="bg-slate-800 w-full max-w-md rounded-t-3xl border-t border-slate-700 p-5 pb-8 shadow-2xl">
             <div class="flex items-center justify-between mb-4">
                 <h3 class="text-base font-bold text-slate-200 flex items-center gap-2">
-                    <i data-lucide="pencil" class="w-4 h-4 text-indigo-400"></i> Modifica pasto
+                    <i data-lucide="pencil" class="w-4 h-4 text-indigo-400"></i> <span data-i18n="title_modifica_pasto">Modifica pasto</span>
                 </h3>
                 <button onclick="chiudiModal()"
                     class="text-slate-500 hover:text-slate-200 p-1.5 rounded-xl bg-slate-700/50">
@@ -178,19 +178,19 @@
 
             <div class="grid grid-cols-2 gap-3 mb-3">
                 <div>
-                    <label class="text-[11px] font-semibold text-slate-400 uppercase tracking-wider">Data</label>
+                    <label class="text-[11px] font-semibold text-slate-400 uppercase tracking-wider" data-i18n="label_date">Data</label>
                     <input type="date" id="editData"
                         class="mt-1 w-full bg-slate-900 border border-slate-700 rounded-xl p-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 text-slate-200">
                 </div>
                 <div>
-                    <label class="text-[11px] font-semibold text-slate-400 uppercase tracking-wider">Ora</label>
+                    <label class="text-[11px] font-semibold text-slate-400 uppercase tracking-wider" data-i18n="lbl_time">Ora</label>
                     <input type="time" id="editOra"
                         class="mt-1 w-full bg-slate-900 border border-slate-700 rounded-xl p-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 text-slate-200">
                 </div>
             </div>
 
             <div class="mb-4">
-                <label class="text-[11px] font-semibold text-slate-400 uppercase tracking-wider">Testo del pasto</label>
+                <label class="text-[11px] font-semibold text-slate-400 uppercase tracking-wider" data-i18n="lbl_meal_text">Testo del pasto</label>
                 <div class="relative mt-1">
                     <textarea id="editTesto" rows="4"
                         class="w-full bg-slate-900 border border-slate-700 rounded-xl p-2.5 pr-12 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 text-slate-200 placeholder-slate-600 resize-none"
@@ -202,12 +202,12 @@
                     </button>
                 </div>
                 <p class="text-[10px] text-slate-500 mt-1.5 flex items-center gap-1"><i data-lucide="sparkles"
-                        class="w-3 h-3 text-indigo-400"></i> L'AI ricalcolerà i nutrienti basandosi su questo testo.</p>
+                        class="w-3 h-3 text-indigo-400"></i> <span data-i18n="lbl_ai_recalculate_hint">L'AI ricalcolerà i nutrienti basandosi su questo testo.</span></p>
             </div>
 
             <button id="btnSalvaModifica" onclick="salvaModifica()"
                 class="w-full bg-indigo-600 hover:bg-indigo-500 text-white font-bold py-3 rounded-xl transition text-sm flex items-center justify-center gap-2">
-                <i data-lucide="sparkles" class="w-4 h-4"></i> Ricalcola e Salva
+                <i data-lucide="sparkles" class="w-4 h-4"></i> <span data-i18n="btn_recalculate_save">Ricalcola e Salva</span>
             </button>
         </div>
     </div>
@@ -223,8 +223,8 @@
             </div>
             <p id="dialogMessage" class="text-xs text-slate-300 leading-relaxed mb-5"></p>
             <div class="flex gap-2 justify-end">
-                <button id="dialogBtnCancel" class="px-4 py-2 rounded-xl text-xs font-semibold bg-slate-700 hover:bg-slate-600 text-slate-300 transition cursor-pointer">Annulla</button>
-                <button id="dialogBtnConfirm" class="px-4 py-2 rounded-xl text-xs font-semibold bg-indigo-600 hover:bg-indigo-500 text-white transition cursor-pointer">Conferma</button>
+                <button id="dialogBtnCancel" class="px-4 py-2 rounded-xl text-xs font-semibold bg-slate-700 hover:bg-slate-600 text-slate-300 transition cursor-pointer" data-i18n="lbl_cancel">Annulla</button>
+                <button id="dialogBtnConfirm" class="px-4 py-2 rounded-xl text-xs font-semibold bg-indigo-600 hover:bg-indigo-500 text-white transition cursor-pointer" data-i18n="lbl_confirm">Conferma</button>
             </div>
         </div>
     </div>
@@ -246,34 +246,47 @@
                     <p class="text-xs text-slate-400 font-medium">Massa &amp; Calorie Log</p>
                 </div>
             </div>
-            <button onclick="toggleSettings()"
-                class="text-slate-400 hover:text-slate-200 p-2 rounded-xl bg-slate-700/30 hover:bg-slate-700/60 transition">
-                <i data-lucide="settings" class="w-5 h-5"></i>
-            </button>
+            <div class="flex items-center gap-2">
+                <button onclick="cycleLang()" id="btnLangToggle" title="Cambia lingua / Change language"
+                    class="text-slate-400 hover:text-slate-200 p-2 rounded-xl bg-slate-700/30 hover:bg-slate-700/60 transition text-xs font-bold">
+                    🌐 <span id="langLabel">IT</span>
+                </button>
+                <button onclick="toggleSettings()"
+                    class="text-slate-400 hover:text-slate-200 p-2 rounded-xl bg-slate-700/30 hover:bg-slate-700/60 transition">
+                    <i data-lucide="settings" class="w-5 h-5"></i>
+                </button>
+            </div>
         </div>
 
         <div id="settingsBox" class="hidden mb-5 p-4 bg-slate-800 rounded-2xl border border-slate-700 shadow-xl">
             <div class="flex items-center justify-between mb-3">
                 <h3 class="text-sm font-semibold text-slate-200 flex items-center gap-2">
-                    <i data-lucide="settings-2" class="w-4 h-4 text-amber-400"></i> Impostazioni AI
+                    <i data-lucide="settings-2" class="w-4 h-4 text-amber-400"></i> <span data-i18n="title_api_settings">Impostazioni AI</span>
                 </h3>
                 <span class="text-[10px] bg-slate-700 px-2 py-0.5 rounded text-slate-400">Salvata in locale</span>
             </div>
             <div class="mb-4">
-                <label class="text-[11px] font-semibold text-slate-400 uppercase tracking-wider">Gemini API Key</label>
+                <label data-i18n="label_api_key" class="text-[11px] font-semibold text-slate-400 uppercase tracking-wider">Gemini API Key</label>
                 <input type="password" id="geminiKey" oninput="saveGeminiKey()"
                     class="mt-1 w-full bg-slate-900 border border-slate-700 rounded-xl p-3 text-sm focus:outline-none focus:ring-2 focus:ring-purple-500 text-slate-200"
                     placeholder="AIza...">
             </div>
+            <div class="mb-4">
+                <label data-i18n="label_language" class="text-[11px] font-semibold text-slate-400 uppercase tracking-wider">Lingua / Language</label>
+                <select id="appLanguage" onchange="changeLanguage(this.value)"
+                    class="mt-1 w-full bg-slate-900 border border-slate-700 rounded-xl p-3 text-sm focus:outline-none focus:ring-2 focus:ring-purple-500 text-slate-200 cursor-pointer">
+                    <option value="it">Italiano</option>
+                    <option value="en">English</option>
+                </select>
+            </div>
 
             <div class="border-t border-slate-700 mt-4 pt-4">
-                <label class="text-[11px] font-semibold text-slate-400 uppercase tracking-wider block mb-3">Target
+                <label data-i18n="label_daily_targets" class="text-[11px] font-semibold text-slate-400 uppercase tracking-wider block mb-3">Target
                     giornalieri</label>
-                <div class="space-y-2">
                     <!-- Riga 1: Peso e Calorie (2 colonne) -->
                     <div class="grid grid-cols-2 gap-2">
                         <div class="flex items-center justify-between bg-slate-900 border border-slate-700/60 py-2 px-3 rounded-xl">
-                            <span class="text-[10px] font-semibold text-slate-400 uppercase tracking-wider">Target Peso</span>
+                            <span data-i18n="label_peso" class="text-[10px] font-semibold text-slate-400 uppercase tracking-wider">Target Peso</span>
                             <div class="flex items-center gap-1">
                                 <input type="number" id="targetPeso" oninput="saveTarget()" step="0.1"
                                     class="w-12 bg-slate-950 border border-slate-800 rounded-lg py-1 px-1.5 text-center text-xs focus:outline-none focus:ring-1 focus:ring-indigo-500 text-slate-200"
@@ -282,7 +295,7 @@
                             </div>
                         </div>
                         <div class="flex items-center justify-between bg-slate-900 border border-slate-700/60 py-2 px-3 rounded-xl">
-                            <span class="text-[10px] font-semibold text-slate-400 uppercase tracking-wider">Calorie</span>
+                            <span data-i18n="label_calorie" class="text-[10px] font-semibold text-slate-400 uppercase tracking-wider">Calorie</span>
                             <div class="flex items-center gap-1">
                                 <input type="number" id="targetCalorie" oninput="saveTarget()"
                                     class="w-14 bg-slate-950 border border-slate-800 rounded-lg py-1 px-1.5 text-center text-xs focus:outline-none focus:ring-1 focus:ring-rose-500 text-slate-200"
@@ -294,7 +307,7 @@
                     <!-- Riga 2: Proteine, Carboidrati, Grassi (3 colonne) -->
                     <div class="grid grid-cols-3 gap-2">
                         <div class="flex flex-col items-center bg-slate-900 border border-slate-700/60 py-1.5 px-2 rounded-xl">
-                            <span class="text-[9px] font-semibold text-slate-400 uppercase tracking-wider mb-1">Proteine</span>
+                            <span data-i18n="label_proteine" class="text-[9px] font-semibold text-slate-400 uppercase tracking-wider mb-1">Proteine</span>
                             <div class="flex items-center gap-1">
                                 <input type="number" id="targetProteine" oninput="saveTarget()"
                                     class="w-10 bg-slate-950 border border-slate-800 rounded-lg py-0.5 px-1 text-center text-xs focus:outline-none focus:ring-1 focus:ring-blue-500 text-slate-200"
@@ -303,7 +316,7 @@
                             </div>
                         </div>
                         <div class="flex flex-col items-center bg-slate-900 border border-slate-700/60 py-1.5 px-2 rounded-xl">
-                            <span class="text-[9px] font-semibold text-slate-400 uppercase tracking-wider mb-1">Carboidrati</span>
+                            <span data-i18n="label_carboidrati" class="text-[9px] font-semibold text-slate-400 uppercase tracking-wider mb-1">Carboidrati</span>
                             <div class="flex items-center gap-1">
                                 <input type="number" id="targetCarbo" oninput="saveTarget()"
                                     class="w-10 bg-slate-950 border border-slate-800 rounded-lg py-0.5 px-1 text-center text-xs focus:outline-none focus:ring-1 focus:ring-emerald-500 text-slate-200"
@@ -312,7 +325,7 @@
                             </div>
                         </div>
                         <div class="flex flex-col items-center bg-slate-900 border border-slate-700/60 py-1.5 px-2 rounded-xl">
-                            <span class="text-[9px] font-semibold text-slate-400 uppercase tracking-wider mb-1">Grassi</span>
+                            <span data-i18n="label_grassi" class="text-[9px] font-semibold text-slate-400 uppercase tracking-wider mb-1">Grassi</span>
                             <div class="flex items-center gap-1">
                                 <input type="number" id="targetGrassi" oninput="saveTarget()"
                                     class="w-10 bg-slate-950 border border-slate-800 rounded-lg py-0.5 px-1 text-center text-xs focus:outline-none focus:ring-1 focus:ring-amber-500 text-slate-200"
@@ -321,83 +334,80 @@
                             </div>
                         </div>
                     </div>
-                </div>
-            </div>
 
-            <div class="border-t border-slate-700 mt-4 pt-4">
-                    <button type="button" onclick="toggleAiTargetBox()"
-                        class="w-full bg-slate-700/50 hover:bg-slate-700 text-slate-200 font-bold py-2.5 rounded-xl transition text-xs flex items-center justify-center gap-1.5 cursor-pointer">
-                        <i data-lucide="brain-circuit" class="w-4 h-4 text-purple-400"></i> Calcola target con AI
-                    </button>
-                    
-                    <div id="aiTargetBox" class="hidden mt-3 p-3 bg-slate-900/60 rounded-xl border border-slate-700/50 space-y-3">
-                        <p class="text-xs font-semibold text-slate-300">Generatore Target AI</p>
-                        
-                        <div class="grid grid-cols-3 gap-2">
-                            <div>
-                                <label class="text-[9px] font-bold text-slate-500 uppercase tracking-wider block">Peso Att. (kg)</label>
-                                <input type="number" id="aiPeso" placeholder="es. 75" class="mt-1 w-full bg-slate-800 border border-slate-700 rounded-lg p-2 text-xs text-slate-200 focus:outline-none focus:ring-1 focus:ring-purple-500">
-                            </div>
-                            <div>
-                                <label class="text-[9px] font-bold text-slate-500 uppercase tracking-wider block">Peso Des. (kg)</label>
-                                <input type="number" id="aiPesoTarget" placeholder="es. 70" class="mt-1 w-full bg-slate-800 border border-slate-700 rounded-lg p-2 text-xs text-slate-200 focus:outline-none focus:ring-1 focus:ring-purple-500">
-                            </div>
-                            <div>
-                                <label class="text-[9px] font-bold text-slate-500 uppercase tracking-wider block">Altezza (cm)</label>
-                                <input type="number" id="aiAltezza" placeholder="es. 180" class="mt-1 w-full bg-slate-800 border border-slate-700 rounded-lg p-2 text-xs text-slate-200 focus:outline-none focus:ring-1 focus:ring-purple-500">
-                            </div>
-                        </div>
-                        
-                        <div>
-                            <label class="text-[10px] font-bold text-slate-500 uppercase tracking-wider block">Stile di allenamento / Attività</label>
-                            <input type="text" id="aiAttivita" placeholder="es. Palestra 3 volte a settimana, lavoro sedentario" class="mt-1 w-full bg-slate-800 border border-slate-700 rounded-lg p-2 text-xs text-slate-200 focus:outline-none focus:ring-1 focus:ring-purple-500">
-                        </div>
-                        
-                        <div>
-                            <label class="text-[10px] font-bold text-slate-500 uppercase tracking-wider block">Obiettivo principale</label>
-                            <input type="text" id="aiObiettivo" placeholder="es. Aumentare massa muscolare magra" class="mt-1 w-full bg-slate-800 border border-slate-700 rounded-lg p-2 text-xs text-slate-200 focus:outline-none focus:ring-1 focus:ring-purple-500">
-                        </div>
-
-                        <button type="button" onclick="generaTargetConAI()" id="btnGeneraTargetAI"
-                            class="w-full bg-purple-600 hover:bg-purple-500 text-white font-bold py-2 rounded-lg transition text-xs flex items-center justify-center gap-1.5 cursor-pointer">
-                            <i data-lucide="sparkles" class="w-3.5 h-3.5"></i> Calcola target
+                    <div class="border-t border-slate-700 mt-4 pt-4">
+                        <button type="button" onclick="toggleAiTargetBox()"
+                            class="w-full bg-slate-700/50 hover:bg-slate-700 text-slate-200 font-bold py-2.5 rounded-xl transition text-xs flex items-center justify-center gap-1.5 cursor-pointer">
+                            <i data-lucide="brain-circuit" class="w-4 h-4 text-purple-400"></i> <span data-i18n="btn_calculate_ai">Calcola target con AI</span>
                         </button>
-                        <div id="statoTargetAI" class="text-[11px] text-slate-400 text-center italic hidden">L'AI sta calcolando i tuoi target...</div>
 
-                        <div id="aiTargetResults" class="hidden space-y-2 p-2 bg-slate-800/80 rounded-lg border border-purple-500/20 text-xs">
-                            <p class="font-bold text-purple-400">Suggerimento Target AI:</p>
-                            <div class="grid grid-cols-2 gap-1.5 text-slate-300">
-                                <div>Calorie: <span id="sugCal" class="font-bold text-slate-100">0</span> kcal</div>
-                                <div>Peso Target: <span id="sugPeso" class="font-bold text-slate-100">0</span> kg</div>
-                                <div>Proteine: <span id="sugProt" class="font-bold text-slate-100">0</span> g</div>
-                                <div>Carbo: <span id="sugCarb" class="font-bold text-slate-100">0</span> g</div>
-                                <div>Grassi: <span id="sugFat" class="font-bold text-slate-100">0</span> g</div>
+                        <div id="aiTargetBox" class="hidden mt-3 p-3 bg-slate-900/60 rounded-xl border border-slate-700/50 space-y-3">
+                            <p class="text-xs font-semibold text-slate-300" data-i18n="lbl_ai_target_title">Generatore Target AI</p>
+
+                            <div class="grid grid-cols-3 gap-2">
+                                <div>
+                                    <label class="text-[9px] font-bold text-slate-500 uppercase tracking-wider block" data-i18n="lbl_cur_weight">Peso Att. (kg)</label>
+                                    <input type="number" id="aiPeso" placeholder="es. 75" class="mt-1 w-full bg-slate-800 border border-slate-700 rounded-lg p-2 text-xs text-slate-200 focus:outline-none focus:ring-1 focus:ring-purple-500">
+                                </div>
+                                <div>
+                                    <label class="text-[9px] font-bold text-slate-500 uppercase tracking-wider block" data-i18n="lbl_target_weight_short">Peso Des. (kg)</label>
+                                    <input type="number" id="aiPesoTarget" placeholder="es. 70" class="mt-1 w-full bg-slate-800 border border-slate-700 rounded-lg p-2 text-xs text-slate-200 focus:outline-none focus:ring-1 focus:ring-purple-500">
+                                </div>
+                                <div>
+                                    <label class="text-[9px] font-bold text-slate-500 uppercase tracking-wider block" data-i18n="lbl_height_cm">Altezza (cm)</label>
+                                    <input type="number" id="aiAltezza" placeholder="es. 180" class="mt-1 w-full bg-slate-800 border border-slate-700 rounded-lg p-2 text-xs text-slate-200 focus:outline-none focus:ring-1 focus:ring-purple-500">
+                                </div>
                             </div>
-                            <button type="button" onclick="applicaTargetSuggeriti()" class="w-full mt-2 bg-emerald-600 hover:bg-emerald-500 text-white font-bold py-1.5 rounded text-xs transition cursor-pointer">
-                                Applica questi target
+
+                            <div>
+                                <label class="text-[10px] font-bold text-slate-500 uppercase tracking-wider block" data-i18n="lbl_training_style">Stile di allenamento / Attività</label>
+                                <input type="text" id="aiAttivita" placeholder="es. Palestra 3 volte a settimana, lavoro sedentario" class="mt-1 w-full bg-slate-800 border border-slate-700 rounded-lg p-2 text-xs text-slate-200 focus:outline-none focus:ring-1 focus:ring-purple-500">
+                            </div>
+
+                            <div>
+                                <label class="text-[10px] font-bold text-slate-500 uppercase tracking-wider block" data-i18n="lbl_main_goal">Obiettivo principale</label>
+                                <input type="text" id="aiObiettivo" placeholder="es. Aumentare massa muscolare magra" class="mt-1 w-full bg-slate-800 border border-slate-700 rounded-lg p-2 text-xs text-slate-200 focus:outline-none focus:ring-1 focus:ring-purple-500">
+                            </div>
+
+                            <button type="button" onclick="generaTargetConAI()" id="btnGeneraTargetAI"
+                                class="w-full bg-purple-600 hover:bg-purple-500 text-white font-bold py-2 rounded-lg transition text-xs flex items-center justify-center gap-1.5 cursor-pointer">
+                                <i data-lucide="sparkles" class="w-3.5 h-3.5"></i> <span data-i18n="btn_generate_target">Calcola target</span>
                             </button>
+                            <div id="statoTargetAI" class="text-[11px] text-slate-400 text-center italic hidden" data-i18n="lbl_ai_calculating">L'AI sta calcolando i tuoi target...</div>
+
+                            <div id="aiTargetResults" class="hidden space-y-2 p-2 bg-slate-800/80 rounded-lg border border-purple-500/20 text-xs">
+                                <p class="font-bold text-purple-400" data-i18n="lbl_ai_suggestion_title">Suggerimento Target AI:</p>
+                                <div class="grid grid-cols-2 gap-1.5 text-slate-300">
+                                    <div><span data-i18n="lbl_calories_colon">Calorie:</span> <span id="sugCal" class="font-bold text-slate-100">0</span> kcal</div>
+                                    <div><span data-i18n="lbl_target_weight_colon">Peso Target:</span> <span id="sugPeso" class="font-bold text-slate-100">0</span> kg</div>
+                                    <div><span data-i18n="lbl_proteins_colon">Proteine:</span> <span id="sugProt" class="font-bold text-slate-100">0</span> g</div>
+                                    <div><span data-i18n="lbl_carbs_colon">Carbo:</span> <span id="sugCarb" class="font-bold text-slate-100">0</span> g</div>
+                                    <div><span data-i18n="lbl_fats_colon">Grassi:</span> <span id="sugFat" class="font-bold text-slate-100">0</span> g</div>
+                                </div>
+                                <button type="button" onclick="applicaTargetSuggeriti()" class="w-full mt-2 bg-emerald-600 hover:bg-emerald-500 text-white font-bold py-1.5 rounded text-xs transition cursor-pointer">
+                                    <span data-i18n="btn_apply_targets">Applica questi target</span>
+                                </button>
+                            </div>
                         </div>
                     </div>
-                </div>
 
-                <p class="text-[11px] text-slate-400 mt-3">Le chiavi e i target vengono memorizzati solo sul tuo dispositivo
-                    (localStorage).</p>
+                    <p class="text-[11px] text-slate-400 mt-3" data-i18n="lbl_privacy_note">Le chiavi e i target vengono memorizzati solo sul tuo dispositivo (localStorage).</p>
+                </div>
             </div>
 
         <div class="flex gap-2 mb-5">
             <button id="tab-oggi" onclick="switchTab('oggi')"
                 class="tab-btn flex-1 flex items-center justify-center gap-1.5 py-2.5 rounded-xl text-xs font-bold border active">
-                <i data-lucide="utensils" class="w-3.5 h-3.5"></i> Dati
+                <i data-lucide="utensils" class="w-3.5 h-3.5"></i> <span data-i18n="tab_oggi">Dati</span>
             </button>
             <button id="tab-trend" onclick="switchTab('trend')"
                 class="tab-btn flex-1 flex items-center justify-center gap-1.5 py-2.5 rounded-xl text-xs font-bold border">
-                <i data-lucide="trending-up" class="w-3.5 h-3.5"></i> Trend
+                <i data-lucide="trending-up" class="w-3.5 h-3.5"></i> <span data-i18n="tab_trend">Trend</span>
             </button>
             <button id="tab-storico" onclick="switchTab('storico')"
                 class="tab-btn flex-1 flex items-center justify-center gap-1.5 py-2.5 rounded-xl text-xs font-bold border">
-                <i data-lucide="clock" class="w-3.5 h-3.5"></i> Storico
+                <i data-lucide="clock" class="w-3.5 h-3.5"></i> <span data-i18n="tab_storico">Storico</span>
             </button>
-
         </div>
 
         <div id="panel-oggi" class="tab-panel active">
@@ -406,18 +416,18 @@
                 <div class="flex items-center justify-between mb-3">
                     <p
                         class="text-[11px] font-semibold text-slate-400 uppercase tracking-wider flex items-center gap-1.5">
-                        <i data-lucide="sigma" class="w-3.5 h-3.5 text-indigo-400"></i> Totale di oggi
+                        <i data-lucide="sigma" class="w-3.5 h-3.5 text-indigo-400"></i> <span data-i18n="title_totale_oggi">Totale di oggi</span>
                     </p>
                     <button onclick="valutaGiornataConAI()" id="btnValutaGiornata"
                         class="text-[10px] bg-indigo-600/80 hover:bg-indigo-600 text-white font-bold py-1 px-2.5 rounded-lg transition-all flex items-center gap-1 cursor-pointer">
-                        <i data-lucide="sparkles" class="w-3 h-3"></i> Chiedi parere AI
+                        <i data-lucide="sparkles" class="w-3 h-3"></i> <span data-i18n="btn_ask_ai_opinion_short">Chiedi parere AI</span>
                     </button>
                 </div>
 
                 <div class="grid grid-cols-2 gap-3">
                     <div class="bg-slate-900/50 rounded-xl p-2.5">
                         <div class="flex items-center justify-between mb-1.5">
-                            <p class="text-[10px] font-semibold text-slate-400">CALORIE</p>
+                            <p class="text-[10px] font-semibold text-slate-400" data-i18n="label_calorie_uppercase">CALORIE</p>
                             <p class="text-xs text-slate-500" id="percCalorie">-</p>
                         </div>
                         <p class="text-base font-bold text-rose-400 mb-1.5"><span id="totCalorie">0</span><span
@@ -433,7 +443,7 @@
                     </div>
                     <div class="bg-slate-900/50 rounded-xl p-2.5">
                         <div class="flex items-center justify-between mb-1.5">
-                            <p class="text-[10px] font-semibold text-slate-400">PROTEINE</p>
+                            <p class="text-[10px] font-semibold text-slate-400" data-i18n="label_proteine_uppercase">PROTEINE</p>
                             <p class="text-xs text-slate-500" id="percProteine">-</p>
                         </div>
                         <p class="text-base font-bold text-blue-400 mb-1.5"><span id="totProteine">0</span><span
@@ -449,7 +459,7 @@
                     </div>
                     <div class="bg-slate-900/50 rounded-xl p-2.5">
                         <div class="flex items-center justify-between mb-1.5">
-                            <p class="text-[10px] font-semibold text-slate-400">CARBOIDRATI</p>
+                            <p class="text-[10px] font-semibold text-slate-400" data-i18n="label_carboidrati_uppercase">CARBOIDRATI</p>
                             <p class="text-xs text-slate-500" id="percCarbo">-</p>
                         </div>
                         <p class="text-base font-bold text-emerald-400 mb-1.5"><span id="totCarbo">0</span><span
@@ -466,7 +476,7 @@
                     </div>
                     <div class="bg-slate-900/50 rounded-xl p-2.5">
                         <div class="flex items-center justify-between mb-1.5">
-                            <p class="text-[10px] font-semibold text-slate-400">GRASSI</p>
+                            <p class="text-[10px] font-semibold text-slate-400" data-i18n="label_grassi_uppercase">GRASSI</p>
                             <p class="text-xs text-slate-500" id="percGrassi">-</p>
                         </div>
                         <p class="text-base font-bold text-amber-400 mb-1.5"><span id="totGrassi">0</span><span
@@ -491,20 +501,19 @@
             <div class="bg-slate-800/50 border border-slate-700/40 rounded-2xl p-4 mb-4">
                 <label
                     class="text-xs text-slate-400 font-semibold uppercase tracking-wider mb-3 flex items-center gap-1.5">
-                    <i data-lucide="scale" class="w-3.5 h-3.5 text-indigo-400"></i> Registrazione Peso Corporeo
+                    <i data-lucide="scale" class="w-3.5 h-3.5 text-indigo-400"></i> <span data-i18n="label_body_weight">Registrazione Peso Corporeo</span>
                 </label>
 
                 <div class="space-y-3">
                     <div class="grid grid-cols-2 gap-3">
                         <div>
-                            <label class="block text-[10px] font-bold text-slate-500 uppercase tracking-wider mb-1">Peso
-                                (kg)</label>
+                            <label class="block text-[10px] font-bold text-slate-500 uppercase tracking-wider mb-1"><span data-i18n="label_peso_kg">Peso (kg)</span></label>
                             <input type="number" id="input-peso-valore" step="0.1" placeholder="es. 74.5"
                                 class="w-full h-10 bg-slate-900 border border-slate-700 rounded-xl px-2.5 text-sm text-slate-100 focus:outline-none focus:ring-2 focus:ring-indigo-500 transition">
                         </div>
                         <div>
                             <label
-                                class="block text-[10px] font-bold text-slate-500 uppercase tracking-wider mb-1">Data</label>
+                                class="block text-[10px] font-bold text-slate-500 uppercase tracking-wider mb-1"><span data-i18n="label_date">Data</span></label>
                             <input type="date" id="input-peso-data"
                                 class="w-full h-10 bg-slate-900 border border-slate-700 rounded-xl px-2.5 text-sm text-slate-100 focus:outline-none focus:ring-2 focus:ring-indigo-500 transition">
                         </div>
@@ -512,7 +521,7 @@
 
                     <button onclick="salvaPesoManuale()"
                         class="w-full bg-indigo-600/90 hover:bg-indigo-600 border border-indigo-500/30 text-white font-medium py-2 px-4 rounded-xl text-xs transition-all shadow-lg flex items-center justify-center gap-2 cursor-pointer">
-                        <i data-lucide="check" class="w-3.5 h-3.5"></i> Salva Peso
+                        <i data-lucide="check" class="w-3.5 h-3.5"></i> <span data-i18n="btn_save_weight">Salva Peso</span>
                     </button>
                 </div>
             </div>
@@ -520,10 +529,10 @@
             <div class="bg-slate-800/80 rounded-2xl border border-slate-700/60 p-4 shadow-xl mb-5 backdrop-blur">
                 <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 mb-3">
                     <label class="text-sm font-semibold text-slate-300 flex items-center gap-2">
-                        <i data-lucide="pencil" class="w-4 h-4 text-blue-400"></i> Cosa hai mangiato?
+                        <i data-lucide="pencil" class="w-4 h-4 text-blue-400"></i> <span data-i18n="prompt_what_did_you_eat">Cosa hai mangiato?</span>
                     </label>
                     <div class="flex items-center gap-2">
-                        <label class="text-[10px] font-bold text-slate-500 uppercase tracking-wider">Data:</label>
+                        <label data-i18n="label_date_colon" class="text-[10px] font-bold text-slate-500 uppercase tracking-wider">Data:</label>
                         <input type="date" id="input-pasto-data"
                             class="bg-slate-900 border border-slate-700 rounded-xl px-2.5 py-1 text-xs text-slate-100 focus:outline-none focus:ring-2 focus:ring-blue-500 transition">
                     </div>
@@ -540,17 +549,16 @@
                 </div>
                 <button onclick="analizzaDatiConAI()" id="btnInvia"
                     class="mt-3 w-full bg-blue-600 hover:bg-blue-500 text-white font-bold py-3 px-4 rounded-xl shadow-lg shadow-blue-600/20 active:scale-[0.98] transition flex items-center justify-center gap-2 text-sm cursor-pointer">
-                    <span id="btnLabel">Elabora con Gemini</span>
+                    <span id="btnLabel" data-i18n="btn_ask_ai_opinion">Elabora con Gemini</span>
                     <i data-lucide="sparkles" class="w-4 h-4"></i>
                 </button>
-                <div id="stato" class="text-xs text-slate-400 text-center mt-2.5 italic hidden">L'AI sta analizzando i
-                    tuoi pasti...</div>
+                <div id="stato" class="text-xs text-slate-400 text-center mt-2.5 italic hidden"><span data-i18n="lbl_ai_analyzing_meals">L'AI sta analizzando i tuoi pasti...</span></div>
             </div>
 
             <div id="boxRisultati" class="hidden">
                 <p
                     class="text-[11px] font-semibold text-slate-400 uppercase tracking-wider mb-2 flex items-center gap-1.5">
-                    <i data-lucide="pie-chart" class="w-3.5 h-3.5 text-blue-400"></i> Ultima analisi
+                    <i data-lucide="pie-chart" class="w-3.5 h-3.5 text-blue-400"></i> <span data-i18n="lbl_last_analysis">Ultima analisi</span>
                 </p>
                 <div class="grid grid-cols-2 gap-3 mb-4">
                     <div class="bg-slate-800/50 border border-slate-700/40 rounded-xl p-3 flex items-center gap-3">
@@ -558,7 +566,7 @@
                                 class="w-5 h-5"></i>
                         </div>
                         <div>
-                            <p class="text-[11px] font-medium text-slate-400 uppercase tracking-wider">Calorie</p>
+                            <p class="text-[11px] font-medium text-slate-400 uppercase tracking-wider" data-i18n="label_calorie_uppercase">Calorie</p>
                             <p class="text-lg font-bold text-slate-100"><span id="resCalorie">0</span> <span
                                     class="text-xs text-slate-400 font-normal">kcal</span></p>
                         </div>
@@ -567,7 +575,7 @@
                         <div class="bg-blue-500/10 p-2 rounded-lg text-blue-400"><i data-lucide="dumbbell"
                                 class="w-5 h-5"></i></div>
                         <div>
-                            <p class="text-[11px] font-medium text-slate-400 uppercase tracking-wider">Proteine</p>
+                            <p class="text-[11px] font-medium text-slate-400 uppercase tracking-wider" data-i18n="label_proteine_uppercase">Proteine</p>
                             <p class="text-lg font-bold text-blue-400"><span id="resProteine">0</span><span
                                     class="text-xs font-normal text-slate-400">g</span></p>
                         </div>
@@ -576,7 +584,7 @@
                         <div class="bg-emerald-500/10 p-2 rounded-lg text-emerald-400"><i data-lucide="wheat"
                                 class="w-5 h-5"></i></div>
                         <div>
-                            <p class="text-[11px] font-medium text-slate-400 uppercase tracking-wider">Carboidrati</p>
+                            <p class="text-[11px] font-medium text-slate-400 uppercase tracking-wider" data-i18n="label_carboidrati_uppercase">Carboidrati</p>
                             <p class="text-lg font-bold text-emerald-400"><span id="resCarbo">0</span> <span
                                     class="text-xs text-slate-400 font-normal">g</span></p>
                         </div>
@@ -585,7 +593,7 @@
                         <div class="bg-amber-500/10 p-2 rounded-lg text-amber-400"><i data-lucide="droplet"
                                 class="w-5 h-5"></i></div>
                         <div>
-                            <p class="text-[11px] font-medium text-slate-400 uppercase tracking-wider">Grassi</p>
+                            <p class="text-[11px] font-medium text-slate-400 uppercase tracking-wider" data-i18n="label_grassi_uppercase">Grassi</p>
                             <p class="text-lg font-bold text-amber-400"><span id="resGrassi">0</span> <span
                                     class="text-xs text-slate-400 font-normal">g</span></p>
                         </div>
@@ -595,7 +603,7 @@
                 <div class="bg-slate-800/40 border border-slate-700/50 rounded-2xl p-4 shadow-xl mb-4">
                     <h3
                         class="text-sm font-semibold text-slate-300 mb-3 text-center flex items-center justify-center gap-2">
-                        <i data-lucide="pie-chart" class="w-4 h-4 text-indigo-400"></i> Ripartizione Macronutrienti
+                        <i data-lucide="pie-chart" class="w-4 h-4 text-indigo-400"></i> <span data-i18n="lbl_macro_breakdown">Ripartizione Macronutrienti</span>
                     </h3>
                     <div class="w-full max-w-[180px] mx-auto aspect-square">
                         <canvas id="macroChart"></canvas>
@@ -605,7 +613,7 @@
                 <button id="btnSalva" onclick="salvaEntry()"
                     class="w-full bg-emerald-600 hover:bg-emerald-500 text-white font-bold py-3 px-4 rounded-xl shadow-lg shadow-emerald-600/20 active:scale-[0.98] transition flex items-center justify-center gap-2 text-sm cursor-pointer mb-2">
                     <i data-lucide="save" class="w-4 h-4"></i>
-                    <span>Salva nel diario</span>
+                    <span data-i18n="btn_save_to_diary">Salva nel diario</span>
                 </button>
             </div>
         </div>
@@ -618,15 +626,15 @@
         <div class="flex bg-slate-950 p-1 rounded-xl mb-4 border border-slate-800">
             <button id="subtab-giorni" onclick="switchTrendView('giorni')"
                 class="sub-tab-btn flex-1 py-1.5 rounded-lg text-xs font-semibold active">
-                7 Giorni
+                <span data-i18n="subtab_7_days">7 Giorni</span>
             </button>
             <button id="subtab-settimane" onclick="switchTrendView('settimane')"
                 class="sub-tab-btn flex-1 py-1.5 rounded-lg text-xs font-semibold">
-                8 Settimane
+                <span data-i18n="subtab_8_weeks">8 Settimane</span>
             </button>
             <button id="subtab-mesi" onclick="switchTrendView('mesi')"
                 class="sub-tab-btn flex-1 py-1.5 rounded-lg text-xs font-semibold">
-                Storico Mensile
+                <span data-i18n="subtab_monthly_history">Storico Mensile</span>
             </button>
         </div>
 
@@ -635,7 +643,7 @@
             <button id="btnAnalisiTrendAI" onclick="analizzaTrendConAI()"
                 class="w-full bg-slate-700/50 hover:bg-slate-700 border border-slate-600/30 text-slate-200 font-bold py-2.5 px-4 rounded-xl shadow-lg transition active:scale-[0.98] flex items-center justify-center gap-2 text-xs cursor-pointer">
                 <i data-lucide="sparkles" class="w-4 h-4 text-indigo-400"></i>
-                <span id="btnAnalisiTrendLabel">Chiedi parere ad AI sull'andamento</span>
+                <span id="btnAnalisiTrendLabel" data-i18n="btn_ask_ai_trend">Chiedi parere ad AI sull'andamento</span>
             </button>
             <div id="boxAnalisiTrendAI" class="mt-3 p-3.5 bg-slate-800/80 rounded-xl border border-slate-700/50 hidden text-xs leading-relaxed text-slate-300">
                 <p id="testoAnalisiTrendAI"></p>
@@ -643,17 +651,17 @@
         </div>
 
         <p id="trendTitle" class="text-sm font-semibold text-slate-300 mb-4 flex items-center gap-2">
-            <i data-lucide="trending-up" class="w-4 h-4 text-indigo-400"></i> Andamento ultimi 7 giorni
+            <i data-lucide="trending-up" class="w-4 h-4 text-indigo-400"></i> <span data-i18n="trend_title_days">Andamento ultimi 7 giorni</span>
         </p>
 
         <div id="trendMediaComplessivaContainer"
             class="bg-slate-800/40 border border-slate-700/50 rounded-2xl p-4 mb-4">
-            <p class="text-xs text-slate-400 font-semibold uppercase tracking-wider mb-3">Media complessiva </p>
+            <p class="text-xs text-slate-400 font-semibold uppercase tracking-wider mb-3" data-i18n="title_media_complessiva">Media complessiva</p>
             <div class="grid grid-cols-2 gap-3">
 
                 <div class="bg-slate-800/60 rounded-xl p-3 text-left">
                     <div class="flex justify-between items-baseline mb-1">
-                        <p class="text-[10px] text-slate-500 uppercase font-semibold">Calorie</p>
+                        <p class="text-[10px] text-slate-500 uppercase font-semibold" data-i18n="label_calorie_uppercase">Calorie</p>
                         <p class="text-xs font-bold text-rose-400"><span id="mediaCalorie">—</span><span
                                 class="text-[10px] font-normal text-slate-500"> / <span
                                     id="trendTargetCalorie">—</span></span></p>
@@ -668,7 +676,7 @@
 
                 <div class="bg-slate-800/60 rounded-xl p-3 text-left">
                     <div class="flex justify-between items-baseline mb-1">
-                        <p class="text-[10px] text-slate-500 uppercase font-semibold">Proteine</p>
+                        <p class="text-[10px] text-slate-500 uppercase font-semibold" data-i18n="label_proteine_uppercase">Proteine</p>
                         <p class="text-xs font-bold text-blue-400"><span id="mediaProteine">—</span><span
                                 class="text-[10px] font-normal text-slate-500"> / <span
                                     id="trendTargetProteine">—</span></p>
@@ -683,7 +691,7 @@
 
                 <div class="bg-slate-800/60 rounded-xl p-3 text-left">
                     <div class="flex justify-between items-baseline mb-1">
-                        <p class="text-[10px] text-slate-500 uppercase font-semibold">Carbo</p>
+                        <p class="text-[10px] text-slate-500 uppercase font-semibold" data-i18n="label_carboidrati_uppercase">Carbo</p>
                         <p class="text-xs font-bold text-emerald-400"><span id="mediaCarbo">—</span><span
                                 class="text-[10px] font-normal text-slate-500"> / <span
                                     id="trendTargetCarbo">—</span></span></p>
@@ -698,7 +706,7 @@
 
                 <div class="bg-slate-800/60 rounded-xl p-3 text-left">
                     <div class="flex justify-between items-baseline mb-1">
-                        <p class="text-[10px] text-slate-500 uppercase font-semibold">Grassi</p>
+                        <p class="text-[10px] text-slate-500 uppercase font-semibold" data-i18n="label_grassi_uppercase">Grassi</p>
                         <p class="text-xs font-bold text-amber-400"><span id="mediaGrassi">—</span><span
                                 class="text-[10px] font-normal text-slate-500"> / <span
                                     id="trendTargetGrassi">—</span></span></p>
@@ -729,7 +737,7 @@
 
             <div class="bg-slate-800/40 border border-slate-700/50 rounded-2xl p-4">
                 <p class="text-xs text-slate-400 font-semibold uppercase tracking-wider mb-3 flex items-center gap-1.5">
-                    <i data-lucide="flame" class="w-3.5 h-3.5 text-rose-400"></i> Calorie
+                    <i data-lucide="flame" class="w-3.5 h-3.5 text-rose-400"></i> <span data-i18n="label_calorie_uppercase">Calorie</span>
                 </p>
                 <div class="h-48 w-full">
                     <canvas id="trendCalorieChart"></canvas>
@@ -738,7 +746,7 @@
 
             <div class="bg-slate-800/40 border border-slate-700/50 rounded-2xl p-4">
                 <p class="text-xs text-slate-400 font-semibold uppercase tracking-wider mb-3 flex items-center gap-1.5">
-                    <i data-lucide="dumbbell" class="w-3.5 h-3.5 text-blue-400"></i> Proteine
+                    <i data-lucide="dumbbell" class="w-3.5 h-3.5 text-blue-400"></i> <span data-i18n="label_proteine_uppercase">Proteine</span>
                 </p>
                 <div class="h-48 w-full">
                     <canvas id="trendProteineChart"></canvas>
@@ -747,7 +755,7 @@
 
             <div class="bg-slate-800/40 border border-slate-700/50 rounded-2xl p-4">
                 <p class="text-xs text-slate-400 font-semibold uppercase tracking-wider mb-3 flex items-center gap-1.5">
-                    <i data-lucide="wheat" class="w-3.5 h-3.5 text-emerald-400"></i> Carboidrati
+                    <i data-lucide="wheat" class="w-3.5 h-3.5 text-emerald-400"></i> <span data-i18n="label_carboidrati_uppercase">Carboidrati</span>
                 </p>
                 <div class="h-48 w-full">
                     <canvas id="trendCarboChart"></canvas>
@@ -756,7 +764,7 @@
 
             <div class="bg-slate-800/40 border border-slate-700/50 rounded-2xl p-4">
                 <p class="text-xs text-slate-400 font-semibold uppercase tracking-wider mb-3 flex items-center gap-1.5">
-                    <i data-lucide="droplet" class="w-3.5 h-3.5 text-amber-400"></i> Grassi
+                    <i data-lucide="droplet" class="w-3.5 h-3.5 text-amber-400"></i> <span data-i18n="label_grassi_uppercase">Grassi</span>
                 </p>
                 <div class="h-48 w-full">
                     <canvas id="trendGrassiChart"></canvas>
@@ -767,7 +775,7 @@
         <div id="trendSettimaneContainer" class="space-y-4 hidden">
             <div class="bg-slate-800/40 border border-slate-700/50 rounded-2xl p-4">
                 <p class="text-xs text-slate-400 font-semibold uppercase tracking-wider mb-3 flex items-center gap-1.5">
-                    <i data-lucide="scale" class="w-3.5 h-3.5 text-indigo-400"></i> Peso Medio Settimanale
+                    <i data-lucide="scale" class="w-3.5 h-3.5 text-indigo-400"></i> <span data-i18n="lbl_avg_weekly_weight">Peso Medio Settimanale</span>
                 </p>
                 <div class="h-48 w-full">
                     <canvas id="weekPesoChart"></canvas>
@@ -776,7 +784,7 @@
 
             <div class="bg-slate-800/40 border border-slate-700/50 rounded-2xl p-4">
                 <p class="text-xs text-slate-400 font-semibold uppercase tracking-wider mb-3 flex items-center gap-1.5">
-                    <i data-lucide="flame" class="w-3.5 h-3.5 text-rose-400"></i> Calorie
+                    <i data-lucide="flame" class="w-3.5 h-3.5 text-rose-400"></i> <span data-i18n="label_calorie_uppercase">Calorie</span>
                 </p>
                 <div class="h-48 w-full">
                     <canvas id="weekCalorieChart"></canvas>
@@ -785,7 +793,7 @@
 
             <div class="bg-slate-800/40 border border-slate-700/50 rounded-2xl p-4">
                 <p class="text-xs text-slate-400 font-semibold uppercase tracking-wider mb-3 flex items-center gap-1.5">
-                    <i data-lucide="dumbbell" class="w-3.5 h-3.5 text-blue-400"></i> Proteine
+                    <i data-lucide="dumbbell" class="w-3.5 h-3.5 text-blue-400"></i> <span data-i18n="label_proteine_uppercase">Proteine</span>
                 </p>
                 <div class="h-48 w-full">
                     <canvas id="weekProteineChart"></canvas>
@@ -794,7 +802,7 @@
 
             <div class="bg-slate-800/40 border border-slate-700/50 rounded-2xl p-4">
                 <p class="text-xs text-slate-400 font-semibold uppercase tracking-wider mb-3 flex items-center gap-1.5">
-                    <i data-lucide="wheat" class="w-3.5 h-3.5 text-emerald-400"></i> Carboidrati (g)
+                    <i data-lucide="wheat" class="w-3.5 h-3.5 text-emerald-400"></i> <span data-i18n="label_carboidrati_uppercase">Carboidrati</span>
                 </p>
                 <div class="h-48 w-full">
                     <canvas id="weekCarboChart"></canvas>
@@ -803,7 +811,7 @@
 
             <div class="bg-slate-800/40 border border-slate-700/50 rounded-2xl p-4">
                 <p class="text-xs text-slate-400 font-semibold uppercase tracking-wider mb-3 flex items-center gap-1.5">
-                    <i data-lucide="droplet" class="w-3.5 h-3.5 text-amber-400"></i> Grassi
+                    <i data-lucide="droplet" class="w-3.5 h-3.5 text-amber-400"></i> <span data-i18n="label_grassi_uppercase">Grassi</span>
                 </p>
                 <div class="h-48 w-full">
                     <canvas id="weekGrassiChart"></canvas>
@@ -814,7 +822,7 @@
         <div id="trendMesiContainer" class="space-y-4 hidden">
             <div class="bg-slate-800/40 border border-slate-700/50 rounded-2xl p-4">
                 <p class="text-xs text-slate-400 font-semibold uppercase tracking-wider mb-3 flex items-center gap-1.5">
-                    <i data-lucide="scale" class="w-3.5 h-3.5 text-indigo-400"></i> Peso Medio Mensile
+                    <i data-lucide="scale" class="w-3.5 h-3.5 text-indigo-400"></i> <span data-i18n="lbl_avg_monthly_weight">Peso Medio Mensile</span>
                 </p>
                 <div class="h-48 w-full">
                     <canvas id="monthPesoChart"></canvas>
@@ -823,7 +831,7 @@
 
             <div class="bg-slate-800/40 border border-slate-700/50 rounded-2xl p-4">
                 <p class="text-xs text-slate-400 font-semibold uppercase tracking-wider mb-3 flex items-center gap-1.5">
-                    <i data-lucide="flame" class="w-3.5 h-3.5 text-rose-400"></i> Calorie Medie Mensili
+                    <i data-lucide="flame" class="w-3.5 h-3.5 text-rose-400"></i> <span data-i18n="lbl_avg_monthly_calories">Calorie Medie Mensili</span>
                 </p>
                 <div class="h-48 w-full">
                     <canvas id="monthCalorieChart"></canvas>
@@ -832,7 +840,7 @@
 
             <div class="bg-slate-800/40 border border-slate-700/50 rounded-2xl p-4">
                 <p class="text-xs text-slate-400 font-semibold uppercase tracking-wider mb-3 flex items-center gap-1.5">
-                    <i data-lucide="dumbbell" class="w-3.5 h-3.5 text-blue-400"></i> Proteine Medie Mensili
+                    <i data-lucide="dumbbell" class="w-3.5 h-3.5 text-blue-400"></i> <span data-i18n="lbl_avg_monthly_proteins">Proteine Medie Mensili</span>
                 </p>
                 <div class="h-48 w-full">
                     <canvas id="monthProteineChart"></canvas>
@@ -841,7 +849,7 @@
 
             <div class="bg-slate-800/40 border border-slate-700/50 rounded-2xl p-4">
                 <p class="text-xs text-slate-400 font-semibold uppercase tracking-wider mb-3 flex items-center gap-1.5">
-                    <i data-lucide="wheat" class="w-3.5 h-3.5 text-emerald-400"></i> Carboidrati Medi Mensili
+                    <i data-lucide="wheat" class="w-3.5 h-3.5 text-emerald-400"></i> <span data-i18n="lbl_avg_monthly_carbs">Carboidrati Medi Mensili</span>
                 </p>
                 <div class="h-48 w-full">
                     <canvas id="monthCarboChart"></canvas>
@@ -850,7 +858,7 @@
 
             <div class="bg-slate-800/40 border border-slate-700/50 rounded-2xl p-4">
                 <p class="text-xs text-slate-400 font-semibold uppercase tracking-wider mb-3 flex items-center gap-1.5">
-                    <i data-lucide="droplet" class="w-3.5 h-3.5 text-amber-400"></i> Grassi Medi Mensili
+                    <i data-lucide="droplet" class="w-3.5 h-3.5 text-amber-400"></i> <span data-i18n="lbl_avg_monthly_fats">Grassi Medi Mensili</span>
                 </p>
                 <div class="h-48 w-full">
                     <canvas id="monthGrassiChart"></canvas>
@@ -863,29 +871,28 @@
 
         <div class="flex items-center justify-between mb-3">
             <p class="text-sm font-semibold text-slate-300 flex items-center gap-2">
-                <i data-lucide="book-open" class="w-4 h-4 text-blue-400"></i> Diario alimentare
+                <i data-lucide="book-open" class="w-4 h-4 text-blue-400"></i> <span data-i18n="lbl_food_diary">Diario alimentare</span>
             </p>
             <button onclick="confermaReset()"
                 class="text-[11px] text-slate-500 hover:text-rose-400 transition flex items-center gap-1">
-                <i data-lucide="trash-2" class="w-3.5 h-3.5"></i> Cancella tutto
+                <i data-lucide="trash-2" class="w-3.5 h-3.5"></i> <span data-i18n="btn_delete_all">Cancella tutto</span>
             </button>
         </div>
 
         <div class="flex gap-2 mb-4">
             <button onclick="esportaDB()"
                 class="flex-1 flex items-center justify-center gap-1.5 py-2.5 rounded-xl text-xs font-bold border bg-slate-800/60 border-slate-700/50 text-slate-400 hover:text-emerald-400 hover:border-emerald-500/40 transition">
-                <i data-lucide="download" class="w-3.5 h-3.5"></i> Esporta dati
+                <i data-lucide="download" class="w-3.5 h-3.5"></i> <span data-i18n="btn_export_data">Esporta dati</span>
             </button>
             <button onclick="document.getElementById('importInput').click()"
                 class="flex-1 flex items-center justify-center gap-1.5 py-2.5 rounded-xl text-xs font-bold border bg-slate-800/60 border-slate-700/50 text-slate-400 hover:text-blue-400 hover:border-blue-500/40 transition">
-                <i data-lucide="upload" class="w-3.5 h-3.5"></i> Importa dati
+                <i data-lucide="upload" class="w-3.5 h-3.5"></i> <span data-i18n="btn_import_data">Importa dati</span>
             </button>
         </div>
 
         <div class="max-h-[450px] overflow-y-auto pr-1 custom-scrollbar">
             <div id="listaStorico" class="space-y-3">
-                <p class="text-sm text-slate-500 text-center py-8">Nessun pasto salvato ancora.<br>Elabora e salva
-                    un'analisi dalla tab Oggi!</p>
+                <p id="storicoEmptyMsg" class="text-sm text-slate-500 text-center py-8" data-i18n="lbl_no_meals_saved">Nessun pasto salvato ancora.<br>Elabora e salva un'analisi dalla tab Dati!</p>
             </div>
         </div>
 
@@ -957,11 +964,228 @@
         lucide.createIcons();
 
         // ================================================================
+        // LOCALIZZAZIONE / DICTIONARY i18n
+        // ================================================================
+        const TRANSLATIONS = {
+            it: {
+                title_api_settings: "Impostazioni AI",
+                label_api_key: "Gemini API Key",
+                label_language: "Lingua / Language",
+                label_daily_targets: "Target giornalieri",
+                label_calorie: "Calorie",
+                label_peso: "Target Peso",
+                label_proteine: "Proteine",
+                label_carboidrati: "Carboidrati",
+                label_grassi: "Grassi",
+                btn_calculate_ai: "Calcola target con AI",
+                tab_oggi: "Dati",
+                tab_trend: "Trend",
+                tab_storico: "Storico",
+                label_body_weight: "Registrazione Peso Corporeo",
+                btn_save_weight: "Salva Peso",
+                btn_ask_ai_opinion: "Elabora con Gemini",
+                btn_ask_ai_trend: "Chiedi parere ad AI sull'andamento",
+                trend_title_days: "Andamento ultimi 7 giorni",
+                trend_title_weeks: "Andamento ultime 8 settimane (Media/Giorno)",
+                trend_title_months: "Storico Mensile (Dall'inizio)",
+                placeholder_input_pasto: "Es: Stamattina yogurt greco...",
+                placeholder_weight_input: "es. 74.5",
+                prompt_what_did_you_eat: "Cosa hai mangiato?",
+                label_date: "Data",
+                label_date_colon: "Data:",
+                label_calorie_uppercase: "CALORIE",
+                label_proteine_uppercase: "PROTEINE",
+                label_carboidrati_uppercase: "CARBOIDRATI",
+                label_grassi_uppercase: "GRASSI",
+                label_peso_kg: "Peso (kg)",
+                title_totale_oggi: "Totale di oggi",
+                btn_ask_ai_opinion_short: "Chiedi parere AI",
+                lbl_ai_analyzing_meals: "L'AI sta analizzando i tuoi pasti...",
+                subtab_7_days: "7 Giorni",
+                subtab_8_weeks: "8 Settimane",
+                subtab_monthly_history: "Storico Mensile",
+                title_media_complessiva: "Media complessiva",
+                lbl_confirm: "Conferma",
+                lbl_cancel: "Annulla",
+                lbl_save: "Salva",
+                title_modifica_pasto: "Modifica pasto",
+                btn_recalculate_save: "Ricalcola e Salva",
+                lbl_time: "Ora",
+                lbl_meal_text: "Testo del pasto",
+                lbl_last_analysis: "Ultima analisi",
+                lbl_macro_breakdown: "Ripartizione Macronutrienti",
+                btn_save_to_diary: "Salva nel diario",
+                lbl_food_diary: "Diario alimentare",
+                btn_delete_all: "Cancella tutto",
+                btn_export_data: "Esporta dati",
+                btn_import_data: "Importa dati",
+                lbl_no_meals_saved: "Nessun pasto salvato ancora.\nElabora e salva un'analisi dalla tab Dati!",
+                lbl_avg_weekly_weight: "Peso Medio Settimanale",
+                lbl_avg_monthly_weight: "Peso Medio Mensile",
+                lbl_avg_monthly_calories: "Calorie Medie Mensili",
+                lbl_avg_monthly_proteins: "Proteine Medie Mensili",
+                lbl_avg_monthly_carbs: "Carboidrati Medi Mensili",
+                lbl_avg_monthly_fats: "Grassi Medi Mensili",
+                lbl_ai_recalculate_hint: "L'AI ricalcoler\u00e0 i nutrienti basandosi su questo testo.",
+                lbl_ai_target_title: "Generatore Target AI",
+                lbl_cur_weight: "Peso Att. (kg)",
+                lbl_target_weight_short: "Peso Des. (kg)",
+                lbl_height_cm: "Altezza (cm)",
+                lbl_training_style: "Stile di allenamento / Attivit\u00e0",
+                lbl_main_goal: "Obiettivo principale",
+                btn_generate_target: "Calcola target",
+                lbl_ai_calculating: "L'AI sta calcolando i tuoi target...",
+                lbl_ai_suggestion_title: "Suggerimento Target AI:",
+                lbl_calories_colon: "Calorie:",
+                lbl_target_weight_colon: "Peso Target:",
+                lbl_proteins_colon: "Proteine:",
+                lbl_carbs_colon: "Carbo:",
+                lbl_fats_colon: "Grassi:",
+                btn_apply_targets: "Applica questi target",
+                lbl_privacy_note: "Le chiavi e i target vengono memorizzati solo sul tuo dispositivo (localStorage)."
+            },
+            en: {
+                title_api_settings: "AI Settings",
+                label_api_key: "Gemini API Key",
+                label_language: "Language / Lingua",
+                label_daily_targets: "Daily Targets",
+                label_calorie: "Calories",
+                label_peso: "Target Weight",
+                label_proteine: "Proteins",
+                label_carboidrati: "Carbohydrates",
+                label_grassi: "Fats",
+                btn_calculate_ai: "Calculate targets with AI",
+                tab_oggi: "Log",
+                tab_trend: "Trends",
+                tab_storico: "History",
+                label_body_weight: "Body Weight Logger",
+                btn_save_weight: "Save Weight",
+                btn_ask_ai_opinion: "Analyze with Gemini",
+                btn_ask_ai_trend: "Ask AI for trend analysis",
+                trend_title_days: "Trend last 7 days",
+                trend_title_weeks: "Trend last 8 weeks (Average/Day)",
+                trend_title_months: "Monthly History (From beginning)",
+                placeholder_input_pasto: "E.g. This morning Greek yogurt...",
+                placeholder_weight_input: "e.g. 74.5",
+                prompt_what_did_you_eat: "What did you eat?",
+                label_date: "Date",
+                label_date_colon: "Date:",
+                label_calorie_uppercase: "CALORIES",
+                label_proteine_uppercase: "PROTEINS",
+                label_carboidrati_uppercase: "CARBS",
+                label_grassi_uppercase: "FATS",
+                label_peso_kg: "Weight (kg)",
+                title_totale_oggi: "Today's Total",
+                btn_ask_ai_opinion_short: "Ask AI Opinion",
+                lbl_ai_analyzing_meals: "AI is analyzing your meals...",
+                subtab_7_days: "7 Days",
+                subtab_8_weeks: "8 Weeks",
+                subtab_monthly_history: "Monthly History",
+                title_media_complessiva: "Overall Average",
+                lbl_confirm: "Confirm",
+                lbl_cancel: "Cancel",
+                lbl_save: "Save",
+                title_modifica_pasto: "Edit Meal",
+                btn_recalculate_save: "Recalculate & Save",
+                lbl_time: "Time",
+                lbl_meal_text: "Meal Description",
+                lbl_last_analysis: "Last Analysis",
+                lbl_macro_breakdown: "Macronutrient Breakdown",
+                btn_save_to_diary: "Save to Diary",
+                lbl_food_diary: "Food Diary",
+                btn_delete_all: "Delete all",
+                btn_export_data: "Export data",
+                btn_import_data: "Import data",
+                lbl_no_meals_saved: "No meals saved yet.\nAnalyze and save a meal from the Log tab!",
+                lbl_avg_weekly_weight: "Avg Weekly Weight",
+                lbl_avg_monthly_weight: "Avg Monthly Weight",
+                lbl_avg_monthly_calories: "Avg Monthly Calories",
+                lbl_avg_monthly_proteins: "Avg Monthly Proteins",
+                lbl_avg_monthly_carbs: "Avg Monthly Carbs",
+                lbl_avg_monthly_fats: "Avg Monthly Fats",
+                lbl_ai_recalculate_hint: "The AI will recalculate the nutrients based on this text.",
+                lbl_ai_target_title: "AI Target Generator",
+                lbl_cur_weight: "Curr. Weight (kg)",
+                lbl_target_weight_short: "Goal Weight (kg)",
+                lbl_height_cm: "Height (cm)",
+                lbl_training_style: "Training style / Activity",
+                lbl_main_goal: "Main goal",
+                btn_generate_target: "Calculate targets",
+                lbl_ai_calculating: "AI is calculating your targets...",
+                lbl_ai_suggestion_title: "AI Target Suggestion:",
+                lbl_calories_colon: "Calories:",
+                lbl_target_weight_colon: "Target Weight:",
+                lbl_proteins_colon: "Proteins:",
+                lbl_carbs_colon: "Carbs:",
+                lbl_fats_colon: "Fats:",
+                btn_apply_targets: "Apply these targets",
+                lbl_privacy_note: "Keys and targets are stored only on your device (localStorage)."
+            }
+        };
+
+        window.currentLang = 'it';
+
+        window.changeLanguage = function (lang) {
+            window.currentLang = lang;
+            localStorage.setItem('app_lang', lang);
+            const selectLang = document.getElementById('appLanguage');
+            if (selectLang) selectLang.value = lang;
+
+            // 0. Aggiorna il badge lingua nel header
+            const langLabel = document.getElementById('langLabel');
+            if (langLabel) langLabel.innerText = lang.toUpperCase();
+
+            // 1. Aggiorna tutti gli elementi statici con data-i18n
+            document.querySelectorAll('[data-i18n]').forEach(el => {
+                const key = el.getAttribute('data-i18n');
+                if (TRANSLATIONS[window.currentLang] && TRANSLATIONS[window.currentLang][key]) {
+                    el.innerText = TRANSLATIONS[window.currentLang][key];
+                }
+            });
+
+            // 2. Aggiorna i placeholder degli input
+            const inputPasto = document.getElementById('testoInput');
+            if (inputPasto) inputPasto.placeholder = TRANSLATIONS[window.currentLang].placeholder_input_pasto;
+
+            const inputPesoVal = document.getElementById('input-peso-valore');
+            if (inputPesoVal) inputPesoVal.placeholder = TRANSLATIONS[window.currentLang].placeholder_weight_input;
+
+            // 3. Forza l'aggiornamento dei titoli dinamici del trend se necessario
+            const trendTitleEl = document.getElementById('trendTitle');
+            if (trendTitleEl) {
+                if (trendView === 'giorni') {
+                    trendTitleEl.innerHTML = `<i data-lucide="trending-up" class="w-4 h-4 text-indigo-400"></i> ${TRANSLATIONS[window.currentLang].trend_title_days}`;
+                } else if (trendView === 'settimane') {
+                    trendTitleEl.innerHTML = `<i data-lucide="calendar" class="w-4 h-4 text-blue-400"></i> ${TRANSLATIONS[window.currentLang].trend_title_weeks}`;
+                } else if (trendView === 'mesi') {
+                    trendTitleEl.innerHTML = `<i data-lucide="bar-chart-2" class="w-4 h-4 text-emerald-400"></i> ${TRANSLATIONS[window.currentLang].trend_title_months}`;
+                }
+                if (typeof lucide !== 'undefined') lucide.createIcons();
+            }
+
+            // 4. Ri-esegue il render delle varie liste per aggiornare i testi
+            aggiornaTotaleGiorno();
+            if (document.getElementById('panel-storico').classList.contains('active')) renderStorico();
+        };
+
+        // Cicla tra le lingue disponibili (IT → EN → IT …)
+        window.cycleLang = function () {
+            const next = window.currentLang === 'it' ? 'en' : 'it';
+            changeLanguage(next);
+        };
+
+
+
+        // ================================================================
         // INIT
         // ================================================================
         window.onload = function () {
             const savedGemini = localStorage.getItem('gemini_apikey');
             if (savedGemini) document.getElementById('geminiKey').value = savedGemini;
+
+            // Carica lingua salvata
+            const savedLang = localStorage.getItem('app_lang') || 'it';
+            changeLanguage(savedLang);
 
             // Carica target
             targetCalorie = parseInt(localStorage.getItem('target_calorie')) || 2000;
@@ -1234,19 +1458,25 @@
         // ================================================================
         async function analizzaDatiConAI() {
             const testo = document.getElementById('testoInput').value.trim();
-            if (!testo) return alert("Inserisci una descrizione degli alimenti consumati!");
+            if (!testo) {
+                await customAlert("Testo vuoto", "Inserisci una descrizione degli alimenti consumati!");
+                return;
+            }
 
             const apiKey = localStorage.getItem('gemini_apikey');
             if (!apiKey) {
                 toggleSettings();
-                return alert("Inserisci la tua Gemini API Key nelle impostazioni!");
+                await customAlert("API Key mancante", currentLang === 'en' ? "Please insert your Gemini API Key in the settings!" : "Inserisci la tua Gemini API Key nelle impostazioni!");
+                return;
             }
 
             document.getElementById('stato').classList.remove('hidden');
             document.getElementById('btnInvia').disabled = true;
             document.getElementById('btnInvia').style.opacity = "0.6";
 
-            const promptSistema = `Sei un esperto nutrizionista. Analizza il testo inserito dall'utente contenente alimenti. Calcola Calorie totali, Proteine (g), Carboidrati (g), Grassi (g). Rispondi ESCLUSIVAMENTE con un oggetto JSON valido (senza markdown, senza racchiuderlo in codice tipo \`\`\`json) avente le seguenti chiavi numeriche: "calorie", "proteine", "carboidrati", "grassi". Sii realistico e preciso nelle stime.`;
+            const promptSistema = currentLang === 'en'
+                ? `You are an expert nutritionist. Analyze the user text containing foods. Calculate total Calories, Proteins (g), Carbohydrates (g), Fats (g). Respond ONLY with a valid JSON object (no markdown, do not wrap in \`\`\`json block) with the following numerical keys: "calorie", "proteine", "carboidrati", "grassi". Be realistic and precise in the estimates.`
+                : `Sei un esperto nutrizionista. Analizza il testo inserito dall'utente contenente alimenti. Calcola Calorie totali, Proteine (g), Carboidrati (g), Grassi (g). Rispondi ESCLUSIVAMENTE con un oggetto JSON valido (senza markdown, senza racchiuderlo in codice tipo \`\`\`json) avente le seguenti chiavi numeriche: "calorie", "proteine", "carboidrati", "grassi". Sii realistico e preciso nelle stime.`;
 
             try {
                 const response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/${GEMINI_MODEL}:generateContent?key=${apiKey}`, {
@@ -1254,7 +1484,7 @@
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({
                         contents: [{
-                            parts: [{ text: promptSistema + "\n\nTesto utente da analizzare:\n" + testo }]
+                            parts: [{ text: promptSistema + "\n\n" + (currentLang === 'en' ? "User text to analyze:" : "Testo utente da analizzare:") + "\n" + testo }]
                         }],
                         generationConfig: {
                             responseMimeType: "application/json",
@@ -1270,7 +1500,7 @@
                 mostraRisultati(jsonRes);
             } catch (err) {
                 console.error(err);
-                alert("Si è verificato un errore nell'analisi AI. Controlla la chiave di configurazione e la connessione internet.");
+                await customAlert("Errore di analisi", "Si è verificato un errore nell'analisi AI. Controlla la chiave di configurazione e la connessione internet.");
             } finally {
                 document.getElementById('stato').classList.add('hidden');
                 document.getElementById('btnInvia').disabled = false;
@@ -1299,26 +1529,39 @@
             const giornoOggi = db.find(g => g.data === dataOggi);
             const pastiDellaGiornata = giornoOggi && giornoOggi.pasti && giornoOggi.pasti.length > 0
                 ? giornoOggi.pasti.map(p => `- [${p.ora || ''}] ${p.testo} (${p.calorie} kcal)`).join('\n')
-                : "Nessun pasto registrato ancora oggi.";
+                : (currentLang === 'en' ? "No meals logged yet today." : "Nessun pasto registrato ancora oggi.");
 
             // Recupera credenziali di configurazione
             const geminiKey = localStorage.getItem('gemini_apikey');
 
             if (!geminiKey) {
-                alert("Inserisci prima la tua API Key nelle impostazioni (icona ingranaggio in alto).");
+                await customAlert("API Key mancante", currentLang === 'en' ? "Please insert your Gemini API Key in the settings first!" : "Inserisci prima la tua API Key nelle impostazioni (icona ingranaggio in alto).");
                 return;
             }
 
             // Cambia stato del bottone durante il caricamento
             btn.disabled = true;
-            btn.innerHTML = `<i data-lucide="loader-2" class="w-3 h-3 animate-spin"></i> Elaborazione...`;
+            btn.innerHTML = currentLang === 'en' ? `<i data-lucide="loader-2" class="w-3 h-3 animate-spin"></i> Analyzing...` : `<i data-lucide="loader-2" class="w-3 h-3 animate-spin"></i> Elaborazione...`;
             lucide.createIcons();
 
             boxSuggerimenti.classList.remove('hidden');
-            testoSuggerimenti.innerHTML = `<span class="italic text-slate-400">L'AI sta analizzando la tua ripartizione dei macro odierni...</span>`;
+            testoSuggerimenti.innerHTML = currentLang === 'en' ? `<span class="italic text-slate-400">The AI is analyzing your macro split today...</span>` : `<span class="italic text-slate-400">L'AI sta analizzando la tua ripartizione dei macro odierni...</span>`;
 
             // Prompt inviato all'AI
-            const prompt = `Agisci come un esperto nutrizionista e trainer. Fai una brevissima valutazione sintetica e amichevole dei macronutrienti consumati oggi rispetto ai target dell'utente, dando suggerimenti pratici ed immediati su cosa mangiare o evitare per il resto della giornata.
+            const prompt = currentLang === 'en'
+                ? `Act as an expert nutritionist and trainer. Make a very brief, friendly, and synthetic evaluation of the macronutrients consumed today compared to the user's targets, giving practical and immediate suggestions on what to eat or avoid for the rest of the day.
+    Today's data:
+    - Calories: ${calorie} kcal consumed out of a target of ${targetCalorie} kcal.
+    - Proteins: ${proteine}g consumed out of a target of ${targetProteine}g.
+    - Carbohydrates: ${carbo}g consumed out of a target of ${targetCarbo}g.
+    - Fats: ${grassi}g consumed out of a target of ${targetGrassi}g.
+    
+    Meals consumed today:
+    ${pastiDellaGiornata}
+    
+    Analyze the meals consumed today to understand context (e.g. which main meals like breakfast, lunch, dinner or snacks have already been done, or the time and food choices) and absolutely avoid proposing meals that have already been eaten (e.g. do not suggest a full lunch if they already logged lunch, or pasta at dinner if they already reached or exceeded carbs). Instead, provide targeted ideas for missing snacks or dinner/breakfast if missing.
+    Respond in maximum 3 or 4 sentences, very compactly, using bullet points if needed. Be motivational.`
+                : `Agisci come un esperto nutrizionista e trainer. Fai una brevissima valutazione sintetica e amichevole dei macronutrienti consumati oggi rispetto ai target dell'utente, dando suggerimenti pratici ed immediati su cosa mangiare o evitare per il resto della giornata.
     Dati di oggi:
     - Calorie: ${calorie} kcal consumate su un target di ${targetCalorie} kcal.
     - Proteine: ${proteine}g consumate su un target di ${targetProteine}g.
@@ -1350,7 +1593,7 @@
 
             } catch (error) {
                 console.error(error);
-                testoSuggerimenti.innerHTML = `<span class="text-rose-400">Errore nella valutazione: ${error.message}</span>`;
+                testoSuggerimenti.innerHTML = currentLang === 'en' ? `<span class="text-rose-400">Evaluation error: ${error.message}</span>` : `<span class="text-rose-400">Errore nella valutazione: ${error.message}</span>`;
             } finally {
                 // Ripristina il bottone originale
                 btn.disabled = false;
@@ -1383,7 +1626,7 @@
         window.salvaEntry = async function () {
             // 1. Controllo di sicurezza
             if (!ultimaAnalisi) {
-                await customAlert("Nessuna analisi", "Nessuna analisi da salvare!");
+                await customAlert(currentLang === 'en' ? "No Analysis" : "Nessuna analisi", currentLang === 'en' ? "No analysis to save yet!" : "Nessuna analisi da salvare!");
                 return;
             }
 
@@ -1457,7 +1700,7 @@
             if (!lista) return;
 
             if (db.length === 0) {
-                lista.innerHTML = `<p class="text-sm text-slate-500 text-center py-8">Nessun pasto salvato ancora.<br>Elabora e salva un'analisi dalla tab Oggi!</p>`;
+                lista.innerHTML = `<p class="text-sm text-slate-500 text-center py-8">${currentLang === 'en' ? 'No meals saved yet.<br>Analyze and save a meal from the Log tab!' : 'Nessun pasto salvato ancora.<br>Elabora e salva un\'analisi dalla tab Dati!'}</p>`;
                 return;
             }
 
@@ -1499,7 +1742,7 @@
                 </div>`;
                     });
                 } else {
-                    pastiHtml = `<p class="text-xs text-slate-500 italic py-1 pl-1">Nessun singolo pasto registrato (solo macro totali o peso).</p>`;
+                    pastiHtml = `<p class="text-xs text-slate-500 italic py-1 pl-1">${currentLang === 'en' ? 'No individual meals recorded (totals or weight only).' : 'Nessun singolo pasto registrato (solo macro totali o peso).'}</p>`;
                 }
 
                 html += `
@@ -1526,7 +1769,12 @@
         // ELIMINAZIONI ED EDITING MODAL STORICO
         // ================================================================
         async function eliminaInteroGiorno(giornoId) {
-            const procedi = await customConfirm("Elimina Giornata", "Sei sicuro di voler eliminare interamente questa giornata dal diario?", true, "Elimina");
+            const procedi = await customConfirm(
+                currentLang === 'en' ? "Delete Day" : "Elimina Giornata",
+                currentLang === 'en' ? "Are you sure you want to completely delete this day from the diary?" : "Sei sicuro di voler eliminare interamente questa giornata dal diario?",
+                true,
+                currentLang === 'en' ? "Delete" : "Elimina"
+            );
             if (!procedi) return;
             let db = JSON.parse(localStorage.getItem('nutriDB')) || [];
             db = db.filter(x => x.id !== giornoId);
@@ -1537,7 +1785,12 @@
         }
 
         async function eliminaSingoloPasto(giornoId, pastoId) {
-            const procedi = await customConfirm("Elimina Pasto", "Eliminare questo pasto? I macro giornalieri verranno ricalcolati.", true, "Elimina");
+            const procedi = await customConfirm(
+                currentLang === 'en' ? "Delete Meal" : "Elimina Pasto",
+                currentLang === 'en' ? "Delete this meal? Daily macros will be recalculated." : "Eliminare questo pasto? I macro giornalieri verranno ricalcolati.",
+                true,
+                currentLang === 'en' ? "Delete" : "Elimina"
+            );
             if (!procedi) return;
             let db = JSON.parse(localStorage.getItem('nutriDB')) || [];
             let giorno = db.find(x => x.id === giornoId);
@@ -1598,22 +1851,30 @@
             const nuovaOra = document.getElementById('editOra').value;
             const nuovoTesto = document.getElementById('editTesto').value.trim();
 
-            if (!nuovoTesto || !nuovaData) return alert("Compila i campi richiesti!");
+            if (!nuovoTesto || !nuovaData) {
+                await customAlert("Campi incompleti", currentLang === 'en' ? "Please fill in all required fields!" : "Compila i campi richiesti!");
+                return;
+            }
             const apiKey = localStorage.getItem('gemini_apikey');
-            if (!apiKey) return alert("Gemini API Key mancante nelle impostazioni!");
+            if (!apiKey) {
+                await customAlert("API Key mancante", currentLang === 'en' ? "Please insert your Gemini API Key in the settings first!" : "Gemini API Key mancante nelle impostazioni!");
+                return;
+            }
 
             const btn = document.getElementById('btnSalvaModifica');
             btn.disabled = true;
-            btn.innerText = "Ricalcolo in corso AI...";
+            btn.innerText = currentLang === 'en' ? "Recalculating with AI..." : "Ricalcolo in corso AI...";
 
-            const promptSistema = `Sei un esperto nutrizionista. Analizza il testo inserito dall'utente contenente alimenti. Calcola Calorie totali, Proteine (g), Carboidrati (g), Grassi (g). Rispondi ESCLUSIVAMENTE con un oggetto JSON valido (senza markdown, senza racchiuderlo in codice tipo \`\`\`json) avente le seguenti chiavi numeriche: "calorie", "proteine", "carboidrati", "grassi". Sii realistico e preciso nelle stime.`;
+            const promptSistema = currentLang === 'en'
+                ? `You are an expert nutritionist. Analyze the user text containing foods. Calculate total Calories, Proteins (g), Carbohydrates (g), Fats (g). Respond ONLY with a valid JSON object (no markdown, do not wrap in \`\`\`json block) with the following numerical keys: "calorie", "proteine", "carboidrati", "grassi". Be realistic and precise in the estimates.`
+                : `Sei un esperto nutrizionista. Analizza il testo inserito dall'utente contenente alimenti. Calcola Calorie totali, Proteine (g), Carboidrati (g), Grassi (g). Rispondi ESCLUSIVAMENTE con un oggetto JSON valido (senza markdown, senza racchiuderlo in codice tipo \`\`\`json) avente le seguenti chiavi numeriche: "calorie", "proteine", "carboidrati", "grassi". Sii realistico e preciso nelle stime.`;
 
             try {
                 const response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/${GEMINI_MODEL}:generateContent?key=${apiKey}`, {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({
-                        contents: [{ parts: [{ text: promptSistema + "\n\nTesto utente da analizzare:\n" + nuovoTesto }] }],
+                        contents: [{ parts: [{ text: promptSistema + "\n\n" + (currentLang === 'en' ? "User text to analyze:" : "Testo utente da analizzare:") + "\n" + nuovoTesto }] }],
                         generationConfig: { responseMimeType: "application/json", temperature: 0.2 }
                     })
                 });
@@ -1675,22 +1936,22 @@
                 caricaPesoDelGiorno();
             } catch (err) {
                 console.error(err);
-                alert("Errore durante la modifica.");
+                await customAlert("Errore", currentLang === 'en' ? "Error during update." : "Errore durante la modifica.");
             } finally {
                 btn.disabled = false;
-                btn.innerHTML = `<i data-lucide="sparkles" class="w-4 h-4"></i> Ricalcola e Salva`;
+                btn.innerHTML = `<i data-lucide="sparkles" class="w-4 h-4"></i> ${currentLang === 'en' ? 'Recalculate & Save' : 'Ricalcola e Salva'}`;
                 lucide.createIcons();
             }
         }
 
         async function confermaReset() {
-            const procedi = await customConfirm("Cancellazione Database", "ATTENZIONE! Vuoi davvero cancellare l'intero database locale dei pasti e del peso? Questa azione è irreversibile.", true, "Cancella tutto");
+            const procedi = await customConfirm(currentLang === 'en' ? "Delete Database" : "Cancellazione Database", currentLang === 'en' ? "WARNING! Do you really want to delete the entire local database of meals and weight? This action is irreversible." : "ATTENZIONE! Vuoi davvero cancellare l'intero database locale dei pasti e del peso? Questa azione è irreversibile.", true, currentLang === 'en' ? "Delete all" : "Cancella tutto");
             if (procedi) {
                 localStorage.removeItem('nutriDB');
                 renderStorico();
                 aggiornaTotaleGiorno();
                 caricaPesoDelGiorno();
-                await customAlert("Cancellato", "L'intero database è stato resettato correttamente.", true);
+                await customAlert(currentLang === 'en' ? "Deleted" : "Cancellato", currentLang === 'en' ? "The entire database has been successfully reset." : "L'intero database è stato resettato correttamente.", true);
             }
         }
 
@@ -2478,7 +2739,7 @@
         async function esportaDB() {
             const db = localStorage.getItem('nutriDB');
             if (!db || db === "[]") {
-                await customAlert("Nessun dato", "Nessun dato presente da esportare!");
+                await customAlert(currentLang === 'en' ? "No data" : "Nessun dato", currentLang === 'en' ? "No data available to export!" : "Nessun dato presente da esportare!");
                 return;
             }
 
@@ -2503,7 +2764,7 @@
                     const json = JSON.parse(e.target.result);
                     if (Array.isArray(json)) {
                         localStorage.setItem('nutriDB', JSON.stringify(json));
-                        await customAlert("Importazione", "Database importato con successo!", true);
+                        await customAlert(currentLang === 'en' ? "Imported" : "Importazione", currentLang === 'en' ? "Database successfully imported!" : "Database importato con successo!", true);
                         aggiornaTotaleGiorno();
                         caricaPesoDelGiorno();
                         if (document.getElementById('panel-storico').classList.contains('active')) renderStorico();
@@ -2515,10 +2776,10 @@
                             }
                         }
                     } else {
-                        await customAlert("Errore Formato", "Formato file non valido. Deve essere un array JSON.");
+                        await customAlert(currentLang === 'en' ? "Format Error" : "Errore Formato", currentLang === 'en' ? "Invalid file format. It must be a JSON array." : "Formato file non valido. Deve essere un array JSON.");
                     }
                 } catch (err) {
-                    await customAlert("Errore Lettura", "Errore nella lettura del file di backup.");
+                    await customAlert(currentLang === 'en' ? "Read Error" : "Errore Lettura", currentLang === 'en' ? "Error reading backup file." : "Errore nella lettura del file di backup.");
                 }
             };
             reader.readAsText(file);
@@ -2531,7 +2792,10 @@
             const dataSelezionata = document.getElementById('input-peso-data').value;
 
             if (!valoreInput || !dataSelezionata) {
-                await customAlert("Dati mancanti", "Inserisci sia un valore di peso valido che una data.");
+                await customAlert(
+                    currentLang === 'en' ? "Missing data" : "Dati mancanti",
+                    currentLang === 'en' ? "Please enter both a valid weight value and a date." : "Inserisci sia un valore di peso valido che una data."
+                );
                 return;
             }
 
@@ -2576,7 +2840,13 @@
                 }
             }
 
-            await customAlert("Peso salvato", `Peso di ${pesoFlessibile} kg salvato correttamente per il giorno ${dataSelezionata}!`, true);
+            await customAlert(
+                currentLang === 'en' ? "Weight saved" : "Peso salvato",
+                currentLang === 'en'
+                    ? `Weight of ${pesoFlessibile} kg successfully saved for ${dataSelezionata}!`
+                    : `Peso di ${pesoFlessibile} kg salvato correttamente per il giorno ${dataSelezionata}!`,
+                true
+            );
 
             // Pulisce il campo input del peso dopo il salvataggio
             document.getElementById('input-peso-valore').value = '';
@@ -2588,7 +2858,12 @@
 
         // Funzione per eliminare un singolo pasto specifico dallo Storico
         window.eliminaPasto = async function (dataPasto, pastoId) {
-            const procedi = await customConfirm("Elimina Pasto", "Sei sicuro di voler eliminare questo pasto? I macro giornalieri verranno ricalcolati.", true, "Elimina");
+            const procedi = await customConfirm(
+                currentLang === 'en' ? "Delete Meal" : "Elimina Pasto",
+                currentLang === 'en' ? "Are you sure you want to delete this meal? Daily macros will be recalculated." : "Sei sicuro di voler eliminare questo pasto? I macro giornalieri verranno ricalcolati.",
+                true,
+                currentLang === 'en' ? "Delete" : "Elimina"
+            );
             if (!procedi) return;
 
             let db = JSON.parse(localStorage.getItem('nutriDB')) || [];
@@ -2663,13 +2938,20 @@
             const obiettivo = document.getElementById('aiObiettivo').value.trim();
 
             if (!peso || !altezza || !attivita || !obiettivo) {
-                alert("Compila tutte le informazioni necessarie per consentire all'AI il calcolo!");
+                await customAlert(
+                    currentLang === 'en' ? "Incomplete fields" : "Campi incompleti",
+                    currentLang === 'en' ? "Please fill in all the required fields to allow the AI to calculate your targets!" : "Compila tutte le informazioni necessarie per consentire all'AI il calcolo!"
+                );
                 return;
             }
 
             const apiKey = localStorage.getItem('gemini_apikey');
             if (!apiKey) {
-                return alert("Inserisci prima la tua Gemini API Key nelle impostazioni!");
+                await customAlert(
+                    currentLang === 'en' ? "API Key missing" : "API Key mancante",
+                    currentLang === 'en' ? "Please enter your Gemini API Key in the settings first!" : "Inserisci prima la tua Gemini API Key nelle impostazioni!"
+                );
+                return;
             }
 
             const btn = document.getElementById('btnGeneraTargetAI');
@@ -2719,7 +3001,10 @@ Rispondi ESCLUSIVAMENTE con un oggetto JSON valido (senza markdown, senza racchi
                 resultsBox.classList.remove('hidden');
             } catch (error) {
                 console.error(error);
-                alert("Si è verificato un errore nel calcolo dei target con l'AI. Verifica la chiave API e la connessione.");
+                await customAlert(
+                    currentLang === 'en' ? "Calculation error" : "Errore di calcolo",
+                    currentLang === 'en' ? "An error occurred while calculating the AI targets. Check your API key and connection." : "Si è verificato un errore nel calcolo dei target con l'AI. Verifica la chiave API e la connessione."
+                );
             } finally {
                 btn.disabled = false;
                 btn.style.opacity = "1";
@@ -2739,7 +3024,11 @@ Rispondi ESCLUSIVAMENTE con un oggetto JSON valido (senza markdown, senza racchi
             saveTarget();
 
             document.getElementById('aiTargetBox').classList.add('hidden');
-            await customAlert("Target Applicati", "Nuovi target AI applicati e salvati correttamente!", true);
+            await customAlert(
+                currentLang === 'en' ? "Targets Applied" : "Target Applicati",
+                currentLang === 'en' ? "New AI targets applied and saved successfully!" : "Nuovi target AI applicati e salvati correttamente!",
+                true
+            );
         };
 
         // ================================================================
@@ -2750,10 +3039,10 @@ Rispondi ESCLUSIVAMENTE con un oggetto JSON valido (senza markdown, senza racchi
         let currentTextareaId = null;
         let currentBtnId = null;
 
-        window.toggleVoiceDictation = function (textareaId, btnId) {
+        window.toggleVoiceDictation = async function (textareaId, btnId) {
             const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
             if (!SpeechRecognition) {
-                alert("La dettatura vocale non è supportata da questo browser. Prova con Google Chrome o Safari.");
+                await customAlert("Dettatura non supportata", window.currentLang === 'en' ? "Voice dictation is not supported by this browser. Try Google Chrome or Safari." : "La dettatura vocale non è supportata da questo browser. Prova con Google Chrome o Safari.");
                 return;
             }
 
@@ -2766,7 +3055,6 @@ Rispondi ESCLUSIVAMENTE con un oggetto JSON valido (senza markdown, senza racchi
 
             if (!voiceRecognition) {
                 voiceRecognition = new SpeechRecognition();
-                voiceRecognition.lang = 'it-IT';
                 voiceRecognition.continuous = false;
                 voiceRecognition.interimResults = false;
 
@@ -2780,7 +3068,7 @@ Rispondi ESCLUSIVAMENTE con un oggetto JSON valido (senza markdown, senza racchi
                     }
                     if (activeTextarea) {
                         activeTextarea.setAttribute('data-prev-placeholder', activeTextarea.placeholder || "");
-                        activeTextarea.placeholder = "Ascolto in corso... parla ora";
+                        activeTextarea.placeholder = window.currentLang === 'en' ? "Listening... speak now" : "Ascolto in corso... parla ora";
                     }
                 };
 
@@ -2826,6 +3114,7 @@ Rispondi ESCLUSIVAMENTE con un oggetto JSON valido (senza markdown, senza racchi
                 currentTextareaId = textareaId;
                 currentBtnId = btnId;
                 try {
+                    voiceRecognition.lang = window.currentLang === 'en' ? 'en-US' : 'it-IT';
                     voiceRecognition.start();
                 } catch (e) {
                     console.error(e);
@@ -2949,7 +3238,7 @@ Rispondi ESCLUSIVAMENTE con un oggetto JSON valido (senza markdown, senza racchi
         window.analizzaTrendConAI = async function () {
             const geminiKey = localStorage.getItem('gemini_apikey');
             if (!geminiKey) {
-                await customAlert("API Key mancante", "Inserisci prima la tua API Key nelle impostazioni (icona ingranaggio in alto).");
+                await customAlert("API Key mancante", currentLang === 'en' ? "Please insert your Gemini API Key in the settings first!" : "Inserisci prima la tua API Key nelle impostazioni (icona ingranaggio in alto).");
                 return;
             }
 
@@ -2961,11 +3250,11 @@ Rispondi ESCLUSIVAMENTE con un oggetto JSON valido (senza markdown, senza racchi
             btn.disabled = true;
             btn.style.opacity = "0.6";
             const prevLabelHTML = label.innerHTML;
-            label.innerHTML = `<i data-lucide="loader-2" class="w-3.5 h-3.5 animate-spin"></i> Analisi in corso...`;
+            label.innerHTML = currentLang === 'en' ? `<i data-lucide="loader-2" class="w-3.5 h-3.5 animate-spin"></i> Analyzing...` : `<i data-lucide="loader-2" class="w-3.5 h-3.5 animate-spin"></i> Analisi in corso...`;
             if (typeof lucide !== 'undefined') lucide.createIcons();
 
             box.classList.remove('hidden');
-            testo.innerHTML = `<span class="italic text-slate-400">L'AI sta analizzando i tuoi andamenti storici...</span>`;
+            testo.innerHTML = currentLang === 'en' ? `<span class="italic text-slate-400">The AI is analyzing your historical trends...</span>` : `<span class="italic text-slate-400">L'AI sta analizzando i tuoi andamenti storici...</span>`;
 
             // Raccogli i dati del database nutriDB
             const db = JSON.parse(localStorage.getItem('nutriDB')) || [];
@@ -2974,7 +3263,9 @@ Rispondi ESCLUSIVAMENTE con un oggetto JSON valido (senza markdown, senza racchi
                 btn.style.opacity = "1";
                 label.innerHTML = prevLabelHTML;
                 if (typeof lucide !== 'undefined') lucide.createIcons();
-                testo.innerHTML = `<span class="italic text-rose-400">Nessun dato presente nel diario per effettuare l'analisi.</span>`;
+                testo.innerHTML = currentLang === 'en' 
+                    ? `<span class="italic text-rose-400">No data available in the diary to perform analysis.</span>`
+                    : `<span class="italic text-rose-400">Nessun dato presente nel diario per effettuare l'analisi.</span>`;
                 return;
             }
 
@@ -2987,10 +3278,16 @@ Rispondi ESCLUSIVAMENTE con un oggetto JSON valido (senza markdown, senza racchi
                 const costr = `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`;
                 const trovato = db.find(x => x.data === costr);
                 if (trovato && (trovato.calorie > 0 || trovato.proteine > 0 || trovato.pasti.length > 0)) {
-                    datiBrevePeriodo += `- Data ${costr}: Calorie ${Math.round(trovato.calorie)} kcal, Proteine ${Math.round(trovato.proteine)}g, Carbo ${Math.round(trovato.carboidrati)}g, Grassi ${Math.round(trovato.grassi)}g, Peso ${trovato.peso || 'non registrato'} kg\n`;
+                    if (currentLang === 'en') {
+                        datiBrevePeriodo += `- Date ${costr}: Calories ${Math.round(trovato.calorie)} kcal, Proteins ${Math.round(trovato.proteine)}g, Carbs ${Math.round(trovato.carboidrati)}g, Fats ${Math.round(trovato.grassi)}g, Weight ${trovato.peso || 'not logged'} kg\n`;
+                    } else {
+                        datiBrevePeriodo += `- Data ${costr}: Calorie ${Math.round(trovato.calorie)} kcal, Proteine ${Math.round(trovato.proteine)}g, Carbo ${Math.round(trovato.carboidrati)}g, Grassi ${Math.round(trovato.grassi)}g, Peso ${trovato.peso || 'non registrato'} kg\n`;
+                    }
                     giorniRegistratiCount++;
                 } else {
-                    datiBrevePeriodo += `- Data ${costr}: Nessun dato registrato (ignora questo giorno dall'analisi)\n`;
+                    datiBrevePeriodo += currentLang === 'en' 
+                        ? `- Date ${costr}: No data logged (ignore this day in analysis)\n`
+                        : `- Data ${costr}: Nessun dato registrato (ignora questo giorno dall'analisi)\n`;
                 }
             }
 
@@ -3027,14 +3324,47 @@ Rispondi ESCLUSIVAMENTE con un oggetto JSON valido (senza markdown, senza racchi
                     const mediaG = recordAttivi.reduce((a, b) => a + (b.grassi || 0), 0) / recordAttivi.length;
                     const mediaPeso = recordConPeso.length > 0 ? recordConPeso.reduce((a, b) => a + b.peso, 0) / recordConPeso.length : null;
 
-                    datiMedioPeriodo += `- Settimana ${numSettimana} (da ${inizioSettimana.toLocaleDateString('it-IT')} a ${fineSettimana.toLocaleDateString('it-IT')}): Calorie medie ${Math.round(mediaC)} kcal/giorno, Proteine ${Math.round(mediaP)}g, Carbo ${Math.round(mediaCb)}g, Grassi ${Math.round(mediaG)}g, Peso medio ${mediaPeso ? mediaPeso.toFixed(1) + ' kg' : 'non registrato'}\n`;
+                    if (currentLang === 'en') {
+                        datiMedioPeriodo += `- Week ${numSettimana} (from ${inizioSettimana.toLocaleDateString('en-US')} to ${fineSettimana.toLocaleDateString('en-US')}): Average Calories ${Math.round(mediaC)} kcal/day, Proteins ${Math.round(mediaP)}g, Carbs ${Math.round(mediaCb)}g, Fats ${Math.round(mediaG)}g, Average Weight ${mediaPeso ? mediaPeso.toFixed(1) + ' kg' : 'not logged'}\n`;
+                    } else {
+                        datiMedioPeriodo += `- Settimana ${numSettimana} (da ${inizioSettimana.toLocaleDateString('it-IT')} a ${fineSettimana.toLocaleDateString('it-IT')}): Calorie medie ${Math.round(mediaC)} kcal/giorno, Proteine ${Math.round(mediaP)}g, Carbo ${Math.round(mediaCb)}g, Grassi ${Math.round(mediaG)}g, Peso medio ${mediaPeso ? mediaPeso.toFixed(1) + ' kg' : 'non registrato'}\n`;
+                    }
                     settimaneRegistrateCount++;
                 } else {
-                    datiMedioPeriodo += `- Settimana ${numSettimana} (da ${inizioSettimana.toLocaleDateString('it-IT')} a ${fineSettimana.toLocaleDateString('it-IT')}): Nessun dato registrato (ignora questa settimana dall'analisi)\n`;
+                    datiMedioPeriodo += currentLang === 'en'
+                        ? `- Week ${numSettimana} (from ${inizioSettimana.toLocaleDateString('en-US')} to ${fineSettimana.toLocaleDateString('en-US')}): No data logged (ignore this week in analysis)\n`
+                        : `- Settimana ${numSettimana} (da ${inizioSettimana.toLocaleDateString('it-IT')} a ${fineSettimana.toLocaleDateString('it-IT')}): Nessun dato registrato (ignora questa settimana dall'analisi)\n`;
                 }
             }
 
-            const promptAI = `Sei un esperto nutrizionista clinico e trainer sportivo. Analizza l'andamento recente dei pasti e del peso corporeo dell'utente su due finestre temporali rispetto ai suoi target impostati.
+            const promptAI = currentLang === 'en'
+                ? `You are an expert clinical nutritionist and sports trainer. Analyze the user's recent meals and body weight trend over two time windows compared to their set targets.
+
+User's current targets:
+- Calories: ${targetCalorie} kcal
+- Proteins: ${targetProteine} g
+- Carbohydrates: ${targetCarbo} g
+- Fats: ${targetGrassi} g
+- Target Weight: ${pesoTarget} kg
+
+SHORT-TERM Data (Last 7 Days, of which ${giorniRegistratiCount} have actual logs):
+${datiBrevePeriodo}
+
+MEDIUM-TERM Data (Last 8 Weeks, of which ${settimaneRegistrateCount} have actual logs):
+${datiMedioPeriodo}
+
+CRITICAL ANALYSIS RULES:
+1. Be concise but explanatory (maximum 2-3 clear sentences per section).
+2. DO NOT write a day-by-day or week-by-week report. DO NOT repeat, list, or quote specific dates or data received, but limit yourself to summarizing the global trend with a constructive and motivating tone.
+3. Only consider the days/weeks where actual records exist.
+4. If logging consistency is low, briefly encourage the user to log more regularly.
+
+Provide a separate and compact evaluation, structured exactly as follows (maximum 2-3 sentences per section, use bold for titles):
+
+**Short Term**: [Clear and conversational evaluation of recent calories and macronutrients].
+**Medium Term**: [Clear and conversational evaluation of weight trend compared to the target].
+**Advice**: [A practical, motivational, and immediate tip to optimize progress or consistency].`
+                : `Sei un esperto nutrizionista clinico e trainer sportivo. Analizza l'andamento recente dei pasti e del peso corporeo dell'utente su due finestre temporali rispetto ai suoi target impostati.
 
 Target attuali dell'utente:
 - Calorie: ${targetCalorie} kcal
@@ -3075,7 +3405,9 @@ ${datiMedioPeriodo}
                 testo.innerHTML = rawResponse.replace(/\n/g, '<br>');
             } catch (err) {
                 console.error(err);
-                testo.innerHTML = `<span class="italic text-rose-400">Si è verificato un errore durante l'analisi. Verifica la tua connessione internet o la chiave API.</span>`;
+                testo.innerHTML = currentLang === 'en'
+                    ? `<span class="italic text-rose-400">An error occurred during analysis. Verify your internet connection or API key.</span>`
+                    : `<span class="italic text-rose-400">Si è verificato un errore durante l'analisi. Verifica la tua connessione internet o la chiave API.</span>`;
             } finally {
                 btn.disabled = false;
                 btn.style.opacity = "1";
