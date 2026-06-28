@@ -191,9 +191,16 @@
 
             <div class="mb-4">
                 <label class="text-[11px] font-semibold text-slate-400 uppercase tracking-wider">Testo del pasto</label>
-                <textarea id="editTesto" rows="4"
-                    class="mt-1 w-full bg-slate-900 border border-slate-700 rounded-xl p-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 text-slate-200 placeholder-slate-600 resize-none"
-                    placeholder="Descrivi il pasto da ricalcolare..."></textarea>
+                <div class="relative mt-1">
+                    <textarea id="editTesto" rows="4"
+                        class="w-full bg-slate-900 border border-slate-700 rounded-xl p-2.5 pr-12 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 text-slate-200 placeholder-slate-600 resize-none"
+                        placeholder="Descrivi il pasto da ricalcolare..."></textarea>
+                    <button type="button" id="btnMicEdit" onclick="toggleVoiceDictation('editTesto', 'btnMicEdit')"
+                        class="absolute bottom-3 right-3 text-slate-400 hover:text-indigo-400 p-2 rounded-xl bg-slate-800/80 hover:bg-slate-800 border border-slate-700/50 transition duration-200 cursor-pointer flex items-center justify-center animate-none"
+                        title="Dettatura vocale">
+                        <i id="iconMicEdit" data-lucide="mic" class="w-4 h-4"></i>
+                    </button>
+                </div>
                 <p class="text-[10px] text-slate-500 mt-1.5 flex items-center gap-1"><i data-lucide="sparkles"
                         class="w-3 h-3 text-indigo-400"></i> L'AI ricalcolerà i nutrienti basandosi su questo testo.</p>
             </div>
@@ -202,6 +209,23 @@
                 class="w-full bg-indigo-600 hover:bg-indigo-500 text-white font-bold py-3 rounded-xl transition text-sm flex items-center justify-center gap-2">
                 <i data-lucide="sparkles" class="w-4 h-4"></i> Ricalcola e Salva
             </button>
+        </div>
+    </div>
+
+    <!-- Modal Dialog Personalizzato per Alert/Confirm -->
+    <div id="dialogModal" class="hidden fixed inset-0 z-[100] bg-black/75 flex items-center justify-center p-4 backdrop-blur-sm">
+        <div id="dialogInner" class="bg-slate-800 w-full max-w-sm rounded-2xl border border-slate-700 p-5 shadow-2xl scale-95 opacity-0 transition-all duration-300">
+            <div class="flex items-center gap-3 mb-3">
+                <div id="dialogIconContainer" class="p-2 rounded-xl">
+                    <i id="dialogIcon" class="w-5 h-5"></i>
+                </div>
+                <h3 id="dialogTitle" class="text-sm font-bold text-slate-200">Attenzione</h3>
+            </div>
+            <p id="dialogMessage" class="text-xs text-slate-300 leading-relaxed mb-5"></p>
+            <div class="flex gap-2 justify-end">
+                <button id="dialogBtnCancel" class="px-4 py-2 rounded-xl text-xs font-semibold bg-slate-700 hover:bg-slate-600 text-slate-300 transition cursor-pointer">Annulla</button>
+                <button id="dialogBtnConfirm" class="px-4 py-2 rounded-xl text-xs font-semibold bg-indigo-600 hover:bg-indigo-500 text-white transition cursor-pointer">Conferma</button>
+            </div>
         </div>
     </div>
 
@@ -507,7 +531,7 @@
                     <textarea id="testoInput" rows="4"
                         class="w-full bg-slate-900/90 border border-slate-700 rounded-xl p-3 pr-12 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 text-slate-100 placeholder-slate-500 resize-none"
                         placeholder="Es: Stamattina yogurt greco..."></textarea>
-                    <button type="button" id="btnMic" onclick="toggleVoiceDictation()"
+                    <button type="button" id="btnMic" onclick="toggleVoiceDictation('testoInput', 'btnMic')"
                         class="absolute bottom-3 right-3 text-slate-400 hover:text-indigo-400 p-2 rounded-xl bg-slate-800/80 hover:bg-slate-800 border border-slate-700/50 transition duration-200 cursor-pointer flex items-center justify-center animate-none"
                         title="Dettatura vocale">
                         <i id="iconMic" data-lucide="mic" class="w-4 h-4"></i>
@@ -1343,17 +1367,17 @@
         // ================================================================
         // SALVATAGGIO DEI DATI NEL DIARIO LOCALE
         // ================================================================
-        window.salvaEntry = function () {
+        window.salvaEntry = async function () {
             // 1. Controllo di sicurezza
             if (!ultimaAnalisi) {
-                alert("Nessuna analisi da salvare!");
+                await customAlert("Nessuna analisi", "Nessuna analisi da salvare!");
                 return;
             }
 
             // 2. Recupero dati in sicurezza
             const inputData = document.getElementById('input-pasto-data');
             if (!inputData) {
-                alert("Errore: Selettore data non trovato.");
+                await customAlert("Errore", "Errore: Selettore data non trovato.");
                 return;
             }
 
@@ -1407,8 +1431,8 @@
             ultimaAnalisi = null;
 
             aggiornaTotaleGiorno();
-            renderStorico(); // Aggiunto per aggiornare anche la lista storica
-            alert("Pasto registrato con successo!");
+            renderStorico();
+            await customAlert("Pasto registrato", "Pasto registrato con successo!", true);
         };
 
         // ================================================================
@@ -1440,7 +1464,7 @@
                         </span>
                         
                         <div class="flex items-center gap-2 relative z-30">
-                            <button onclick="apriModalModifica('${giorno.data}', ${p.id})" 
+                            <button onclick="apriModalModifica(${giorno.id}, ${p.id})" 
                                     class="text-slate-400 hover:text-blue-400 p-2 rounded-lg bg-slate-800/80 border border-slate-700/50 transition cursor-pointer flex items-center justify-center" 
                                     title="Modifica pasto">
                                 <i data-lucide="pencil" class="w-3.5 h-3.5 pointer-events-none"></i>
@@ -1488,8 +1512,9 @@
         // ================================================================
         // ELIMINAZIONI ED EDITING MODAL STORICO
         // ================================================================
-        function eliminaInteroGiorno(giornoId) {
-            if (!confirm("Sei sicuro di voler eliminare interamente questa giornata dal diario?")) return;
+        async function eliminaInteroGiorno(giornoId) {
+            const procedi = await customConfirm("Elimina Giornata", "Sei sicuro di voler eliminare interamente questa giornata dal diario?", true, "Elimina");
+            if (!procedi) return;
             let db = JSON.parse(localStorage.getItem('nutriDB')) || [];
             db = db.filter(x => x.id !== giornoId);
             localStorage.setItem('nutriDB', JSON.stringify(db));
@@ -1498,8 +1523,9 @@
             caricaPesoDelGiorno();
         }
 
-        function eliminaSingoloPasto(giornoId, pastoId) {
-            if (!confirm("Eliminare questo pasto? I macro giornalieri verranno ricalcolati.")) return;
+        async function eliminaSingoloPasto(giornoId, pastoId) {
+            const procedi = await customConfirm("Elimina Pasto", "Eliminare questo pasto? I macro giornalieri verranno ricalcolati.", true, "Elimina");
+            if (!procedi) return;
             let db = JSON.parse(localStorage.getItem('nutriDB')) || [];
             let giorno = db.find(x => x.id === giornoId);
             if (giorno) {
@@ -1528,8 +1554,8 @@
                 const pasto = giorno.pasti.find(p => p.id === pastoId);
                 if (pasto) {
                     document.getElementById('editData').value = giorno.data;
-                    document.getElementById('editOra').value = p.ora || "12:00";
-                    document.getElementById('editTesto').value = p.testo;
+                    document.getElementById('editOra').value = pasto.ora || "12:00";
+                    document.getElementById('editTesto').value = pasto.testo;
 
                     const m = document.getElementById('modalEdit');
                     m.classList.remove('hidden');
@@ -1644,12 +1670,14 @@
             }
         }
 
-        function confermaReset() {
-            if (confirm("ATTENZIONE! Vuoi davvero cancellare l'intero database locale dei pasti e del peso? Questa azione è irreversibile.")) {
+        async function confermaReset() {
+            const procedi = await customConfirm("Cancellazione Database", "ATTENZIONE! Vuoi davvero cancellare l'intero database locale dei pasti e del peso? Questa azione è irreversibile.", true, "Cancella tutto");
+            if (procedi) {
                 localStorage.removeItem('nutriDB');
                 renderStorico();
                 aggiornaTotaleGiorno();
                 caricaPesoDelGiorno();
+                await customAlert("Cancellato", "L'intero database è stato resettato correttamente.", true);
             }
         }
 
@@ -2434,9 +2462,12 @@
         // ================================================================
         // ESPORTAZIONE / IMPORTAZIONE JSON DATABASE
         // ================================================================
-        function esportaDB() {
+        async function esportaDB() {
             const db = localStorage.getItem('nutriDB');
-            if (!db || db === "[]") return alert("Nessun dato presente da esportare!");
+            if (!db || db === "[]") {
+                await customAlert("Nessun dato", "Nessun dato presente da esportare!");
+                return;
+            }
 
             const blob = new Blob([db], { type: 'application/json' });
             const url = URL.createObjectURL(blob);
@@ -2454,12 +2485,12 @@
             if (!file) return;
 
             const reader = new FileReader();
-            reader.onload = function (e) {
+            reader.onload = async function (e) {
                 try {
                     const json = JSON.parse(e.target.result);
                     if (Array.isArray(json)) {
                         localStorage.setItem('nutriDB', JSON.stringify(json));
-                        alert("Database importato con successo!");
+                        await customAlert("Importazione", "Database importato con successo!", true);
                         aggiornaTotaleGiorno();
                         caricaPesoDelGiorno();
                         if (document.getElementById('panel-storico').classList.contains('active')) renderStorico();
@@ -2471,10 +2502,10 @@
                             }
                         }
                     } else {
-                        alert("Formato file non valido. Deve essere un array JSON.");
+                        await customAlert("Errore Formato", "Formato file non valido. Deve essere un array JSON.");
                     }
                 } catch (err) {
-                    alert("Errore nella lettura del file di backup.");
+                    await customAlert("Errore Lettura", "Errore nella lettura del file di backup.");
                 }
             };
             reader.readAsText(file);
@@ -2482,12 +2513,12 @@
         }
 
 
-        function salvaPesoManuale() {
+        async function salvaPesoManuale() {
             const valoreInput = document.getElementById('input-peso-valore').value;
             const dataSelezionata = document.getElementById('input-peso-data').value;
 
             if (!valoreInput || !dataSelezionata) {
-                alert("Inserisci sia un valore di peso valido che una data.");
+                await customAlert("Dati mancanti", "Inserisci sia un valore di peso valido che una data.");
                 return;
             }
 
@@ -2532,7 +2563,7 @@
                 }
             }
 
-            alert(`Peso di ${pesoFlessibile} kg salvato correttamente per il giorno ${dataSelezionata}!`);
+            await customAlert("Peso salvato", `Peso di ${pesoFlessibile} kg salvato correttamente per il giorno ${dataSelezionata}!`, true);
 
             // Pulisce il campo input del peso dopo il salvataggio
             document.getElementById('input-peso-valore').value = '';
@@ -2542,114 +2573,10 @@
         }
 
 
-        // Funzione per aprire la finestra di modifica del pasto (Compatibile sia con OpenAI che con Gemini)
-        window.apriModalModifica = function (dataPasto, pastoId) {
-            const db = JSON.parse(localStorage.getItem('nutriDB')) || [];
-            const giorno = db.find(g => g.data === dataPasto);
-            if (!giorno || !giorno.pasti) return;
-
-            const pasto = giorno.pasti.find(p => p.id === pastoId);
-            if (!pasto) return;
-
-            // Chiediamo all'utente il nuovo testo del pasto tramite un prompt nativo
-            const nuovoTesto = prompt("Modifica la descrizione del pasto:", pasto.testo);
-
-            // Se l'utente annulla o lascia vuoto, non fare nulla
-            if (nuovoTesto === null || nuovoTesto.trim() === "") return;
-
-            // 1. Rileva le credenziali
-            const apiKey = localStorage.getItem('gemini_apikey');
-            if (!apiKey) return alert("Inserisci la tua Gemini API Key nelle impostazioni!");
-
-            // Mostriamo l'avviso di attesa
-            alert("L'applicazione ricalcolerà ora i valori con Gemini. Premi OK per iniziare.");
-
-            const statoEdit = document.getElementById('stato');
-            if (statoEdit) {
-                statoEdit.innerText = "Ricalcolo macro in corso...";
-                statoEdit.classList.remove('hidden');
-            }
-
-            // Costruiamo il prompt standard per l'analisi dei macronutrienti
-            const promptAI = `Analizza questo pasto: "${nuovoTesto}". Sei un esperto nutrizionista. Analizza il testo inserito dall'utente contenente alimenti. Calcola Calorie totali, Proteine (g), Carboidrati (g), Grassi (g) Ritorna SOLO un oggetto JSON valido (senza markdown, senza racchiuderlo in blocchi di codice come \`\`\`json) con questa struttura esatta: {"calorie": numero, "proteine": numero, "carboidrati": numero, "grassi": numero}`;
-
-            // 2. Configura il payload della richiesta
-            const bodyPayload = {
-                contents: [{ parts: [{ text: promptAI }] }],
-                generationConfig: {
-                    responseMimeType: "application/json"
-                }
-            };
-
-            const url = `https://generativelanguage.googleapis.com/v1beta/models/${GEMINI_MODEL}:generateContent?key=${apiKey}`;
-
-            // Effettua la chiamata API
-            fetch(url, {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify(bodyPayload)
-            })
-                .then(res => {
-                    if (!res.ok) throw new Error("Risposta del server non valida da Gemini");
-                    return res.json();
-                })
-                .then(dataResponse => {
-                    try {
-                        let content = dataResponse.candidates[0].content.parts[0].text.trim();
-
-                        // Pulizia da eventuale markdown residuo
-                        if (content.startsWith("```json")) content = content.replace("```json", "").replace("```", "");
-                        if (content.startsWith("```")) content = content.replace("```", "").replace("```", "");
-
-                        const macro = JSON.parse(content);
-
-                        // Aggiorna il pasto specifico dentro il database locale
-                        pasto.testo = nuovoTesto;
-                        pasto.calorie = Number(macro.calorie) || 0;
-                        pasto.proteine = Number(macro.proteine) || 0;
-                        pasto.carboidrati = Number(macro.carboidrati) || 0;
-                        pasto.grassi = Number(macro.grassi) || 0;
-
-                        // Ricalcola i macro totali della giornata per riflettere la modifica
-                        giorno.calorie = giorno.pasti.reduce((sum, p) => sum + p.calorie, 0);
-                        giorno.proteine = giorno.pasti.reduce((sum, p) => sum + p.proteine, 0);
-                        giorno.carboidrati = giorno.pasti.reduce((sum, p) => sum + p.carboidrati, 0);
-                        giorno.grassi = giorno.pasti.reduce((sum, p) => sum + p.grassi, 0);
-
-                        // Salva nel localStorage del browser
-                        localStorage.setItem('nutriDB', JSON.stringify(db));
-
-                        // Aggiorna l'interfaccia grafica in tempo reale
-                        aggiornaTotaleGiorno();
-                        renderStorico();
-                        if (document.getElementById('panel-trend').classList.contains('active')) {
-                            if (trendView === 'mesi') {
-                                renderTrendMensile();
-                            } else {
-                                renderTrend();
-                            }
-                        }
-
-                        alert("Pasto modificato e ricalcolato con successo!");
-                    } catch (e) {
-                        console.error(e);
-                        alert("Errore durante la lettura dei dati dall'AI. Verifica la risposta.");
-                    }
-                })
-                .catch(err => {
-                    console.error(err);
-                    alert("Errore di connessione con le API di Gemini. Verifica la chiave inserita.");
-                })
-                .finally(() => {
-                    if (statoEdit) statoEdit.classList.add('hidden');
-                });
-        };
-
         // Funzione per eliminare un singolo pasto specifico dallo Storico
-        window.eliminaPasto = function (dataPasto, pastoId) {
-            if (!confirm("Sei sicuro di voler eliminare questo pasto? I macro giornalieri verranno ricalcolati.")) return;
+        window.eliminaPasto = async function (dataPasto, pastoId) {
+            const procedi = await customConfirm("Elimina Pasto", "Sei sicuro di voler eliminare questo pasto? I macro giornalieri verranno ricalcolati.", true, "Elimina");
+            if (!procedi) return;
 
             let db = JSON.parse(localStorage.getItem('nutriDB')) || [];
             let giorno = db.find(g => g.data === dataPasto);
@@ -2787,7 +2714,7 @@ Rispondi ESCLUSIVAMENTE con un oggetto JSON valido (senza markdown, senza racchi
             }
         };
 
-        window.applicaTargetSuggeriti = function () {
+        window.applicaTargetSuggeriti = async function () {
             if (!targetSuggeritiAI) return;
 
             document.getElementById('targetCalorie').value = Math.round(targetSuggeritiAI.calorie) || 2000;
@@ -2799,7 +2726,7 @@ Rispondi ESCLUSIVAMENTE con un oggetto JSON valido (senza markdown, senza racchi
             saveTarget();
 
             document.getElementById('aiTargetBox').classList.add('hidden');
-            alert("Nuovi target AI applicati e salvati correttamente!");
+            await customAlert("Target Applicati", "Nuovi target AI applicati e salvati correttamente!", true);
         };
 
         // ================================================================
@@ -2807,16 +2734,22 @@ Rispondi ESCLUSIVAMENTE con un oggetto JSON valido (senza markdown, senza racchi
         // ================================================================
         let voiceRecognition = null;
         let isVoiceListening = false;
+        let currentTextareaId = null;
+        let currentBtnId = null;
 
-        window.toggleVoiceDictation = function () {
+        window.toggleVoiceDictation = function (textareaId, btnId) {
             const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
             if (!SpeechRecognition) {
                 alert("La dettatura vocale non è supportata da questo browser. Prova con Google Chrome o Safari.");
                 return;
             }
 
-            const btnMic = document.getElementById('btnMic');
-            const textarea = document.getElementById('testoInput');
+            const btnMic = document.getElementById(btnId);
+            const textarea = document.getElementById(textareaId);
+
+            if (isVoiceListening && (currentTextareaId !== textareaId)) {
+                if (voiceRecognition) voiceRecognition.stop();
+            }
 
             if (!voiceRecognition) {
                 voiceRecognition = new SpeechRecognition();
@@ -2826,9 +2759,16 @@ Rispondi ESCLUSIVAMENTE con un oggetto JSON valido (senza markdown, senza racchi
 
                 voiceRecognition.onstart = function () {
                     isVoiceListening = true;
-                    btnMic.classList.remove('text-slate-400', 'hover:text-indigo-400', 'bg-slate-800/80');
-                    btnMic.classList.add('text-red-400', 'bg-red-500/10', 'border-red-500/30', 'animate-pulse');
-                    textarea.placeholder = "Ascolto in corso... parla ora";
+                    const activeBtn = document.getElementById(currentBtnId);
+                    const activeTextarea = document.getElementById(currentTextareaId);
+                    if (activeBtn) {
+                        activeBtn.classList.remove('text-slate-400', 'hover:text-indigo-400', 'bg-slate-800/80');
+                        activeBtn.classList.add('text-red-400', 'bg-red-500/10', 'border-red-500/30', 'animate-pulse');
+                    }
+                    if (activeTextarea) {
+                        activeTextarea.setAttribute('data-prev-placeholder', activeTextarea.placeholder || "");
+                        activeTextarea.placeholder = "Ascolto in corso... parla ora";
+                    }
                 };
 
                 voiceRecognition.onerror = function (event) {
@@ -2841,26 +2781,37 @@ Rispondi ESCLUSIVAMENTE con un oggetto JSON valido (senza markdown, senza racchi
                 };
 
                 voiceRecognition.onresult = function (event) {
-                    const transcript = event.results[0][0].transcript;
-                    if (textarea.value.trim() === "") {
-                        textarea.value = transcript;
-                    } else {
-                        textarea.value += " " + transcript;
+                    const activeTextarea = document.getElementById(currentTextareaId);
+                    if (activeTextarea) {
+                        const transcript = event.results[0][0].transcript;
+                        if (activeTextarea.value.trim() === "") {
+                            activeTextarea.value = transcript;
+                        } else {
+                            activeTextarea.value += " " + transcript;
+                        }
+                        activeTextarea.dispatchEvent(new Event('input'));
                     }
-                    textarea.dispatchEvent(new Event('input'));
                 };
             }
 
             function stopListeningState() {
                 isVoiceListening = false;
-                btnMic.classList.add('text-slate-400', 'hover:text-indigo-400', 'bg-slate-800/80');
-                btnMic.classList.remove('text-red-400', 'bg-red-500/10', 'border-red-500/30', 'animate-pulse');
-                textarea.placeholder = "Es: Stamattina yogurt greco...";
+                const activeBtn = document.getElementById(currentBtnId);
+                const activeTextarea = document.getElementById(currentTextareaId);
+                if (activeBtn) {
+                    activeBtn.classList.add('text-slate-400', 'hover:text-indigo-400', 'bg-slate-800/80');
+                    activeBtn.classList.remove('text-red-400', 'bg-red-500/10', 'border-red-500/30', 'animate-pulse');
+                }
+                if (activeTextarea) {
+                    activeTextarea.placeholder = activeTextarea.getAttribute('data-prev-placeholder') || "";
+                }
             }
 
             if (isVoiceListening) {
                 voiceRecognition.stop();
             } else {
+                currentTextareaId = textareaId;
+                currentBtnId = btnId;
                 try {
                     voiceRecognition.start();
                 } catch (e) {
@@ -2868,6 +2819,116 @@ Rispondi ESCLUSIVAMENTE con un oggetto JSON valido (senza markdown, senza racchi
                 }
             }
         };
+
+        // ================================================================
+        // CUSTOM DIALOGS: ALERT & CONFIRM MODALS
+        // ================================================================
+        let dialogPromiseResolve = null;
+
+        window.customConfirm = function (title, message, isDanger = false, confirmText = "Conferma") {
+            return new Promise((resolve) => {
+                const modal = document.getElementById('dialogModal');
+                const inner = document.getElementById('dialogInner');
+                const titleEl = document.getElementById('dialogTitle');
+                const msgEl = document.getElementById('dialogMessage');
+                const btnConfirm = document.getElementById('dialogBtnConfirm');
+                const btnCancel = document.getElementById('dialogBtnCancel');
+                const icon = document.getElementById('dialogIcon');
+                const iconContainer = document.getElementById('dialogIconContainer');
+
+                titleEl.innerText = title;
+                msgEl.innerText = message;
+                btnConfirm.innerText = confirmText;
+                btnCancel.classList.remove('hidden');
+
+                if (isDanger) {
+                    btnConfirm.className = "px-4 py-2 rounded-xl text-xs font-semibold bg-rose-600 hover:bg-rose-500 text-white transition cursor-pointer active:scale-95";
+                    iconContainer.className = "p-2 rounded-xl bg-rose-500/10 border border-rose-500/20";
+                    icon.className = "w-5 h-5 text-rose-400";
+                    icon.setAttribute('data-lucide', 'alert-triangle');
+                } else {
+                    btnConfirm.className = "px-4 py-2 rounded-xl text-xs font-semibold bg-indigo-600 hover:bg-indigo-500 text-white transition cursor-pointer active:scale-95";
+                    iconContainer.className = "p-2 rounded-xl bg-indigo-500/10 border border-indigo-500/20";
+                    icon.className = "w-5 h-5 text-indigo-400";
+                    icon.setAttribute('data-lucide', 'help-circle');
+                }
+
+                if (typeof lucide !== 'undefined') lucide.createIcons();
+
+                modal.classList.remove('hidden');
+                setTimeout(() => {
+                    inner.classList.remove('scale-95', 'opacity-0');
+                    inner.classList.add('scale-100', 'opacity-100');
+                }, 50);
+
+                dialogPromiseResolve = resolve;
+
+                btnConfirm.onclick = () => {
+                    closeDialog(true);
+                };
+                btnCancel.onclick = () => {
+                    closeDialog(false);
+                };
+            });
+        };
+
+        window.customAlert = function (title, message, isSuccess = false) {
+            return new Promise((resolve) => {
+                const modal = document.getElementById('dialogModal');
+                const inner = document.getElementById('dialogInner');
+                const titleEl = document.getElementById('dialogTitle');
+                const msgEl = document.getElementById('dialogMessage');
+                const btnConfirm = document.getElementById('dialogBtnConfirm');
+                const btnCancel = document.getElementById('dialogBtnCancel');
+                const icon = document.getElementById('dialogIcon');
+                const iconContainer = document.getElementById('dialogIconContainer');
+
+                titleEl.innerText = title;
+                msgEl.innerText = message;
+                btnConfirm.innerText = "OK";
+                btnCancel.classList.add('hidden');
+
+                if (isSuccess) {
+                    btnConfirm.className = "px-4 py-2 rounded-xl text-xs font-semibold bg-emerald-600 hover:bg-emerald-500 text-white transition cursor-pointer active:scale-95";
+                    iconContainer.className = "p-2 rounded-xl bg-emerald-500/10 border border-emerald-500/20";
+                    icon.className = "w-5 h-5 text-emerald-400";
+                    icon.setAttribute('data-lucide', 'check-circle');
+                } else {
+                    btnConfirm.className = "px-4 py-2 rounded-xl text-xs font-semibold bg-indigo-600 hover:bg-indigo-500 text-white transition cursor-pointer active:scale-95";
+                    iconContainer.className = "p-2 rounded-xl bg-indigo-500/10 border border-indigo-500/20";
+                    icon.className = "w-5 h-5 text-indigo-400";
+                    icon.setAttribute('data-lucide', 'info');
+                }
+
+                if (typeof lucide !== 'undefined') lucide.createIcons();
+
+                modal.classList.remove('hidden');
+                setTimeout(() => {
+                    inner.classList.remove('scale-95', 'opacity-0');
+                    inner.classList.add('scale-100', 'opacity-100');
+                }, 50);
+
+                dialogPromiseResolve = resolve;
+
+                btnConfirm.onclick = () => {
+                    closeDialog(true);
+                };
+            });
+        };
+
+        function closeDialog(value) {
+            const modal = document.getElementById('dialogModal');
+            const inner = document.getElementById('dialogInner');
+            inner.classList.add('scale-95', 'opacity-0');
+            inner.classList.remove('scale-100', 'opacity-100');
+            setTimeout(() => {
+                modal.classList.add('hidden');
+                if (dialogPromiseResolve) {
+                    dialogPromiseResolve(value);
+                    dialogPromiseResolve = null;
+                }
+            }, 200);
+        }
     </script>
 </body>
 
