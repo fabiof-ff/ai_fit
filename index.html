@@ -805,55 +805,24 @@
         </div>
 
         <div id="trendGiornalieroContainer" class="space-y-4">
-            <!-- 
-                <div class="bg-slate-800/40 border border-slate-700/50 rounded-2xl p-4">
-                    <p
-                        class="text-xs text-slate-400 font-semibold uppercase tracking-wider mb-3 flex items-center gap-1.5">
-                        <i data-lucide="scale" class="w-3.5 h-3.5 text-indigo-400"></i> Peso Corporeo
-                    </p>
-                    <div class="h-48 w-full">
-                        <canvas id="trendPesoChart"></canvas>
-                    </div>
-                </div> 
-                -->
-
             <div class="bg-slate-800/40 border border-slate-700/50 rounded-2xl p-4">
                 <p class="text-xs text-slate-400 font-semibold uppercase tracking-wider mb-3 flex items-center gap-1.5">
+                    <i data-lucide="scale" class="w-3.5 h-3.5 text-indigo-400"></i>
                     <i data-lucide="flame" class="w-3.5 h-3.5 text-rose-400"></i> <span
-                        data-i18n="label_calorie_uppercase">Calorie</span>
+                        data-i18n="title_peso_calorie">Peso &amp; Calorie</span>
                 </p>
-                <div class="h-48 w-full">
-                    <canvas id="trendCalorieChart"></canvas>
+                <div class="h-60 w-full">
+                    <canvas id="trendPesoCalorieChart"></canvas>
                 </div>
             </div>
 
             <div class="bg-slate-800/40 border border-slate-700/50 rounded-2xl p-4">
                 <p class="text-xs text-slate-400 font-semibold uppercase tracking-wider mb-3 flex items-center gap-1.5">
-                    <i data-lucide="dumbbell" class="w-3.5 h-3.5 text-blue-400"></i> <span
-                        data-i18n="label_proteine_uppercase">Proteine</span>
+                    <i data-lucide="activity" class="w-3.5 h-3.5 text-indigo-400"></i> <span
+                        data-i18n="title_macronutrienti">Macronutrienti</span>
                 </p>
-                <div class="h-48 w-full">
-                    <canvas id="trendProteineChart"></canvas>
-                </div>
-            </div>
-
-            <div class="bg-slate-800/40 border border-slate-700/50 rounded-2xl p-4">
-                <p class="text-xs text-slate-400 font-semibold uppercase tracking-wider mb-3 flex items-center gap-1.5">
-                    <i data-lucide="wheat" class="w-3.5 h-3.5 text-emerald-400"></i> <span
-                        data-i18n="label_carboidrati_uppercase">Carboidrati</span>
-                </p>
-                <div class="h-48 w-full">
-                    <canvas id="trendCarboChart"></canvas>
-                </div>
-            </div>
-
-            <div class="bg-slate-800/40 border border-slate-700/50 rounded-2xl p-4">
-                <p class="text-xs text-slate-400 font-semibold uppercase tracking-wider mb-3 flex items-center gap-1.5">
-                    <i data-lucide="droplet" class="w-3.5 h-3.5 text-amber-400"></i> <span
-                        data-i18n="label_grassi_uppercase">Grassi</span>
-                </p>
-                <div class="h-48 w-full">
-                    <canvas id="trendGrassiChart"></canvas>
+                <div class="h-60 w-full">
+                    <canvas id="trendMacronutrientiChart"></canvas>
                 </div>
             </div>
         </div>
@@ -861,51 +830,22 @@
         <div id="trendSettimaneContainer" class="space-y-4 hidden">
             <div class="bg-slate-800/40 border border-slate-700/50 rounded-2xl p-4">
                 <p class="text-xs text-slate-400 font-semibold uppercase tracking-wider mb-3 flex items-center gap-1.5">
-                    <i data-lucide="scale" class="w-3.5 h-3.5 text-indigo-400"></i> <span
-                        data-i18n="lbl_avg_weekly_weight">Peso Medio Settimanale</span>
-                </p>
-                <div class="h-48 w-full">
-                    <canvas id="weekPesoChart"></canvas>
-                </div>
-            </div>
-
-            <div class="bg-slate-800/40 border border-slate-700/50 rounded-2xl p-4">
-                <p class="text-xs text-slate-400 font-semibold uppercase tracking-wider mb-3 flex items-center gap-1.5">
+                    <i data-lucide="scale" class="w-3.5 h-3.5 text-indigo-400"></i>
                     <i data-lucide="flame" class="w-3.5 h-3.5 text-rose-400"></i> <span
-                        data-i18n="label_calorie_uppercase">Calorie</span>
+                        data-i18n="title_peso_calorie">Peso &amp; Calorie</span>
                 </p>
-                <div class="h-48 w-full">
-                    <canvas id="weekCalorieChart"></canvas>
+                <div class="h-60 w-full">
+                    <canvas id="weekPesoCalorieChart"></canvas>
                 </div>
             </div>
 
             <div class="bg-slate-800/40 border border-slate-700/50 rounded-2xl p-4">
                 <p class="text-xs text-slate-400 font-semibold uppercase tracking-wider mb-3 flex items-center gap-1.5">
-                    <i data-lucide="dumbbell" class="w-3.5 h-3.5 text-blue-400"></i> <span
-                        data-i18n="label_proteine_uppercase">Proteine</span>
+                    <i data-lucide="activity" class="w-3.5 h-3.5 text-indigo-400"></i> <span
+                        data-i18n="title_macronutrienti">Macronutrienti</span>
                 </p>
-                <div class="h-48 w-full">
-                    <canvas id="weekProteineChart"></canvas>
-                </div>
-            </div>
-
-            <div class="bg-slate-800/40 border border-slate-700/50 rounded-2xl p-4">
-                <p class="text-xs text-slate-400 font-semibold uppercase tracking-wider mb-3 flex items-center gap-1.5">
-                    <i data-lucide="wheat" class="w-3.5 h-3.5 text-emerald-400"></i> <span
-                        data-i18n="label_carboidrati_uppercase">Carboidrati</span>
-                </p>
-                <div class="h-48 w-full">
-                    <canvas id="weekCarboChart"></canvas>
-                </div>
-            </div>
-
-            <div class="bg-slate-800/40 border border-slate-700/50 rounded-2xl p-4">
-                <p class="text-xs text-slate-400 font-semibold uppercase tracking-wider mb-3 flex items-center gap-1.5">
-                    <i data-lucide="droplet" class="w-3.5 h-3.5 text-amber-400"></i> <span
-                        data-i18n="label_grassi_uppercase">Grassi</span>
-                </p>
-                <div class="h-48 w-full">
-                    <canvas id="weekGrassiChart"></canvas>
+                <div class="h-60 w-full">
+                    <canvas id="weekMacronutrientiChart"></canvas>
                 </div>
             </div>
         </div>
@@ -913,51 +853,22 @@
         <div id="trendMesiContainer" class="space-y-4 hidden">
             <div class="bg-slate-800/40 border border-slate-700/50 rounded-2xl p-4">
                 <p class="text-xs text-slate-400 font-semibold uppercase tracking-wider mb-3 flex items-center gap-1.5">
-                    <i data-lucide="scale" class="w-3.5 h-3.5 text-indigo-400"></i> <span
-                        data-i18n="lbl_avg_monthly_weight">Peso Medio Mensile</span>
-                </p>
-                <div class="h-48 w-full">
-                    <canvas id="monthPesoChart"></canvas>
-                </div>
-            </div>
-
-            <div class="bg-slate-800/40 border border-slate-700/50 rounded-2xl p-4">
-                <p class="text-xs text-slate-400 font-semibold uppercase tracking-wider mb-3 flex items-center gap-1.5">
+                    <i data-lucide="scale" class="w-3.5 h-3.5 text-indigo-400"></i>
                     <i data-lucide="flame" class="w-3.5 h-3.5 text-rose-400"></i> <span
-                        data-i18n="lbl_avg_monthly_calories">Calorie Medie Mensili</span>
+                        data-i18n="title_peso_calorie">Peso &amp; Calorie</span>
                 </p>
-                <div class="h-48 w-full">
-                    <canvas id="monthCalorieChart"></canvas>
+                <div class="h-60 w-full">
+                    <canvas id="monthPesoCalorieChart"></canvas>
                 </div>
             </div>
 
             <div class="bg-slate-800/40 border border-slate-700/50 rounded-2xl p-4">
                 <p class="text-xs text-slate-400 font-semibold uppercase tracking-wider mb-3 flex items-center gap-1.5">
-                    <i data-lucide="dumbbell" class="w-3.5 h-3.5 text-blue-400"></i> <span
-                        data-i18n="lbl_avg_monthly_proteins">Proteine Medie Mensili</span>
+                    <i data-lucide="activity" class="w-3.5 h-3.5 text-indigo-400"></i> <span
+                        data-i18n="title_macronutrienti">Macronutrienti</span>
                 </p>
-                <div class="h-48 w-full">
-                    <canvas id="monthProteineChart"></canvas>
-                </div>
-            </div>
-
-            <div class="bg-slate-800/40 border border-slate-700/50 rounded-2xl p-4">
-                <p class="text-xs text-slate-400 font-semibold uppercase tracking-wider mb-3 flex items-center gap-1.5">
-                    <i data-lucide="wheat" class="w-3.5 h-3.5 text-emerald-400"></i> <span
-                        data-i18n="lbl_avg_monthly_carbs">Carboidrati Medi Mensili</span>
-                </p>
-                <div class="h-48 w-full">
-                    <canvas id="monthCarboChart"></canvas>
-                </div>
-            </div>
-
-            <div class="bg-slate-800/40 border border-slate-700/50 rounded-2xl p-4">
-                <p class="text-xs text-slate-400 font-semibold uppercase tracking-wider mb-3 flex items-center gap-1.5">
-                    <i data-lucide="droplet" class="w-3.5 h-3.5 text-amber-400"></i> <span
-                        data-i18n="lbl_avg_monthly_fats">Grassi Medi Mensili</span>
-                </p>
-                <div class="h-48 w-full">
-                    <canvas id="monthGrassiChart"></canvas>
+                <div class="h-60 w-full">
+                    <canvas id="monthMacronutrientiChart"></canvas>
                 </div>
             </div>
         </div>
@@ -1011,23 +922,14 @@
         let ultimaAnalisi = null;
         let editingId = null; // ID entry in modifica
 
-        let trendPesoChart = null;
-        let trendCalorieChart = null;
-        let trendProteineChart = null;
-        let trendCarboChart = null;
-        let trendGrassiChart = null;
+        let trendPesoCalorieChart = null;
+        let trendMacronutrientiChart = null;
 
-        let weekPesoChart = null;
-        let weekCalorieChart = null;
-        let weekProteineChart = null;
-        let weekCarboChart = null;
-        let weekGrassiChart = null;
+        let weekPesoCalorieChart = null;
+        let weekMacronutrientiChart = null;
 
-        let monthPesoChart = null;
-        let monthCalorieChart = null;
-        let monthProteineChart = null;
-        let monthCarboChart = null;
-        let monthGrassiChart = null;
+        let monthPesoCalorieChart = null;
+        let monthMacronutrientiChart = null;
 
         let targetCalorie = 0; // Target giornaliero calorie
         let targetProteine = 0; // Target giornaliero proteine
@@ -1074,6 +976,8 @@
         const TRANSLATIONS = {
             it: {
                 title_api_settings: "Impostazioni",
+                title_macronutrienti: "Macronutrienti",
+                title_peso_calorie: "Peso & Calorie",
                 label_api_key: "Gemini API Key",
                 label_language: "Lingua / Language",
                 label_daily_targets: "Target giornalieri",
@@ -1151,6 +1055,8 @@
             },
             en: {
                 title_api_settings: "Settings",
+                title_macronutrienti: "Macronutrients",
+                title_peso_calorie: "Weight & Calories",
                 label_api_key: "Gemini API Key",
                 label_language: "Language / Lingua",
                 label_daily_targets: "Daily Targets",
@@ -2128,6 +2034,10 @@
                     plugins: {
                         legend: { display: false },
                         tooltip: {
+                            filter: function(tooltipItem) {
+                                const label = tooltipItem.dataset.label || '';
+                                return !label.includes('Target') && !label.includes('Obiettivo');
+                            },
                             callbacks: {
                                 label: function (context) {
                                     return context.formattedValue;
@@ -2143,116 +2053,191 @@
                     }
                 };
 
-                // CALORIE 7 GIORNI con Linea Target
-                if (trendCalorieChart) trendCalorieChart.destroy();
-                trendCalorieChart = new Chart(document.getElementById('trendCalorieChart').getContext('2d'), {
+                // Calcolo yMin e yMax per il peso nei 7 giorni
+                const arrayPesi = ultimiGiorni.map(g => g.peso).filter(p => p !== null && p !== undefined && p > 0);
+                let yMin = undefined;
+                let yMax = undefined;
+                if (arrayPesi.length > 0) {
+                    const tuttiIValori = [...arrayPesi, pesoTarget];
+                    const minReale = Math.min(...tuttiIValori);
+                    const maxReale = Math.max(...tuttiIValori);
+                    yMin = Math.round(minReale * 0.97);
+                    yMax = Math.round(maxReale * 1.03);
+                }
+
+                // PESO & CALORIE 7 GIORNI
+                if (trendPesoCalorieChart) trendPesoCalorieChart.destroy();
+                trendPesoCalorieChart = new Chart(document.getElementById('trendPesoCalorieChart').getContext('2d'), {
                     data: {
                         labels: etichetteGiorni,
                         datasets: [
                             {
                                 type: 'line',
-                                label: 'Target',
-                                data: etichetteGiorni.map(() => targetCalorie),
-                                borderColor: '#f43f5e',
-                                borderWidth: 2,
+                                label: currentLang === 'en' ? 'Weight' : 'Peso Reale',
+                                data: ultimiGiorni.map(g => g.peso || null),
+                                borderColor: '#6366f1',
+                                backgroundColor: 'rgba(99, 102, 241, 0.1)',
+                                borderWidth: 3,
+                                pointRadius: 3,
+                                pointBackgroundColor: '#6366f1',
+                                fill: false,
+                                spanGaps: true,
+                                yAxisID: 'y'
+                            },
+                            {
+                                type: 'line',
+                                label: 'Obiettivo Peso',
+                                data: etichetteGiorni.map(() => pesoTarget),
+                                borderColor: '#6366f1',
+                                borderWidth: 1.5,
                                 borderDash: [5, 5],
                                 pointRadius: 0,
-                                fill: false
+                                fill: false,
+                                yAxisID: 'y'
                             },
                             {
                                 type: 'bar',
-                                label: 'Consumate',
+                                label: currentLang === 'en' ? 'Calories' : 'Calorie',
                                 data: ultimiGiorni.map(g => Math.round(g.calorie)),
-                                backgroundColor: '#f43f5e',
-                                borderRadius: 4
+                                backgroundColor: 'rgba(244, 63, 94, 0.65)',
+                                borderRadius: 4,
+                                yAxisID: 'y1'
+                            },
+                            {
+                                type: 'line',
+                                label: 'Target Calorie',
+                                data: etichetteGiorni.map(() => targetCalorie),
+                                borderColor: '#f43f5e',
+                                borderWidth: 1.5,
+                                borderDash: [5, 5],
+                                pointRadius: 0,
+                                fill: false,
+                                yAxisID: 'y1'
                             }
                         ]
                     },
-                    options: opzioniComuni
+                    options: {
+                        ...opzioniComuni,
+                        plugins: {
+                            ...opzioniComuni.plugins,
+                            legend: {
+                                display: false
+                            }
+                        },
+                        scales: {
+                            y: {
+                                type: 'linear',
+                                position: 'left',
+                                grid: { color: 'rgba(71,85,105,0.08)' },
+                                ticks: { color: '#6366f1', font: { size: 9, weight: 'bold' } },
+                                min: yMin,
+                                max: yMax,
+                                title: {
+                                    display: true,
+                                    text: currentLang === 'en' ? 'Weight (kg)' : 'Peso (kg)',
+                                    color: '#6366f1',
+                                    font: { size: 9, weight: 'bold' }
+                                }
+                            },
+                            y1: {
+                                type: 'linear',
+                                position: 'right',
+                                grid: { drawOnChartArea: false },
+                                ticks: { color: '#f43f5e', font: { size: 9, weight: 'bold' } },
+                                min: 0,
+                                title: {
+                                    display: true,
+                                    text: currentLang === 'en' ? 'Calories (kcal)' : 'Calorie (kcal)',
+                                    color: '#f43f5e',
+                                    font: { size: 9, weight: 'bold' }
+                                }
+                            },
+                            x: {
+                                grid: { display: false },
+                                ticks: { color: '#64748b', font: { size: 9 } }
+                            }
+                        }
+                    }
                 });
 
-                // PROTEINE 7 GIORNI con Linea Target
-                if (trendProteineChart) trendProteineChart.destroy();
-                trendProteineChart = new Chart(document.getElementById('trendProteineChart').getContext('2d'), {
+                // MACRONUTRIENTI 7 GIORNI
+                if (trendMacronutrientiChart) trendMacronutrientiChart.destroy();
+                trendMacronutrientiChart = new Chart(document.getElementById('trendMacronutrientiChart').getContext('2d'), {
+                    type: 'bar',
                     data: {
                         labels: etichetteGiorni,
                         datasets: [
                             {
-                                type: 'line',
-                                label: 'Target',
-                                data: etichetteGiorni.map(() => targetProteine),
-                                borderColor: '#3b82f6',
-                                borderWidth: 2,
-                                borderDash: [5, 5],
-                                pointRadius: 0,
-                                fill: false
-                            },
-                            {
                                 type: 'bar',
-                                label: 'Consumate',
+                                label: currentLang === 'en' ? 'Proteins' : 'Proteine',
                                 data: ultimiGiorni.map(g => Math.round(g.proteine)),
                                 backgroundColor: '#3b82f6',
                                 borderRadius: 4
-                            }
-                        ]
-                    },
-                    options: opzioniComuni
-                });
-
-                // CARBOIDRATI 7 GIORNI con Linea Target
-                if (trendCarboChart) trendCarboChart.destroy();
-                trendCarboChart = new Chart(document.getElementById('trendCarboChart').getContext('2d'), {
-                    data: {
-                        labels: etichetteGiorni,
-                        datasets: [
-                            {
-                                type: 'line',
-                                label: 'Target',
-                                data: etichetteGiorni.map(() => targetCarbo),
-                                borderColor: '#10b981',
-                                borderWidth: 2,
-                                borderDash: [5, 5],
-                                pointRadius: 0,
-                                fill: false
                             },
                             {
                                 type: 'bar',
-                                label: 'Consumati',
+                                label: currentLang === 'en' ? 'Carbs' : 'Carboidrati',
                                 data: ultimiGiorni.map(g => Math.round(g.carboidrati)),
                                 backgroundColor: '#10b981',
                                 borderRadius: 4
-                            }
-                        ]
-                    },
-                    options: opzioniComuni
-                });
-
-                // GRASSI 7 GIORNI con Linea Target
-                if (trendGrassiChart) trendGrassiChart.destroy();
-                trendGrassiChart = new Chart(document.getElementById('trendGrassiChart').getContext('2d'), {
-                    data: {
-                        labels: etichetteGiorni,
-                        datasets: [
+                            },
+                            {
+                                type: 'bar',
+                                label: currentLang === 'en' ? 'Fats' : 'Grassi',
+                                data: ultimiGiorni.map(g => Math.round(g.grassi)),
+                                backgroundColor: '#f59e0b',
+                                borderRadius: 4
+                            },
                             {
                                 type: 'line',
-                                label: 'Target',
-                                data: etichetteGiorni.map(() => targetGrassi),
-                                borderColor: '#f59e0b',
-                                borderWidth: 2,
+                                label: currentLang === 'en' ? 'Proteins Target' : 'Target Proteine',
+                                data: etichetteGiorni.map(() => targetProteine),
+                                borderColor: '#3b82f6',
+                                borderWidth: 1.5,
                                 borderDash: [5, 5],
                                 pointRadius: 0,
                                 fill: false
                             },
                             {
-                                type: 'bar',
-                                label: 'Consumati',
-                                data: ultimiGiorni.map(g => Math.round(g.grassi)),
-                                backgroundColor: '#f59e0b',
-                                borderRadius: 4
+                                type: 'line',
+                                label: currentLang === 'en' ? 'Carbs Target' : 'Target Carboidrati',
+                                data: etichetteGiorni.map(() => targetCarbo),
+                                borderColor: '#10b981',
+                                borderWidth: 1.5,
+                                borderDash: [5, 5],
+                                pointRadius: 0,
+                                fill: false
+                            },
+                            {
+                                type: 'line',
+                                label: currentLang === 'en' ? 'Fats Target' : 'Target Grassi',
+                                data: etichetteGiorni.map(() => targetGrassi),
+                                borderColor: '#f59e0b',
+                                borderWidth: 1.5,
+                                borderDash: [5, 5],
+                                pointRadius: 0,
+                                fill: false
                             }
                         ]
                     },
-                    options: opzioniComuni
+                    options: {
+                        ...opzioniComuni,
+                        plugins: {
+                            ...opzioniComuni.plugins,
+                            legend: {
+                                display: true,
+                                position: 'top',
+                                labels: {
+                                    color: '#94a3b8',
+                                    boxWidth: 10,
+                                    font: { size: 9 },
+                                    filter: function(item) {
+                                        return !item.text.includes('Target') && !item.text.includes('Obiettivo');
+                                    }
+                                }
+                            }
+                        }
+                    }
                 });
 
             } else {
@@ -2339,6 +2324,10 @@
                     plugins: {
                         legend: { display: false },
                         tooltip: {
+                            filter: function(tooltipItem) {
+                                const label = tooltipItem.dataset.label || '';
+                                return !label.includes('Target') && !label.includes('Obiettivo');
+                            },
                             callbacks: {
                                 label: function (context) {
                                     return context.formattedValue;
@@ -2354,183 +2343,193 @@
                     }
                 };
 
-                // GRAFICO PESO MEDIO (8 SETTIMANE)
-                if (weekPesoChart) weekPesoChart.destroy();
+                // PESO & CALORIE 8 SETTIMANE
+                if (weekPesoCalorieChart) weekPesoCalorieChart.destroy();
 
-                // 1. Definisci o recupera il peso target (sostituisci con la tua variabile reale se ne hai una)
-                let pesoTarget = parseFloat(localStorage.getItem('targetPeso')) || 75; // Legge il valore salvato, altrimenti usa 75
-
-                // 2. Estrai i valori del peso reale e filtra
+                let pesoTarget = parseFloat(localStorage.getItem('targetPeso')) || 75;
                 const arrayPesi = datiSettimane.map(s => s.peso).filter(p => p !== null && p !== undefined && p > 0);
-
                 let yMin = undefined;
                 let yMax = undefined;
 
                 if (arrayPesi.length > 0) {
-                    // Includiamo anche il pesoTarget nel calcolo dei limiti dell'asse Y
                     const tuttiIValori = [...arrayPesi, pesoTarget];
                     const minReale = Math.min(...tuttiIValori);
                     const maxReale = Math.max(...tuttiIValori);
-
-                    // Calcolo dei limiti con il +/- 5% arrotondato all'unità
                     yMin = Math.round(minReale * 0.97);
                     yMax = Math.round(maxReale * 1.03);
                 }
 
-                weekPesoChart = new Chart(document.getElementById('weekPesoChart').getContext('2d'), {
-                    type: 'line',
+                weekPesoCalorieChart = new Chart(document.getElementById('weekPesoCalorieChart').getContext('2d'), {
                     data: {
                         labels: etichetteSettimane,
                         datasets: [
                             {
-                                label: 'Peso Reale', // Etichetta facoltativa per la legenda
+                                type: 'line',
+                                label: currentLang === 'en' ? 'Weight' : 'Peso Reale',
                                 data: datiSettimane.map(s => s.peso),
                                 borderColor: '#6366f1',
-                                backgroundColor: 'rgba(99, 102, 241, 0.05)',
-                                borderWidth: 2,
-                                tension: 0.3,
-                                spanGaps: true
+                                backgroundColor: 'rgba(99, 102, 241, 0.1)',
+                                borderWidth: 3,
+                                pointRadius: 3,
+                                pointBackgroundColor: '#6366f1',
+                                fill: false,
+                                spanGaps: true,
+                                yAxisID: 'y'
                             },
                             {
-                                label: 'Obiettivo',
-                                // Creiamo un array lungo quanto le settimane, tutto riempito con il valore del target
+                                type: 'line',
+                                label: 'Obiettivo Peso',
                                 data: etichetteSettimane.map(() => pesoTarget),
-                                borderColor: '#6366f1', // Colore rosso/arancione per il target
+                                borderColor: '#6366f1',
                                 borderWidth: 1.5,
-                                borderDash: [5, 5], // Rende la linea tratteggiata
-                                fill: false, // Nessun riempimento sotto la linea
-                                pointRadius: 0, // Nasconde i pallini dei punti per lasciarla come linea pulita
-                                pointHoverRadius: 0
+                                borderDash: [5, 5],
+                                pointRadius: 0,
+                                fill: false,
+                                yAxisID: 'y'
+                            },
+                            {
+                                type: 'bar',
+                                label: currentLang === 'en' ? 'Calories' : 'Calorie',
+                                data: datiSettimane.map(s => Math.round(s.calorie)),
+                                backgroundColor: 'rgba(244, 63, 94, 0.65)',
+                                borderRadius: 4,
+                                yAxisID: 'y1'
+                            },
+                            {
+                                type: 'line',
+                                label: 'Target Calorie',
+                                data: etichetteSettimane.map(() => targetCalorie),
+                                borderColor: '#f43f5e',
+                                borderWidth: 1.5,
+                                borderDash: [5, 5],
+                                pointRadius: 0,
+                                fill: false,
+                                yAxisID: 'y1'
                             }
                         ]
                     },
                     options: {
                         ...opzioniComuni,
+                        plugins: {
+                            ...opzioniComuni.plugins,
+                            legend: {
+                                display: false
+                            }
+                        },
                         scales: {
-                            ...opzioniComuni.scales,
                             y: {
-                                ...((opzioniComuni.scales && opzioniComuni.scales.y) || {}),
+                                type: 'linear',
+                                position: 'left',
+                                grid: { color: 'rgba(71,85,105,0.08)' },
+                                ticks: { color: '#6366f1', font: { size: 9, weight: 'bold' } },
                                 min: yMin,
                                 max: yMax,
-                                ticks: {
-                                    ...((opzioniComuni.scales && opzioniComuni.scales.y && opzioniComuni.scales.y.ticks) || {}),
-                                    precision: 0
+                                title: {
+                                    display: true,
+                                    text: currentLang === 'en' ? 'Weight (kg)' : 'Peso (kg)',
+                                    color: '#6366f1',
+                                    font: { size: 9, weight: 'bold' }
                                 }
+                            },
+                            y1: {
+                                type: 'linear',
+                                position: 'right',
+                                grid: { drawOnChartArea: false },
+                                ticks: { color: '#f43f5e', font: { size: 9, weight: 'bold' } },
+                                min: 0,
+                                title: {
+                                    display: true,
+                                    text: currentLang === 'en' ? 'Calories (kcal)' : 'Calorie (kcal)',
+                                    color: '#f43f5e',
+                                    font: { size: 9, weight: 'bold' }
+                                }
+                            },
+                            x: {
+                                grid: { display: false },
+                                ticks: { color: '#64748b', font: { size: 9 } }
                             }
                         }
                     }
                 });
 
-                // CALORIE 8 SETTIMANE con Linea Target
-                if (weekCalorieChart) weekCalorieChart.destroy();
-                weekCalorieChart = new Chart(document.getElementById('weekCalorieChart').getContext('2d'), {
+                // MACRONUTRIENTI 8 SETTIMANE
+                if (weekMacronutrientiChart) weekMacronutrientiChart.destroy();
+                weekMacronutrientiChart = new Chart(document.getElementById('weekMacronutrientiChart').getContext('2d'), {
+                    type: 'bar',
                     data: {
                         labels: etichetteSettimane,
                         datasets: [
                             {
-                                type: 'line',
-                                label: 'Target',
-                                data: etichetteSettimane.map(() => targetCalorie),
-                                borderColor: '#f43f5e',
-                                borderWidth: 2,
-                                borderDash: [5, 5],
-                                pointRadius: 0,
-                                fill: false
-                            },
-                            {
                                 type: 'bar',
-                                label: 'Consumate',
-                                data: datiSettimane.map(s => Math.round(s.calorie)),
-                                backgroundColor: '#f43f5e',
-                                borderRadius: 4
-                            }
-                        ]
-                    },
-                    options: opzioniComuni
-                });
-
-                // PROTEINE 8 SETTIMANE con Linea Target
-                if (weekProteineChart) weekProteineChart.destroy();
-                weekProteineChart = new Chart(document.getElementById('weekProteineChart').getContext('2d'), {
-                    data: {
-                        labels: etichetteSettimane,
-                        datasets: [
-                            {
-                                type: 'line',
-                                label: 'Target',
-                                data: etichetteSettimane.map(() => targetProteine),
-                                borderColor: '#3b82f6',
-                                borderWidth: 2,
-                                borderDash: [5, 5],
-                                pointRadius: 0,
-                                fill: false
-                            },
-                            {
-                                type: 'bar',
-                                label: 'Consumate',
+                                label: currentLang === 'en' ? 'Proteins' : 'Proteine',
                                 data: datiSettimane.map(s => Math.round(s.proteine)),
                                 backgroundColor: '#3b82f6',
                                 borderRadius: 4
-                            }
-                        ]
-                    },
-                    options: opzioniComuni
-                });
-
-                // CARBOIDRATI 8 SETTIMANE con Linea Target
-                if (weekCarboChart) weekCarboChart.destroy();
-                weekCarboChart = new Chart(document.getElementById('weekCarboChart').getContext('2d'), {
-                    data: {
-                        labels: etichetteSettimane,
-                        datasets: [
-                            {
-                                type: 'line',
-                                label: 'Target',
-                                data: etichetteSettimane.map(() => targetCarbo),
-                                borderColor: '#10b981',
-                                borderWidth: 2,
-                                borderDash: [5, 5],
-                                pointRadius: 0,
-                                fill: false
                             },
                             {
                                 type: 'bar',
-                                label: 'Consumati',
+                                label: currentLang === 'en' ? 'Carbs' : 'Carboidrati',
                                 data: datiSettimane.map(s => Math.round(s.carboidrati)),
                                 backgroundColor: '#10b981',
                                 borderRadius: 4
-                            }
-                        ]
-                    },
-                    options: opzioniComuni
-                });
-
-                // GRASSI 8 SETTIMANE con Linea Target
-                if (weekGrassiChart) weekGrassiChart.destroy();
-                weekGrassiChart = new Chart(document.getElementById('weekGrassiChart').getContext('2d'), {
-                    data: {
-                        labels: etichetteSettimane,
-                        datasets: [
+                            },
+                            {
+                                type: 'bar',
+                                label: currentLang === 'en' ? 'Fats' : 'Grassi',
+                                data: datiSettimane.map(s => Math.round(s.grassi)),
+                                backgroundColor: '#f59e0b',
+                                borderRadius: 4
+                            },
                             {
                                 type: 'line',
-                                label: 'Target',
-                                data: etichetteSettimane.map(() => targetGrassi),
-                                borderColor: '#f59e0b',
-                                borderWidth: 2,
+                                label: currentLang === 'en' ? 'Proteins Target' : 'Target Proteine',
+                                data: etichetteSettimane.map(() => targetProteine),
+                                borderColor: '#3b82f6',
+                                borderWidth: 1.5,
                                 borderDash: [5, 5],
                                 pointRadius: 0,
                                 fill: false
                             },
                             {
-                                type: 'bar',
-                                label: 'Consumati',
-                                data: datiSettimane.map(s => Math.round(s.grassi)),
-                                backgroundColor: '#f59e0b',
-                                borderRadius: 4
+                                type: 'line',
+                                label: currentLang === 'en' ? 'Carbs Target' : 'Target Carboidrati',
+                                data: etichetteSettimane.map(() => targetCarbo),
+                                borderColor: '#10b981',
+                                borderWidth: 1.5,
+                                borderDash: [5, 5],
+                                pointRadius: 0,
+                                fill: false
+                            },
+                            {
+                                type: 'line',
+                                label: currentLang === 'en' ? 'Fats Target' : 'Target Grassi',
+                                data: etichetteSettimane.map(() => targetGrassi),
+                                borderColor: '#f59e0b',
+                                borderWidth: 1.5,
+                                borderDash: [5, 5],
+                                pointRadius: 0,
+                                fill: false
                             }
                         ]
                     },
-                    options: opzioniComuni
+                    options: {
+                        ...opzioniComuni,
+                        plugins: {
+                            ...opzioniComuni.plugins,
+                            legend: {
+                                display: true,
+                                position: 'top',
+                                labels: {
+                                    color: '#94a3b8',
+                                    boxWidth: 10,
+                                    font: { size: 9 },
+                                    filter: function(item) {
+                                        return !item.text.includes('Target') && !item.text.includes('Obiettivo');
+                                    }
+                                }
+                            }
+                        }
+                    }
                 });
             }
         }
@@ -2660,6 +2659,10 @@
                 plugins: {
                     legend: { display: false },
                     tooltip: {
+                        filter: function(tooltipItem) {
+                            const label = tooltipItem.dataset.label || '';
+                            return !label.includes('Target') && !label.includes('Obiettivo');
+                        },
                         callbacks: {
                             label: function (context) {
                                 return context.formattedValue;
@@ -2675,8 +2678,9 @@
                 }
             };
 
-            // PESO MENSILE Chart
-            if (monthPesoChart) monthPesoChart.destroy();
+            // PESO & CALORIE MENSILI
+            if (monthPesoCalorieChart) monthPesoCalorieChart.destroy();
+
             let pTarget = parseFloat(localStorage.getItem('targetPeso')) || 75;
             const arrayPesi = datiPeso.filter(p => p !== null && p !== undefined && p > 0);
             let yMin = undefined;
@@ -2689,159 +2693,177 @@
                 yMax = Math.round(maxReale * 1.03);
             }
 
-            monthPesoChart = new Chart(document.getElementById('monthPesoChart').getContext('2d'), {
-                type: 'line',
+            monthPesoCalorieChart = new Chart(document.getElementById('monthPesoCalorieChart').getContext('2d'), {
                 data: {
                     labels: labels,
                     datasets: [
                         {
-                            label: 'Peso Reale',
+                            type: 'line',
+                            label: currentLang === 'en' ? 'Weight' : 'Peso Reale',
                             data: datiPeso,
                             borderColor: '#6366f1',
-                            backgroundColor: 'rgba(99, 102, 241, 0.05)',
-                            borderWidth: 2,
-                            tension: 0.3,
-                            spanGaps: true
+                            backgroundColor: 'rgba(99, 102, 241, 0.1)',
+                            borderWidth: 3,
+                            pointRadius: 3,
+                            pointBackgroundColor: '#6366f1',
+                            fill: false,
+                            spanGaps: true,
+                            yAxisID: 'y'
                         },
                         {
-                            label: 'Obiettivo',
+                            type: 'line',
+                            label: 'Obiettivo Peso',
                             data: labels.map(() => pTarget),
                             borderColor: '#6366f1',
                             borderWidth: 1.5,
                             borderDash: [5, 5],
-                            fill: false,
                             pointRadius: 0,
-                            pointHoverRadius: 0
+                            fill: false,
+                            yAxisID: 'y'
+                        },
+                        {
+                            type: 'bar',
+                            label: currentLang === 'en' ? 'Calories' : 'Calorie',
+                            data: datiCalorie,
+                            backgroundColor: 'rgba(244, 63, 94, 0.65)',
+                            borderRadius: 4,
+                            yAxisID: 'y1'
+                        },
+                        {
+                            type: 'line',
+                            label: 'Target Calorie',
+                            data: labels.map(() => targetCalorie),
+                            borderColor: '#f43f5e',
+                            borderWidth: 1.5,
+                            borderDash: [5, 5],
+                            pointRadius: 0,
+                            fill: false,
+                            yAxisID: 'y1'
                         }
                     ]
                 },
                 options: {
                     ...opzioniComuni,
+                    plugins: {
+                        ...opzioniComuni.plugins,
+                        legend: {
+                            display: false
+                        }
+                    },
                     scales: {
-                        ...opzioniComuni.scales,
                         y: {
-                            ...((opzioniComuni.scales && opzioniComuni.scales.y) || {}),
+                            type: 'linear',
+                            position: 'left',
+                            grid: { color: 'rgba(71,85,105,0.08)' },
+                            ticks: { color: '#6366f1', font: { size: 9, weight: 'bold' } },
                             min: yMin,
                             max: yMax,
-                            ticks: {
-                                ...((opzioniComuni.scales && opzioniComuni.scales.y && opzioniComuni.scales.y.ticks) || {}),
-                                precision: 0
+                            title: {
+                                display: true,
+                                text: currentLang === 'en' ? 'Weight (kg)' : 'Peso (kg)',
+                                color: '#6366f1',
+                                font: { size: 9, weight: 'bold' }
                             }
+                        },
+                        y1: {
+                            type: 'linear',
+                            position: 'right',
+                            grid: { drawOnChartArea: false },
+                            ticks: { color: '#f43f5e', font: { size: 9, weight: 'bold' } },
+                            min: 0,
+                            title: {
+                                display: true,
+                                text: currentLang === 'en' ? 'Calories (kcal)' : 'Calorie (kcal)',
+                                color: '#f43f5e',
+                                font: { size: 9, weight: 'bold' }
+                            }
+                        },
+                        x: {
+                            grid: { display: false },
+                            ticks: { color: '#64748b', font: { size: 9 } }
                         }
                     }
                 }
             });
 
-            // CALORIE MENSILI Chart
-            if (monthCalorieChart) monthCalorieChart.destroy();
-            monthCalorieChart = new Chart(document.getElementById('monthCalorieChart').getContext('2d'), {
+            // MACRONUTRIENTI MENSILI
+            if (monthMacronutrientiChart) monthMacronutrientiChart.destroy();
+            monthMacronutrientiChart = new Chart(document.getElementById('monthMacronutrientiChart').getContext('2d'), {
+                type: 'bar',
                 data: {
                     labels: labels,
                     datasets: [
                         {
-                            type: 'line',
-                            label: 'Target',
-                            data: labels.map(() => targetCalorie),
-                            borderColor: '#f43f5e',
-                            borderWidth: 2,
-                            borderDash: [5, 5],
-                            pointRadius: 0,
-                            fill: false
-                        },
-                        {
                             type: 'bar',
-                            label: 'Consumate',
-                            data: datiCalorie,
-                            backgroundColor: '#f43f5e',
-                            borderRadius: 4
-                        }
-                    ]
-                },
-                options: opzioniComuni
-            });
-
-            // PROTEINE MENSILI Chart
-            if (monthProteineChart) monthProteineChart.destroy();
-            monthProteineChart = new Chart(document.getElementById('monthProteineChart').getContext('2d'), {
-                data: {
-                    labels: labels,
-                    datasets: [
-                        {
-                            type: 'line',
-                            label: 'Target',
-                            data: labels.map(() => targetProteine),
-                            borderColor: '#3b82f6',
-                            borderWidth: 2,
-                            borderDash: [5, 5],
-                            pointRadius: 0,
-                            fill: false
-                        },
-                        {
-                            type: 'bar',
-                            label: 'Consumate',
+                            label: currentLang === 'en' ? 'Proteins' : 'Proteine',
                             data: datiProteine,
                             backgroundColor: '#3b82f6',
                             borderRadius: 4
-                        }
-                    ]
-                },
-                options: opzioniComuni
-            });
-
-            // CARBOIDRATI MENSILI Chart
-            if (monthCarboChart) monthCarboChart.destroy();
-            monthCarboChart = new Chart(document.getElementById('monthCarboChart').getContext('2d'), {
-                data: {
-                    labels: labels,
-                    datasets: [
-                        {
-                            type: 'line',
-                            label: 'Target',
-                            data: labels.map(() => targetCarbo),
-                            borderColor: '#10b981',
-                            borderWidth: 2,
-                            borderDash: [5, 5],
-                            pointRadius: 0,
-                            fill: false
                         },
                         {
                             type: 'bar',
-                            label: 'Consumati',
+                            label: currentLang === 'en' ? 'Carbs' : 'Carboidrati',
                             data: datiCarboidrati,
                             backgroundColor: '#10b981',
                             borderRadius: 4
-                        }
-                    ]
-                },
-                options: opzioniComuni
-            });
-
-            // GRASSI MENSILI Chart
-            if (monthGrassiChart) monthGrassiChart.destroy();
-            monthGrassiChart = new Chart(document.getElementById('monthGrassiChart').getContext('2d'), {
-                data: {
-                    labels: labels,
-                    datasets: [
+                        },
+                        {
+                            type: 'bar',
+                            label: currentLang === 'en' ? 'Fats' : 'Grassi',
+                            data: datiGrassi,
+                            backgroundColor: '#f59e0b',
+                            borderRadius: 4
+                        },
                         {
                             type: 'line',
-                            label: 'Target',
-                            data: labels.map(() => targetGrassi),
-                            borderColor: '#f59e0b',
-                            borderWidth: 2,
+                            label: currentLang === 'en' ? 'Proteins Target' : 'Target Proteine',
+                            data: labels.map(() => targetProteine),
+                            borderColor: '#3b82f6',
+                            borderWidth: 1.5,
                             borderDash: [5, 5],
                             pointRadius: 0,
                             fill: false
                         },
                         {
-                            type: 'bar',
-                            label: 'Consumati',
-                            data: datiGrassi,
-                            backgroundColor: '#f59e0b',
-                            borderRadius: 4
+                            type: 'line',
+                            label: currentLang === 'en' ? 'Carbs Target' : 'Target Carboidrati',
+                            data: labels.map(() => targetCarbo),
+                            borderColor: '#10b981',
+                            borderWidth: 1.5,
+                            borderDash: [5, 5],
+                            pointRadius: 0,
+                            fill: false
+                        },
+                        {
+                            type: 'line',
+                            label: currentLang === 'en' ? 'Fats Target' : 'Target Grassi',
+                            data: labels.map(() => targetGrassi),
+                            borderColor: '#f59e0b',
+                            borderWidth: 1.5,
+                            borderDash: [5, 5],
+                            pointRadius: 0,
+                            fill: false
                         }
                     ]
                 },
-                options: opzioniComuni
+                options: {
+                    ...opzioniComuni,
+                    plugins: {
+                        ...opzioniComuni.plugins,
+                        legend: {
+                            display: true,
+                            position: 'top',
+                            labels: {
+                                color: '#94a3b8',
+                                boxWidth: 10,
+                                font: { size: 9 },
+                                filter: function(item) {
+                                    return !item.text.includes('Target') && !item.text.includes('Obiettivo');
+                                }
+                              }
+                        }
+                    }
+                }
             });
         }
         // ================================================================
