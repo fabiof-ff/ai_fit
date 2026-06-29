@@ -808,12 +808,11 @@
         <div id="trendGiornalieroContainer" class="space-y-4">
             <div class="bg-slate-800/40 border border-slate-700/50 rounded-2xl p-4">
                 <p class="text-xs text-slate-400 font-semibold uppercase tracking-wider mb-3 flex items-center gap-1.5">
-                    <i data-lucide="scale" class="w-3.5 h-3.5 text-indigo-400"></i>
                     <i data-lucide="flame" class="w-3.5 h-3.5 text-rose-400"></i> <span
-                        data-i18n="title_peso_calorie">Peso &amp; Calorie</span>
+                        data-i18n="label_calorie_uppercase">Calorie</span>
                 </p>
-                <div class="h-60 w-full">
-                    <canvas id="trendPesoCalorieChart"></canvas>
+                <div class="h-48 w-full">
+                    <canvas id="trendCalorieChart"></canvas>
                 </div>
             </div>
 
@@ -923,7 +922,7 @@
         let ultimaAnalisi = null;
         let editingId = null; // ID entry in modifica
 
-        let trendPesoCalorieChart = null;
+        let trendCalorieChart = null;
         let trendMacronutrientiChart = null;
 
         let weekPesoCalorieChart = null;
@@ -2054,111 +2053,32 @@
                     }
                 };
 
-                // Calcolo yMin e yMax per il peso nei 7 giorni
-                const arrayPesi = ultimiGiorni.map(g => g.peso).filter(p => p !== null && p !== undefined && p > 0);
-                let yMin = undefined;
-                let yMax = undefined;
-                if (arrayPesi.length > 0) {
-                    const tuttiIValori = [...arrayPesi, pesoTarget];
-                    const minReale = Math.min(...tuttiIValori);
-                    const maxReale = Math.max(...tuttiIValori);
-                    yMin = Math.round(minReale * 0.97);
-                    yMax = Math.round(maxReale * 1.03);
-                }
-
-                // PESO & CALORIE 7 GIORNI
-                if (trendPesoCalorieChart) trendPesoCalorieChart.destroy();
-                trendPesoCalorieChart = new Chart(document.getElementById('trendPesoCalorieChart').getContext('2d'), {
+                // CALORIE 7 GIORNI con Linea Target
+                if (trendCalorieChart) trendCalorieChart.destroy();
+                trendCalorieChart = new Chart(document.getElementById('trendCalorieChart').getContext('2d'), {
                     data: {
                         labels: etichetteGiorni,
                         datasets: [
                             {
                                 type: 'line',
-                                label: currentLang === 'en' ? 'Weight' : 'Peso Reale',
-                                data: ultimiGiorni.map(g => g.peso || null),
-                                borderColor: '#6366f1',
-                                backgroundColor: 'rgba(99, 102, 241, 0.1)',
-                                borderWidth: 3,
-                                pointRadius: 3,
-                                pointBackgroundColor: '#6366f1',
-                                fill: false,
-                                spanGaps: true,
-                                yAxisID: 'y'
-                            },
-                            {
-                                type: 'line',
-                                label: 'Obiettivo Peso',
-                                data: etichetteGiorni.map(() => pesoTarget),
-                                borderColor: '#6366f1',
-                                borderWidth: 1.5,
+                                label: 'Target',
+                                data: etichetteGiorni.map(() => targetCalorie),
+                                borderColor: '#f43f5e',
+                                borderWidth: 2,
                                 borderDash: [5, 5],
                                 pointRadius: 0,
-                                fill: false,
-                                yAxisID: 'y'
+                                fill: false
                             },
                             {
                                 type: 'bar',
-                                label: currentLang === 'en' ? 'Calories' : 'Calorie',
+                                label: 'Consumate',
                                 data: ultimiGiorni.map(g => Math.round(g.calorie)),
-                                backgroundColor: 'rgba(244, 63, 94, 0.65)',
-                                borderRadius: 4,
-                                yAxisID: 'y1'
-                            },
-                            {
-                                type: 'line',
-                                label: 'Target Calorie',
-                                data: etichetteGiorni.map(() => targetCalorie),
-                                borderColor: '#f43f5e',
-                                borderWidth: 1.5,
-                                borderDash: [5, 5],
-                                pointRadius: 0,
-                                fill: false,
-                                yAxisID: 'y1'
+                                backgroundColor: '#f43f5e',
+                                borderRadius: 4
                             }
                         ]
                     },
-                    options: {
-                        ...opzioniComuni,
-                        plugins: {
-                            ...opzioniComuni.plugins,
-                            legend: {
-                                display: false
-                            }
-                        },
-                        scales: {
-                            y: {
-                                type: 'linear',
-                                position: 'left',
-                                grid: { color: 'rgba(71,85,105,0.08)' },
-                                ticks: { color: '#6366f1', font: { size: 9, weight: 'bold' } },
-                                min: yMin,
-                                max: yMax,
-                                title: {
-                                    display: true,
-                                    text: currentLang === 'en' ? 'Weight (kg)' : 'Peso (kg)',
-                                    color: '#6366f1',
-                                    font: { size: 9, weight: 'bold' }
-                                }
-                            },
-                            y1: {
-                                type: 'linear',
-                                position: 'right',
-                                grid: { drawOnChartArea: false },
-                                ticks: { color: '#f43f5e', font: { size: 9, weight: 'bold' } },
-                                min: 0,
-                                title: {
-                                    display: true,
-                                    text: currentLang === 'en' ? 'Calories (kcal)' : 'Calorie (kcal)',
-                                    color: '#f43f5e',
-                                    font: { size: 9, weight: 'bold' }
-                                }
-                            },
-                            x: {
-                                grid: { display: false },
-                                ticks: { color: '#64748b', font: { size: 9 } }
-                            }
-                        }
-                    }
+                    options: opzioniComuni
                 });
 
                 // MACRONUTRIENTI 7 GIORNI
@@ -2360,7 +2280,7 @@
                     yMax = Math.round(maxReale * 1.03);
                 }
 
-                weekPesoCalorieChart = new Chart(document.getElementById('weekPesoCalorieChart').getContext('2d'), {
+            weekPesoCalorieChart = new Chart(document.getElementById('weekPesoCalorieChart').getContext('2d'), {
                     data: {
                         labels: etichetteSettimane,
                         datasets: [
@@ -2375,7 +2295,7 @@
                                 pointBackgroundColor: '#6366f1',
                                 fill: false,
                                 spanGaps: true,
-                                yAxisID: 'y'
+                                yAxisID: 'y1'
                             },
                             {
                                 type: 'line',
@@ -2386,7 +2306,7 @@
                                 borderDash: [5, 5],
                                 pointRadius: 0,
                                 fill: false,
-                                yAxisID: 'y'
+                                yAxisID: 'y1'
                             },
                             {
                                 type: 'bar',
@@ -2394,7 +2314,7 @@
                                 data: datiSettimane.map(s => Math.round(s.calorie)),
                                 backgroundColor: 'rgba(244, 63, 94, 0.65)',
                                 borderRadius: 4,
-                                yAxisID: 'y1'
+                                yAxisID: 'y'
                             },
                             {
                                 type: 'line',
@@ -2405,7 +2325,7 @@
                                 borderDash: [5, 5],
                                 pointRadius: 0,
                                 fill: false,
-                                yAxisID: 'y1'
+                                yAxisID: 'y'
                             }
                         ]
                     },
@@ -2422,13 +2342,12 @@
                                 type: 'linear',
                                 position: 'left',
                                 grid: { color: 'rgba(71,85,105,0.08)' },
-                                ticks: { color: '#6366f1', font: { size: 9, weight: 'bold' } },
-                                min: yMin,
-                                max: yMax,
+                                ticks: { color: '#f43f5e', font: { size: 9, weight: 'bold' } },
+                                min: 0,
                                 title: {
                                     display: true,
-                                    text: currentLang === 'en' ? 'Weight (kg)' : 'Peso (kg)',
-                                    color: '#6366f1',
+                                    text: currentLang === 'en' ? 'Calories (kcal)' : 'Calorie (kcal)',
+                                    color: '#f43f5e',
                                     font: { size: 9, weight: 'bold' }
                                 }
                             },
@@ -2436,12 +2355,13 @@
                                 type: 'linear',
                                 position: 'right',
                                 grid: { drawOnChartArea: false },
-                                ticks: { color: '#f43f5e', font: { size: 9, weight: 'bold' } },
-                                min: 0,
+                                ticks: { color: '#6366f1', font: { size: 9, weight: 'bold' } },
+                                min: yMin,
+                                max: yMax,
                                 title: {
                                     display: true,
-                                    text: currentLang === 'en' ? 'Calories (kcal)' : 'Calorie (kcal)',
-                                    color: '#f43f5e',
+                                    text: currentLang === 'en' ? 'Weight (kg)' : 'Peso (kg)',
+                                    color: '#6366f1',
                                     font: { size: 9, weight: 'bold' }
                                 }
                             },
