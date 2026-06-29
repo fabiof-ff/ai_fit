@@ -2091,49 +2091,29 @@
                             {
                                 type: 'bar',
                                 label: currentLang === 'en' ? 'Proteins' : 'Proteine',
-                                data: ultimiGiorni.map(g => Math.round(g.proteine)),
+                                data: ultimiGiorni.map(g => targetProteine > 0 ? Math.round((g.proteine / targetProteine) * 100) : 0),
                                 backgroundColor: '#3b82f6',
                                 borderRadius: 4
                             },
                             {
                                 type: 'bar',
                                 label: currentLang === 'en' ? 'Carbs' : 'Carboidrati',
-                                data: ultimiGiorni.map(g => Math.round(g.carboidrati)),
+                                data: ultimiGiorni.map(g => targetCarbo > 0 ? Math.round((g.carboidrati / targetCarbo) * 100) : 0),
                                 backgroundColor: '#10b981',
                                 borderRadius: 4
                             },
                             {
                                 type: 'bar',
                                 label: currentLang === 'en' ? 'Fats' : 'Grassi',
-                                data: ultimiGiorni.map(g => Math.round(g.grassi)),
+                                data: ultimiGiorni.map(g => targetGrassi > 0 ? Math.round((g.grassi / targetGrassi) * 100) : 0),
                                 backgroundColor: '#f59e0b',
                                 borderRadius: 4
                             },
                             {
                                 type: 'line',
-                                label: currentLang === 'en' ? 'Proteins Target' : 'Target Proteine',
-                                data: etichetteGiorni.map(() => targetProteine),
-                                borderColor: '#3b82f6',
-                                borderWidth: 1.5,
-                                borderDash: [5, 5],
-                                pointRadius: 0,
-                                fill: false
-                            },
-                            {
-                                type: 'line',
-                                label: currentLang === 'en' ? 'Carbs Target' : 'Target Carboidrati',
-                                data: etichetteGiorni.map(() => targetCarbo),
-                                borderColor: '#10b981',
-                                borderWidth: 1.5,
-                                borderDash: [5, 5],
-                                pointRadius: 0,
-                                fill: false
-                            },
-                            {
-                                type: 'line',
-                                label: currentLang === 'en' ? 'Fats Target' : 'Target Grassi',
-                                data: etichetteGiorni.map(() => targetGrassi),
-                                borderColor: '#f59e0b',
+                                label: 'Target 100%',
+                                data: etichetteGiorni.map(() => 100),
+                                borderColor: '#ffffff',
                                 borderWidth: 1.5,
                                 borderDash: [5, 5],
                                 pointRadius: 0,
@@ -2145,6 +2125,14 @@
                         ...opzioniComuni,
                         plugins: {
                             ...opzioniComuni.plugins,
+                            tooltip: {
+                                ...opzioniComuni.plugins.tooltip,
+                                callbacks: {
+                                    label: function (context) {
+                                        return context.dataset.label + ': ' + context.formattedValue + '%';
+                                    }
+                                }
+                            },
                             legend: {
                                 display: true,
                                 position: 'top',
@@ -2154,6 +2142,18 @@
                                     font: { size: 9 },
                                     filter: function (item) {
                                         return !item.text.includes('Target') && !item.text.includes('Obiettivo');
+                                    }
+                                }
+                            }
+                        },
+                        scales: {
+                            ...opzioniComuni.scales,
+                            y: {
+                                ...opzioniComuni.scales.y,
+                                ticks: {
+                                    ...opzioniComuni.scales.y.ticks,
+                                    callback: function (value) {
+                                        return value + '%';
                                     }
                                 }
                             }
@@ -2383,49 +2383,29 @@
                             {
                                 type: 'bar',
                                 label: currentLang === 'en' ? 'Proteins' : 'Proteine',
-                                data: datiSettimane.map(s => Math.round(s.proteine)),
+                                data: datiSettimane.map(s => targetProteine > 0 ? Math.round((s.proteine / targetProteine) * 100) : 0),
                                 backgroundColor: '#3b82f6',
                                 borderRadius: 4
                             },
                             {
                                 type: 'bar',
                                 label: currentLang === 'en' ? 'Carbs' : 'Carboidrati',
-                                data: datiSettimane.map(s => Math.round(s.carboidrati)),
+                                data: datiSettimane.map(s => targetCarbo > 0 ? Math.round((s.carboidrati / targetCarbo) * 100) : 0),
                                 backgroundColor: '#10b981',
                                 borderRadius: 4
                             },
                             {
                                 type: 'bar',
                                 label: currentLang === 'en' ? 'Fats' : 'Grassi',
-                                data: datiSettimane.map(s => Math.round(s.grassi)),
+                                data: datiSettimane.map(s => targetGrassi > 0 ? Math.round((s.grassi / targetGrassi) * 100) : 0),
                                 backgroundColor: '#f59e0b',
                                 borderRadius: 4
                             },
                             {
                                 type: 'line',
-                                label: currentLang === 'en' ? 'Proteins Target' : 'Target Proteine',
-                                data: etichetteSettimane.map(() => targetProteine),
-                                borderColor: '#3b82f6',
-                                borderWidth: 1.5,
-                                borderDash: [5, 5],
-                                pointRadius: 0,
-                                fill: false
-                            },
-                            {
-                                type: 'line',
-                                label: currentLang === 'en' ? 'Carbs Target' : 'Target Carboidrati',
-                                data: etichetteSettimane.map(() => targetCarbo),
-                                borderColor: '#10b981',
-                                borderWidth: 1.5,
-                                borderDash: [5, 5],
-                                pointRadius: 0,
-                                fill: false
-                            },
-                            {
-                                type: 'line',
-                                label: currentLang === 'en' ? 'Fats Target' : 'Target Grassi',
-                                data: etichetteSettimane.map(() => targetGrassi),
-                                borderColor: '#f59e0b',
+                                label: 'Target 100%',
+                                data: etichetteSettimane.map(() => 100),
+                                borderColor: '#ffffff',
                                 borderWidth: 1.5,
                                 borderDash: [5, 5],
                                 pointRadius: 0,
@@ -2437,6 +2417,14 @@
                         ...opzioniComuni,
                         plugins: {
                             ...opzioniComuni.plugins,
+                            tooltip: {
+                                ...opzioniComuni.plugins.tooltip,
+                                callbacks: {
+                                    label: function (context) {
+                                        return context.dataset.label + ': ' + context.formattedValue + '%';
+                                    }
+                                }
+                            },
                             legend: {
                                 display: true,
                                 position: 'top',
@@ -2446,6 +2434,18 @@
                                     font: { size: 9 },
                                     filter: function (item) {
                                         return !item.text.includes('Target') && !item.text.includes('Obiettivo');
+                                    }
+                                }
+                            }
+                        },
+                        scales: {
+                            ...opzioniComuni.scales,
+                            y: {
+                                ...opzioniComuni.scales.y,
+                                ticks: {
+                                    ...opzioniComuni.scales.y.ticks,
+                                    callback: function (value) {
+                                        return value + '%';
                                     }
                                 }
                             }
@@ -2717,49 +2717,29 @@
                         {
                             type: 'bar',
                             label: currentLang === 'en' ? 'Proteins' : 'Proteine',
-                            data: datiProteine,
+                            data: datiProteine.map(p => targetProteine > 0 ? Math.round((p / targetProteine) * 100) : 0),
                             backgroundColor: '#3b82f6',
                             borderRadius: 4
                         },
                         {
                             type: 'bar',
                             label: currentLang === 'en' ? 'Carbs' : 'Carboidrati',
-                            data: datiCarboidrati,
+                            data: datiCarboidrati.map(c => targetCarbo > 0 ? Math.round((c / targetCarbo) * 100) : 0),
                             backgroundColor: '#10b981',
                             borderRadius: 4
                         },
                         {
                             type: 'bar',
                             label: currentLang === 'en' ? 'Fats' : 'Grassi',
-                            data: datiGrassi,
+                            data: datiGrassi.map(f => targetGrassi > 0 ? Math.round((f / targetGrassi) * 100) : 0),
                             backgroundColor: '#f59e0b',
                             borderRadius: 4
                         },
                         {
                             type: 'line',
-                            label: currentLang === 'en' ? 'Proteins Target' : 'Target Proteine',
-                            data: labels.map(() => targetProteine),
-                            borderColor: '#3b82f6',
-                            borderWidth: 1.5,
-                            borderDash: [5, 5],
-                            pointRadius: 0,
-                            fill: false
-                        },
-                        {
-                            type: 'line',
-                            label: currentLang === 'en' ? 'Carbs Target' : 'Target Carboidrati',
-                            data: labels.map(() => targetCarbo),
-                            borderColor: '#10b981',
-                            borderWidth: 1.5,
-                            borderDash: [5, 5],
-                            pointRadius: 0,
-                            fill: false
-                        },
-                        {
-                            type: 'line',
-                            label: currentLang === 'en' ? 'Fats Target' : 'Target Grassi',
-                            data: labels.map(() => targetGrassi),
-                            borderColor: '#f59e0b',
+                            label: 'Target 100%',
+                            data: labels.map(() => 100),
+                            borderColor: '#ffffff',
                             borderWidth: 1.5,
                             borderDash: [5, 5],
                             pointRadius: 0,
@@ -2771,6 +2751,14 @@
                     ...opzioniComuni,
                     plugins: {
                         ...opzioniComuni.plugins,
+                        tooltip: {
+                            ...opzioniComuni.plugins.tooltip,
+                            callbacks: {
+                                label: function (context) {
+                                    return context.dataset.label + ': ' + context.formattedValue + '%';
+                                }
+                            }
+                        },
                         legend: {
                             display: true,
                             position: 'top',
@@ -2780,6 +2768,18 @@
                                 font: { size: 9 },
                                 filter: function (item) {
                                     return !item.text.includes('Target') && !item.text.includes('Obiettivo');
+                                }
+                            }
+                        }
+                    },
+                    scales: {
+                        ...opzioniComuni.scales,
+                        y: {
+                            ...opzioniComuni.scales.y,
+                            ticks: {
+                                ...opzioniComuni.scales.y.ticks,
+                                callback: function (value) {
+                                    return value + '%';
                                 }
                             }
                         }
