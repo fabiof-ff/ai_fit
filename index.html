@@ -2848,21 +2848,27 @@
         // ESPORTAZIONE / IMPORTAZIONE JSON DATABASE
         // ================================================================
         async function esportaDB() {
-            const db = localStorage.getItem('nutriDB');
-            if (!db || db === "[]") {
+            const dbRaw = localStorage.getItem('nutriDB');
+            if (!dbRaw || dbRaw === "[]") {
                 await customAlert(currentLang === 'en' ? "No data" : "Nessun dato", currentLang === 'en' ? "No data available to export!" : "Nessun dato presente da esportare!");
                 return;
             }
 
-            const blob = new Blob([db], { type: 'application/json' });
-            const url = URL.createObjectURL(blob);
-            const a = document.createElement('a');
-            a.href = url;
-            a.download = `nutritracker-backup-${ottieniDataOggi()}.json`;
-            document.body.appendChild(a);
-            a.click();
-            document.body.removeChild(a);
-            URL.revokeObjectURL(url);
+            try {
+                const parsed = JSON.parse(dbRaw);
+                const formattedJson = JSON.stringify(parsed, null, 2);
+                const blob = new Blob([formattedJson], { type: 'application/json' });
+                const url = URL.createObjectURL(blob);
+                const a = document.createElement('a');
+                a.href = url;
+                a.download = `nutritracker-backup-${ottieniDataOggi()}.json`;
+                document.body.appendChild(a);
+                a.click();
+                document.body.removeChild(a);
+                URL.revokeObjectURL(url);
+            } catch (err) {
+                console.error("Errore durante l'esportazione:", err);
+            }
         }
 
         function importaDB(event) {
