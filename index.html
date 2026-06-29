@@ -2546,8 +2546,8 @@
                 }
             });
 
-            // 2. Sort months chronologically
-            const monthKeys = Object.keys(grouped).sort();
+            // 2. Sort months chronologically and limit to last 24 months
+            const monthKeys = Object.keys(grouped).sort().slice(-24);
             const labels = [];
             const datiPeso = [];
             const datiCalorie = [];
