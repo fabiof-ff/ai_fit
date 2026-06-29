@@ -272,12 +272,11 @@
         </div>
 
         <div id="settingsBox" class="hidden mb-5 p-4 bg-slate-800 rounded-2xl border border-slate-700 shadow-xl">
-            <div class="flex items-center justify-between mb-3">
+            <div class="flex items-center mb-3">
                 <h3 class="text-sm font-semibold text-slate-200 flex items-center gap-2">
                     <i data-lucide="settings-2" class="w-4 h-4 text-amber-400"></i> <span
-                        data-i18n="title_api_settings">Impostazioni AI</span>
+                        data-i18n="title_api_settings">Impostazioni</span>
                 </h3>
-                <span class="text-[10px] bg-slate-700 px-2 py-0.5 rounded text-slate-400">Salvata in locale</span>
             </div>
             <div class="mb-4">
                 <label data-i18n="label_api_key"
@@ -1036,6 +1035,13 @@
                 plugins: {
                     legend: {
                         display: false
+                    },
+                    tooltip: {
+                        callbacks: {
+                            label: function (context) {
+                                return context.formattedValue;
+                            }
+                        }
                     }
                 },
                 responsive: true,
@@ -1050,7 +1056,7 @@
         // ================================================================
         const TRANSLATIONS = {
             it: {
-                title_api_settings: "Impostazioni AI",
+                title_api_settings: "Impostazioni",
                 label_api_key: "Gemini API Key",
                 label_language: "Lingua / Language",
                 label_daily_targets: "Target giornalieri",
@@ -1127,7 +1133,7 @@
                 lbl_privacy_note: "Le chiavi e i target vengono memorizzati solo sul tuo dispositivo (localStorage)."
             },
             en: {
-                title_api_settings: "AI Settings",
+                title_api_settings: "Settings",
                 label_api_key: "Gemini API Key",
                 label_language: "Language / Lingua",
                 label_daily_targets: "Daily Targets",
@@ -2102,7 +2108,16 @@
                 }
 
                 const opzioniComuni = {
-                    plugins: { legend: { display: false } },
+                    plugins: {
+                        legend: { display: false },
+                        tooltip: {
+                            callbacks: {
+                                label: function (context) {
+                                    return context.formattedValue;
+                                }
+                            }
+                        }
+                    },
                     responsive: true,
                     maintainAspectRatio: false,
                     scales: {
@@ -2304,7 +2319,16 @@
                 }
 
                 const opzioniComuni = {
-                    plugins: { legend: { display: false } },
+                    plugins: {
+                        legend: { display: false },
+                        tooltip: {
+                            callbacks: {
+                                label: function (context) {
+                                    return context.formattedValue;
+                                }
+                            }
+                        }
+                    },
                     responsive: true,
                     maintainAspectRatio: false,
                     scales: {
@@ -2555,13 +2579,10 @@
             const datiCarboidrati = [];
             const datiGrassi = [];
 
-            const mesiNomi = ["Gen", "Feb", "Mar", "Apr", "Mag", "Giu", "Lug", "Ago", "Set", "Ott", "Nov", "Dic"];
-
             monthKeys.forEach(key => {
                 const parts = key.split('-');
                 const anno = parts[0];
-                const meseIdx = parseInt(parts[1], 10) - 1;
-                const label = `${mesiNomi[meseIdx]} ${anno.substring(2)}`;
+                const label = `${parts[1]}.${anno.substring(2)}`;
                 labels.push(label);
 
                 const mData = grouped[key];
@@ -2619,7 +2640,16 @@
             }
 
             const opzioniComuni = {
-                plugins: { legend: { display: false } },
+                plugins: {
+                    legend: { display: false },
+                    tooltip: {
+                        callbacks: {
+                            label: function (context) {
+                                return context.formattedValue;
+                            }
+                        }
+                    }
+                },
                 responsive: true,
                 maintainAspectRatio: false,
                 scales: {
