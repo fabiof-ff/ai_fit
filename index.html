@@ -160,7 +160,8 @@
         }
 
         /* Normalize input[type="date"] and input[type="time"] on iOS/Safari */
-        input[type="date"], input[type="time"] {
+        input[type="date"],
+        input[type="time"] {
             -webkit-appearance: none;
             appearance: none;
             min-width: 0;
@@ -913,7 +914,7 @@
         // ================================================================
         // CONFIGURAZIONE AI
         // ================================================================
-        const GEMINI_MODEL = "gemini-2.5-flash-lite";
+        const GEMINI_MODEL = "gemini-2.5-flash";
 
         // ================================================================
         // STATO GLOBALE
@@ -2034,7 +2035,7 @@
                     plugins: {
                         legend: { display: false },
                         tooltip: {
-                            filter: function(tooltipItem) {
+                            filter: function (tooltipItem) {
                                 const label = tooltipItem.dataset.label || '';
                                 return !label.includes('Target') && !label.includes('Obiettivo');
                             },
@@ -2231,7 +2232,7 @@
                                     color: '#94a3b8',
                                     boxWidth: 10,
                                     font: { size: 9 },
-                                    filter: function(item) {
+                                    filter: function (item) {
                                         return !item.text.includes('Target') && !item.text.includes('Obiettivo');
                                     }
                                 }
@@ -2324,7 +2325,7 @@
                     plugins: {
                         legend: { display: false },
                         tooltip: {
-                            filter: function(tooltipItem) {
+                            filter: function (tooltipItem) {
                                 const label = tooltipItem.dataset.label || '';
                                 return !label.includes('Target') && !label.includes('Obiettivo');
                             },
@@ -2523,7 +2524,7 @@
                                     color: '#94a3b8',
                                     boxWidth: 10,
                                     font: { size: 9 },
-                                    filter: function(item) {
+                                    filter: function (item) {
                                         return !item.text.includes('Target') && !item.text.includes('Obiettivo');
                                     }
                                 }
@@ -2659,7 +2660,7 @@
                 plugins: {
                     legend: { display: false },
                     tooltip: {
-                        filter: function(tooltipItem) {
+                        filter: function (tooltipItem) {
                             const label = tooltipItem.dataset.label || '';
                             return !label.includes('Target') && !label.includes('Obiettivo');
                         },
@@ -2857,10 +2858,10 @@
                                 color: '#94a3b8',
                                 boxWidth: 10,
                                 font: { size: 9 },
-                                filter: function(item) {
+                                filter: function (item) {
                                     return !item.text.includes('Target') && !item.text.includes('Obiettivo');
                                 }
-                              }
+                            }
                         }
                     }
                 }
