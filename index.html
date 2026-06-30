@@ -2580,7 +2580,8 @@
                                     text: currentLang === 'en' ? 'Calories (kcal)' : 'Calorie (kcal)',
                                     color: '#f43f5e',
                                     font: { size: 9, weight: 'bold' }
-                                }
+                                },
+                                afterFit: (scale) => { scale.width = 55; }
                             },
                             y1: {
                                 type: 'linear',
@@ -2594,7 +2595,8 @@
                                     text: currentLang === 'en' ? 'Weight (kg)' : 'Peso (kg)',
                                     color: '#6366f1',
                                     font: { size: 9, weight: 'bold' }
-                                }
+                                },
+                                afterFit: (scale) => { scale.width = 55; }
                             },
                             x: {
                                 grid: { display: false },
@@ -2698,7 +2700,17 @@
                                     callback: function (value) {
                                         return value + '%';
                                     }
-                                }
+                                },
+                                afterFit: (scale) => { scale.width = 55; }
+                            },
+                            y1: {
+                                type: 'linear',
+                                position: 'right',
+                                display: true,
+                                grid: { drawOnChartArea: false, drawTicks: false },
+                                border: { display: false },
+                                ticks: { display: false },
+                                afterFit: (scale) => { scale.width = 55; }
                             }
                         }
                     }
@@ -2935,7 +2947,8 @@
                                 text: currentLang === 'en' ? 'Weight (kg)' : 'Peso (kg)',
                                 color: '#6366f1',
                                 font: { size: 9, weight: 'bold' }
-                            }
+                            },
+                            afterFit: (scale) => { scale.width = 55; }
                         },
                         y1: {
                             type: 'linear',
@@ -2948,7 +2961,8 @@
                                 text: currentLang === 'en' ? 'Calories (kcal)' : 'Calorie (kcal)',
                                 color: '#f43f5e',
                                 font: { size: 9, weight: 'bold' }
-                            }
+                            },
+                            afterFit: (scale) => { scale.width = 55; }
                         },
                         x: {
                             grid: { display: false },
@@ -3050,7 +3064,17 @@
                                 callback: function (value) {
                                     return value + '%';
                                 }
-                            }
+                            },
+                            afterFit: (scale) => { scale.width = 55; }
+                        },
+                        y1: {
+                            type: 'linear',
+                            position: 'right',
+                            display: true,
+                            grid: { drawOnChartArea: false, drawTicks: false },
+                            border: { display: false },
+                            ticks: { display: false },
+                            afterFit: (scale) => { scale.width = 55; }
                         }
                     }
                 }
