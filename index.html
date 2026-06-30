@@ -2177,19 +2177,34 @@
                     return Math.ceil((((d - yearStart) / 86400000) + 1) / 7);
                 };
 
+                const formattaData = (d) => {
+                    const anno = d.getFullYear();
+                    const mese = String(d.getMonth() + 1).padStart(2, '0');
+                    const giorno = String(d.getDate()).padStart(2, '0');
+                    return `${anno}-${mese}-${giorno}`;
+                };
+
+                // Trova il lunedì della settimana corrente
+                const lunedìCorrente = new Date();
+                const day = lunedìCorrente.getDay();
+                const diff = day === 0 ? 6 : day - 1;
+                lunedìCorrente.setDate(lunedìCorrente.getDate() - diff);
+                lunedìCorrente.setHours(0, 0, 0, 0);
+
                 for (let w = 7; w >= 0; w--) {
-                    const fineSettimana = new Date();
-                    fineSettimana.setDate(fineSettimana.getDate() - (w * 7));
-                    const inizioSettimana = new Date(fineSettimana);
-                    inizioSettimana.setDate(inizioSettimana.getDate() - 6);
+                    const inizioSettimana = new Date(lunedìCorrente);
+                    inizioSettimana.setDate(lunedìCorrente.getDate() - (w * 7));
+                    
+                    const fineSettimana = new Date(inizioSettimana);
+                    fineSettimana.setDate(inizioSettimana.getDate() + 6);
 
                     const numSettimana = getWeekNumber(inizioSettimana);
                     etichetteSettimane.push(numSettimana);
 
-                    const recordSettimanali = db.filter(x => {
-                        const d = new Date(x.data);
-                        return d >= inizioSettimana.setHours(0, 0, 0, 0) && d <= fineSettimana.setHours(23, 59, 59, 999);
-                    });
+                    const inizioStr = formattaData(inizioSettimana);
+                    const fineStr = formattaData(fineSettimana);
+
+                    const recordSettimanali = db.filter(x => x.data >= inizioStr && x.data <= fineStr);
 
                     const recordAttivi = recordSettimanali.filter(r => r.calorie > 0 || r.proteine > 0 || r.carboidrati > 0 || r.grassi > 0);
                     const recordConPeso = recordSettimanali.filter(r => r.peso && r.peso > 0);
@@ -3364,17 +3379,32 @@ Rispondi ESCLUSIVAMENTE con un oggetto JSON valido (senza markdown, senza racchi
                 return Math.ceil((((d - yearStart) / 86400000) + 1) / 7);
             };
 
+            const formattaData = (d) => {
+                const anno = d.getFullYear();
+                const mese = String(d.getMonth() + 1).padStart(2, '0');
+                const giorno = String(d.getDate()).padStart(2, '0');
+                return `${anno}-${mese}-${giorno}`;
+            };
+
+            // Trova il lunedì della settimana corrente
+            const lunedìCorrente = new Date();
+            const day = lunedìCorrente.getDay();
+            const diff = day === 0 ? 6 : day - 1;
+            lunedìCorrente.setDate(lunedìCorrente.getDate() - diff);
+            lunedìCorrente.setHours(0, 0, 0, 0);
+
             for (let w = 7; w >= 0; w--) {
-                const fineSettimana = new Date();
-                fineSettimana.setDate(fineSettimana.getDate() - (w * 7));
-                const inizioSettimana = new Date(fineSettimana);
-                inizioSettimana.setDate(inizioSettimana.getDate() - 6);
+                const inizioSettimana = new Date(lunedìCorrente);
+                inizioSettimana.setDate(lunedìCorrente.getDate() - (w * 7));
+                
+                const fineSettimana = new Date(inizioSettimana);
+                fineSettimana.setDate(inizioSettimana.getDate() + 6);
 
                 const numSettimana = getWeekNumber(inizioSettimana);
-                const recordSettimanali = db.filter(x => {
-                    const d = new Date(x.data);
-                    return d >= inizioSettimana.setHours(0, 0, 0, 0) && d <= fineSettimana.setHours(23, 59, 59, 999);
-                });
+                const inizioStr = formattaData(inizioSettimana);
+                const fineStr = fineSettimana ? formattaData(fineSettimana) : formattaData(new Date());
+
+                const recordSettimanali = db.filter(x => x.data >= inizioStr && x.data <= fineStr);
 
                 const recordAttivi = recordSettimanali.filter(r => r.calorie > 0 || r.proteine > 0);
                 const recordConPeso = recordSettimanali.filter(r => r.peso && r.peso > 0);
