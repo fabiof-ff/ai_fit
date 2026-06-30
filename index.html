@@ -1217,7 +1217,7 @@
             }
             // Imposta di default la data di oggi anche per il pasto
             if (document.getElementById('input-pasto-data')) {
-                document.getElementById('input-pasto-data').value = new Date().toISOString().split('T')[0];
+                document.getElementById('input-pasto-data').value = ottieniDataOggi();
             }
         };
 
