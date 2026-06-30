@@ -386,19 +386,19 @@
                             <div>
                                 <label class="text-[9px] font-bold text-slate-500 uppercase tracking-wider block"
                                     data-i18n="lbl_cur_weight">Peso Att. (kg)</label>
-                                <input type="number" id="aiPeso" placeholder="es. 75"
+                                <input type="number" id="aiPeso" placeholder="es. 75" oninput="saveProfileData()"
                                     class="mt-1 w-full bg-slate-800 border border-slate-700 rounded-lg p-2 text-xs text-slate-200 focus:outline-none focus:ring-1 focus:ring-purple-500">
                             </div>
                             <div>
                                 <label class="text-[9px] font-bold text-slate-500 uppercase tracking-wider block"
                                     data-i18n="lbl_target_weight_short">Peso Des. (kg)</label>
-                                <input type="number" id="aiPesoTarget" placeholder="es. 70"
+                                <input type="number" id="aiPesoTarget" placeholder="es. 70" oninput="saveProfileData()"
                                     class="mt-1 w-full bg-slate-800 border border-slate-700 rounded-lg p-2 text-xs text-slate-200 focus:outline-none focus:ring-1 focus:ring-purple-500">
                             </div>
                             <div>
                                 <label class="text-[9px] font-bold text-slate-500 uppercase tracking-wider block"
                                     data-i18n="lbl_height_cm">Altezza (cm)</label>
-                                <input type="number" id="aiAltezza" placeholder="es. 180"
+                                <input type="number" id="aiAltezza" placeholder="es. 180" oninput="saveProfileData()"
                                     class="mt-1 w-full bg-slate-800 border border-slate-700 rounded-lg p-2 text-xs text-slate-200 focus:outline-none focus:ring-1 focus:ring-purple-500">
                             </div>
                         </div>
@@ -406,7 +406,7 @@
                         <div>
                             <label class="text-[10px] font-bold text-slate-500 uppercase tracking-wider block"
                                 data-i18n="lbl_training_style">Stile di allenamento / Attività</label>
-                            <input type="text" id="aiAttivita"
+                            <input type="text" id="aiAttivita" oninput="saveProfileData()"
                                 placeholder="es. Palestra 3 volte a settimana, lavoro sedentario"
                                 class="mt-1 w-full bg-slate-800 border border-slate-700 rounded-lg p-2 text-xs text-slate-200 focus:outline-none focus:ring-1 focus:ring-purple-500">
                         </div>
@@ -414,7 +414,7 @@
                         <div>
                             <label class="text-[10px] font-bold text-slate-500 uppercase tracking-wider block"
                                 data-i18n="lbl_main_goal">Obiettivo principale</label>
-                            <input type="text" id="aiObiettivo" placeholder="es. Aumentare massa muscolare magra"
+                            <input type="text" id="aiObiettivo" placeholder="es. Aumentare massa muscolare magra" oninput="saveProfileData()"
                                 class="mt-1 w-full bg-slate-800 border border-slate-700 rounded-lg p-2 text-xs text-slate-200 focus:outline-none focus:ring-1 focus:ring-purple-500">
                         </div>
 
@@ -1105,6 +1105,41 @@
             autoSalvaNelFileLocale();
         }
 
+        window.saveProfileData = function () {
+            const peso = document.getElementById('aiPeso')?.value.trim();
+            const altezza = document.getElementById('aiAltezza')?.value.trim();
+            const attivita = document.getElementById('aiAttivita')?.value.trim();
+            const obiettivo = document.getElementById('aiObiettivo')?.value.trim();
+            const pesoTargetInput = document.getElementById('aiPesoTarget')?.value.trim();
+
+            if (peso) localStorage.setItem('profile_peso', peso);
+            if (altezza) localStorage.setItem('profile_altezza', altezza);
+            if (attivita) localStorage.setItem('profile_attivita', attivita);
+            if (obiettivo) localStorage.setItem('profile_obiettivo', obiettivo);
+            if (pesoTargetInput) localStorage.setItem('profile_peso_target', pesoTargetInput);
+        };
+
+        window.ottieniProfiloUtente = function () {
+            const db = JSON.parse(localStorage.getItem('nutriDB')) || [];
+            const giorniConPeso = db.filter(g => g.peso).sort((a, b) => new Date(b.data) - new Date(a.data));
+            
+            let pesoCorrente = localStorage.getItem('profile_peso') || "";
+            if (giorniConPeso.length > 0) {
+                pesoCorrente = giorniConPeso[0].peso;
+            } else if (!pesoCorrente) {
+                pesoCorrente = localStorage.getItem('targetPeso') || "75";
+            }
+
+            const altezza = localStorage.getItem('profile_altezza') || "";
+            const targetCalorieVal = localStorage.getItem('target_calorie') || "2000";
+
+            return {
+                peso: pesoCorrente,
+                altezza: altezza,
+                targetCalorie: targetCalorieVal
+            };
+        };
+
         // Chart.js donut
         const ctx = document.getElementById('macroChart').getContext('2d');
         let macroChart = new Chart(ctx, {
@@ -1386,6 +1421,33 @@
             // Carica lo stato dell'associazione del file database locale
             if (typeof aggiornaStatoFileAuto === 'function') aggiornaStatoFileAuto();
 
+            // Carica profilo AI salvato
+            const pPeso = localStorage.getItem('profile_peso');
+            if (pPeso) {
+                const aiPesoInput = document.getElementById('aiPeso');
+                if (aiPesoInput) aiPesoInput.value = pPeso;
+            }
+            const pAltezza = localStorage.getItem('profile_altezza');
+            if (pAltezza) {
+                const aiAltezzaInput = document.getElementById('aiAltezza');
+                if (aiAltezzaInput) aiAltezzaInput.value = pAltezza;
+            }
+            const pAttivita = localStorage.getItem('profile_attivita');
+            if (pAttivita) {
+                const aiAttivitaInput = document.getElementById('aiAttivita');
+                if (aiAttivitaInput) aiAttivitaInput.value = pAttivita;
+            }
+            const pObiettivo = localStorage.getItem('profile_obiettivo');
+            if (pObiettivo) {
+                const aiObiettivoInput = document.getElementById('aiObiettivo');
+                if (aiObiettivoInput) aiObiettivoInput.value = pObiettivo;
+            }
+            const pPesoTarget = localStorage.getItem('profile_peso_target');
+            if (pPesoTarget) {
+                const aiPesoTargetInput = document.getElementById('aiPesoTarget');
+                if (aiPesoTargetInput) aiPesoTargetInput.value = pPesoTarget;
+            }
+
             // Carica target
             targetCalorie = parseInt(localStorage.getItem('target_calorie')) || 2000;
             targetProteine = parseInt(localStorage.getItem('target_proteine')) || 160;
@@ -1662,9 +1724,12 @@
             document.getElementById('btnInvia').disabled = true;
             document.getElementById('btnInvia').style.opacity = "0.6";
 
+            const prof = ottieniProfiloUtente();
             const promptSistema = currentLang === 'en'
-                ? `You are an expert nutritionist. Analyze the user text containing foods. Calculate total Calories, Proteins (g), Carbohydrates (g), Fats (g). Respond ONLY with a valid JSON object (no markdown, do not wrap in \`\`\`json block) with the following numerical keys: "calorie", "proteine", "carboidrati", "grassi". Be realistic and precise in the estimates.`
-                : `Sei un esperto nutrizionista. Analizza il testo inserito dall'utente contenente alimenti. Calcola Calorie totali, Proteine (g), Carboidrati (g), Grassi (g). Rispondi ESCLUSIVAMENTE con un oggetto JSON valido (senza markdown, senza racchiuderlo in codice tipo \`\`\`json) avente le seguenti chiavi numeriche: "calorie", "proteine", "carboidrati", "grassi". Sii realistico e preciso nelle stime.`;
+                ? `You are an expert nutritionist. Analyze the user text containing foods. Calculate total Calories, Proteins (g), Carbohydrates (g), Fats (g). Respond ONLY with a valid JSON object (no markdown, do not wrap in \`\`\`json block) with the following numerical keys: "calorie", "proteine", "carboidrati", "grassi". Be realistic and precise in the estimates.
+IMPORTANT: If the user does not specify portions, weights, or quantities for a food item, you MUST calculate a moderate, standard portion suitable for a single person with the user's characteristics: weight ${prof.peso || '75'} kg, height ${prof.altezza || '175'} cm, and daily target of ${prof.targetCalorie || '2000'} kcal. Adjust estimates conservatively based on these parameters rather than high-balling.`
+                : `Sei un esperto nutrizionista. Analizza il testo inserito dall'utente contenente alimenti. Calcola Calorie totali, Proteine (g), Carboidrati (g), Grassi (g). Rispondi ESCLUSIVAMENTE con un oggetto JSON valido (senza markdown, senza racchiuderlo in codice tipo \`\`\`json) avente le seguenti chiavi numeriche: "calorie", "proteine", "carboidrati", "grassi". Sii realistico e preciso nelle stime.
+IMPORTANTE: Se l'utente non specifica le porzioni, pesi o quantità per un alimento, devi considerare e stimare una porzione standard moderata adatta a una singola persona con le caratteristiche fisiche dell'utente: peso ${prof.peso || '75'} kg, altezza ${prof.altezza || '175'} cm, fabbisogno calorico target giornaliero di ${prof.targetCalorie || '2000'} kcal. Regola le stime in modo conservativo basandoti su questi parametri, evitando sovrastime.`;
 
             try {
                 const response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/${GEMINI_MODEL}:generateContent?key=${apiKey}`, {
@@ -2053,9 +2118,12 @@
             btn.disabled = true;
             btn.innerText = currentLang === 'en' ? "Recalculating with AI..." : "Ricalcolo in corso AI...";
 
+            const prof = ottieniProfiloUtente();
             const promptSistema = currentLang === 'en'
-                ? `You are an expert nutritionist. Analyze the user text containing foods. Calculate total Calories, Proteins (g), Carbohydrates (g), Fats (g). Respond ONLY with a valid JSON object (no markdown, do not wrap in \`\`\`json block) with the following numerical keys: "calorie", "proteine", "carboidrati", "grassi". Be realistic and precise in the estimates.`
-                : `Sei un esperto nutrizionista. Analizza il testo inserito dall'utente contenente alimenti. Calcola Calorie totali, Proteine (g), Carboidrati (g), Grassi (g). Rispondi ESCLUSIVAMENTE con un oggetto JSON valido (senza markdown, senza racchiuderlo in codice tipo \`\`\`json) avente le seguenti chiavi numeriche: "calorie", "proteine", "carboidrati", "grassi". Sii realistico e preciso nelle stime.`;
+                ? `You are an expert nutritionist. Analyze the user text containing foods. Calculate total Calories, Proteins (g), Carbohydrates (g), Fats (g). Respond ONLY with a valid JSON object (no markdown, do not wrap in \`\`\`json block) with the following numerical keys: "calorie", "proteine", "carboidrati", "grassi". Be realistic and precise in the estimates.
+IMPORTANT: If the user does not specify portions, weights, or quantities for a food item, you MUST calculate a moderate, standard portion suitable for a single person with the user's characteristics: weight ${prof.peso || '75'} kg, height ${prof.altezza || '175'} cm, and daily target of ${prof.targetCalorie || '2000'} kcal. Adjust estimates conservatively based on these parameters rather than high-balling.`
+                : `Sei un esperto nutrizionista. Analizza il testo inserito dall'utente contenente alimenti. Calcola Calorie totali, Proteine (g), Carboidrati (g), Grassi (g). Rispondi ESCLUSIVAMENTE con un oggetto JSON valido (senza markdown, senza racchiuderlo in codice tipo \`\`\`json) avente le seguenti chiavi numeriche: "calorie", "proteine", "carboidrati", "grassi". Sii realistico e preciso nelle stime.
+IMPORTANTE: Se l'utente non specifica le porzioni, pesi o quantità per un alimento, devi considerare e stimare una porzione standard moderata adatta a una singola persona con le caratteristiche fisiche dell'utente: peso ${prof.peso || '75'} kg, altezza ${prof.altezza || '175'} cm, fabbisogno calorico target giornaliero di ${prof.targetCalorie || '2000'} kcal. Regola le stime in modo conservativo basandoti su questi parametri, evitando sovrastime.`;
 
             try {
                 const response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/${GEMINI_MODEL}:generateContent?key=${apiKey}`, {
