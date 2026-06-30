@@ -450,6 +450,25 @@
                     </div>
                 </div>
 
+                <div class="border-t border-slate-700 mt-4 pt-4">
+                    <label class="text-[11px] font-semibold text-slate-400 uppercase tracking-wider block mb-2" data-i18n="title_backup_auto">Salvataggio automatico locale (JSON)</label>
+                    <div class="flex flex-col gap-2">
+                        <div class="flex items-center gap-2">
+                            <button type="button" onclick="selezionaFileAutoSalvataggio()"
+                                class="flex-1 bg-slate-700 hover:bg-slate-650 text-slate-200 border border-slate-600/50 font-bold py-2 rounded-xl transition text-xs flex items-center justify-center gap-1.5 cursor-pointer">
+                                <i data-lucide="folder-open" class="w-4 h-4 text-blue-400"></i>
+                                <span id="lblFileAutoSalvataggio" data-i18n="btn_select_file">Associa file database</span>
+                            </button>
+                            <button type="button" id="btnRimuoviFileAuto" onclick="rimuoviFileAutoSalvataggio()"
+                                class="hidden bg-rose-950/40 hover:bg-rose-900/60 text-rose-300 border border-rose-800/40 p-2 rounded-xl transition duration-200 cursor-pointer"
+                                title="Rimuovi associazione">
+                                <i data-lucide="trash-2" class="w-4 h-4"></i>
+                            </button>
+                        </div>
+                        <p id="pathFileAutoSalvataggio" class="text-[10px] text-slate-500 italic break-all"></p>
+                    </div>
+                </div>
+
                 <p class="text-[11px] text-slate-400 mt-3" data-i18n="lbl_privacy_note">Le chiavi e i target vengono
                     memorizzati solo sul tuo dispositivo (localStorage).</p>
             </div>
@@ -937,6 +956,155 @@
         let targetGrassi = 0; // Target giornaliero grassi
         let pesoTarget = 75; // Legge il valore salvato, altrimenti usa 75
 
+        // ================================================================
+        // FILE SYSTEM BACKUP & AUTO-SAVE (File System Access API)
+        // ================================================================
+        const DB_NAME = 'FitFileStore';
+        const STORE_NAME = 'handles';
+
+        function getIndexedDB() {
+            return new Promise((resolve, reject) => {
+                const request = indexedDB.open(DB_NAME, 1);
+                request.onupgradeneeded = (e) => {
+                    e.target.result.createObjectStore(STORE_NAME);
+                };
+                request.onsuccess = (e) => resolve(e.target.result);
+                request.onerror = (e) => reject(e.target.error);
+            });
+        }
+
+        async function saveFileHandle(handle) {
+            const db = await getIndexedDB();
+            return new Promise((resolve, reject) => {
+                const tx = db.transaction(STORE_NAME, 'readwrite');
+                const store = tx.objectStore(STORE_NAME);
+                const request = store.put(handle, 'autoSaveFile');
+                request.onsuccess = () => resolve();
+                request.onerror = () => reject(request.error);
+            });
+        }
+
+        async function getFileHandle() {
+            try {
+                const db = await getIndexedDB();
+                return new Promise((resolve, reject) => {
+                    const tx = db.transaction(STORE_NAME, 'readonly');
+                    const store = tx.objectStore(STORE_NAME);
+                    const request = store.get('autoSaveFile');
+                    request.onsuccess = () => resolve(request.result);
+                    request.onerror = () => reject(request.error);
+                });
+            } catch (err) {
+                console.error("IndexedDB error:", err);
+                return null;
+            }
+        }
+
+        window.selezionaFileAutoSalvataggio = async function () {
+            if (!('showSaveFilePicker' in window)) {
+                await customAlert("Non supportato", currentLang === 'en' 
+                    ? "Your browser does not support direct file saving. Please use Chrome, Edge, or Opera."
+                    : "Il tuo browser non supporta la scrittura diretta dei file. Usa Chrome, Edge o Opera.");
+                return;
+            }
+
+            try {
+                const options = {
+                    suggestedName: 'fit_database.json',
+                    types: [{
+                        description: 'JSON Files',
+                        accept: {
+                            'application/json': ['.json'],
+                        },
+                    }],
+                };
+                const handle = await window.showSaveFilePicker(options);
+                await saveFileHandle(handle);
+                await aggiornaStatoFileAuto();
+                
+                // Salva immediatamente i dati esistenti nel file associato
+                await autoSalvaNelFileLocale();
+
+                await customAlert("File associato", currentLang === 'en'
+                    ? "The file has been successfully associated. Your data will be auto-saved here on every action!"
+                    : "File associato correttamente! I dati verranno salvati qui automaticamente ad ogni inserimento o modifica.", true);
+            } catch (err) {
+                if (err.name !== 'AbortError') {
+                    console.error("Errore selezione file:", err);
+                }
+            }
+        }
+
+        window.rimuoviFileAutoSalvataggio = async function () {
+            try {
+                const db = await getIndexedDB();
+                await new Promise((resolve, reject) => {
+                    const tx = db.transaction(STORE_NAME, 'readwrite');
+                    const store = tx.objectStore(STORE_NAME);
+                    const request = store.delete('autoSaveFile');
+                    request.onsuccess = () => resolve();
+                    request.onerror = () => reject(request.error);
+                });
+                await aggiornaStatoFileAuto();
+                await customAlert("Associazione rimossa", currentLang === 'en'
+                    ? "Auto-save file link has been removed."
+                    : "Associazione con il file di auto-salvataggio rimossa.", true);
+            } catch (err) {
+                console.error("Errore durante la rimozione dell'associazione:", err);
+            }
+        }
+
+        window.aggiornaStatoFileAuto = async function () {
+            const handle = await getFileHandle();
+            const lbl = document.getElementById('lblFileAutoSalvataggio');
+            const pathInfo = document.getElementById('pathFileAutoSalvataggio');
+            const btnRimuovi = document.getElementById('btnRimuoviFileAuto');
+
+            if (!lbl || !pathInfo) return;
+
+            if (handle) {
+                lbl.innerText = currentLang === 'en' ? "Change file link" : "Cambia file associato";
+                pathInfo.innerText = (currentLang === 'en' ? "Auto-saving to: " : "Salvataggio automatico su: ") + handle.name;
+                if (btnRimuovi) btnRimuovi.classList.remove('hidden');
+            } else {
+                lbl.innerText = currentLang === 'en' ? "Link database file" : "Associa file database";
+                pathInfo.innerText = currentLang === 'en' ? "No local file linked (data stored in browser only)" : "Nessun file locale associato (salvataggio solo in memoria browser)";
+                if (btnRimuovi) btnRimuovi.classList.add('hidden');
+            }
+        }
+
+        window.autoSalvaNelFileLocale = async function () {
+            try {
+                const handle = await getFileHandle();
+                if (!handle) return;
+
+                const options = { mode: 'readwrite' };
+                if ((await handle.queryPermission(options)) !== 'granted') {
+                    const status = await handle.requestPermission(options);
+                    if (status !== 'granted') {
+                        console.warn("Permesso di scrittura negato per il file locale.");
+                        return;
+                    }
+                }
+
+                const dbRaw = localStorage.getItem('nutriDB');
+                const parsed = JSON.parse(dbRaw || '[]');
+                const formattedJson = JSON.stringify(parsed, null, 2);
+
+                const writable = await handle.createWritable();
+                await writable.write(formattedJson);
+                await writable.close();
+                console.log("Database salvato con successo nel file locale.");
+            } catch (err) {
+                console.error("Errore durante l'auto-salvataggio:", err);
+            }
+        }
+
+        window.salvaDatabase = function (db) {
+            localStorage.setItem('nutriDB', JSON.stringify(db));
+            autoSalvaNelFileLocale();
+        }
+
         // Chart.js donut
         const ctx = document.getElementById('macroChart').getContext('2d');
         let macroChart = new Chart(ctx, {
@@ -1052,7 +1220,9 @@
                 lbl_carbs_colon: "Carbo:",
                 lbl_fats_colon: "Grassi:",
                 btn_apply_targets: "Applica questi target",
-                lbl_privacy_note: "Le chiavi e i target vengono memorizzati solo sul tuo dispositivo (localStorage)."
+                lbl_privacy_note: "Le chiavi e i target vengono memorizzati solo sul tuo dispositivo (localStorage).",
+                title_backup_auto: "Salvataggio automatico locale (JSON)",
+                btn_select_file: "Associa file database"
             },
             en: {
                 title_api_settings: "Settings",
@@ -1132,7 +1302,9 @@
                 lbl_carbs_colon: "Carbs:",
                 lbl_fats_colon: "Fats:",
                 btn_apply_targets: "Apply these targets",
-                lbl_privacy_note: "Keys and targets are stored only on your device (localStorage)."
+                lbl_privacy_note: "Keys and targets are stored only on your device (localStorage).",
+                title_backup_auto: "Local Auto-Save (JSON)",
+                btn_select_file: "Link database file"
             }
         };
 
@@ -1187,6 +1359,9 @@
                     renderTrend();
                 }
             }
+            if (typeof aggiornaStatoFileAuto === 'function') {
+                aggiornaStatoFileAuto();
+            }
         };
 
         // Cicla tra le lingue disponibili (IT → EN → IT …)
@@ -1207,6 +1382,9 @@
             // Carica lingua salvata
             const savedLang = localStorage.getItem('app_lang') || 'it';
             changeLanguage(savedLang);
+
+            // Carica lo stato dell'associazione del file database locale
+            if (typeof aggiornaStatoFileAuto === 'function') aggiornaStatoFileAuto();
 
             // Carica target
             targetCalorie = parseInt(localStorage.getItem('target_calorie')) || 2000;
@@ -1285,7 +1463,7 @@
                     peso: pesoVal
                 });
             }
-            localStorage.setItem('nutriDB', JSON.stringify(db));
+            salvaDatabase(db);
         }
 
         // ================================================================
@@ -1688,7 +1866,7 @@
             }
 
             // 4. Salvataggio e pulizia
-            localStorage.setItem('nutriDB', JSON.stringify(db));
+            salvaDatabase(db);
 
             if (testoInput) testoInput.value = "";
             const boxRis = document.getElementById('boxRisultati');
@@ -1788,7 +1966,7 @@
             if (!procedi) return;
             let db = JSON.parse(localStorage.getItem('nutriDB')) || [];
             db = db.filter(x => x.id !== giornoId);
-            localStorage.setItem('nutriDB', JSON.stringify(db));
+            salvaDatabase(db);
             renderStorico();
             aggiornaTotaleGiorno();
             caricaPesoDelGiorno();
@@ -1817,7 +1995,7 @@
                     db = db.filter(x => x.id !== giornoId);
                 }
             }
-            localStorage.setItem('nutriDB', JSON.stringify(db));
+            salvaDatabase(db);
             renderStorico();
             aggiornaTotaleGiorno();
         }
@@ -1939,7 +2117,7 @@
                     });
                 }
 
-                localStorage.setItem('nutriDB', JSON.stringify(db));
+                salvaDatabase(db);
                 chiudiModal();
                 renderStorico();
                 aggiornaTotaleGiorno();
@@ -1958,6 +2136,7 @@
             const procedi = await customConfirm(currentLang === 'en' ? "Delete Database" : "Cancellazione Database", currentLang === 'en' ? "WARNING! Do you really want to delete the entire local database of meals and weight? This action is irreversible." : "ATTENZIONE! Vuoi davvero cancellare l'intero database locale dei pasti e del peso? Questa azione è irreversibile.", true, currentLang === 'en' ? "Delete all" : "Cancella tutto");
             if (procedi) {
                 localStorage.removeItem('nutriDB');
+                autoSalvaNelFileLocale();
                 renderStorico();
                 aggiornaTotaleGiorno();
                 caricaPesoDelGiorno();
@@ -2913,7 +3092,7 @@
                 try {
                     const json = JSON.parse(e.target.result);
                     if (Array.isArray(json)) {
-                        localStorage.setItem('nutriDB', JSON.stringify(json));
+                        salvaDatabase(json);
                         await customAlert(currentLang === 'en' ? "Imported" : "Importazione", currentLang === 'en' ? "Database successfully imported!" : "Database importato con successo!", true);
                         aggiornaTotaleGiorno();
                         caricaPesoDelGiorno();
@@ -2975,7 +3154,7 @@
             }
 
             // Salva nel localStorage corretto usato dalla tua app
-            localStorage.setItem('nutriDB', JSON.stringify(db));
+            salvaDatabase(db);
 
             // Rinfresca l'interfaccia corrente usando le funzioni reali del tuo codice
             aggiornaTotaleGiorno();
@@ -3030,7 +3209,7 @@
                 giorno.grassi = giorno.pasti.reduce((sum, p) => sum + p.grassi, 0);
 
                 // Salva le modifiche nel localStorage
-                localStorage.setItem('nutriDB', JSON.stringify(db));
+                salvaDatabase(db);
 
                 // Aggiorna tutta l'interfaccia utente
                 aggiornaTotaleGiorno();
