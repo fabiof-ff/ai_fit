@@ -1166,12 +1166,27 @@
             const inputPesoVal = document.getElementById('input-peso-valore');
             if (inputPesoVal) inputPesoVal.placeholder = TRANSLATIONS[window.currentLang].placeholder_weight_input;
 
+            // Aggiorna le etichette della legenda del grafico macronutrienti (ciambella)
+            if (macroChart) {
+                macroChart.data.labels = lang === 'en' 
+                    ? ['Proteins', 'Carbohydrates', 'Fats'] 
+                    : ['Proteine', 'Carboidrati', 'Grassi'];
+                macroChart.update();
+            }
+
             // 3. Forza l'aggiornamento dei titoli dinamici del trend se necessario - RIMOSSO
             if (typeof lucide !== 'undefined') lucide.createIcons();
 
             // 4. Ri-esegue il render delle varie liste per aggiornare i testi
             aggiornaTotaleGiorno();
             if (document.getElementById('panel-storico').classList.contains('active')) renderStorico();
+            if (document.getElementById('panel-trend').classList.contains('active')) {
+                if (trendView === 'mesi') {
+                    renderTrendMensile();
+                } else {
+                    renderTrend();
+                }
+            }
         };
 
         // Cicla tra le lingue disponibili (IT → EN → IT …)
@@ -2131,7 +2146,27 @@
                                 ...opzioniComuni.plugins.tooltip,
                                 callbacks: {
                                     label: function (context) {
-                                        return context.dataset.label + ': ' + context.formattedValue + '%';
+                                        const idx = context.dataIndex;
+                                        const dsIdx = context.datasetIndex;
+                                        const valPct = context.parsed.y;
+                                        const giorno = ultimiGiorni[idx];
+                                        if (!giorno) return valPct + '%';
+                                        
+                                        let absVal = 0;
+                                        let targetVal = 0;
+                                        if (dsIdx === 0) {
+                                            absVal = Math.round(giorno.proteine || 0);
+                                            targetVal = targetProteine;
+                                        } else if (dsIdx === 1) {
+                                            absVal = Math.round(giorno.carboidrati || 0);
+                                            targetVal = targetCarbo;
+                                        } else if (dsIdx === 2) {
+                                            absVal = Math.round(giorno.grassi || 0);
+                                            targetVal = targetGrassi;
+                                        } else {
+                                            return valPct + '%';
+                                        }
+                                        return `${valPct}% (${absVal}g / ${targetVal}g)`;
                                     }
                                 }
                             },
@@ -2438,7 +2473,27 @@
                                 ...opzioniComuni.plugins.tooltip,
                                 callbacks: {
                                     label: function (context) {
-                                        return context.dataset.label + ': ' + context.formattedValue + '%';
+                                        const idx = context.dataIndex;
+                                        const dsIdx = context.datasetIndex;
+                                        const valPct = context.parsed.y;
+                                        const sett = datiSettimane[idx];
+                                        if (!sett) return valPct + '%';
+                                        
+                                        let absVal = 0;
+                                        let targetVal = 0;
+                                        if (dsIdx === 0) {
+                                            absVal = Math.round(sett.proteine || 0);
+                                            targetVal = targetProteine;
+                                        } else if (dsIdx === 1) {
+                                            absVal = Math.round(sett.carboidrati || 0);
+                                            targetVal = targetCarbo;
+                                        } else if (dsIdx === 2) {
+                                            absVal = Math.round(sett.grassi || 0);
+                                            targetVal = targetGrassi;
+                                        } else {
+                                            return valPct + '%';
+                                        }
+                                        return `${valPct}% (${absVal}g / ${targetVal}g)`;
                                     }
                                 }
                             },
@@ -2772,7 +2827,25 @@
                             ...opzioniComuni.plugins.tooltip,
                             callbacks: {
                                 label: function (context) {
-                                    return context.dataset.label + ': ' + context.formattedValue + '%';
+                                    const idx = context.dataIndex;
+                                    const dsIdx = context.datasetIndex;
+                                    const valPct = context.parsed.y;
+                                    
+                                    let absVal = 0;
+                                    let targetVal = 0;
+                                    if (dsIdx === 0) {
+                                        absVal = datiProteine[idx] !== undefined ? Math.round(datiProteine[idx]) : 0;
+                                        targetVal = targetProteine;
+                                    } else if (dsIdx === 1) {
+                                        absVal = datiCarboidrati[idx] !== undefined ? Math.round(datiCarboidrati[idx]) : 0;
+                                        targetVal = targetCarbo;
+                                    } else if (dsIdx === 2) {
+                                        absVal = datiGrassi[idx] !== undefined ? Math.round(datiGrassi[idx]) : 0;
+                                        targetVal = targetGrassi;
+                                    } else {
+                                        return valPct + '%';
+                                    }
+                                    return `${valPct}% (${absVal}g / ${targetVal}g)`;
                                 }
                             }
                         },
