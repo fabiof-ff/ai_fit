@@ -1022,9 +1022,12 @@
 
         window.selezionaFileAutoSalvataggio = async function () {
             if (!('showSaveFilePicker' in window)) {
-                await customAlert("Non supportato", currentLang === 'en' 
-                    ? "Your browser does not support direct file saving. Please use Chrome, Edge, or Opera."
-                    : "Il tuo browser non supporta la scrittura diretta dei file. Usa Chrome, Edge o Opera.");
+                await customAlert(
+                    currentLang === 'en' ? "Not Supported" : "Non supportato",
+                    currentLang === 'en'
+                        ? "Direct local file saving is not supported by iOS/Mobile Safari. Your data is still safely auto-saved in the browser's memory! Use the manual 'Export data' button to download backups."
+                        : "L'auto-salvataggio diretto su file non è supportato da iOS/Safari Mobile. I tuoi dati sono comunque salvati in sicurezza nella memoria locale del browser! Usa il pulsante 'Esporta dati' per scaricare i backup."
+                );
                 return;
             }
 
@@ -1079,8 +1082,33 @@
             const lbl = document.getElementById('lblFileAutoSalvataggio');
             const pathInfo = document.getElementById('pathFileAutoSalvataggio');
             const btnRimuovi = document.getElementById('btnRimuoviFileAuto');
+            const btnSelect = lbl ? lbl.closest('button') : null;
 
             if (!lbl || !pathInfo) return;
+
+            if (!('showSaveFilePicker' in window)) {
+                // Non supportato (iOS/Mobile Safari)
+                lbl.innerText = currentLang === 'en' ? "Auto-Save Not Supported" : "Auto-Salvataggio Non Supportato";
+                if (btnSelect) {
+                    btnSelect.disabled = true;
+                    btnSelect.style.opacity = "0.5";
+                    btnSelect.style.cursor = "not-allowed";
+                }
+                pathInfo.className = "text-[10px] text-amber-500/90 font-medium leading-relaxed mt-1";
+                pathInfo.innerText = currentLang === 'en'
+                    ? "Direct local file saving is not supported by iOS/Mobile Safari. Your data is still safely auto-saved in the browser's memory! Use the manual 'Export data' button below to download backups."
+                    : "La scrittura diretta su file locali non è supportata da iOS/Safari Mobile. I tuoi dati sono comunque salvati in sicurezza nella memoria locale del browser! Usa il pulsante 'Esporta dati' in basso per scaricare i backup.";
+                if (btnRimuovi) btnRimuovi.classList.add('hidden');
+                return;
+            }
+
+            // Resetta lo stile se supportato
+            if (btnSelect) {
+                btnSelect.disabled = false;
+                btnSelect.style.opacity = "1";
+                btnSelect.style.cursor = "pointer";
+            }
+            pathInfo.className = "text-[10px] text-slate-500 italic break-all";
 
             if (handle) {
                 lbl.innerText = currentLang === 'en' ? "Change file link" : "Cambia file associato";
