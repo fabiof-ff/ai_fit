@@ -1,150 +1,167 @@
-[
-  {
-    "id": 1782566032703,
-    "data": "2026-06-27",
-    "calorie": 722,
-    "proteine": 65.1,
-    "carboidrati": 48.3,
-    "grassi": 32.1,
-    "pasti": [
-      {
-        "id": 1782566075865,
-        "ora": "15:14",
-        "testo": "Pranzo: insalata, Cena: petto di pollo, insalata; Spuntino: mandorle 50gr; Banana",
-        "calorie": 675,
-        "proteine": 61.8,
-        "carboidrati": 43.5,
-        "grassi": 30.5
-      },
-      {
-        "id": 1782576220572,
-        "ora": "18:03",
-        "testo": "latte",
-        "calorie": 47,
-        "proteine": 3.3,
-        "carboidrati": 4.8,
-        "grassi": 1.6
-      }
-    ],
-    "peso": 80
-  },
-  {
-    "id": 1782570671712,
-    "data": "2026-06-17",
-    "peso": 77,
-    "calorie": 270,
-    "proteine": 42,
-    "carboidrati": 0,
-    "grassi": 13.5,
-    "pasti": [
-      {
-        "id": 1782576595211,
-        "ora": "18:09",
-        "testo": "carne",
-        "calorie": 270,
-        "proteine": 42,
-        "carboidrati": 0,
-        "grassi": 13.5
-      }
-    ]
-  },
-  {
-    "id": 1782571732974,
-    "data": "2026-06-26",
-    "peso": 77.5,
-    "calorie": 0,
-    "proteine": 0,
-    "carboidrati": 0,
-    "grassi": 0,
-    "pasti": []
-  },
-  {
-    "id": 1782576621760,
-    "data": "2026-06-03",
-    "calorie": 185,
-    "proteine": 13.3,
-    "carboidrati": 19.5,
-    "grassi": 6.1,
-    "pasti": [
-      {
-        "id": 1782576621760,
-        "ora": "18:10",
-        "testo": "yogurt",
-        "calorie": 85,
-        "proteine": 6.5,
-        "carboidrati": 9.5,
-        "grassi": 2.5
-      },
-      {
-        "id": 1782576635457,
-        "ora": "18:10",
-        "testo": "latte",
-        "calorie": 100,
-        "proteine": 6.8,
-        "carboidrati": 10,
-        "grassi": 3.6
-      }
-    ],
-    "peso": null
-  },
-  {
-    "id": 1782661174613,
-    "data": "2026-06-28",
-    "calorie": 200,
-    "proteine": 50,
-    "carboidrati": 0,
-    "grassi": 0,
-    "pasti": [
-      {
-        "id": 1782662651798,
-        "ora": "18:04",
-        "testo": "50gr proteine",
-        "calorie": 200,
-        "proteine": 50,
-        "carboidrati": 0,
-        "grassi": 0
-      }
-    ],
-    "peso": 78
-  },
-  {
-    "id": 1782672054307,
-    "data": "2026-03-18",
-    "calorie": 100,
-    "proteine": 25,
-    "carboidrati": 0,
-    "grassi": 0,
-    "pasti": [
-      {
-        "id": 1782672054307,
-        "ora": "20:40",
-        "testo": "25gr proteine",
-        "calorie": 100,
-        "proteine": 25,
-        "carboidrati": 0,
-        "grassi": 0
-      }
-    ],
-    "peso": null
-  },
-  {
-    "id": 1782831897993,
-    "data": "2026-06-30",
-    "peso": 80,
-    "calorie": 0,
-    "proteine": 0,
-    "carboidrati": 0,
-    "grassi": 0,
-    "pasti": []
-  },
-  {
-    "id": 1782833268881,
-    "data": "2026-07-02",
-    "peso": 80,
-    "calorie": 0,
-    "proteine": 0,
-    "carboidrati": 0,
-    "grassi": 0,
-    "pasti": []
+{
+  "versione": 2,
+  "diario": [
+    {
+      "id": 1782566032703,
+      "data": "2026-06-27",
+      "calorie": 722,
+      "proteine": 65.1,
+      "carboidrati": 48.3,
+      "grassi": 32.1,
+      "pasti": [
+        {
+          "id": 1782566075865,
+          "ora": "15:14",
+          "testo": "Pranzo: insalata, Cena: petto di pollo, insalata; Spuntino: mandorle 50gr; Banana",
+          "calorie": 675,
+          "proteine": 61.8,
+          "carboidrati": 43.5,
+          "grassi": 30.5
+        },
+        {
+          "id": 1782576220572,
+          "ora": "18:03",
+          "testo": "latte",
+          "calorie": 47,
+          "proteine": 3.3,
+          "carboidrati": 4.8,
+          "grassi": 1.6
+        }
+      ],
+      "peso": 80
+    },
+    {
+      "id": 1782570671712,
+      "data": "2026-06-17",
+      "peso": 77,
+      "calorie": 270,
+      "proteine": 42,
+      "carboidrati": 0,
+      "grassi": 13.5,
+      "pasti": [
+        {
+          "id": 1782576595211,
+          "ora": "18:09",
+          "testo": "carne",
+          "calorie": 270,
+          "proteine": 42,
+          "carboidrati": 0,
+          "grassi": 13.5
+        }
+      ]
+    },
+    {
+      "id": 1782571732974,
+      "data": "2026-06-26",
+      "peso": 77.5,
+      "calorie": 0,
+      "proteine": 0,
+      "carboidrati": 0,
+      "grassi": 0,
+      "pasti": []
+    },
+    {
+      "id": 1782576621760,
+      "data": "2026-06-03",
+      "calorie": 185,
+      "proteine": 13.3,
+      "carboidrati": 19.5,
+      "grassi": 6.1,
+      "pasti": [
+        {
+          "id": 1782576621760,
+          "ora": "18:10",
+          "testo": "yogurt",
+          "calorie": 85,
+          "proteine": 6.5,
+          "carboidrati": 9.5,
+          "grassi": 2.5
+        },
+        {
+          "id": 1782576635457,
+          "ora": "18:10",
+          "testo": "latte",
+          "calorie": 100,
+          "proteine": 6.8,
+          "carboidrati": 10,
+          "grassi": 3.6
+        }
+      ],
+      "peso": null
+    },
+    {
+      "id": 1782661174613,
+      "data": "2026-06-28",
+      "calorie": 200,
+      "proteine": 50,
+      "carboidrati": 0,
+      "grassi": 0,
+      "pasti": [
+        {
+          "id": 1782662651798,
+          "ora": "18:04",
+          "testo": "50gr proteine",
+          "calorie": 200,
+          "proteine": 50,
+          "carboidrati": 0,
+          "grassi": 0
+        }
+      ],
+      "peso": 78
+    },
+    {
+      "id": 1782672054307,
+      "data": "2026-03-18",
+      "calorie": 100,
+      "proteine": 25,
+      "carboidrati": 0,
+      "grassi": 0,
+      "pasti": [
+        {
+          "id": 1782672054307,
+          "ora": "20:40",
+          "testo": "25gr proteine",
+          "calorie": 100,
+          "proteine": 25,
+          "carboidrati": 0,
+          "grassi": 0
+        }
+      ],
+      "peso": null
+    },
+    {
+      "id": 1782831897993,
+      "data": "2026-06-30",
+      "peso": 80,
+      "calorie": 0,
+      "proteine": 0,
+      "carboidrati": 0,
+      "grassi": 0,
+      "pasti": []
+    },
+    {
+      "id": 1782833268881,
+      "data": "2026-07-02",
+      "peso": 80,
+      "calorie": 0,
+      "proteine": 0,
+      "carboidrati": 0,
+      "grassi": 0,
+      "pasti": []
+    }
+  ],
+  "impostazioni": {
+    "target_calorie": "2950",
+    "target_proteine": "156",
+    "target_carbo": "369",
+    "target_grassi": "86",
+    "targetPeso": "85",
+    "profile_peso": "85",
+    "profile_altezza": "191",
+    "profile_attivita": "palestra 3 volte la setitmana",
+    "profile_obiettivo": "aumentare massa muscolare",
+    "profile_peso_target": "85",
+    "profile_sesso": "uomo",
+    "profile_eta": "43"
   }
-]
+}

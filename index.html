@@ -1093,6 +1093,32 @@
             }
         }
 
+        window.ottieniStatoCompletoDB = function () {
+            const dbRaw = localStorage.getItem('nutriDB');
+            const diario = JSON.parse(dbRaw || '[]');
+            
+            const impostazioni = {
+                target_calorie: localStorage.getItem('target_calorie'),
+                target_proteine: localStorage.getItem('target_proteine'),
+                target_carbo: localStorage.getItem('target_carbo'),
+                target_grassi: localStorage.getItem('target_grassi'),
+                targetPeso: localStorage.getItem('targetPeso'),
+                profile_peso: localStorage.getItem('profile_peso'),
+                profile_altezza: localStorage.getItem('profile_altezza'),
+                profile_attivita: localStorage.getItem('profile_attivita'),
+                profile_obiettivo: localStorage.getItem('profile_obiettivo'),
+                profile_peso_target: localStorage.getItem('profile_peso_target'),
+                profile_sesso: localStorage.getItem('profile_sesso'),
+                profile_eta: localStorage.getItem('profile_eta')
+            };
+
+            return {
+                versione: 2,
+                diario: diario,
+                impostazioni: impostazioni
+            };
+        };
+
         window.autoSalvaNelFileLocale = async function () {
             try {
                 const handle = await getFileHandle();
@@ -1107,8 +1133,7 @@
                     }
                 }
 
-                const dbRaw = localStorage.getItem('nutriDB');
-                const parsed = JSON.parse(dbRaw || '[]');
+                const parsed = ottieniStatoCompletoDB();
                 const formattedJson = JSON.stringify(parsed, null, 2);
 
                 const writable = await handle.createWritable();
@@ -1118,12 +1143,12 @@
             } catch (err) {
                 console.error("Errore durante l'auto-salvataggio:", err);
             }
-        }
+        };
 
         window.salvaDatabase = function (db) {
             localStorage.setItem('nutriDB', JSON.stringify(db));
             autoSalvaNelFileLocale();
-        }
+        };
 
         window.saveProfileData = function () {
             const peso = document.getElementById('aiPeso')?.value.trim();
@@ -1141,6 +1166,8 @@
             if (pesoTargetInput) localStorage.setItem('profile_peso_target', pesoTargetInput);
             if (sesso) localStorage.setItem('profile_sesso', sesso);
             if (eta) localStorage.setItem('profile_eta', eta);
+
+            autoSalvaNelFileLocale();
         };
 
         window.ottieniProfiloUtente = function () {
@@ -1674,6 +1701,7 @@
                 }
             }
             aggiornaTotaleGiorno();
+            autoSalvaNelFileLocale();
         }
 
         // ================================================================
@@ -3202,14 +3230,8 @@ IMPORTANTE: Se l'utente non specifica le porzioni, pesi o quantità per un alime
         // ESPORTAZIONE / IMPORTAZIONE JSON DATABASE
         // ================================================================
         async function esportaDB() {
-            const dbRaw = localStorage.getItem('nutriDB');
-            if (!dbRaw || dbRaw === "[]") {
-                await customAlert(currentLang === 'en' ? "No data" : "Nessun dato", currentLang === 'en' ? "No data available to export!" : "Nessun dato presente da esportare!");
-                return;
-            }
-
             try {
-                const parsed = JSON.parse(dbRaw);
+                const parsed = ottieniStatoCompletoDB();
                 const formattedJson = JSON.stringify(parsed, null, 2);
                 const blob = new Blob([formattedJson], { type: 'application/json' });
                 const url = URL.createObjectURL(blob);
@@ -3225,6 +3247,60 @@ IMPORTANTE: Se l'utente non specifica le porzioni, pesi o quantità per un alime
             }
         }
 
+        window.applicaStatoImportato = function (json) {
+            let diario = [];
+            
+            if (Array.isArray(json)) {
+                // Vecchio formato (solo array del diario)
+                diario = json;
+            } else if (json && json.diario && Array.isArray(json.diario)) {
+                // Nuovo formato (diario + impostazioni)
+                diario = json.diario;
+                if (json.impostazioni) {
+                    for (const [key, val] of Object.entries(json.impostazioni)) {
+                        if (val !== null && val !== undefined) {
+                            localStorage.setItem(key, val);
+                        }
+                    }
+                    
+                    // Ricarica le variabili globali target
+                    targetCalorie = parseInt(localStorage.getItem('target_calorie')) || 2000;
+                    targetProteine = parseInt(localStorage.getItem('target_proteine')) || 160;
+                    targetCarbo = parseInt(localStorage.getItem('target_carbo')) || 200;
+                    targetGrassi = parseInt(localStorage.getItem('target_grassi')) || 70;
+                    pesoTarget = parseFloat(localStorage.getItem('targetPeso')) || 75;
+
+                    // Aggiorna i campi input dei target principali
+                    document.getElementById('targetCalorie').value = targetCalorie;
+                    document.getElementById('targetProteine').value = targetProteine;
+                    document.getElementById('targetCarbo').value = targetCarbo;
+                    document.getElementById('targetGrassi').value = targetGrassi;
+                    document.getElementById('targetPeso').value = pesoTarget;
+
+                    // Aggiorna i campi input del profilo AI
+                    const pPeso = localStorage.getItem('profile_peso');
+                    if (pPeso) document.getElementById('aiPeso').value = pPeso;
+                    const pAltezza = localStorage.getItem('profile_altezza');
+                    if (pAltezza) document.getElementById('aiAltezza').value = pAltezza;
+                    const pAttivita = localStorage.getItem('profile_attivita');
+                    if (pAttivita) document.getElementById('aiAttivita').value = pAttivita;
+                    const pObiettivo = localStorage.getItem('profile_obiettivo');
+                    if (pObiettivo) document.getElementById('aiObiettivo').value = pObiettivo;
+                    const pPesoTarget = localStorage.getItem('profile_peso_target');
+                    if (pPesoTarget) document.getElementById('aiPesoTarget').value = pPesoTarget;
+                    const pSesso = localStorage.getItem('profile_sesso');
+                    if (pSesso) document.getElementById('aiSesso').value = pSesso;
+                    const pEta = localStorage.getItem('profile_eta');
+                    if (pEta) document.getElementById('aiEta').value = pEta;
+                }
+            } else {
+                throw new Error("Formato file non valido");
+            }
+
+            // Salva il diario e attiva l'autosave locale
+            salvaDatabase(diario);
+        };
+
         function importaDB(event) {
             const file = event.target.files[0];
             if (!file) return;
@@ -3233,24 +3309,20 @@ IMPORTANTE: Se l'utente non specifica le porzioni, pesi o quantità per un alime
             reader.onload = async function (e) {
                 try {
                     const json = JSON.parse(e.target.result);
-                    if (Array.isArray(json)) {
-                        salvaDatabase(json);
-                        await customAlert(currentLang === 'en' ? "Imported" : "Importazione", currentLang === 'en' ? "Database successfully imported!" : "Database importato con successo!", true);
-                        aggiornaTotaleGiorno();
-                        caricaPesoDelGiorno();
-                        if (document.getElementById('panel-storico').classList.contains('active')) renderStorico();
-                        if (document.getElementById('panel-trend').classList.contains('active')) {
-                            if (trendView === 'mesi') {
-                                renderTrendMensile();
-                            } else {
-                                renderTrend();
-                            }
+                    applicaStatoImportato(json);
+                    await customAlert(currentLang === 'en' ? "Imported" : "Importazione", currentLang === 'en' ? "Database and settings successfully imported!" : "Database e impostazioni importati con successo!", true);
+                    aggiornaTotaleGiorno();
+                    caricaPesoDelGiorno();
+                    if (document.getElementById('panel-storico').classList.contains('active')) renderStorico();
+                    if (document.getElementById('panel-trend').classList.contains('active')) {
+                        if (trendView === 'mesi') {
+                            renderTrendMensile();
+                        } else {
+                            renderTrend();
                         }
-                    } else {
-                        await customAlert(currentLang === 'en' ? "Format Error" : "Errore Formato", currentLang === 'en' ? "Invalid file format. It must be a JSON array." : "Formato file non valido. Deve essere un array JSON.");
                     }
                 } catch (err) {
-                    await customAlert(currentLang === 'en' ? "Read Error" : "Errore Lettura", currentLang === 'en' ? "Error reading backup file." : "Errore nella lettura del file di backup.");
+                    await customAlert(currentLang === 'en' ? "Read Error" : "Errore Lettura", currentLang === 'en' ? "Error reading or importing backup file." : "Errore nella lettura o importazione del file di backup.");
                 }
             };
             reader.readAsText(file);
