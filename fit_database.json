@@ -148,6 +148,26 @@
       "carboidrati": 0,
       "grassi": 0,
       "pasti": []
+    },
+    {
+      "id": 1782929657611,
+      "data": "2026-07-01",
+      "calorie": 61,
+      "proteine": 3.2,
+      "carboidrati": 4.7,
+      "grassi": 3.3,
+      "pasti": [
+        {
+          "id": 1782929657611,
+          "ora": "20:14",
+          "testo": "latte 100ml",
+          "calorie": 61,
+          "proteine": 3.2,
+          "carboidrati": 4.7,
+          "grassi": 3.3
+        }
+      ],
+      "peso": null
     }
   ],
   "impostazioni": {
