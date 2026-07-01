@@ -1048,18 +1048,18 @@
                     const yProtsTop = y1.getPixelForValue(fatCal + carbCal + protCal);
 
                     const badges = [];
-                    // Aggiungiamo i badge solo se lo spessore del segmento è sufficiente (es. >= 6px) per contenere o mostrare il pallino
-                    if (Math.abs(yZero - yFatsTop) >= 6) {
+                    // Aggiungiamo i badge solo se lo spessore del segmento è sufficiente (es. >= 8px) per contenere il pallino LED
+                    if (Math.abs(yZero - yFatsTop) >= 8) {
                         badges.push({ val: pctFat, y: (yZero + yFatsTop) / 2 });
                     }
-                    if (Math.abs(yFatsTop - yCarbsTop) >= 6) {
+                    if (Math.abs(yFatsTop - yCarbsTop) >= 8) {
                         badges.push({ val: pctCarb, y: (yFatsTop + yCarbsTop) / 2 });
                     }
-                    if (Math.abs(yCarbsTop - yProtsTop) >= 6) {
+                    if (Math.abs(yCarbsTop - yProtsTop) >= 8) {
                         badges.push({ val: pctProt, y: (yCarbsTop + yProtsTop) / 2 });
                     }
 
-                    const radius = 8;
+                    const radius = 9; // Cerchio allargato per ospitare la percentuale
 
                     badges.forEach((badge) => {
                         let color = '#3b82f6'; // Sotto target (Blu)
@@ -1069,18 +1069,29 @@
                             color = '#ef4444'; // Sopra target (Rosso)
                         }
 
+                        // Bagliore/LED Glow
+                        ctx.save();
+                        ctx.shadowColor = color;
+                        ctx.shadowBlur = 5;
+
+                        // Cerchio colorato interno
                         ctx.beginPath();
                         ctx.arc(xPos, badge.y, radius, 0, 2 * Math.PI);
                         ctx.fillStyle = color;
                         ctx.fill();
 
-                        // Bordo scuro semi-trasparente per far risaltare il semaforo
-                        ctx.strokeStyle = 'rgba(15, 23, 42, 0.7)';
-                        ctx.lineWidth = 1.5;
+                        ctx.restore();
+
+                        // Bordo bianco per risaltare sul segmento
+                        ctx.beginPath();
+                        ctx.arc(xPos, badge.y, radius, 0, 2 * Math.PI);
+                        ctx.strokeStyle = '#ffffff';
+                        ctx.lineWidth = 1.2;
                         ctx.stroke();
 
+                        // Testo percentuale interno
                         ctx.fillStyle = '#ffffff';
-                        ctx.font = 'bold 7px sans-serif';
+                        ctx.font = 'bold 8px sans-serif';
                         ctx.textAlign = 'center';
                         ctx.textBaseline = 'middle';
                         ctx.fillText(Math.round(badge.val) + '%', xPos, badge.y);
@@ -2520,12 +2531,18 @@ IMPORTANTE: Se l'utente non specifica le porzioni, pesi o quantità per un alime
                     const tuttiIValori = [...arrayPesi, pTarget];
                     const minReale = Math.min(...tuttiIValori);
                     const maxReale = Math.max(...tuttiIValori);
-                    yMin = Math.round(minReale * 0.97);
-                    yMax = Math.round(maxReale * 1.03);
+                    yMin = minReale * 0.99;
+                    yMax = maxReale * 1.01;
+                } else {
+                    yMin = pTarget - 2;
+                    yMax = pTarget + 2;
                 }
+                const weightRange = yMax - yMin;
+                const finalYMin = yMin - 1.5 * weightRange;
+                const finalYMax = yMax + 0.05 * weightRange;
 
                 const maxCal = Math.max(...ultimiGiorni.map(g => g.calorie), targetCalorie);
-                const maxCalValue = Math.round(maxCal * 1.18);
+                const maxCalValue = Math.round(maxCal / 0.60);
 
                 trendCalorieChart = new Chart(document.getElementById('trendCalorieChart').getContext('2d'), {
                     plugins: [macroStatusLightsPlugin],
@@ -2605,7 +2622,18 @@ IMPORTANTE: Se l'utente non specifica le porzioni, pesi o quantità per un alime
                     },
                     options: {
                         plugins: {
-                            legend: { display: false },
+                            legend: {
+                                display: true,
+                                position: 'top',
+                                labels: {
+                                    color: '#94a3b8',
+                                    boxWidth: 10,
+                                    font: { size: 9, family: "'Outfit', sans-serif" },
+                                    filter: function (item) {
+                                        return !item.text.includes('Obiettivo') && !item.text.includes('Target');
+                                    }
+                                }
+                            },
                             tooltip: {
                                 callbacks: {
                                     label: function (context) {
@@ -2639,8 +2667,8 @@ IMPORTANTE: Se l'utente non specifica le porzioni, pesi o quantità per un alime
                                 position: 'left',
                                 grid: { color: 'rgba(71,85,105,0.08)' },
                                 ticks: { color: '#6366f1', font: { size: 9, weight: 'bold' } },
-                                min: yMin,
-                                max: yMax,
+                                min: finalYMin,
+                                max: finalYMax,
                                 title: {
                                     display: true,
                                     text: currentLang === 'en' ? 'Weight (kg)' : 'Peso (kg)',
@@ -2744,11 +2772,19 @@ IMPORTANTE: Se l'utente non specifica le porzioni, pesi o quantità per un alime
                     const tuttiIValori = [...arrayPesi, pTarget];
                     const minReale = Math.min(...tuttiIValori);
                     const maxReale = Math.max(...tuttiIValori);
-                    yMin = Math.round(minReale * 0.97);
-                    yMax = Math.round(maxReale * 1.03);
+                    yMin = minReale * 0.99;
+                    yMax = maxReale * 1.01;
+                } else {
+                    yMin = pTarget - 2;
+                    yMax = pTarget + 2;
                 }
+                const weightRange = yMax - yMin;
+                const finalYMin = yMin - 1.5 * weightRange;
+                const finalYMax = yMax + 0.05 * weightRange;
+
                 const maxCal = Math.max(...datiSettimane.map(s => s.calorie), targetCalorie);
-                const maxCalValue = Math.round(maxCal * 1.18);
+                const maxCalValue = Math.round(maxCal / 0.60);
+
                 weekPesoCalorieChart = new Chart(document.getElementById('weekPesoCalorieChart').getContext('2d'), {
                     plugins: [macroStatusLightsPlugin],
                     data: {
@@ -2827,7 +2863,18 @@ IMPORTANTE: Se l'utente non specifica le porzioni, pesi o quantità per un alime
                     },
                     options: {
                         plugins: {
-                            legend: { display: false },
+                            legend: {
+                                display: true,
+                                position: 'top',
+                                labels: {
+                                    color: '#94a3b8',
+                                    boxWidth: 10,
+                                    font: { size: 9, family: "'Outfit', sans-serif" },
+                                    filter: function (item) {
+                                        return !item.text.includes('Obiettivo') && !item.text.includes('Target');
+                                    }
+                                }
+                            },
                             tooltip: {
                                 callbacks: {
                                     label: function (context) {
@@ -2861,8 +2908,8 @@ IMPORTANTE: Se l'utente non specifica le porzioni, pesi o quantità per un alime
                                 position: 'left',
                                 grid: { color: 'rgba(71,85,105,0.08)' },
                                 ticks: { color: '#6366f1', font: { size: 9, weight: 'bold' } },
-                                min: yMin,
-                                max: yMax,
+                                min: finalYMin,
+                                max: finalYMax,
                                 title: {
                                     display: true,
                                     text: currentLang === 'en' ? 'Weight (kg)' : 'Peso (kg)',
@@ -3050,12 +3097,18 @@ IMPORTANTE: Se l'utente non specifica le porzioni, pesi o quantità per un alime
                 const tuttiIValori = [...arrayPesi, pTarget];
                 const minReale = Math.min(...tuttiIValori);
                 const maxReale = Math.max(...tuttiIValori);
-                yMin = Math.round(minReale * 0.97);
-                yMax = Math.round(maxReale * 1.03);
+                yMin = minReale * 0.99;
+                yMax = maxReale * 1.01;
+            } else {
+                yMin = pTarget - 2;
+                yMax = pTarget + 2;
             }
+            const weightRange = yMax - yMin;
+            const finalYMin = yMin - 1.5 * weightRange;
+            const finalYMax = yMax + 0.05 * weightRange;
 
             const maxCal = Math.max(...datiCalorie, targetCalorie);
-            const maxCalValue = Math.round(maxCal * 1.18);
+            const maxCalValue = Math.round(maxCal / 0.60);
 
             monthPesoCalorieChart = new Chart(document.getElementById('monthPesoCalorieChart').getContext('2d'), {
                 plugins: [macroStatusLightsPlugin],
@@ -3135,7 +3188,18 @@ IMPORTANTE: Se l'utente non specifica le porzioni, pesi o quantità per un alime
                 },
                 options: {
                     plugins: {
-                        legend: { display: false },
+                        legend: {
+                            display: true,
+                            position: 'top',
+                            labels: {
+                                color: '#94a3b8',
+                                boxWidth: 10,
+                                font: { size: 9, family: "'Outfit', sans-serif" },
+                                filter: function (item) {
+                                    return !item.text.includes('Obiettivo') && !item.text.includes('Target');
+                                }
+                            }
+                        },
                         tooltip: {
                             callbacks: {
                                 label: function (context) {
@@ -3169,8 +3233,8 @@ IMPORTANTE: Se l'utente non specifica le porzioni, pesi o quantità per un alime
                             position: 'left',
                             grid: { color: 'rgba(71,85,105,0.08)' },
                             ticks: { color: '#6366f1', font: { size: 9, weight: 'bold' } },
-                            min: yMin,
-                            max: yMax,
+                            min: finalYMin,
+                            max: finalYMax,
                             title: {
                                 display: true,
                                 text: currentLang === 'en' ? 'Weight (kg)' : 'Peso (kg)',
