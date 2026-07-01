@@ -5,6 +5,9 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>AI Fitness Tracker</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script src="https://unpkg.com/lucide@latest"></script>
@@ -176,10 +179,56 @@
             min-height: 1.25rem;
             line-height: normal;
         }
+
+        /* Custom Outfit font & overrides */
+        body {
+            font-family: 'Outfit', sans-serif;
+        }
+
+        /* Glassmorphism overrides for Tailwind card and panel background classes */
+        .bg-slate-800\/40,
+        .bg-slate-800\/50,
+        .bg-slate-800\/60 {
+            background-color: rgba(30, 41, 59, 0.45) !important;
+            backdrop-filter: blur(12px) !important;
+            -webkit-backdrop-filter: blur(12px) !important;
+            border-color: rgba(71, 85, 105, 0.2) !important;
+        }
+
+        .bg-slate-900\/50 {
+            background-color: rgba(15, 23, 42, 0.45) !important;
+            backdrop-filter: blur(8px) !important;
+            -webkit-backdrop-filter: blur(8px) !important;
+            border: 1px solid rgba(71, 85, 105, 0.15) !important;
+        }
+
+        /* Premium gradient progress bars */
+        #barCalorie, #barMediaCalorie {
+            background: linear-gradient(90deg, #f43f5e 0%, #fda4af 100%) !important;
+            box-shadow: 0 0 8px rgba(244, 63, 94, 0.3) !important;
+        }
+        #barProteine, #barMediaProteine {
+            background: linear-gradient(90deg, #3b82f6 0%, #93c5fd 100%) !important;
+            box-shadow: 0 0 8px rgba(59, 130, 246, 0.3) !important;
+        }
+        #barCarbo, #barMediaCarbo {
+            background: linear-gradient(90deg, #10b981 0%, #6ee7b7 100%) !important;
+            box-shadow: 0 0 8px rgba(16, 185, 129, 0.3) !important;
+        }
+        #barGrassi, #barMediaGrassi {
+            background: linear-gradient(90deg, #f59e0b 0%, #fde047 100%) !important;
+            box-shadow: 0 0 8px rgba(245, 158, 11, 0.3) !important;
+        }
     </style>
 </head>
 
 <body class="bg-slate-900 text-slate-100 min-h-screen antialiased flex flex-col">
+
+    <!-- Background Glows -->
+    <div class="fixed inset-0 pointer-events-none z-0 overflow-hidden">
+        <div class="absolute top-[-10%] left-[-10%] w-[60%] h-[60%] bg-indigo-500/5 rounded-full blur-[130px]"></div>
+        <div class="absolute bottom-[-10%] right-[-10%] w-[60%] h-[60%] bg-rose-500/5 rounded-full blur-[130px]"></div>
+    </div>
 
     <div id="modalEdit" class="hidden fixed inset-0 z-50 bg-black/70 flex items-end justify-center">
         <div id="modalInner"
@@ -951,6 +1000,22 @@
     </div>
 
     <script>
+        // ================================================================
+        // CHART.JS GLOBAL CONFIGURATION
+        // ================================================================
+        if (typeof Chart !== 'undefined') {
+            Chart.defaults.font.family = "'Outfit', sans-serif";
+            Chart.defaults.color = '#94a3b8';
+            Chart.defaults.plugins.tooltip.backgroundColor = 'rgba(15, 23, 42, 0.85)';
+            Chart.defaults.plugins.tooltip.titleColor = '#f8fafc';
+            Chart.defaults.plugins.tooltip.bodyColor = '#f8fafc';
+            Chart.defaults.plugins.tooltip.borderColor = 'rgba(255, 255, 255, 0.08)';
+            Chart.defaults.plugins.tooltip.borderWidth = 1;
+            Chart.defaults.plugins.tooltip.padding = 10;
+            Chart.defaults.plugins.tooltip.cornerRadius = 8;
+            Chart.defaults.plugins.tooltip.displayColors = true;
+        }
+
         // ================================================================
         // CONFIGURAZIONE AI
         // ================================================================
