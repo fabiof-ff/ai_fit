@@ -219,6 +219,137 @@
             background: linear-gradient(90deg, #f59e0b 0%, #fde047 100%) !important;
             box-shadow: 0 0 8px rgba(245, 158, 11, 0.3) !important;
         }
+
+        /* Luminous (Light) Theme Overrides */
+        body.light-theme {
+            background: linear-gradient(135deg, #f8fafc 0%, #f1f5f9 50%, #eff6ff 100%) !important;
+            background-color: #f8fafc !important;
+            color: #1e293b !important;
+        }
+
+        body.light-theme .fixed.inset-0.pointer-events-none.z-0 div:nth-child(1) {
+            background: rgba(99, 102, 241, 0.15) !important;
+        }
+        body.light-theme .fixed.inset-0.pointer-events-none.z-0 div:nth-child(2) {
+            background: rgba(244, 63, 94, 0.12) !important;
+        }
+
+        /* Glassmorphism containers in light theme */
+        body.light-theme .bg-slate-800\/80,
+        body.light-theme .bg-slate-800\/60,
+        body.light-theme .bg-slate-800\/50,
+        body.light-theme .bg-slate-800\/40,
+        body.light-theme .bg-slate-800,
+        body.light-theme #settingsBox,
+        body.light-theme #modalInner,
+        body.light-theme #dialogInner {
+            background: rgba(255, 255, 255, 0.75) !important;
+            border-color: rgba(226, 232, 240, 0.8) !important;
+            backdrop-filter: blur(20px) !important;
+            box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.05), 0 8px 10px -6px rgba(0, 0, 0, 0.05) !important;
+        }
+
+        body.light-theme .bg-slate-900\/60,
+        body.light-theme .bg-slate-900\/50,
+        body.light-theme .bg-slate-900\/40,
+        body.light-theme .bg-slate-900,
+        body.light-theme .bg-slate-950 {
+            background: rgba(241, 245, 249, 0.85) !important;
+            border-color: rgba(226, 232, 240, 0.6) !important;
+            color: #1e293b !important;
+        }
+
+        /* Text colors in light theme */
+        body.light-theme .text-slate-100 {
+            color: #0f172a !important;
+        }
+        body.light-theme .text-slate-200 {
+            color: #1e293b !important;
+        }
+        body.light-theme .text-slate-300 {
+            color: #334155 !important;
+        }
+        body.light-theme .text-slate-400 {
+            color: #475569 !important;
+        }
+        body.light-theme .text-slate-500 {
+            color: #64748b !important;
+        }
+
+        /* Inputs in light theme */
+        body.light-theme input,
+        body.light-theme textarea,
+        body.light-theme select {
+            background-color: rgba(255, 255, 255, 0.95) !important;
+            border-color: rgba(203, 213, 225, 0.8) !important;
+            color: #0f172a !important;
+        }
+        body.light-theme input::placeholder,
+        body.light-theme textarea::placeholder {
+            color: #94a3b8 !important;
+        }
+
+        /* Tab buttons */
+        body.light-theme .tab-btn:not(.active) {
+            background: rgba(241, 245, 249, 0.7) !important;
+            border-color: rgba(226, 232, 240, 0.8) !important;
+            color: #64748b !important;
+        }
+        body.light-theme .tab-btn.active {
+            background: rgba(99, 102, 241, 0.1) !important;
+            border-color: rgba(99, 102, 241, 0.4) !important;
+            color: #4f46e5 !important;
+        }
+
+        /* Sub-tab buttons */
+        body.light-theme .sub-tab-btn:not(.active) {
+            background: rgba(241, 245, 249, 0.7) !important;
+            color: #64748b !important;
+        }
+        body.light-theme .sub-tab-btn.active {
+            background: #2563eb !important;
+            color: #ffffff !important;
+        }
+
+        /* Provider button (Gemini) */
+        body.light-theme .provider-btn {
+            background: rgba(241, 245, 249, 0.7) !important;
+            border-color: rgba(226, 232, 240, 0.8) !important;
+            color: #64748b !important;
+        }
+        body.light-theme .provider-btn.active-provider {
+            background: rgba(99, 102, 241, 0.1) !important;
+            border-color: rgba(99, 102, 241, 0.4) !important;
+            color: #4f46e5 !important;
+        }
+
+        /* Dialogs and misc tags */
+        body.light-theme .bg-slate-700\/30 {
+            background: rgba(241, 245, 249, 0.7) !important;
+        }
+        body.light-theme .bg-slate-750,
+        body.light-theme .bg-slate-700 {
+            background-color: #e2e8f0 !important;
+            color: #334155 !important;
+        }
+
+        /* Pasto tag */
+        body.light-theme .pasto-tag {
+            background: rgba(99, 102, 241, 0.08) !important;
+            border: 1px solid rgba(99, 102, 241, 0.2) !important;
+            color: #4f46e5 !important;
+        }
+        body.light-theme .pasto-tag button {
+            color: #4f46e5 !important;
+        }
+
+        /* Custom scrollbar in light mode */
+        body.light-theme .custom-scrollbar::-webkit-scrollbar-track {
+            background: rgba(241, 245, 249, 0.3) !important;
+        }
+        body.light-theme .custom-scrollbar::-webkit-scrollbar-thumb {
+            background: rgba(148, 163, 184, 0.4) !important;
+        }
     </style>
 </head>
 
@@ -330,6 +461,10 @@
                     class="text-slate-400 hover:text-slate-200 px-2.5 py-1.5 rounded-xl bg-slate-700/30 hover:bg-slate-700/60 transition text-xs font-bold flex items-center gap-1.5">
                     <img id="langFlag" src="https://flagcdn.com/20x15/it.png" width="20" height="15" alt="IT"
                         class="rounded-sm"> <span id="langLabel">IT</span>
+                </button>
+                <button onclick="toggleTheme()" id="btnThemeToggle" title="Cambia tema / Toggle theme"
+                    class="text-slate-400 hover:text-slate-200 p-2 rounded-xl bg-slate-700/30 hover:bg-slate-700/60 transition cursor-pointer flex items-center justify-center">
+                    <i id="themeIcon" data-lucide="sun" class="w-5 h-5"></i>
                 </button>
                 <button onclick="toggleSettings()"
                     class="text-slate-400 hover:text-slate-200 p-2 rounded-xl bg-slate-700/30 hover:bg-slate-700/60 transition">
@@ -1116,6 +1251,46 @@
         };
 
         // ================================================================
+        // TEMA (CHIARO / SCURO)
+        // ================================================================
+        window.applicaTema = function (tema) {
+            const body = document.body;
+            const themeIcon = document.getElementById('themeIcon');
+            if (tema === 'light') {
+                body.classList.add('light-theme');
+                if (themeIcon) {
+                    themeIcon.setAttribute('data-lucide', 'moon');
+                }
+            } else {
+                body.classList.remove('light-theme');
+                if (themeIcon) {
+                    themeIcon.setAttribute('data-lucide', 'sun');
+                }
+            }
+            localStorage.setItem('app_theme', tema);
+            if (typeof Chart !== 'undefined') {
+                Chart.defaults.color = tema === 'light' ? '#475569' : '#94a3b8';
+            }
+            if (typeof lucide !== 'undefined') lucide.createIcons();
+
+            // Rinfresca tutti i grafici per riflettere le nuove impostazioni colore dei font e assi
+            if (typeof aggiornaTotaleGiorno === 'function') aggiornaTotaleGiorno();
+            if (typeof renderTrend === 'function') {
+                if (typeof trendView !== 'undefined' && trendView === 'mesi') {
+                    if (typeof renderTrendMensile === 'function') renderTrendMensile();
+                } else {
+                    if (typeof renderTrend === 'function') renderTrend();
+                }
+            }
+        };
+
+        window.toggleTheme = function () {
+            const currentTheme = localStorage.getItem('app_theme') || 'dark';
+            const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
+            window.applicaTema(newTheme);
+        };
+
+        // ================================================================
         // FILE SYSTEM BACKUP & AUTO-SAVE (File System Access API)
         // ================================================================
         const DB_NAME = 'FitFileStore';
@@ -1656,6 +1831,10 @@
             // Carica lingua salvata
             const savedLang = localStorage.getItem('app_lang') || 'it';
             changeLanguage(savedLang);
+
+            // Carica tema salvato
+            const savedTheme = localStorage.getItem('app_theme') || 'dark';
+            window.applicaTema(savedTheme);
 
             // Carica lo stato dell'associazione del file database locale
             if (typeof aggiornaStatoFileAuto === 'function') aggiornaStatoFileAuto();
