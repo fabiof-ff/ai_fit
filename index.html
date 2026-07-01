@@ -824,7 +824,7 @@
 
         <div id="trendMediaComplessivaContainer"
             class="bg-slate-800/40 border border-slate-700/50 rounded-2xl p-4 mb-4">
-            <p class="text-xs text-slate-400 font-semibold uppercase tracking-wider mb-3"
+            <p id="trendMediaTitle" class="text-xs text-slate-400 font-semibold uppercase tracking-wider mb-3"
                 data-i18n="title_media_complessiva">Media complessiva</p>
             <div class="grid grid-cols-2 gap-3">
 
@@ -897,39 +897,54 @@
 
         <div id="trendGiornalieroContainer" class="space-y-4">
             <div class="bg-slate-800/40 border border-slate-700/50 rounded-2xl p-4">
-                <p class="text-xs text-slate-400 font-semibold uppercase tracking-wider mb-3 flex items-center gap-1.5">
-                    <i data-lucide="scale" class="w-3.5 h-3.5 text-indigo-400"></i>
-                    <i data-lucide="flame" class="w-3.5 h-3.5 text-rose-400"></i> <span
-                        data-i18n="title_peso_calorie">Peso &amp; Calorie</span>
-                </p>
-                <div class="h-64 w-full">
+                <div class="flex justify-between items-center mb-3">
+                    <p class="text-xs text-slate-400 font-semibold uppercase tracking-wider flex items-center gap-1.5">
+                        <i data-lucide="scale" class="w-3.5 h-3.5 text-indigo-400"></i>
+                        <i data-lucide="flame" class="w-3.5 h-3.5 text-rose-400"></i>
+                        <span data-i18n="title_peso_calorie">Peso &amp; Calorie</span>
+                    </p>
+                </div>
+                <div class="h-44 w-full mb-3">
                     <canvas id="trendCalorieChart"></canvas>
+                </div>
+                <div class="h-32 w-full pt-2 border-t border-slate-700/35">
+                    <canvas id="trendPesoChart"></canvas>
                 </div>
             </div>
         </div>
 
         <div id="trendSettimaneContainer" class="space-y-4 hidden">
             <div class="bg-slate-800/40 border border-slate-700/50 rounded-2xl p-4">
-                <p class="text-xs text-slate-400 font-semibold uppercase tracking-wider mb-3 flex items-center gap-1.5">
-                    <i data-lucide="scale" class="w-3.5 h-3.5 text-indigo-400"></i>
-                    <i data-lucide="flame" class="w-3.5 h-3.5 text-rose-400"></i> <span
-                        data-i18n="title_peso_calorie">Peso &amp; Calorie</span>
-                </p>
-                <div class="h-64 w-full">
-                    <canvas id="weekPesoCalorieChart"></canvas>
+                <div class="flex justify-between items-center mb-3">
+                    <p class="text-xs text-slate-400 font-semibold uppercase tracking-wider flex items-center gap-1.5">
+                        <i data-lucide="scale" class="w-3.5 h-3.5 text-indigo-400"></i>
+                        <i data-lucide="flame" class="w-3.5 h-3.5 text-rose-400"></i>
+                        <span data-i18n="title_peso_calorie">Peso &amp; Calorie</span>
+                    </p>
+                </div>
+                <div class="h-44 w-full mb-3">
+                    <canvas id="weekCalorieChart"></canvas>
+                </div>
+                <div class="h-32 w-full pt-2 border-t border-slate-700/35">
+                    <canvas id="weekPesoChart"></canvas>
                 </div>
             </div>
         </div>
 
         <div id="trendMesiContainer" class="space-y-4 hidden">
             <div class="bg-slate-800/40 border border-slate-700/50 rounded-2xl p-4">
-                <p class="text-xs text-slate-400 font-semibold uppercase tracking-wider mb-3 flex items-center gap-1.5">
-                    <i data-lucide="scale" class="w-3.5 h-3.5 text-indigo-400"></i>
-                    <i data-lucide="flame" class="w-3.5 h-3.5 text-rose-400"></i> <span
-                        data-i18n="title_peso_calorie">Peso &amp; Calorie</span>
-                </p>
-                <div class="h-64 w-full">
-                    <canvas id="monthPesoCalorieChart"></canvas>
+                <div class="flex justify-between items-center mb-3">
+                    <p class="text-xs text-slate-400 font-semibold uppercase tracking-wider flex items-center gap-1.5">
+                        <i data-lucide="scale" class="w-3.5 h-3.5 text-indigo-400"></i>
+                        <i data-lucide="flame" class="w-3.5 h-3.5 text-rose-400"></i>
+                        <span data-i18n="title_peso_calorie">Peso &amp; Calorie</span>
+                    </p>
+                </div>
+                <div class="h-44 w-full mb-3">
+                    <canvas id="monthCalorieChart"></canvas>
+                </div>
+                <div class="h-32 w-full pt-2 border-t border-slate-700/35">
+                    <canvas id="monthPesoChart"></canvas>
                 </div>
             </div>
         </div>
@@ -1000,13 +1015,13 @@
         let editingId = null; // ID entry in modifica
 
         let trendCalorieChart = null;
-        let trendMacronutrientiChart = null;
+        let trendPesoChart = null;
 
-        let weekPesoCalorieChart = null;
-        let weekMacronutrientiChart = null;
+        let weekCalorieChart = null;
+        let weekPesoChart = null;
 
-        let monthPesoCalorieChart = null;
-        let monthMacronutrientiChart = null;
+        let monthCalorieChart = null;
+        let monthPesoChart = null;
 
         let targetCalorie = 0; // Target giornaliero calorie
         let targetProteine = 0; // Target giornaliero proteine
@@ -1018,13 +1033,13 @@
         const macroStatusLightsPlugin = {
             id: 'macroStatusLights',
             afterDatasetsDraw(chart) {
-                const { ctx, scales: { x, y1 } } = chart;
+                const { ctx, scales: { x, y } } = chart;
                 const rawData = chart.config.data.customRawData;
                 const targets = chart.config.data.customTargets;
                 if (!rawData || !targets) return;
 
-                // Trova il dataset delle bar (Grassi, prima barra, index 2)
-                const barMeta = chart.getDatasetMeta(2);
+                // Trova il dataset delle bar (Grassi, prima barra, index 0)
+                const barMeta = chart.getDatasetMeta(0);
                 if (!barMeta || barMeta.hidden) return;
 
                 rawData.forEach((item, index) => {
@@ -1042,10 +1057,10 @@
                     const carbCal = Math.round((item.carboidrati || 0) * 4);
                     const protCal = Math.round((item.proteine || 0) * 4);
 
-                    const yZero = y1.getPixelForValue(0);
-                    const yFatsTop = y1.getPixelForValue(fatCal);
-                    const yCarbsTop = y1.getPixelForValue(fatCal + carbCal);
-                    const yProtsTop = y1.getPixelForValue(fatCal + carbCal + protCal);
+                    const yZero = y.getPixelForValue(0);
+                    const yFatsTop = y.getPixelForValue(fatCal);
+                    const yCarbsTop = y.getPixelForValue(fatCal + carbCal);
+                    const yProtsTop = y.getPixelForValue(fatCal + carbCal + protCal);
 
                     const badges = [];
                     // Aggiungiamo i badge solo se lo spessore del segmento è sufficiente (es. >= 8px) per contenere il pallino LED
@@ -2456,6 +2471,8 @@ IMPORTANTE: Se l'utente non specifica le porzioni, pesi o quantità per un alime
         function renderTrend() {
             const db = JSON.parse(localStorage.getItem('nutriDB')) || [];
 
+            const titleEl = document.getElementById('trendMediaTitle');
+
             const calcolaBarraETarget = (attuale, target) => {
                 if (!target || target <= 0) return { barra: '0%', freccia: '100%' };
                 if (attuale > target) {
@@ -2472,6 +2489,9 @@ IMPORTANTE: Se l'utente non specifica le porzioni, pesi o quantità per un alime
             };
 
             if (trendView === 'giorni') {
+                if (titleEl) {
+                    titleEl.innerText = currentLang === 'en' ? 'Overall Average (7 days)' : 'Media complessiva (7 giorni)';
+                }
                 const etichetteGiorni = [];
                 const ultimiGiorni = [];
                 for (let i = 6; i >= 0; i--) {
@@ -2523,6 +2543,8 @@ IMPORTANTE: Se l'utente non specifica le porzioni, pesi o quantità per un alime
                 }
 
                 if (trendCalorieChart) trendCalorieChart.destroy();
+                if (trendPesoChart) trendPesoChart.destroy();
+
                 let pTarget = parseFloat(localStorage.getItem('targetPeso')) || 75;
                 const arrayPesi = ultimiGiorni.map(g => g.peso).filter(p => p !== null && p !== undefined && p > 0);
                 let yMin = undefined;
@@ -2531,19 +2553,17 @@ IMPORTANTE: Se l'utente non specifica le porzioni, pesi o quantità per un alime
                     const tuttiIValori = [...arrayPesi, pTarget];
                     const minReale = Math.min(...tuttiIValori);
                     const maxReale = Math.max(...tuttiIValori);
-                    yMin = minReale * 0.99;
-                    yMax = maxReale * 1.01;
+                    yMin = Math.round(minReale * 0.98);
+                    yMax = Math.round(maxReale * 1.02);
                 } else {
                     yMin = pTarget - 2;
                     yMax = pTarget + 2;
                 }
-                const weightRange = yMax - yMin;
-                const finalYMin = yMin - 1.5 * weightRange;
-                const finalYMax = yMax + 0.05 * weightRange;
 
                 const maxCal = Math.max(...ultimiGiorni.map(g => g.calorie), targetCalorie);
-                const maxCalValue = Math.round(maxCal / 0.60);
+                const maxCalValue = Math.round(maxCal * 1.15);
 
+                // 1. Grafico Calorie e Macronutrienti (Top)
                 trendCalorieChart = new Chart(document.getElementById('trendCalorieChart').getContext('2d'), {
                     plugins: [macroStatusLightsPlugin],
                     data: {
@@ -2555,6 +2575,112 @@ IMPORTANTE: Se l'utente non specifica le porzioni, pesi o quantità per un alime
                             carboidrati: targetCarbo,
                             grassi: targetGrassi
                         },
+                        datasets: [
+                            {
+                                type: 'bar',
+                                label: currentLang === 'en' ? 'Fats' : 'Grassi',
+                                data: ultimiGiorni.map(g => Math.round((g.grassi || 0) * 9)),
+                                backgroundColor: 'rgba(245, 158, 11, 0.75)',
+                                borderRadius: 4,
+                                yAxisID: 'y',
+                                stack: 'calories'
+                            },
+                            {
+                                type: 'bar',
+                                label: currentLang === 'en' ? 'Carbs' : 'Carboidrati',
+                                data: ultimiGiorni.map(g => Math.round((g.carboidrati || 0) * 4)),
+                                backgroundColor: 'rgba(16, 185, 129, 0.75)',
+                                borderRadius: 4,
+                                yAxisID: 'y',
+                                stack: 'calories'
+                            },
+                            {
+                                type: 'bar',
+                                label: currentLang === 'en' ? 'Proteins' : 'Proteine',
+                                data: ultimiGiorni.map(g => Math.round((g.proteine || 0) * 4)),
+                                backgroundColor: 'rgba(59, 130, 246, 0.75)',
+                                borderRadius: 4,
+                                yAxisID: 'y',
+                                stack: 'calories'
+                            },
+                            {
+                                type: 'line',
+                                label: 'Target Calorie',
+                                data: etichetteGiorni.map(() => targetCalorie),
+                                borderColor: '#f43f5e',
+                                borderWidth: 1.5,
+                                borderDash: [5, 5],
+                                pointRadius: 0,
+                                fill: false,
+                                yAxisID: 'y'
+                            }
+                        ]
+                    },
+                    options: {
+                        plugins: {
+                            legend: {
+                                display: true,
+                                position: 'top',
+                                labels: {
+                                    color: '#94a3b8',
+                                    boxWidth: 10,
+                                    font: { size: 9, family: "'Outfit', sans-serif" },
+                                    filter: function (item) {
+                                        return !item.text.includes('Target');
+                                    }
+                                }
+                            },
+                            tooltip: {
+                                callbacks: {
+                                    label: function (context) {
+                                        const idx = context.dataIndex;
+                                        const dsIdx = context.datasetIndex;
+                                        const rawData = context.chart.config.data.customRawData;
+                                        const targets = context.chart.config.data.customTargets;
+                                        const item = rawData[idx];
+                                        if (!item) return '';
+                                        if (dsIdx === 0) return (currentLang === 'en' ? 'Fats: ' : 'Grassi: ') + Math.round(item.grassi || 0) + 'g / ' + targets.grassi + 'g';
+                                        if (dsIdx === 1) return (currentLang === 'en' ? 'Carbs: ' : 'Carboidrati: ') + Math.round(item.carboidrati || 0) + 'g / ' + targets.carboidrati + 'g';
+                                        if (dsIdx === 2) return (currentLang === 'en' ? 'Proteins: ' : 'Proteine: ') + Math.round(item.proteine || 0) + 'g / ' + targets.proteine + 'g';
+                                        if (dsIdx === 3) return (currentLang === 'en' ? 'Calories Target: ' : 'Target Calorie: ') + targets.calorie + ' kcal';
+                                        return '';
+                                    }
+                                }
+                            }
+                        },
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        scales: {
+                            x: {
+                                stacked: true,
+                                grid: { color: 'rgba(71,85,105,0.08)', drawTicks: false },
+                                ticks: { display: false }
+                            },
+                            y: {
+                                stacked: true,
+                                type: 'linear',
+                                position: 'left',
+                                grid: { color: 'rgba(71,85,105,0.08)' },
+                                ticks: { color: '#f43f5e', font: { size: 9, weight: 'bold' } },
+                                min: 0,
+                                max: maxCalValue,
+                                title: {
+                                    display: true,
+                                    text: currentLang === 'en' ? 'Calories (kcal)' : 'Calorie (kcal)',
+                                    color: '#f43f5e',
+                                    font: { size: 9, weight: 'bold' }
+                                },
+                                afterFit: (scale) => { scale.width = 50; }
+                            }
+                        }
+                    }
+                });
+
+                // 2. Grafico Peso Corporeo (Bottom)
+                trendPesoChart = new Chart(document.getElementById('trendPesoChart').getContext('2d'), {
+                    data: {
+                        labels: etichetteGiorni,
+                        customRawData: ultimiGiorni,
                         datasets: [
                             {
                                 type: 'line',
@@ -2579,60 +2705,13 @@ IMPORTANTE: Se l'utente non specifica le porzioni, pesi o quantità per un alime
                                 pointRadius: 0,
                                 fill: false,
                                 yAxisID: 'y'
-                            },
-                            {
-                                type: 'bar',
-                                label: currentLang === 'en' ? 'Fats' : 'Grassi',
-                                data: ultimiGiorni.map(g => Math.round((g.grassi || 0) * 9)),
-                                backgroundColor: 'rgba(245, 158, 11, 0.75)',
-                                borderRadius: 4,
-                                yAxisID: 'y1',
-                                stack: 'calories'
-                            },
-                            {
-                                type: 'bar',
-                                label: currentLang === 'en' ? 'Carbs' : 'Carboidrati',
-                                data: ultimiGiorni.map(g => Math.round((g.carboidrati || 0) * 4)),
-                                backgroundColor: 'rgba(16, 185, 129, 0.75)',
-                                borderRadius: 4,
-                                yAxisID: 'y1',
-                                stack: 'calories'
-                            },
-                            {
-                                type: 'bar',
-                                label: currentLang === 'en' ? 'Proteins' : 'Proteine',
-                                data: ultimiGiorni.map(g => Math.round((g.proteine || 0) * 4)),
-                                backgroundColor: 'rgba(59, 130, 246, 0.75)',
-                                borderRadius: 4,
-                                yAxisID: 'y1',
-                                stack: 'calories'
-                            },
-                            {
-                                type: 'line',
-                                label: 'Target Calorie',
-                                data: etichetteGiorni.map(() => targetCalorie),
-                                borderColor: '#f43f5e',
-                                borderWidth: 1.5,
-                                borderDash: [5, 5],
-                                pointRadius: 0,
-                                fill: false,
-                                yAxisID: 'y1'
                             }
                         ]
                     },
                     options: {
                         plugins: {
                             legend: {
-                                display: true,
-                                position: 'top',
-                                labels: {
-                                    color: '#94a3b8',
-                                    boxWidth: 10,
-                                    font: { size: 9, family: "'Outfit', sans-serif" },
-                                    filter: function (item) {
-                                        return !item.text.includes('Obiettivo') && !item.text.includes('Target');
-                                    }
-                                }
+                                display: false
                             },
                             tooltip: {
                                 callbacks: {
@@ -2640,15 +2719,10 @@ IMPORTANTE: Se l'utente non specifica le porzioni, pesi o quantità per un alime
                                         const idx = context.dataIndex;
                                         const dsIdx = context.datasetIndex;
                                         const rawData = context.chart.config.data.customRawData;
-                                        const targets = context.chart.config.data.customTargets;
                                         const item = rawData[idx];
                                         if (!item) return '';
                                         if (dsIdx === 0) return (currentLang === 'en' ? 'Weight: ' : 'Peso: ') + (item.peso ? item.peso + ' kg' : '--');
                                         if (dsIdx === 1) return (currentLang === 'en' ? 'Weight Target: ' : 'Obiettivo Peso: ') + pTarget + ' kg';
-                                        if (dsIdx === 2) return (currentLang === 'en' ? 'Fats: ' : 'Grassi: ') + Math.round(item.grassi || 0) + 'g / ' + targets.grassi + 'g';
-                                        if (dsIdx === 3) return (currentLang === 'en' ? 'Carbs: ' : 'Carboidrati: ') + Math.round(item.carboidrati || 0) + 'g / ' + targets.carboidrati + 'g';
-                                        if (dsIdx === 4) return (currentLang === 'en' ? 'Proteins: ' : 'Proteine: ') + Math.round(item.proteine || 0) + 'g / ' + targets.proteine + 'g';
-                                        if (dsIdx === 5) return (currentLang === 'en' ? 'Calories Target: ' : 'Target Calorie: ') + targets.calorie + ' kcal';
                                         return '';
                                     }
                                 }
@@ -2658,8 +2732,7 @@ IMPORTANTE: Se l'utente non specifica le porzioni, pesi o quantità per un alime
                         maintainAspectRatio: false,
                         scales: {
                             x: {
-                                stacked: true,
-                                grid: { display: false },
+                                grid: { color: 'rgba(71,85,105,0.08)' },
                                 ticks: { color: '#64748b', font: { size: 9 } }
                             },
                             y: {
@@ -2667,28 +2740,12 @@ IMPORTANTE: Se l'utente non specifica le porzioni, pesi o quantità per un alime
                                 position: 'left',
                                 grid: { color: 'rgba(71,85,105,0.08)' },
                                 ticks: { color: '#6366f1', font: { size: 9, weight: 'bold' } },
-                                min: finalYMin,
-                                max: finalYMax,
+                                min: yMin,
+                                max: yMax,
                                 title: {
                                     display: true,
                                     text: currentLang === 'en' ? 'Weight (kg)' : 'Peso (kg)',
                                     color: '#6366f1',
-                                    font: { size: 9, weight: 'bold' }
-                                },
-                                afterFit: (scale) => { scale.width = 50; }
-                            },
-                            y1: {
-                                stacked: true,
-                                type: 'linear',
-                                position: 'right',
-                                grid: { drawOnChartArea: false },
-                                ticks: { color: '#f43f5e', font: { size: 9, weight: 'bold' } },
-                                min: 0,
-                                max: maxCalValue,
-                                title: {
-                                    display: true,
-                                    text: currentLang === 'en' ? 'Calories (kcal)' : 'Calorie (kcal)',
-                                    color: '#f43f5e',
                                     font: { size: 9, weight: 'bold' }
                                 },
                                 afterFit: (scale) => { scale.width = 50; }
@@ -2697,6 +2754,9 @@ IMPORTANTE: Se l'utente non specifica le porzioni, pesi o quantità per un alime
                     }
                 });
             } else {
+                if (titleEl) {
+                    titleEl.innerText = currentLang === 'en' ? 'Overall Average (8 weeks)' : 'Media complessiva (8 settimane)';
+                }
                 const etichetteSettimane = [];
                 const datiSettimane = [];
                 const getWeekNumber = (date) => {
@@ -2763,7 +2823,10 @@ IMPORTANTE: Se l'utente non specifica le porzioni, pesi o quantità per un alime
                     ['barMediaCalorie', 'barMediaProteine', 'barMediaCarbo', 'barMediaGrassi'].forEach(id => document.getElementById(id).style.width = '0%');
                     ['arrowTargetCalorie', 'arrowTargetProteine', 'arrowTargetCarbo', 'arrowTargetGrassi'].forEach(id => document.getElementById(id).style.left = '100%');
                 }
-                if (weekPesoCalorieChart) weekPesoCalorieChart.destroy();
+
+                if (weekCalorieChart) weekCalorieChart.destroy();
+                if (weekPesoChart) weekPesoChart.destroy();
+
                 let pTarget = parseFloat(localStorage.getItem('targetPeso')) || 75;
                 const arrayPesi = datiSettimane.map(s => s.peso).filter(p => p !== null && p !== undefined && p > 0);
                 let yMin = undefined;
@@ -2772,20 +2835,18 @@ IMPORTANTE: Se l'utente non specifica le porzioni, pesi o quantità per un alime
                     const tuttiIValori = [...arrayPesi, pTarget];
                     const minReale = Math.min(...tuttiIValori);
                     const maxReale = Math.max(...tuttiIValori);
-                    yMin = minReale * 0.99;
-                    yMax = maxReale * 1.01;
+                    yMin = Math.round(minReale * 0.98);
+                    yMax = Math.round(maxReale * 1.02);
                 } else {
                     yMin = pTarget - 2;
                     yMax = pTarget + 2;
                 }
-                const weightRange = yMax - yMin;
-                const finalYMin = yMin - 1.5 * weightRange;
-                const finalYMax = yMax + 0.05 * weightRange;
 
                 const maxCal = Math.max(...datiSettimane.map(s => s.calorie), targetCalorie);
-                const maxCalValue = Math.round(maxCal / 0.60);
+                const maxCalValue = Math.round(maxCal * 1.15);
 
-                weekPesoCalorieChart = new Chart(document.getElementById('weekPesoCalorieChart').getContext('2d'), {
+                // 1. Grafico Calorie e Macronutrienti (Top)
+                weekCalorieChart = new Chart(document.getElementById('weekCalorieChart').getContext('2d'), {
                     plugins: [macroStatusLightsPlugin],
                     data: {
                         labels: etichetteSettimane,
@@ -2796,6 +2857,112 @@ IMPORTANTE: Se l'utente non specifica le porzioni, pesi o quantità per un alime
                             carboidrati: targetCarbo,
                             grassi: targetGrassi
                         },
+                        datasets: [
+                            {
+                                type: 'bar',
+                                label: currentLang === 'en' ? 'Fats' : 'Grassi',
+                                data: datiSettimane.map(s => Math.round((s.grassi || 0) * 9)),
+                                backgroundColor: 'rgba(245, 158, 11, 0.75)',
+                                borderRadius: 4,
+                                yAxisID: 'y',
+                                stack: 'calories'
+                            },
+                            {
+                                type: 'bar',
+                                label: currentLang === 'en' ? 'Carbs' : 'Carboidrati',
+                                data: datiSettimane.map(s => Math.round((s.carboidrati || 0) * 4)),
+                                backgroundColor: 'rgba(16, 185, 129, 0.75)',
+                                borderRadius: 4,
+                                yAxisID: 'y',
+                                stack: 'calories'
+                            },
+                            {
+                                type: 'bar',
+                                label: currentLang === 'en' ? 'Proteins' : 'Proteine',
+                                data: datiSettimane.map(s => Math.round((s.proteine || 0) * 4)),
+                                backgroundColor: 'rgba(59, 130, 246, 0.75)',
+                                borderRadius: 4,
+                                yAxisID: 'y',
+                                stack: 'calories'
+                            },
+                            {
+                                type: 'line',
+                                label: 'Target Calorie',
+                                data: etichetteSettimane.map(() => targetCalorie),
+                                borderColor: '#f43f5e',
+                                borderWidth: 1.5,
+                                borderDash: [5, 5],
+                                pointRadius: 0,
+                                fill: false,
+                                yAxisID: 'y'
+                            }
+                        ]
+                    },
+                    options: {
+                        plugins: {
+                            legend: {
+                                display: true,
+                                position: 'top',
+                                labels: {
+                                    color: '#94a3b8',
+                                    boxWidth: 10,
+                                    font: { size: 9, family: "'Outfit', sans-serif" },
+                                    filter: function (item) {
+                                        return !item.text.includes('Target');
+                                    }
+                                }
+                            },
+                            tooltip: {
+                                callbacks: {
+                                    label: function (context) {
+                                        const idx = context.dataIndex;
+                                        const dsIdx = context.datasetIndex;
+                                        const rawData = context.chart.config.data.customRawData;
+                                        const targets = context.chart.config.data.customTargets;
+                                        const item = rawData[idx];
+                                        if (!item) return '';
+                                        if (dsIdx === 0) return (currentLang === 'en' ? 'Fats: ' : 'Grassi: ') + Math.round(item.grassi || 0) + 'g / ' + targets.grassi + 'g';
+                                        if (dsIdx === 1) return (currentLang === 'en' ? 'Carbs: ' : 'Carboidrati: ') + Math.round(item.carboidrati || 0) + 'g / ' + targets.carboidrati + 'g';
+                                        if (dsIdx === 2) return (currentLang === 'en' ? 'Proteins: ' : 'Proteine: ') + Math.round(item.proteine || 0) + 'g / ' + targets.proteine + 'g';
+                                        if (dsIdx === 3) return (currentLang === 'en' ? 'Calories Target: ' : 'Target Calorie: ') + targets.calorie + ' kcal';
+                                        return '';
+                                    }
+                                }
+                            }
+                        },
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        scales: {
+                            x: {
+                                stacked: true,
+                                grid: { color: 'rgba(71,85,105,0.08)', drawTicks: false },
+                                ticks: { display: false }
+                            },
+                            y: {
+                                stacked: true,
+                                type: 'linear',
+                                position: 'left',
+                                grid: { color: 'rgba(71,85,105,0.08)' },
+                                ticks: { color: '#f43f5e', font: { size: 9, weight: 'bold' } },
+                                min: 0,
+                                max: maxCalValue,
+                                title: {
+                                    display: true,
+                                    text: currentLang === 'en' ? 'Calories (kcal)' : 'Calorie (kcal)',
+                                    color: '#f43f5e',
+                                    font: { size: 9, weight: 'bold' }
+                                },
+                                afterFit: (scale) => { scale.width = 50; }
+                            }
+                        }
+                    }
+                });
+
+                // 2. Grafico Peso Corporeo (Bottom)
+                weekPesoChart = new Chart(document.getElementById('weekPesoChart').getContext('2d'), {
+                    data: {
+                        labels: etichetteSettimane,
+                        customRawData: datiSettimane,
                         datasets: [
                             {
                                 type: 'line',
@@ -2820,60 +2987,13 @@ IMPORTANTE: Se l'utente non specifica le porzioni, pesi o quantità per un alime
                                 pointRadius: 0,
                                 fill: false,
                                 yAxisID: 'y'
-                            },
-                            {
-                                type: 'bar',
-                                label: currentLang === 'en' ? 'Fats' : 'Grassi',
-                                data: datiSettimane.map(s => Math.round((s.grassi || 0) * 9)),
-                                backgroundColor: 'rgba(245, 158, 11, 0.75)',
-                                borderRadius: 4,
-                                yAxisID: 'y1',
-                                stack: 'calories'
-                            },
-                            {
-                                type: 'bar',
-                                label: currentLang === 'en' ? 'Carbs' : 'Carboidrati',
-                                data: datiSettimane.map(s => Math.round((s.carboidrati || 0) * 4)),
-                                backgroundColor: 'rgba(16, 185, 129, 0.75)',
-                                borderRadius: 4,
-                                yAxisID: 'y1',
-                                stack: 'calories'
-                            },
-                            {
-                                type: 'bar',
-                                label: currentLang === 'en' ? 'Proteins' : 'Proteine',
-                                data: datiSettimane.map(s => Math.round((s.proteine || 0) * 4)),
-                                backgroundColor: 'rgba(59, 130, 246, 0.75)',
-                                borderRadius: 4,
-                                yAxisID: 'y1',
-                                stack: 'calories'
-                            },
-                            {
-                                type: 'line',
-                                label: 'Target Calorie',
-                                data: etichetteSettimane.map(() => targetCalorie),
-                                borderColor: '#f43f5e',
-                                borderWidth: 1.5,
-                                borderDash: [5, 5],
-                                pointRadius: 0,
-                                fill: false,
-                                yAxisID: 'y1'
                             }
                         ]
                     },
                     options: {
                         plugins: {
                             legend: {
-                                display: true,
-                                position: 'top',
-                                labels: {
-                                    color: '#94a3b8',
-                                    boxWidth: 10,
-                                    font: { size: 9, family: "'Outfit', sans-serif" },
-                                    filter: function (item) {
-                                        return !item.text.includes('Obiettivo') && !item.text.includes('Target');
-                                    }
-                                }
+                                display: false
                             },
                             tooltip: {
                                 callbacks: {
@@ -2881,15 +3001,10 @@ IMPORTANTE: Se l'utente non specifica le porzioni, pesi o quantità per un alime
                                         const idx = context.dataIndex;
                                         const dsIdx = context.datasetIndex;
                                         const rawData = context.chart.config.data.customRawData;
-                                        const targets = context.chart.config.data.customTargets;
                                         const item = rawData[idx];
                                         if (!item) return '';
                                         if (dsIdx === 0) return (currentLang === 'en' ? 'Weight: ' : 'Peso: ') + (item.peso ? item.peso.toFixed(1) + ' kg' : '--');
                                         if (dsIdx === 1) return (currentLang === 'en' ? 'Weight Target: ' : 'Obiettivo Peso: ') + pTarget + ' kg';
-                                        if (dsIdx === 2) return (currentLang === 'en' ? 'Fats: ' : 'Grassi: ') + Math.round(item.grassi || 0) + 'g / ' + targets.grassi + 'g';
-                                        if (dsIdx === 3) return (currentLang === 'en' ? 'Carbs: ' : 'Carboidrati: ') + Math.round(item.carboidrati || 0) + 'g / ' + targets.carboidrati + 'g';
-                                        if (dsIdx === 4) return (currentLang === 'en' ? 'Proteins: ' : 'Proteine: ') + Math.round(item.proteine || 0) + 'g / ' + targets.proteine + 'g';
-                                        if (dsIdx === 5) return (currentLang === 'en' ? 'Calories Target: ' : 'Target Calorie: ') + targets.calorie + ' kcal';
                                         return '';
                                     }
                                 }
@@ -2899,8 +3014,7 @@ IMPORTANTE: Se l'utente non specifica le porzioni, pesi o quantità per un alime
                         maintainAspectRatio: false,
                         scales: {
                             x: {
-                                stacked: true,
-                                grid: { display: false },
+                                grid: { color: 'rgba(71,85,105,0.08)' },
                                 ticks: { color: '#64748b', font: { size: 9 } }
                             },
                             y: {
@@ -2908,28 +3022,12 @@ IMPORTANTE: Se l'utente non specifica le porzioni, pesi o quantità per un alime
                                 position: 'left',
                                 grid: { color: 'rgba(71,85,105,0.08)' },
                                 ticks: { color: '#6366f1', font: { size: 9, weight: 'bold' } },
-                                min: finalYMin,
-                                max: finalYMax,
+                                min: yMin,
+                                max: yMax,
                                 title: {
                                     display: true,
                                     text: currentLang === 'en' ? 'Weight (kg)' : 'Peso (kg)',
                                     color: '#6366f1',
-                                    font: { size: 9, weight: 'bold' }
-                                },
-                                afterFit: (scale) => { scale.width = 50; }
-                            },
-                            y1: {
-                                stacked: true,
-                                type: 'linear',
-                                position: 'right',
-                                grid: { drawOnChartArea: false },
-                                ticks: { color: '#f43f5e', font: { size: 9, weight: 'bold' } },
-                                min: 0,
-                                max: maxCalValue,
-                                title: {
-                                    display: true,
-                                    text: currentLang === 'en' ? 'Calories (kcal)' : 'Calorie (kcal)',
-                                    color: '#f43f5e',
                                     font: { size: 9, weight: 'bold' }
                                 },
                                 afterFit: (scale) => { scale.width = 50; }
@@ -3049,6 +3147,13 @@ IMPORTANTE: Se l'utente non specifica le porzioni, pesi o quantità per un alime
 
             // 3. Overall average on all active days of the database
             const giorniAttivi = db.filter(g => g.calorie > 0 || g.proteine > 0 || g.carboidrati > 0 || g.grassi > 0);
+            const activeMonths = monthKeys.length;
+            const titleEl = document.getElementById('trendMediaTitle');
+            if (titleEl) {
+                titleEl.innerText = currentLang === 'en'
+                    ? `Overall Average (${activeMonths} months)`
+                    : `Media complessiva (${activeMonths} ${activeMonths === 1 ? 'mese' : 'mesi'})`;
+            }
             if (giorniAttivi.length > 0) {
                 const sum = (chiave) => giorniAttivi.reduce((acc, current) => acc + (current[chiave] || 0), 0);
                 const avgCal = Math.round(sum('calorie') / giorniAttivi.length);
@@ -3086,8 +3191,9 @@ IMPORTANTE: Se l'utente non specifica le porzioni, pesi o quantità per un alime
                 ['arrowTargetCalorie', 'arrowTargetProteine', 'arrowTargetCarbo', 'arrowTargetGrassi'].forEach(id => document.getElementById(id).style.left = '100%');
             }
 
-            // PESO, CALORIE & MACROS MENSILI COMBINATI
-            if (monthPesoCalorieChart) monthPesoCalorieChart.destroy();
+            // PESO, CALORIE & MACROS MENSILI SEPARATI
+            if (monthCalorieChart) monthCalorieChart.destroy();
+            if (monthPesoChart) monthPesoChart.destroy();
 
             let pTarget = parseFloat(localStorage.getItem('targetPeso')) || 75;
             const arrayPesi = datiPeso.filter(p => p !== null && p !== undefined && p > 0);
@@ -3097,20 +3203,18 @@ IMPORTANTE: Se l'utente non specifica le porzioni, pesi o quantità per un alime
                 const tuttiIValori = [...arrayPesi, pTarget];
                 const minReale = Math.min(...tuttiIValori);
                 const maxReale = Math.max(...tuttiIValori);
-                yMin = minReale * 0.99;
-                yMax = maxReale * 1.01;
+                yMin = Math.round(minReale * 0.98);
+                yMax = Math.round(maxReale * 1.02);
             } else {
                 yMin = pTarget - 2;
                 yMax = pTarget + 2;
             }
-            const weightRange = yMax - yMin;
-            const finalYMin = yMin - 1.5 * weightRange;
-            const finalYMax = yMax + 0.05 * weightRange;
 
             const maxCal = Math.max(...datiCalorie, targetCalorie);
-            const maxCalValue = Math.round(maxCal / 0.60);
+            const maxCalValue = Math.round(maxCal * 1.15);
 
-            monthPesoCalorieChart = new Chart(document.getElementById('monthPesoCalorieChart').getContext('2d'), {
+            // 1. Grafico Calorie e Macronutrienti (Top)
+            monthCalorieChart = new Chart(document.getElementById('monthCalorieChart').getContext('2d'), {
                 plugins: [macroStatusLightsPlugin],
                 data: {
                     labels: labels,
@@ -3121,6 +3225,112 @@ IMPORTANTE: Se l'utente non specifica le porzioni, pesi o quantità per un alime
                         carboidrati: targetCarbo,
                         grassi: targetGrassi
                     },
+                    datasets: [
+                        {
+                            type: 'bar',
+                            label: currentLang === 'en' ? 'Fats' : 'Grassi',
+                            data: datiGrassi.map(g => Math.round((g || 0) * 9)),
+                            backgroundColor: 'rgba(245, 158, 11, 0.75)',
+                            borderRadius: 4,
+                            yAxisID: 'y',
+                            stack: 'calories'
+                        },
+                        {
+                            type: 'bar',
+                            label: currentLang === 'en' ? 'Carbs' : 'Carboidrati',
+                            data: datiCarboidrati.map(c => Math.round((c || 0) * 4)),
+                            backgroundColor: 'rgba(16, 185, 129, 0.75)',
+                            borderRadius: 4,
+                            yAxisID: 'y',
+                            stack: 'calories'
+                        },
+                        {
+                            type: 'bar',
+                            label: currentLang === 'en' ? 'Proteins' : 'Proteine',
+                            data: datiProteine.map(p => Math.round((p || 0) * 4)),
+                            backgroundColor: 'rgba(59, 130, 246, 0.75)',
+                            borderRadius: 4,
+                            yAxisID: 'y',
+                            stack: 'calories'
+                        },
+                        {
+                            type: 'line',
+                            label: 'Target Calorie',
+                            data: labels.map(() => targetCalorie),
+                            borderColor: '#f43f5e',
+                            borderWidth: 1.5,
+                            borderDash: [5, 5],
+                            pointRadius: 0,
+                            fill: false,
+                            yAxisID: 'y'
+                        }
+                    ]
+                },
+                options: {
+                    plugins: {
+                        legend: {
+                            display: true,
+                            position: 'top',
+                            labels: {
+                                color: '#94a3b8',
+                                boxWidth: 10,
+                                font: { size: 9, family: "'Outfit', sans-serif" },
+                                filter: function (item) {
+                                    return !item.text.includes('Target');
+                                }
+                            }
+                        },
+                        tooltip: {
+                            callbacks: {
+                                label: function (context) {
+                                    const idx = context.dataIndex;
+                                    const dsIdx = context.datasetIndex;
+                                    const rawData = context.chart.config.data.customRawData;
+                                    const targets = context.chart.config.data.customTargets;
+                                    const item = rawData[idx];
+                                    if (!item) return '';
+                                    if (dsIdx === 0) return (currentLang === 'en' ? 'Fats: ' : 'Grassi: ') + Math.round(item.grassi || 0) + 'g / ' + targets.grassi + 'g';
+                                    if (dsIdx === 1) return (currentLang === 'en' ? 'Carbs: ' : 'Carboidrati: ') + Math.round(item.carboidrati || 0) + 'g / ' + targets.carboidrati + 'g';
+                                    if (dsIdx === 2) return (currentLang === 'en' ? 'Proteins: ' : 'Proteine: ') + Math.round(item.proteine || 0) + 'g / ' + targets.proteine + 'g';
+                                    if (dsIdx === 3) return (currentLang === 'en' ? 'Calories Target: ' : 'Target Calorie: ') + targets.calorie + ' kcal';
+                                    return '';
+                                }
+                            }
+                        }
+                    },
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    scales: {
+                        x: {
+                            stacked: true,
+                            grid: { color: 'rgba(71,85,105,0.08)', drawTicks: false },
+                            ticks: { display: false }
+                        },
+                        y: {
+                            stacked: true,
+                            type: 'linear',
+                            position: 'left',
+                            grid: { color: 'rgba(71,85,105,0.08)' },
+                            ticks: { color: '#f43f5e', font: { size: 9, weight: 'bold' } },
+                            min: 0,
+                            max: maxCalValue,
+                            title: {
+                                display: true,
+                                text: currentLang === 'en' ? 'Calories (kcal)' : 'Calorie (kcal)',
+                                color: '#f43f5e',
+                                font: { size: 9, weight: 'bold' }
+                            },
+                            afterFit: (scale) => { scale.width = 50; }
+                        }
+                    }
+                }
+            });
+
+            // 2. Grafico Peso Corporeo (Bottom)
+            monthPesoChart = new Chart(document.getElementById('monthPesoChart').getContext('2d'), {
+                data: {
+                    labels: labels,
+                    customRawData: datiMensili,
                     datasets: [
                         {
                             type: 'line',
@@ -3145,60 +3355,13 @@ IMPORTANTE: Se l'utente non specifica le porzioni, pesi o quantità per un alime
                             pointRadius: 0,
                             fill: false,
                             yAxisID: 'y'
-                        },
-                        {
-                            type: 'bar',
-                            label: currentLang === 'en' ? 'Fats' : 'Grassi',
-                            data: datiGrassi.map(g => Math.round((g || 0) * 9)),
-                            backgroundColor: 'rgba(245, 158, 11, 0.75)',
-                            borderRadius: 4,
-                            yAxisID: 'y1',
-                            stack: 'calories'
-                        },
-                        {
-                            type: 'bar',
-                            label: currentLang === 'en' ? 'Carbs' : 'Carboidrati',
-                            data: datiCarboidrati.map(c => Math.round((c || 0) * 4)),
-                            backgroundColor: 'rgba(16, 185, 129, 0.75)',
-                            borderRadius: 4,
-                            yAxisID: 'y1',
-                            stack: 'calories'
-                        },
-                        {
-                            type: 'bar',
-                            label: currentLang === 'en' ? 'Proteins' : 'Proteine',
-                            data: datiProteine.map(p => Math.round((p || 0) * 4)),
-                            backgroundColor: 'rgba(59, 130, 246, 0.75)',
-                            borderRadius: 4,
-                            yAxisID: 'y1',
-                            stack: 'calories'
-                        },
-                        {
-                            type: 'line',
-                            label: 'Target Calorie',
-                            data: labels.map(() => targetCalorie),
-                            borderColor: '#f43f5e',
-                            borderWidth: 1.5,
-                            borderDash: [5, 5],
-                            pointRadius: 0,
-                            fill: false,
-                            yAxisID: 'y1'
                         }
                     ]
                 },
                 options: {
                     plugins: {
                         legend: {
-                            display: true,
-                            position: 'top',
-                            labels: {
-                                color: '#94a3b8',
-                                boxWidth: 10,
-                                font: { size: 9, family: "'Outfit', sans-serif" },
-                                filter: function (item) {
-                                    return !item.text.includes('Obiettivo') && !item.text.includes('Target');
-                                }
-                            }
+                            display: false
                         },
                         tooltip: {
                             callbacks: {
@@ -3206,15 +3369,10 @@ IMPORTANTE: Se l'utente non specifica le porzioni, pesi o quantità per un alime
                                     const idx = context.dataIndex;
                                     const dsIdx = context.datasetIndex;
                                     const rawData = context.chart.config.data.customRawData;
-                                    const targets = context.chart.config.data.customTargets;
                                     const item = rawData[idx];
                                     if (!item) return '';
                                     if (dsIdx === 0) return (currentLang === 'en' ? 'Weight: ' : 'Peso: ') + (item.peso ? item.peso.toFixed(1) + ' kg' : '--');
                                     if (dsIdx === 1) return (currentLang === 'en' ? 'Weight Target: ' : 'Obiettivo Peso: ') + pTarget + ' kg';
-                                    if (dsIdx === 2) return (currentLang === 'en' ? 'Fats: ' : 'Grassi: ') + Math.round(item.grassi || 0) + 'g / ' + targets.grassi + 'g';
-                                    if (dsIdx === 3) return (currentLang === 'en' ? 'Carbs: ' : 'Carboidrati: ') + Math.round(item.carboidrati || 0) + 'g / ' + targets.carboidrati + 'g';
-                                    if (dsIdx === 4) return (currentLang === 'en' ? 'Proteins: ' : 'Proteine: ') + Math.round(item.proteine || 0) + 'g / ' + targets.proteine + 'g';
-                                    if (dsIdx === 5) return (currentLang === 'en' ? 'Calories Target: ' : 'Target Calorie: ') + targets.calorie + ' kcal';
                                     return '';
                                 }
                             }
@@ -3224,8 +3382,7 @@ IMPORTANTE: Se l'utente non specifica le porzioni, pesi o quantità per un alime
                     maintainAspectRatio: false,
                     scales: {
                         x: {
-                            stacked: true,
-                            grid: { display: false },
+                            grid: { color: 'rgba(71,85,105,0.08)' },
                             ticks: { color: '#64748b', font: { size: 9 } }
                         },
                         y: {
@@ -3233,28 +3390,12 @@ IMPORTANTE: Se l'utente non specifica le porzioni, pesi o quantità per un alime
                             position: 'left',
                             grid: { color: 'rgba(71,85,105,0.08)' },
                             ticks: { color: '#6366f1', font: { size: 9, weight: 'bold' } },
-                            min: finalYMin,
-                            max: finalYMax,
+                            min: yMin,
+                            max: yMax,
                             title: {
                                 display: true,
                                 text: currentLang === 'en' ? 'Weight (kg)' : 'Peso (kg)',
                                 color: '#6366f1',
-                                font: { size: 9, weight: 'bold' }
-                            },
-                            afterFit: (scale) => { scale.width = 50; }
-                        },
-                        y1: {
-                            stacked: true,
-                            type: 'linear',
-                            position: 'right',
-                            grid: { drawOnChartArea: false },
-                            ticks: { color: '#f43f5e', font: { size: 9, weight: 'bold' } },
-                            min: 0,
-                            max: maxCalValue,
-                            title: {
-                                display: true,
-                                text: currentLang === 'en' ? 'Calories (kcal)' : 'Calorie (kcal)',
-                                color: '#f43f5e',
                                 font: { size: 9, weight: 'bold' }
                             },
                             afterFit: (scale) => { scale.width = 50; }
