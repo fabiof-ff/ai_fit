@@ -2926,42 +2926,57 @@ IMPORTANTE: Se l'utente non specifica le porzioni, pesi o quantità per un alime
                 }
             };
 
-            // 1. Group by month
+            // 1. Pre-populate the last 12 calendar months to ensure months with no data are shown
             const grouped = {};
+            const d = new Date();
+            const currentYear = d.getFullYear();
+            const currentMonth = d.getMonth(); // 0-11
+            const monthKeys = [];
+
+            for (let i = 11; i >= 0; i--) {
+                let targetMonth = currentMonth - i;
+                let targetYear = currentYear;
+                while (targetMonth < 0) {
+                    targetMonth += 12;
+                    targetYear -= 1;
+                }
+                const monthStr = String(targetMonth + 1).padStart(2, '0');
+                const key = `${targetYear}-${monthStr}`;
+                monthKeys.push(key);
+                grouped[key] = {
+                    calorieSum: 0,
+                    proteineSum: 0,
+                    carboidratiSum: 0,
+                    grassiSum: 0,
+                    daysWithCal: 0,
+                    pesoSum: 0,
+                    daysWithPeso: 0
+                };
+            }
+
+            // 2. Group by month
             db.forEach(entry => {
                 if (!entry.data) return;
                 const dateParts = entry.data.split('-');
                 if (dateParts.length < 2) return;
                 const key = `${dateParts[0]}-${dateParts[1]}`; // YYYY-MM
 
-                if (!grouped[key]) {
-                    grouped[key] = {
-                        calorieSum: 0,
-                        proteineSum: 0,
-                        carboidratiSum: 0,
-                        grassiSum: 0,
-                        daysWithCal: 0,
-                        pesoSum: 0,
-                        daysWithPeso: 0
-                    };
-                }
+                // Only aggregate if the entry falls within the last 12 months
+                if (grouped[key]) {
+                    if (entry.calorie > 0 || entry.proteine > 0 || entry.carboidrati > 0 || entry.grassi > 0) {
+                        grouped[key].calorieSum += (entry.calorie || 0);
+                        grouped[key].proteineSum += (entry.proteine || 0);
+                        grouped[key].carboidratiSum += (entry.carboidrati || 0);
+                        grouped[key].grassiSum += (entry.grassi || 0);
+                        grouped[key].daysWithCal += 1;
+                    }
 
-                if (entry.calorie > 0 || entry.proteine > 0 || entry.carboidrati > 0 || entry.grassi > 0) {
-                    grouped[key].calorieSum += (entry.calorie || 0);
-                    grouped[key].proteineSum += (entry.proteine || 0);
-                    grouped[key].carboidratiSum += (entry.carboidrati || 0);
-                    grouped[key].grassiSum += (entry.grassi || 0);
-                    grouped[key].daysWithCal += 1;
-                }
-
-                if (entry.peso && entry.peso > 0) {
-                    grouped[key].pesoSum += entry.peso;
-                    grouped[key].daysWithPeso += 1;
+                    if (entry.peso && entry.peso > 0) {
+                        grouped[key].pesoSum += entry.peso;
+                        grouped[key].daysWithPeso += 1;
+                    }
                 }
             });
-
-            // 2. Sort months chronologically and limit to last 24 months
-            const monthKeys = Object.keys(grouped).sort().slice(-24);
             const labels = [];
             const datiPeso = [];
             const datiCalorie = [];

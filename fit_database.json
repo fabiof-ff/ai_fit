@@ -168,6 +168,26 @@
         }
       ],
       "peso": null
+    },
+    {
+      "id": 1782930069844,
+      "data": "2025-06-04",
+      "peso": 80,
+      "calorie": 0,
+      "proteine": 0,
+      "carboidrati": 0,
+      "grassi": 0,
+      "pasti": []
+    },
+    {
+      "id": 1782930082035,
+      "data": "2025-07-10",
+      "peso": 81,
+      "calorie": 0,
+      "proteine": 0,
+      "carboidrati": 0,
+      "grassi": 0,
+      "pasti": []
     }
   ],
   "impostazioni": {
