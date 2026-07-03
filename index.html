@@ -1241,6 +1241,20 @@
                     const yCarbsTop = y.getPixelForValue(fatCal + carbCal);
                     const yProtsTop = y.getPixelForValue(fatCal + carbCal + protCal);
 
+                    // Disegna il totale calorie sopra la barra in rosso
+                    ctx.save();
+                    ctx.font = "bold 8.5px 'Outfit', sans-serif";
+                    ctx.textAlign = 'center';
+                    ctx.textBaseline = 'bottom';
+                    const isLight = document.body.classList.contains('light-theme');
+                    ctx.strokeStyle = isLight ? '#ffffff' : '#0f172a';
+                    ctx.lineWidth = 2.5;
+                    ctx.lineJoin = 'round';
+                    ctx.strokeText(Math.round(totalCalories), xPos, yProtsTop - 3);
+                    ctx.fillStyle = '#ef4444';
+                    ctx.fillText(Math.round(totalCalories), xPos, yProtsTop - 3);
+                    ctx.restore();
+
                     const badges = [];
                     // Aggiungiamo i badge solo se lo spessore del segmento è sufficiente (es. >= 8px)
                     if (Math.abs(yZero - yFatsTop) >= 8) {
