@@ -453,7 +453,6 @@
                     <h1
                         class="text-[17px] sm:text-xl font-bold tracking-tight bg-gradient-to-r from-blue-400 to-indigo-400 bg-clip-text text-transparent whitespace-nowrap">
                         AI NutriTracker</h1>
-                    <p class="text-[10px] text-slate-400 font-medium leading-none mt-0.5">Massa &amp; Calorie Log</p>
                 </div>
             </div>
             <div class="flex items-center gap-1.5 shrink-0">
@@ -689,7 +688,7 @@
             </button>
             <button id="tab-storico" onclick="switchTab('storico')"
                 class="tab-btn flex-1 flex items-center justify-center gap-1.5 py-2.5 rounded-xl text-xs font-bold border">
-                <i data-lucide="clock" class="w-3.5 h-3.5"></i> <span data-i18n="tab_storico">Storico</span>
+                <i data-lucide="clock" class="w-3.5 h-3.5"></i> <span data-i18n="tab_storico">Registro</span>
             </button>
         </div>
 
@@ -849,7 +848,7 @@
                 </div>
                 <button onclick="analizzaDatiConAI()" id="btnInvia"
                     class="mt-3 w-full bg-blue-600 hover:bg-blue-500 text-white font-bold py-3 px-4 rounded-xl shadow-lg shadow-blue-600/20 active:scale-[0.98] transition flex items-center justify-center gap-2 text-sm cursor-pointer">
-                    <span id="btnLabel" data-i18n="btn_ask_ai_opinion">Elabora con Gemini</span>
+                    <span id="btnLabel" data-i18n="btn_ask_ai_opinion">Elabora con AI</span>
                     <i data-lucide="sparkles" class="w-4 h-4"></i>
                 </button>
                 <div id="stato" class="text-xs text-slate-400 text-center mt-2.5 italic hidden"><span
@@ -947,7 +946,7 @@
                 </button>
                 <button id="subtab-mesi" onclick="switchTrendView('mesi')"
                     class="sub-tab-btn flex-1 py-1.5 rounded-lg text-xs font-semibold">
-                    <span data-i18n="subtab_monthly_history">Storico Mensile</span>
+                    <span data-i18n="subtab_monthly_history">Registro Mensile</span>
                 </button>
             </div>
         </div>
@@ -1589,14 +1588,14 @@
                 btn_calculate_ai: "Calcola target con AI",
                 tab_oggi: "Dati",
                 tab_trend: "Trend",
-                tab_storico: "Storico",
+                tab_storico: "Registro",
                 label_body_weight: "Registrazione Peso Corporeo",
                 btn_save_weight: "Salva Peso",
-                btn_ask_ai_opinion: "Elabora con Gemini",
+                btn_ask_ai_opinion: "Elabora con AI",
                 btn_ask_ai_trend: "Chiedi parere ad AI sull'andamento",
                 trend_title_days: "Andamento ultimi 7 giorni",
                 trend_title_weeks: "Andamento ultime 8 settimane (Media/Giorno)",
-                trend_title_months: "Storico Mensile (Dall'inizio)",
+                trend_title_months: "Registro Mensile (Dall'inizio)",
                 placeholder_input_pasto: "Es: Stamattina yogurt greco...",
                 placeholder_weight_input: "es. 74.5",
                 prompt_what_did_you_eat: "Cosa hai mangiato?",
@@ -1613,7 +1612,7 @@
                 lbl_ai_analyzing_meals: "L'AI sta analizzando i tuoi pasti...",
                 subtab_7_days: "7 Giorni",
                 subtab_8_weeks: "8 Settimane",
-                subtab_monthly_history: "Storico Mensile",
+                subtab_monthly_history: "Registro Mensile",
                 title_media_complessiva: "Media complessiva",
                 lbl_confirm: "Conferma",
                 lbl_cancel: "Annulla",
@@ -1660,7 +1659,11 @@
                 opt_female: "Donna",
                 lbl_age: "Età (anni)",
                 pl_training_style: "es. Palestra 3 volte a settimana, lavoro sedentario",
-                pl_main_goal: "es. Aumentare massa muscolare magra"
+                pl_main_goal: "es. Aumentare massa muscolare magra",
+                pl_weight: "es. 75",
+                pl_target_weight: "es. 70",
+                pl_height: "es. 180",
+                pl_age_placeholder: "es. 30"
             },
             en: {
                 title_api_settings: "Settings",
@@ -1677,14 +1680,14 @@
                 btn_calculate_ai: "Calculate targets with AI",
                 tab_oggi: "Log",
                 tab_trend: "Trends",
-                tab_storico: "History",
+                tab_storico: "Record",
                 label_body_weight: "Body Weight Logger",
                 btn_save_weight: "Save Weight",
-                btn_ask_ai_opinion: "Analyze with Gemini",
+                btn_ask_ai_opinion: "Analyze with AI",
                 btn_ask_ai_trend: "Ask AI for trend analysis",
                 trend_title_days: "Trend last 7 days",
                 trend_title_weeks: "Trend last 8 weeks (Average/Day)",
-                trend_title_months: "Monthly History (From beginning)",
+                trend_title_months: "Monthly Record (From beginning)",
                 placeholder_input_pasto: "E.g. This morning Greek yogurt...",
                 placeholder_weight_input: "e.g. 74.5",
                 prompt_what_did_you_eat: "What did you eat?",
@@ -1701,7 +1704,7 @@
                 lbl_ai_analyzing_meals: "AI is analyzing your meals...",
                 subtab_7_days: "7 Days",
                 subtab_8_weeks: "8 Weeks",
-                subtab_monthly_history: "Monthly History",
+                subtab_monthly_history: "Monthly Record",
                 title_media_complessiva: "Overall Average",
                 lbl_confirm: "Confirm",
                 lbl_cancel: "Cancel",
@@ -1748,7 +1751,11 @@
                 opt_female: "Female",
                 lbl_age: "Age (years)",
                 pl_training_style: "e.g. Gym 3 times a week, sedentary job",
-                pl_main_goal: "e.g. Increase lean muscle mass"
+                pl_main_goal: "e.g. Increase lean muscle mass",
+                pl_weight: "e.g. 75",
+                pl_target_weight: "e.g. 70",
+                pl_height: "e.g. 180",
+                pl_age_placeholder: "e.g. 30"
             }
         };
 
@@ -1785,6 +1792,67 @@
             const btnAI = document.getElementById('btnAnalisiTrendAI');
             if (btnAI && TRANSLATIONS[window.currentLang]) {
                 btnAI.title = TRANSLATIONS[window.currentLang].btn_ask_ai_trend;
+            }
+
+            const inputAttivita = document.getElementById('aiAttivita');
+            if (inputAttivita && TRANSLATIONS[window.currentLang].pl_training_style) {
+                inputAttivita.placeholder = TRANSLATIONS[window.currentLang].pl_training_style;
+            }
+
+            const inputObiettivo = document.getElementById('aiObiettivo');
+            if (inputObiettivo && TRANSLATIONS[window.currentLang].pl_main_goal) {
+                inputObiettivo.placeholder = TRANSLATIONS[window.currentLang].pl_main_goal;
+            }
+
+            const aiPeso = document.getElementById('aiPeso');
+            if (aiPeso && TRANSLATIONS[window.currentLang].pl_weight) {
+                aiPeso.placeholder = TRANSLATIONS[window.currentLang].pl_weight;
+            }
+
+            const aiPesoTarget = document.getElementById('aiPesoTarget');
+            if (aiPesoTarget && TRANSLATIONS[window.currentLang].pl_target_weight) {
+                aiPesoTarget.placeholder = TRANSLATIONS[window.currentLang].pl_target_weight;
+            }
+
+            const aiAltezza = document.getElementById('aiAltezza');
+            if (aiAltezza && TRANSLATIONS[window.currentLang].pl_height) {
+                aiAltezza.placeholder = TRANSLATIONS[window.currentLang].pl_height;
+            }
+
+            const aiEta = document.getElementById('aiEta');
+            if (aiEta && TRANSLATIONS[window.currentLang].pl_age_placeholder) {
+                aiEta.placeholder = TRANSLATIONS[window.currentLang].pl_age_placeholder;
+            }
+
+            // Traduzione automatica dei valori correnti nei campi profilo se corrispondono ai default
+            if (inputAttivita) {
+                const val = inputAttivita.value.trim().toLowerCase();
+                if (lang === 'en') {
+                    if (val === 'palestra 3 volte la setitmana' || val === 'palestra 3 volte a settimana') {
+                        inputAttivita.value = 'gym 3 times a week';
+                        localStorage.setItem('profile_attivita', 'gym 3 times a week');
+                    }
+                } else if (lang === 'it') {
+                    if (val === 'gym 3 times a week') {
+                        inputAttivita.value = 'palestra 3 volte la setitmana';
+                        localStorage.setItem('profile_attivita', 'palestra 3 volte la setitmana');
+                    }
+                }
+            }
+
+            if (inputObiettivo) {
+                const val = inputObiettivo.value.trim().toLowerCase();
+                if (lang === 'en') {
+                    if (val === 'aumentare massa muscolare' || val === 'aumentare massa muscolare magra') {
+                        inputObiettivo.value = 'increase muscle mass';
+                        localStorage.setItem('profile_obiettivo', 'increase muscle mass');
+                    }
+                } else if (lang === 'it') {
+                    if (val === 'increase muscle mass' || val === 'increase lean muscle mass') {
+                        inputObiettivo.value = 'aumentare massa muscolare';
+                        localStorage.setItem('profile_obiettivo', 'aumentare massa muscolare');
+                    }
+                }
             }
 
             // Aggiorna le etichette della legenda del grafico macronutrienti (ciambella)
@@ -3649,6 +3717,9 @@ IMPORTANTE: Se l'utente non specifica le porzioni, pesi o quantità per un alime
                     if (pSesso) document.getElementById('aiSesso').value = pSesso;
                     const pEta = localStorage.getItem('profile_eta');
                     if (pEta) document.getElementById('aiEta').value = pEta;
+
+                    // Forza la traduzione dei testi appena importati
+                    changeLanguage(window.currentLang);
                 }
             } else {
                 throw new Error("Formato file non valido");
