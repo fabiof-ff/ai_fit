@@ -1212,34 +1212,42 @@
         const macroStatusLightsPlugin = {
             id: 'macroStatusLights',
             afterDatasetsDraw(chart) {
-                const { ctx, scales: { x, y } } = chart;
+                const { ctx } = chart;
                 const rawData = chart.config.data.customRawData;
                 const targets = chart.config.data.customTargets;
                 if (!rawData || !targets) return;
 
-                // Trova il dataset delle bar (Grassi, prima barra, index 0)
-                const barMeta = chart.getDatasetMeta(0);
-                if (!barMeta || barMeta.hidden) return;
-
                 rawData.forEach((item, index) => {
-                    const totalCalories = item.calorie || 0;
-                    if (totalCalories <= 0) return;
+                    let displayedCalories = 0;
+                    const metaFat = chart.getDatasetMeta(0);
+                    if (metaFat && !metaFat.hidden) {
+                        displayedCalories += Math.round((item.grassi || 0) * 9);
+                    }
+                    const metaCarb = chart.getDatasetMeta(1);
+                    if (metaCarb && !metaCarb.hidden) {
+                        displayedCalories += Math.round((item.carboidrati || 0) * 4);
+                    }
+                    const metaProt = chart.getDatasetMeta(2);
+                    if (metaProt && !metaProt.hidden) {
+                        displayedCalories += Math.round((item.proteine || 0) * 4);
+                    }
 
-                    const xPos = barMeta.data[index]?.x;
-                    if (xPos === undefined) return;
+                    if (displayedCalories <= 0) return;
 
-                    const pctProt = targets.proteine > 0 ? ((item.proteine || 0) / targets.proteine) * 100 : 0;
-                    const pctCarb = targets.carboidrati > 0 ? ((item.carboidrati || 0) / targets.carboidrati) * 100 : 0;
-                    const pctFat = targets.grassi > 0 ? ((item.grassi || 0) / targets.grassi) * 100 : 0;
+                    let xPos = null;
+                    let yTop = null;
 
-                    const fatCal = Math.round((item.grassi || 0) * 9);
-                    const carbCal = Math.round((item.carboidrati || 0) * 4);
-                    const protCal = Math.round((item.proteine || 0) * 4);
+                    // Trova la coordinata X e la sommità visibile del bar impilato
+                    for (let i = 2; i >= 0; i--) {
+                        const meta = chart.getDatasetMeta(i);
+                        if (meta && !meta.hidden && meta.data[index]) {
+                            xPos = meta.data[index].x;
+                            yTop = meta.data[index].y;
+                            break;
+                        }
+                    }
 
-                    const yZero = y.getPixelForValue(0);
-                    const yFatsTop = y.getPixelForValue(fatCal);
-                    const yCarbsTop = y.getPixelForValue(fatCal + carbCal);
-                    const yProtsTop = y.getPixelForValue(fatCal + carbCal + protCal);
+                    if (xPos === null || yTop === null) return;
 
                     // Disegna il totale calorie sopra la barra in rosso
                     ctx.save();
@@ -1250,21 +1258,41 @@
                     ctx.strokeStyle = isLight ? '#ffffff' : '#0f172a';
                     ctx.lineWidth = 2.5;
                     ctx.lineJoin = 'round';
-                    ctx.strokeText(Math.round(totalCalories), xPos, yProtsTop - 3);
+                    ctx.strokeText(Math.round(displayedCalories), xPos, yTop - 3);
                     ctx.fillStyle = '#ef4444';
-                    ctx.fillText(Math.round(totalCalories), xPos, yProtsTop - 3);
+                    ctx.fillText(Math.round(displayedCalories), xPos, yTop - 3);
                     ctx.restore();
 
                     const badges = [];
-                    // Aggiungiamo i badge solo se lo spessore del segmento è sufficiente (es. >= 8px)
-                    if (Math.abs(yZero - yFatsTop) >= 8) {
-                        badges.push({ val: pctFat, y: (yZero + yFatsTop) / 2 });
+
+                    // Grassi (dataset index 0)
+                    if (metaFat && !metaFat.hidden && metaFat.data[index]) {
+                        const yFatsTop = metaFat.data[index].y;
+                        const yFatsBase = metaFat.data[index].base;
+                        const pctFat = targets.grassi > 0 ? ((item.grassi || 0) / targets.grassi) * 100 : 0;
+                        if (Math.abs(yFatsBase - yFatsTop) >= 8) {
+                            badges.push({ val: pctFat, y: (yFatsBase + yFatsTop) / 2 });
+                        }
                     }
-                    if (Math.abs(yFatsTop - yCarbsTop) >= 8) {
-                        badges.push({ val: pctCarb, y: (yFatsTop + yCarbsTop) / 2 });
+
+                    // Carboidrati (dataset index 1)
+                    if (metaCarb && !metaCarb.hidden && metaCarb.data[index]) {
+                        const yCarbsTop = metaCarb.data[index].y;
+                        const yCarbsBase = metaCarb.data[index].base;
+                        const pctCarb = targets.carboidrati > 0 ? ((item.carboidrati || 0) / targets.carboidrati) * 100 : 0;
+                        if (Math.abs(yCarbsBase - yCarbsTop) >= 8) {
+                            badges.push({ val: pctCarb, y: (yCarbsBase + yCarbsTop) / 2 });
+                        }
                     }
-                    if (Math.abs(yCarbsTop - yProtsTop) >= 8) {
-                        badges.push({ val: pctProt, y: (yCarbsTop + yProtsTop) / 2 });
+
+                    // Proteine (dataset index 2)
+                    if (metaProt && !metaProt.hidden && metaProt.data[index]) {
+                        const yProtsTop = metaProt.data[index].y;
+                        const yProtsBase = metaProt.data[index].base;
+                        const pctProt = targets.proteine > 0 ? ((item.proteine || 0) / targets.proteine) * 100 : 0;
+                        if (Math.abs(yProtsBase - yProtsTop) >= 8) {
+                            badges.push({ val: pctProt, y: (yProtsBase + yProtsTop) / 2 });
+                        }
                     }
 
                     badges.forEach((badge) => {
@@ -1285,13 +1313,11 @@
                         ctx.textAlign = 'center';
                         ctx.textBaseline = 'middle';
 
-                        // Bordo bianco per risaltare sul segmento (con outline stroke)
-                        ctx.strokeStyle = '#ffffff';
+                        ctx.strokeStyle = isLight ? '#ffffff' : '#0f172a';
                         ctx.lineWidth = 3;
                         ctx.lineJoin = 'round';
                         ctx.strokeText(text, xPos, badge.y);
 
-                        // Testo colorato sopra
                         ctx.fillStyle = color;
                         ctx.fillText(text, xPos, badge.y);
 
@@ -1303,7 +1329,6 @@
 
         // ================================================================
         // TEMA (CHIARO / SCURO)
-        // ================================================================
         window.applicaTema = function (tema) {
             const body = document.body;
             const themeIcon = document.getElementById('themeIcon');
