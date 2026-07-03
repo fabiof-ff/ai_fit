@@ -90,26 +90,6 @@
       "peso": null
     },
     {
-      "id": 1782661174613,
-      "data": "2026-06-28",
-      "calorie": 200,
-      "proteine": 50,
-      "carboidrati": 0,
-      "grassi": 0,
-      "pasti": [
-        {
-          "id": 1782662651798,
-          "ora": "18:04",
-          "testo": "50gr proteine",
-          "calorie": 200,
-          "proteine": 50,
-          "carboidrati": 0,
-          "grassi": 0
-        }
-      ],
-      "peso": 78
-    },
-    {
       "id": 1782672054307,
       "data": "2026-03-18",
       "calorie": 100,
@@ -150,26 +130,6 @@
       "pasti": []
     },
     {
-      "id": 1782929657611,
-      "data": "2026-07-01",
-      "calorie": 61,
-      "proteine": 3.2,
-      "carboidrati": 4.7,
-      "grassi": 3.3,
-      "pasti": [
-        {
-          "id": 1782929657611,
-          "ora": "20:14",
-          "testo": "latte 100ml",
-          "calorie": 61,
-          "proteine": 3.2,
-          "carboidrati": 4.7,
-          "grassi": 3.3
-        }
-      ],
-      "peso": null
-    },
-    {
       "id": 1782930069844,
       "data": "2025-06-04",
       "peso": 80,
@@ -207,7 +167,7 @@
           "grassi": 96
         }
       ],
-      "peso": 76.3
+      "peso": 80
     }
   ],
   "impostazioni": {
