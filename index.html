@@ -1163,6 +1163,33 @@
         let targetGrassi = 0; // Target giornaliero grassi
         let pesoTarget = 75; // Legge il valore salvato, altrimenti usa 75
 
+        // Funzione helper per calcolare limiti (min e max) e stepSize per gli assi Y in modo coerente
+        function calcolaLimitiAsseY(minVal, maxVal, isCalorie) {
+            if (isCalorie) {
+                const step = 500;
+                // Arrotonda il massimo al multiplo di 500 immediatamente superiore
+                const yMax = Math.ceil((maxVal || 1) / step) * step;
+                return { min: 0, max: yMax, stepSize: step };
+            } else {
+                // Peso
+                const diff = maxVal - minVal;
+                let step = 1;
+                if (diff <= 5) step = 1;
+                else if (diff <= 12) step = 2;
+                else if (diff <= 30) step = 5;
+                else step = 10;
+
+                // Margine minimo di sicurezza per evitare che i grafici tocchino i bordi
+                const adjustedMin = minVal - 0.5;
+                const adjustedMax = maxVal + 0.5;
+
+                const yMin = Math.floor(adjustedMin / step) * step;
+                const yMax = Math.ceil(adjustedMax / step) * step;
+
+                return { min: yMin, max: yMax, stepSize: step };
+            }
+        }
+
         // Plugin per disegnare i semafori dei target macro sopra le barre delle calorie
         const macroStatusLightsPlugin = {
             id: 'macroStatusLights',
@@ -2794,21 +2821,22 @@ IMPORTANTE: Se l'utente non specifica le porzioni, pesi o quantità per un alime
 
                 let pTarget = parseFloat(localStorage.getItem('targetPeso')) || 75;
                 const arrayPesi = ultimiGiorni.map(g => g.peso).filter(p => p !== null && p !== undefined && p > 0);
-                let yMin = undefined;
-                let yMax = undefined;
+                
+                let pesoScales;
                 if (arrayPesi.length > 0) {
                     const tuttiIValori = [...arrayPesi, pTarget];
-                    const minReale = Math.min(...tuttiIValori);
-                    const maxReale = Math.max(...tuttiIValori);
-                    yMin = Math.round(minReale * 0.98);
-                    yMax = Math.round(maxReale * 1.02);
+                    pesoScales = calcolaLimitiAsseY(Math.min(...tuttiIValori), Math.max(...tuttiIValori), false);
                 } else {
-                    yMin = pTarget - 2;
-                    yMax = pTarget + 2;
+                    pesoScales = calcolaLimitiAsseY(pTarget - 2, pTarget + 2, false);
                 }
+                const yMin = pesoScales.min;
+                const yMax = pesoScales.max;
+                const pesoStepSize = pesoScales.stepSize;
 
                 const maxCal = Math.max(...ultimiGiorni.map(g => g.calorie), targetCalorie);
-                const maxCalValue = Math.round(maxCal * 1.15);
+                const calorieScales = calcolaLimitiAsseY(0, maxCal, true);
+                const maxCalValue = calorieScales.max;
+                const calorieStepSize = calorieScales.stepSize;
 
                 // 1. Grafico Calorie e Macronutrienti (Top)
                 trendCalorieChart = new Chart(document.getElementById('trendCalorieChart').getContext('2d'), {
@@ -2908,7 +2936,11 @@ IMPORTANTE: Se l'utente non specifica le porzioni, pesi o quantità per un alime
                                 type: 'linear',
                                 position: 'left',
                                 grid: { color: 'rgba(71,85,105,0.08)' },
-                                ticks: { color: '#f43f5e', font: { size: 9, weight: 'bold' } },
+                                ticks: { 
+                                    color: '#f43f5e', 
+                                    font: { size: 9, weight: 'bold' },
+                                    stepSize: calorieStepSize
+                                },
                                 min: 0,
                                 max: maxCalValue,
                                 title: {
@@ -2986,7 +3018,11 @@ IMPORTANTE: Se l'utente non specifica le porzioni, pesi o quantità per un alime
                                 type: 'linear',
                                 position: 'left',
                                 grid: { color: 'rgba(71,85,105,0.08)' },
-                                ticks: { color: '#6366f1', font: { size: 9, weight: 'bold' } },
+                                ticks: { 
+                                    color: '#6366f1', 
+                                    font: { size: 9, weight: 'bold' },
+                                    stepSize: pesoStepSize
+                                },
                                 min: yMin,
                                 max: yMax,
                                 title: {
@@ -3076,21 +3112,22 @@ IMPORTANTE: Se l'utente non specifica le porzioni, pesi o quantità per un alime
 
                 let pTarget = parseFloat(localStorage.getItem('targetPeso')) || 75;
                 const arrayPesi = datiSettimane.map(s => s.peso).filter(p => p !== null && p !== undefined && p > 0);
-                let yMin = undefined;
-                let yMax = undefined;
+                
+                let pesoScales;
                 if (arrayPesi.length > 0) {
                     const tuttiIValori = [...arrayPesi, pTarget];
-                    const minReale = Math.min(...tuttiIValori);
-                    const maxReale = Math.max(...tuttiIValori);
-                    yMin = Math.round(minReale * 0.98);
-                    yMax = Math.round(maxReale * 1.02);
+                    pesoScales = calcolaLimitiAsseY(Math.min(...tuttiIValori), Math.max(...tuttiIValori), false);
                 } else {
-                    yMin = pTarget - 2;
-                    yMax = pTarget + 2;
+                    pesoScales = calcolaLimitiAsseY(pTarget - 2, pTarget + 2, false);
                 }
+                const yMin = pesoScales.min;
+                const yMax = pesoScales.max;
+                const pesoStepSize = pesoScales.stepSize;
 
                 const maxCal = Math.max(...datiSettimane.map(s => s.calorie), targetCalorie);
-                const maxCalValue = Math.round(maxCal * 1.15);
+                const calorieScales = calcolaLimitiAsseY(0, maxCal, true);
+                const maxCalValue = calorieScales.max;
+                const calorieStepSize = calorieScales.stepSize;
 
                 // 1. Grafico Calorie e Macronutrienti (Top)
                 weekCalorieChart = new Chart(document.getElementById('weekCalorieChart').getContext('2d'), {
@@ -3190,7 +3227,11 @@ IMPORTANTE: Se l'utente non specifica le porzioni, pesi o quantità per un alime
                                 type: 'linear',
                                 position: 'left',
                                 grid: { color: 'rgba(71,85,105,0.08)' },
-                                ticks: { color: '#f43f5e', font: { size: 9, weight: 'bold' } },
+                                ticks: { 
+                                    color: '#f43f5e', 
+                                    font: { size: 9, weight: 'bold' },
+                                    stepSize: calorieStepSize
+                                },
                                 min: 0,
                                 max: maxCalValue,
                                 title: {
@@ -3268,7 +3309,11 @@ IMPORTANTE: Se l'utente non specifica le porzioni, pesi o quantità per un alime
                                 type: 'linear',
                                 position: 'left',
                                 grid: { color: 'rgba(71,85,105,0.08)' },
-                                ticks: { color: '#6366f1', font: { size: 9, weight: 'bold' } },
+                                ticks: { 
+                                    color: '#6366f1', 
+                                    font: { size: 9, weight: 'bold' },
+                                    stepSize: pesoStepSize
+                                },
                                 min: yMin,
                                 max: yMax,
                                 title: {
@@ -3444,21 +3489,22 @@ IMPORTANTE: Se l'utente non specifica le porzioni, pesi o quantità per un alime
 
             let pTarget = parseFloat(localStorage.getItem('targetPeso')) || 75;
             const arrayPesi = datiPeso.filter(p => p !== null && p !== undefined && p > 0);
-            let yMin = undefined;
-            let yMax = undefined;
+            
+            let pesoScales;
             if (arrayPesi.length > 0) {
                 const tuttiIValori = [...arrayPesi, pTarget];
-                const minReale = Math.min(...tuttiIValori);
-                const maxReale = Math.max(...tuttiIValori);
-                yMin = Math.round(minReale * 0.98);
-                yMax = Math.round(maxReale * 1.02);
+                pesoScales = calcolaLimitiAsseY(Math.min(...tuttiIValori), Math.max(...tuttiIValori), false);
             } else {
-                yMin = pTarget - 2;
-                yMax = pTarget + 2;
+                pesoScales = calcolaLimitiAsseY(pTarget - 2, pTarget + 2, false);
             }
+            const yMin = pesoScales.min;
+            const yMax = pesoScales.max;
+            const pesoStepSize = pesoScales.stepSize;
 
             const maxCal = Math.max(...datiCalorie, targetCalorie);
-            const maxCalValue = Math.round(maxCal * 1.15);
+            const calorieScales = calcolaLimitiAsseY(0, maxCal, true);
+            const maxCalValue = calorieScales.max;
+            const calorieStepSize = calorieScales.stepSize;
 
             // 1. Grafico Calorie e Macronutrienti (Top)
             monthCalorieChart = new Chart(document.getElementById('monthCalorieChart').getContext('2d'), {
@@ -3558,7 +3604,11 @@ IMPORTANTE: Se l'utente non specifica le porzioni, pesi o quantità per un alime
                             type: 'linear',
                             position: 'left',
                             grid: { color: 'rgba(71,85,105,0.08)' },
-                            ticks: { color: '#f43f5e', font: { size: 9, weight: 'bold' } },
+                            ticks: { 
+                                color: '#f43f5e', 
+                                font: { size: 9, weight: 'bold' },
+                                stepSize: calorieStepSize
+                            },
                             min: 0,
                             max: maxCalValue,
                             title: {
@@ -3636,7 +3686,11 @@ IMPORTANTE: Se l'utente non specifica le porzioni, pesi o quantità per un alime
                             type: 'linear',
                             position: 'left',
                             grid: { color: 'rgba(71,85,105,0.08)' },
-                            ticks: { color: '#6366f1', font: { size: 9, weight: 'bold' } },
+                            ticks: { 
+                                color: '#6366f1', 
+                                font: { size: 9, weight: 'bold' },
+                                stepSize: pesoStepSize
+                            },
                             min: yMin,
                             max: yMax,
                             title: {

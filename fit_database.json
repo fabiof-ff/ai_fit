@@ -1,26 +1,6 @@
 {
   "versione": 2,
   "diario": [
-        {
-      "id": 1782833268881,
-      "data": "2026-07-02",
-      "peso": 80,
-      "calorie": 0,
-      "proteine": 0,
-      "carboidrati": 0,
-      "grassi": 0,
-      "pasti": []
-    },
-        {
-      "id": 1782831897993,
-      "data": "2026-06-30",
-      "peso": 80,
-      "calorie": 0,
-      "proteine": 0,
-      "carboidrati": 0,
-      "grassi": 0,
-      "pasti": []
-    },
     {
       "id": 1782566032703,
       "data": "2026-06-27",
@@ -29,6 +9,24 @@
       "carboidrati": 448.3,
       "grassi": 72.1,
       "pasti": [
+        {
+          "id": 1782566075865,
+          "ora": "15:14",
+          "testo": "Pranzo: insalata, Cena: petto di pollo, insalata; Spuntino: mandorle 50gr; Banana",
+          "calorie": 1675,
+          "proteine": 161.8,
+          "carboidrati": 243.5,
+          "grassi": 60.5
+        },
+        {
+          "id": 1782576220572,
+          "ora": "18:03",
+          "testo": "latte",
+          "calorie": 47,
+          "proteine": 3.3,
+          "carboidrati": 4.8,
+          "grassi": 1.6
+        }
       ],
       "peso": 80
     },
@@ -70,25 +68,87 @@
       "carboidrati": 19.5,
       "grassi": 6.1,
       "pasti": [
-       
+        {
+          "id": 1782576621760,
+          "ora": "18:10",
+          "testo": "yogurt",
+          "calorie": 85,
+          "proteine": 6.5,
+          "carboidrati": 9.5,
+          "grassi": 2.5
+        },
+        {
+          "id": 1782576635457,
+          "ora": "18:10",
+          "testo": "latte",
+          "calorie": 100,
+          "proteine": 6.8,
+          "carboidrati": 10,
+          "grassi": 3.6
+        }
       ],
       "peso": null
     },
-
+    {
+      "id": 1782661174613,
+      "data": "2026-06-28",
+      "calorie": 200,
+      "proteine": 50,
+      "carboidrati": 0,
+      "grassi": 0,
+      "pasti": [
+        {
+          "id": 1782662651798,
+          "ora": "18:04",
+          "testo": "50gr proteine",
+          "calorie": 200,
+          "proteine": 50,
+          "carboidrati": 0,
+          "grassi": 0
+        }
+      ],
+      "peso": 78
+    },
     {
       "id": 1782672054307,
       "data": "2026-03-18",
-      "calorie": 1500,
-      "proteine": 125,
-      "carboidrati": 3000,
-      "grassi": 50,
+      "calorie": 100,
+      "proteine": 25,
+      "carboidrati": 0,
+      "grassi": 0,
       "pasti": [
-     
+        {
+          "id": 1782672054307,
+          "ora": "20:40",
+          "testo": "25gr proteine",
+          "calorie": 100,
+          "proteine": 25,
+          "carboidrati": 0,
+          "grassi": 0
+        }
       ],
       "peso": null
     },
-
-
+    {
+      "id": 1782831897993,
+      "data": "2026-06-30",
+      "peso": 80,
+      "calorie": 0,
+      "proteine": 0,
+      "carboidrati": 0,
+      "grassi": 0,
+      "pasti": []
+    },
+    {
+      "id": 1782833268881,
+      "data": "2026-07-02",
+      "peso": 80,
+      "calorie": 0,
+      "proteine": 0,
+      "carboidrati": 0,
+      "grassi": 0,
+      "pasti": []
+    },
     {
       "id": 1782929657611,
       "data": "2026-07-01",
@@ -97,7 +157,15 @@
       "carboidrati": 4.7,
       "grassi": 3.3,
       "pasti": [
-      
+        {
+          "id": 1782929657611,
+          "ora": "20:14",
+          "testo": "latte 100ml",
+          "calorie": 61,
+          "proteine": 3.2,
+          "carboidrati": 4.7,
+          "grassi": 3.3
+        }
       ],
       "peso": null
     },
@@ -120,6 +188,26 @@
       "carboidrati": 0,
       "grassi": 0,
       "pasti": []
+    },
+    {
+      "id": 1783110866368,
+      "data": "2026-07-03",
+      "calorie": 3100,
+      "proteine": 112,
+      "carboidrati": 446,
+      "grassi": 96,
+      "pasti": [
+        {
+          "id": 1783110866368,
+          "ora": "22:34",
+          "testo": "3100 calorie",
+          "calorie": 3100,
+          "proteine": 112,
+          "carboidrati": 446,
+          "grassi": 96
+        }
+      ],
+      "peso": 76.3
     }
   ],
   "impostazioni": {
