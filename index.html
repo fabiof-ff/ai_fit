@@ -1269,7 +1269,7 @@
                     const yProtsTop = y.getPixelForValue(fatCal + carbCal + protCal);
 
                     const badges = [];
-                    // Aggiungiamo i badge solo se lo spessore del segmento è sufficiente (es. >= 8px) per contenere il pallino LED
+                    // Aggiungiamo i badge solo se lo spessore del segmento è sufficiente (es. >= 8px)
                     if (Math.abs(yZero - yFatsTop) >= 8) {
                         badges.push({ val: pctFat, y: (yZero + yFatsTop) / 2 });
                     }
@@ -1280,42 +1280,35 @@
                         badges.push({ val: pctProt, y: (yCarbsTop + yProtsTop) / 2 });
                     }
 
-                    const radius = 9; // Cerchio allargato per ospitare la percentuale
-
                     badges.forEach((badge) => {
-                        let color = '#3b82f6'; // Sotto target (Blu)
+                        let color = '#3b82f6'; // Sotto target (Blu/Azzurro)
+                        let icon = '▼';
                         if (badge.val >= 90 && badge.val <= 110) {
                             color = '#10b981'; // On target (Verde)
+                            icon = '✔';
                         } else if (badge.val > 110) {
                             color = '#ef4444'; // Sopra target (Rosso)
+                            icon = '▲';
                         }
 
-                        // Bagliore/LED Glow
+                        const text = Math.round(badge.val) + '%' + (icon ? ' ' + icon : '');
+
                         ctx.save();
-                        ctx.shadowColor = color;
-                        ctx.shadowBlur = 5;
-
-                        // Cerchio colorato interno
-                        ctx.beginPath();
-                        ctx.arc(xPos, badge.y, radius, 0, 2 * Math.PI);
-                        ctx.fillStyle = color;
-                        ctx.fill();
-
-                        ctx.restore();
-
-                        // Bordo bianco per risaltare sul segmento
-                        ctx.beginPath();
-                        ctx.arc(xPos, badge.y, radius, 0, 2 * Math.PI);
-                        ctx.strokeStyle = '#ffffff';
-                        ctx.lineWidth = 1.2;
-                        ctx.stroke();
-
-                        // Testo percentuale interno
-                        ctx.fillStyle = '#ffffff';
-                        ctx.font = "bold 7px 'Outfit', sans-serif";
+                        ctx.font = "bold 8.5px 'Outfit', sans-serif";
                         ctx.textAlign = 'center';
                         ctx.textBaseline = 'middle';
-                        ctx.fillText(Math.round(badge.val) + '%', xPos, badge.y);
+
+                        // Bordo bianco per risaltare sul segmento (con outline stroke)
+                        ctx.strokeStyle = '#ffffff';
+                        ctx.lineWidth = 3;
+                        ctx.lineJoin = 'round';
+                        ctx.strokeText(text, xPos, badge.y);
+
+                        // Testo colorato sopra
+                        ctx.fillStyle = color;
+                        ctx.fillText(text, xPos, badge.y);
+
+                        ctx.restore();
                     });
                 });
             }
@@ -2087,10 +2080,10 @@
 
         function salvaPesoDelGiorno() {
             const oggiStr = ottieniDataOggi();
-            const pesoVal = parseFloat(document.getElementById('inputPeso').value) || null;
+            const pesoVal = parseFloat(document.getElementById('input-peso-valore')?.value) || null;
             let db = JSON.parse(localStorage.getItem('nutriDB')) || [];
 
-            let recordOggi = db.find(x => x.data === dataPasto);
+            let recordOggi = db.find(x => x.data === oggiStr);
             if (recordOggi) {
                 recordOggi.peso = pesoVal;
             } else {
@@ -2498,7 +2491,7 @@ IMPORTANTE: Se l'utente non specifica le porzioni, pesi o quantità per un alime
                     carboidrati: nuovoPasto.carboidrati,
                     grassi: nuovoPasto.grassi,
                     pasti: [nuovoPasto],
-                    peso: parseFloat(document.getElementById('inputPeso')?.value) || null
+                    peso: parseFloat(document.getElementById('input-peso-valore')?.value) || null
                 });
             }
 
@@ -3030,7 +3023,7 @@ IMPORTANTE: Se l'utente non specifica le porzioni, pesi o quantità per un alime
                             },
                             {
                                 type: 'line',
-                                label: 'Target Calorie',
+                                label: currentLang === 'en' ? 'Calories Target' : 'Target Calorie',
                                 data: etichetteGiorni.map(() => targetCalorie),
                                 borderColor: '#f43f5e',
                                 borderWidth: 1.5,
@@ -3126,7 +3119,7 @@ IMPORTANTE: Se l'utente non specifica le porzioni, pesi o quantità per un alime
                             },
                             {
                                 type: 'line',
-                                label: 'Obiettivo Peso',
+                                label: currentLang === 'en' ? 'Weight Target' : 'Obiettivo Peso',
                                 data: etichetteGiorni.map(() => pTarget),
                                 borderColor: '#6366f1',
                                 borderWidth: 1.5,
@@ -3221,12 +3214,12 @@ IMPORTANTE: Se l'utente non specifica le porzioni, pesi o quantità per un alime
                     const fineStr = formattaData(fineSettimana);
                     const recordSettimanali = db.filter(x => x.data >= inizioStr && x.data <= fineStr);
                     const recordAttivi = recordSettimanali.filter(r => r.calorie > 0 || r.proteine > 0 || r.carboidrati > 0 || r.grassi > 0);
-                    const recordConPeso = recordSettimanali.filter(r => r.peso && r.peso > 0);
+                    const recordConPeso = recordSettimanali.filter(r => r.peso !== null && r.peso !== undefined && parseFloat(r.peso) > 0);
                     const mediaC = recordAttivi.length > 0 ? recordAttivi.reduce((a, b) => a + (b.calorie || 0), 0) / recordAttivi.length : 0;
                     const mediaP = recordAttivi.length > 0 ? recordAttivi.reduce((a, b) => a + (b.proteine || 0), 0) / recordAttivi.length : 0;
                     const mediaCb = recordAttivi.length > 0 ? recordAttivi.reduce((a, b) => a + (b.carboidrati || 0), 0) / recordAttivi.length : 0;
                     const mediaG = recordAttivi.length > 0 ? recordAttivi.reduce((a, b) => a + (b.grassi || 0), 0) / recordAttivi.length : 0;
-                    const mediaPeso = recordConPeso.length > 0 ? recordConPeso.reduce((a, b) => a + b.peso, 0) / recordConPeso.length : null;
+                    const mediaPeso = recordConPeso.length > 0 ? recordConPeso.reduce((a, b) => a + parseFloat(b.peso), 0) / recordConPeso.length : null;
                     datiSettimane.push({ calorie: mediaC, proteine: mediaP, carboidrati: mediaCb, grassi: mediaG, peso: mediaPeso });
                 }
                 const settimaneAttive = datiSettimane.filter(s => s.calorie > 0 || s.proteine > 0);
@@ -3321,7 +3314,7 @@ IMPORTANTE: Se l'utente non specifica le porzioni, pesi o quantità per un alime
                             },
                             {
                                 type: 'line',
-                                label: 'Target Calorie',
+                                label: currentLang === 'en' ? 'Calories Target' : 'Target Calorie',
                                 data: etichetteSettimane.map(() => targetCalorie),
                                 borderColor: '#f43f5e',
                                 borderWidth: 1.5,
@@ -3417,7 +3410,7 @@ IMPORTANTE: Se l'utente non specifica le porzioni, pesi o quantità per un alime
                             },
                             {
                                 type: 'line',
-                                label: 'Obiettivo Peso',
+                                label: currentLang === 'en' ? 'Weight Target' : 'Obiettivo Peso',
                                 data: etichetteSettimane.map(() => pTarget),
                                 borderColor: '#6366f1',
                                 borderWidth: 1.5,
@@ -3543,8 +3536,9 @@ IMPORTANTE: Se l'utente non specifica le porzioni, pesi o quantità per un alime
                         grouped[key].daysWithCal += 1;
                     }
 
-                    if (entry.peso && entry.peso > 0) {
-                        grouped[key].pesoSum += entry.peso;
+                    const pVal = parseFloat(entry.peso);
+                    if (!isNaN(pVal) && pVal > 0) {
+                        grouped[key].pesoSum += pVal;
                         grouped[key].daysWithPeso += 1;
                     }
                 }
@@ -3698,7 +3692,7 @@ IMPORTANTE: Se l'utente non specifica le porzioni, pesi o quantità per un alime
                         },
                         {
                             type: 'line',
-                            label: 'Target Calorie',
+                            label: currentLang === 'en' ? 'Calories Target' : 'Target Calorie',
                             data: labels.map(() => targetCalorie),
                             borderColor: '#f43f5e',
                             borderWidth: 1.5,
@@ -3794,7 +3788,7 @@ IMPORTANTE: Se l'utente non specifica le porzioni, pesi o quantità per un alime
                         },
                         {
                             type: 'line',
-                            label: 'Obiettivo Peso',
+                            label: currentLang === 'en' ? 'Weight Target' : 'Obiettivo Peso',
                             data: labels.map(() => pTarget),
                             borderColor: '#6366f1',
                             borderWidth: 1.5,
