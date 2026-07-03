@@ -142,7 +142,7 @@
     {
       "id": 1782833268881,
       "data": "2026-07-02",
-      "peso": 80,
+      "peso": 77,
       "calorie": 0,
       "proteine": 0,
       "carboidrati": 0,
@@ -218,8 +218,8 @@
     "targetPeso": "85",
     "profile_peso": "85",
     "profile_altezza": "191",
-    "profile_attivita": "gym 3 times a week",
-    "profile_obiettivo": "increase muscle mass",
+    "profile_attivita": "palestra 3 volte la setitmana",
+    "profile_obiettivo": "aumentare massa muscolare",
     "profile_peso_target": "85",
     "profile_sesso": "uomo",
     "profile_eta": "43"

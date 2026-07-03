@@ -97,6 +97,18 @@
             transition: transform 0.25s ease, opacity 0.25s ease;
         }
 
+        #modalWeightEdit {
+            transition: opacity 0.2s;
+        }
+
+        #modalWeightEdit.hidden {
+            display: none;
+        }
+
+        #modalWeightInner {
+            transition: transform 0.25s ease, opacity 0.25s ease;
+        }
+
         /* Import input nascosto */
         #importInput {
             display: none;
@@ -413,6 +425,38 @@
                 <i data-lucide="sparkles" class="w-4 h-4"></i> <span data-i18n="btn_recalculate_save">Ricalcola e
                     Salva</span>
             </button>
+        </div>
+    </div>
+
+    <div id="modalWeightEdit" class="hidden fixed inset-0 z-50 bg-black/70 flex items-end justify-center">
+        <div id="modalWeightInner"
+            class="bg-slate-800 w-full max-w-md rounded-t-3xl border-t border-slate-700 p-5 pb-8 shadow-2xl translate-y-[100%] opacity-0">
+            <div class="flex items-center justify-between mb-4">
+                <h3 class="text-base font-bold text-slate-200 flex items-center gap-2">
+                    <i data-lucide="scale" class="w-4 h-4 text-indigo-400"></i>
+                    <span id="weightModalTitle">Modifica Peso</span>
+                </h3>
+                <button onclick="chiudiModalPeso()"
+                    class="text-slate-500 hover:text-slate-200 p-1.5 rounded-xl bg-slate-700/50">
+                    <i data-lucide="x" class="w-4 h-4"></i>
+                </button>
+            </div>
+
+            <div class="mb-4">
+                <label id="weightModalLabel" class="text-[11px] font-semibold text-slate-400 uppercase tracking-wider block mb-1">Peso Corporeo (kg)</label>
+                <input type="number" id="weightModalInput" step="0.1" placeholder="es. 74.5"
+                    class="w-full bg-slate-900 border border-slate-700 rounded-xl px-2.5 py-2.5 text-[13px] focus:outline-none focus:ring-2 focus:ring-indigo-500 text-slate-200">
+                <p id="weightModalHint" class="text-[10px] text-slate-500 mt-1.5">Lascia vuoto per rimuovere il peso.</p>
+            </div>
+
+            <div class="flex gap-2">
+                <button onclick="chiudiModalPeso()" class="flex-1 bg-slate-700 hover:bg-slate-600 text-slate-200 font-bold py-3 rounded-xl transition text-sm flex items-center justify-center gap-2" data-i18n="lbl_cancel">
+                    Annulla
+                </button>
+                <button onclick="salvaModalPeso()" class="flex-1 bg-indigo-600 hover:bg-indigo-500 text-white font-bold py-3 rounded-xl transition text-sm flex items-center justify-center gap-2">
+                    <i data-lucide="save" class="w-4 h-4"></i> <span data-i18n="lbl_save">Salva</span>
+                </button>
+            </div>
         </div>
     </div>
 
@@ -1147,6 +1191,7 @@
         let trendView = 'giorni'; // 'giorni' o 'settimane'
         let ultimaAnalisi = null;
         let editingId = null; // ID entry in modifica
+        let editingGiornoId = null; // ID giorno per modifica peso
 
         let trendCalorieChart = null;
         let trendPesoChart = null;
@@ -2530,7 +2575,10 @@ IMPORTANTE: Se l'utente non specifica le porzioni, pesi o quantità per un alime
             <div class="flex justify-between items-center mb-3 border-b border-slate-700/40 pb-2.5">
                 <div class="flex items-center gap-2">
                     <span class="text-xs font-bold text-slate-300">${giorno.data}</span>
-                    ${giorno.peso ? `<span class="text-[10px] bg-indigo-500/10 text-indigo-300 border border-indigo-500/20 px-1.5 py-0.5 rounded flex items-center gap-1"><i data-lucide="scale" class="w-3 h-3"></i> ${giorno.peso} kg</span>` : ''}
+                    ${giorno.peso 
+                        ? `<button onclick="modificaPesoDelGiorno(${giorno.id})" class="text-[10px] bg-indigo-500/10 hover:bg-indigo-500/20 text-indigo-300 border border-indigo-500/20 px-1.5 py-0.5 rounded flex items-center gap-1 cursor-pointer transition" title="${currentLang === 'en' ? 'Edit weight' : 'Modifica peso'}"><i data-lucide="scale" class="w-3 h-3"></i> ${giorno.peso} kg <i data-lucide="pencil" class="w-2 h-2 opacity-60"></i></button>` 
+                        : `<button onclick="modificaPesoDelGiorno(${giorno.id})" class="text-[10px] bg-slate-700/30 hover:bg-slate-700/60 text-slate-400 border border-slate-700/30 px-1.5 py-0.5 rounded flex items-center gap-1 cursor-pointer transition" title="${currentLang === 'en' ? 'Add weight' : 'Aggiungi peso'}"><i data-lucide="plus" class="w-3 h-3"></i> ${currentLang === 'en' ? 'Add weight' : 'Aggiungi peso'}</button>`
+                    }
                 </div>
                 <button onclick="eliminaInteroGiorno(${giorno.id || 0})" class="text-slate-500 hover:text-rose-400 transition p-1" title="Elimina intero giorno">
                     <i data-lucide="calendar-x" class="w-4 h-4"></i>
@@ -2548,6 +2596,108 @@ IMPORTANTE: Se l'utente non specifica le porzioni, pesi o quantità per un alime
         // ================================================================
         // ELIMINAZIONI ED EDITING MODAL STORICO
         // ================================================================
+        function modificaPesoDelGiorno(giornoId) {
+            editingGiornoId = giornoId;
+            const db = JSON.parse(localStorage.getItem('nutriDB')) || [];
+            const giorno = db.find(g => g.id === giornoId);
+            if (!giorno) return;
+
+            // Imposta i testi in base alla lingua
+            const titleEl = document.getElementById('weightModalTitle');
+            if (titleEl) titleEl.innerText = currentLang === 'en' ? "Edit Weight" : "Modifica Peso";
+            const labelEl = document.getElementById('weightModalLabel');
+            if (labelEl) labelEl.innerText = currentLang === 'en' ? `Weight for ${giorno.data} (kg)` : `Peso per il giorno ${giorno.data} (kg)`;
+            const hintEl = document.getElementById('weightModalHint');
+            if (hintEl) hintEl.innerText = currentLang === 'en' ? "Leave empty to remove the weight." : "Lascia vuoto per rimuovere il peso.";
+
+            const inputEl = document.getElementById('weightModalInput');
+            if (inputEl) {
+                inputEl.value = (giorno.peso !== undefined && giorno.peso !== null) ? giorno.peso : "";
+            }
+
+            const m = document.getElementById('modalWeightEdit');
+            m.classList.remove('hidden');
+            setTimeout(() => {
+                const inner = document.getElementById('modalWeightInner');
+                inner.style.transform = "translateY(0)";
+                inner.style.opacity = "1";
+            }, 50);
+            if (typeof lucide !== 'undefined') lucide.createIcons();
+        }
+
+        function chiudiModalPeso() {
+            const inner = document.getElementById('modalWeightInner');
+            inner.style.transform = "translateY(100%)";
+            inner.style.opacity = "0";
+            setTimeout(() => {
+                document.getElementById('modalWeightEdit').classList.add('hidden');
+                editingGiornoId = null;
+            }, 200);
+        }
+
+        async function salvaModalPeso() {
+            if (!editingGiornoId) return;
+            let db = JSON.parse(localStorage.getItem('nutriDB')) || [];
+            let giorno = db.find(g => g.id === editingGiornoId);
+            if (!giorno) {
+                chiudiModalPeso();
+                return;
+            }
+
+            const inputVal = document.getElementById('weightModalInput').value.trim();
+
+            if (inputVal === "") {
+                // Rimuove il peso
+                delete giorno.peso;
+                localStorage.setItem('nutriDB', JSON.stringify(db));
+                chiudiModalPeso();
+                await customAlert(
+                    currentLang === 'en' ? "Weight Removed" : "Peso rimosso", 
+                    currentLang === 'en' ? "Weight has been successfully removed for this day." : "Il peso è stato rimosso correttamente per questo giorno.", 
+                    true
+                );
+                renderStorico();
+                // Se i pannelli Trend sono attivi, li aggiorna
+                if (document.getElementById('panel-trend').classList.contains('active')) {
+                    if (trendView === 'mesi') {
+                        renderTrendMensile();
+                    } else {
+                        renderTrend();
+                    }
+                }
+                caricaPesoDelGiorno();
+            } else {
+                const nuovoPeso = parseFloat(inputVal);
+                if (isNaN(nuovoPeso) || nuovoPeso <= 0) {
+                    await customAlert(
+                        currentLang === 'en' ? "Invalid Value" : "Valore non valido", 
+                        currentLang === 'en' ? "Please enter a valid weight number." : "Inserisci un numero di peso valido."
+                    );
+                    return;
+                }
+
+                // Salva il peso
+                giorno.peso = parseFloat(nuovoPeso.toFixed(1));
+                localStorage.setItem('nutriDB', JSON.stringify(db));
+                chiudiModalPeso();
+                await customAlert(
+                    currentLang === 'en' ? "Weight Saved" : "Peso salvato", 
+                    currentLang === 'en' ? `Weight updated to ${giorno.peso} kg.` : `Peso aggiornato a ${giorno.peso} kg.`, 
+                    true
+                );
+                renderStorico();
+                // Se i pannelli Trend sono attivi, li aggiorna
+                if (document.getElementById('panel-trend').classList.contains('active')) {
+                    if (trendView === 'mesi') {
+                        renderTrendMensile();
+                    } else {
+                        renderTrend();
+                    }
+                }
+                caricaPesoDelGiorno();
+            }
+        }
+
         async function eliminaInteroGiorno(giornoId) {
             const procedi = await customConfirm(
                 currentLang === 'en' ? "Delete Day" : "Elimina Giornata",
