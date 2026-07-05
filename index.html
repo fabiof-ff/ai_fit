@@ -16,6 +16,7 @@
             font-size: 110% !important;
         }
 
+        .text-\[7px\] { font-size: 7.7px !important; }
         .text-\[8px\] { font-size: 8.8px !important; }
         .text-\[9px\] { font-size: 9.9px !important; }
         .text-\[10px\] { font-size: 11px !important; }
@@ -764,50 +765,50 @@
                 </div>
                 <div class="grid grid-cols-4 gap-1.5">
 
-                    <div class="bg-slate-900/50 rounded-xl p-2 text-center flex flex-col items-center justify-between min-h-[95px]">
+                    <div class="bg-slate-900/50 rounded-xl p-2 text-center flex flex-col items-center justify-between min-h-[105px]">
                         <p class="text-[9px] text-slate-400 uppercase font-semibold mb-1"
                             data-i18n="label_calorie_uppercase">Calorie</p>
-                        <div class="relative w-14 h-14 flex justify-center items-center">
+                        <div class="relative w-16 h-16 flex justify-center items-center">
                             <canvas id="oggiCalorie"></canvas>
                             <div class="absolute inset-0 flex flex-col items-center justify-center pointer-events-none">
-                                <span class="text-[8px] font-bold text-slate-200" id="valCalorie">—</span>
-                                <span class="text-[8px] font-bold mt-0.5" id="valCaloriePercent">—</span>
+                                <span class="text-[8px] font-bold" id="valCaloriePercent">—</span>
+                                <span class="text-[7px] font-bold text-slate-200 mt-0.5" id="valCalorie">—</span>
                             </div>
                         </div>
                     </div>
 
-                    <div class="bg-slate-900/50 rounded-xl p-2 text-center flex flex-col items-center justify-between min-h-[95px]">
+                    <div class="bg-slate-900/50 rounded-xl p-2 text-center flex flex-col items-center justify-between min-h-[105px]">
                         <p class="text-[9px] text-slate-400 uppercase font-semibold mb-1"
                             data-i18n="label_proteine_uppercase">Proteine</p>
-                        <div class="relative w-14 h-14 flex justify-center items-center">
+                        <div class="relative w-16 h-16 flex justify-center items-center">
                             <canvas id="oggiProteine"></canvas>
                             <div class="absolute inset-0 flex flex-col items-center justify-center pointer-events-none">
-                                <span class="text-[8px] font-bold text-slate-200" id="valProteine">—</span>
-                                <span class="text-[8px] font-bold mt-0.5" id="valProteinePercent">—</span>
+                                <span class="text-[8px] font-bold" id="valProteinePercent">—</span>
+                                <span class="text-[7px] font-bold text-slate-200 mt-0.5" id="valProteine">—</span>
                             </div>
                         </div>
                     </div>
 
-                    <div class="bg-slate-900/50 rounded-xl p-2 text-center flex flex-col items-center justify-between min-h-[95px]">
+                    <div class="bg-slate-900/50 rounded-xl p-2 text-center flex flex-col items-center justify-between min-h-[105px]">
                         <p class="text-[9px] text-slate-400 uppercase font-semibold mb-1"
                             data-i18n="label_carbo_uppercase">Carbo</p>
-                        <div class="relative w-14 h-14 flex justify-center items-center">
+                        <div class="relative w-16 h-16 flex justify-center items-center">
                             <canvas id="oggiCarbo"></canvas>
                             <div class="absolute inset-0 flex flex-col items-center justify-center pointer-events-none">
-                                <span class="text-[8px] font-bold text-slate-200" id="valCarbo">—</span>
-                                <span class="text-[8px] font-bold mt-0.5" id="valCarboPercent">—</span>
+                                <span class="text-[8px] font-bold" id="valCarboPercent">—</span>
+                                <span class="text-[7px] font-bold text-slate-200 mt-0.5" id="valCarbo">—</span>
                             </div>
                         </div>
                     </div>
 
-                    <div class="bg-slate-900/50 rounded-xl p-2 text-center flex flex-col items-center justify-between min-h-[95px]">
+                    <div class="bg-slate-900/50 rounded-xl p-2 text-center flex flex-col items-center justify-between min-h-[105px]">
                         <p class="text-[9px] text-slate-400 uppercase font-semibold mb-1"
                             data-i18n="label_grassi_uppercase">Grassi</p>
-                        <div class="relative w-14 h-14 flex justify-center items-center">
+                        <div class="relative w-16 h-16 flex justify-center items-center">
                             <canvas id="oggiGrassi"></canvas>
                             <div class="absolute inset-0 flex flex-col items-center justify-center pointer-events-none">
-                                <span class="text-[8px] font-bold text-slate-200" id="valGrassi">—</span>
-                                <span class="text-[8px] font-bold mt-0.5" id="valGrassiPercent">—</span>
+                                <span class="text-[8px] font-bold" id="valGrassiPercent">—</span>
+                                <span class="text-[7px] font-bold text-slate-200 mt-0.5" id="valGrassi">—</span>
                             </div>
                         </div>
                     </div>
@@ -1002,50 +1003,50 @@
                 data-i18n="title_media_complessiva">Media complessiva</p>
             <div class="grid grid-cols-4 gap-1.5">
 
-                <div class="bg-slate-800/60 rounded-xl p-2 text-center flex flex-col items-center justify-between min-h-[95px]">
+                <div class="bg-slate-800/60 rounded-xl p-2 text-center flex flex-col items-center justify-between min-h-[105px]">
                     <p class="text-[9px] text-slate-500 uppercase font-semibold mb-1"
                         data-i18n="label_calorie_uppercase">Calorie</p>
-                    <div class="relative w-14 h-14 flex justify-center items-center">
+                    <div class="relative w-16 h-16 flex justify-center items-center">
                         <canvas id="gaugeCalorie"></canvas>
                         <div class="absolute inset-0 flex flex-col items-center justify-center pointer-events-none">
-                            <span class="text-[8px] font-bold text-slate-200" id="mediaCalorie">—</span>
-                            <span class="text-[8px] font-bold mt-0.5" id="mediaCaloriePercent">—</span>
+                            <span class="text-[8px] font-bold" id="mediaCaloriePercent">—</span>
+                            <span class="text-[7px] font-bold text-slate-200 mt-0.5" id="mediaCalorie">—</span>
                         </div>
                     </div>
                 </div>
 
-                <div class="bg-slate-800/60 rounded-xl p-2 text-center flex flex-col items-center justify-between min-h-[95px]">
+                <div class="bg-slate-800/60 rounded-xl p-2 text-center flex flex-col items-center justify-between min-h-[105px]">
                     <p class="text-[9px] text-slate-500 uppercase font-semibold mb-1"
                         data-i18n="label_proteine_uppercase">Proteine</p>
-                    <div class="relative w-14 h-14 flex justify-center items-center">
+                    <div class="relative w-16 h-16 flex justify-center items-center">
                         <canvas id="gaugeProteine"></canvas>
                         <div class="absolute inset-0 flex flex-col items-center justify-center pointer-events-none">
-                            <span class="text-[8px] font-bold text-slate-200" id="mediaProteine">—</span>
-                            <span class="text-[8px] font-bold mt-0.5" id="mediaProteinePercent">—</span>
+                            <span class="text-[8px] font-bold" id="mediaProteinePercent">—</span>
+                            <span class="text-[7px] font-bold text-slate-200 mt-0.5" id="mediaProteine">—</span>
                         </div>
                     </div>
                 </div>
 
-                <div class="bg-slate-800/60 rounded-xl p-2 text-center flex flex-col items-center justify-between min-h-[95px]">
+                <div class="bg-slate-800/60 rounded-xl p-2 text-center flex flex-col items-center justify-between min-h-[105px]">
                     <p class="text-[9px] text-slate-500 uppercase font-semibold mb-1"
                         data-i18n="label_carbo_uppercase">Carbo</p>
-                    <div class="relative w-14 h-14 flex justify-center items-center">
+                    <div class="relative w-16 h-16 flex justify-center items-center">
                         <canvas id="gaugeCarbo"></canvas>
                         <div class="absolute inset-0 flex flex-col items-center justify-center pointer-events-none">
-                            <span class="text-[8px] font-bold text-slate-200" id="mediaCarbo">—</span>
-                            <span class="text-[8px] font-bold mt-0.5" id="mediaCarboPercent">—</span>
+                            <span class="text-[8px] font-bold" id="mediaCarboPercent">—</span>
+                            <span class="text-[7px] font-bold text-slate-200 mt-0.5" id="mediaCarbo">—</span>
                         </div>
                     </div>
                 </div>
 
-                <div class="bg-slate-800/60 rounded-xl p-2 text-center flex flex-col items-center justify-between min-h-[95px]">
+                <div class="bg-slate-800/60 rounded-xl p-2 text-center flex flex-col items-center justify-between min-h-[105px]">
                     <p class="text-[9px] text-slate-500 uppercase font-semibold mb-1"
                         data-i18n="label_grassi_uppercase">Grassi</p>
-                    <div class="relative w-14 h-14 flex justify-center items-center">
+                    <div class="relative w-16 h-16 flex justify-center items-center">
                         <canvas id="gaugeGrassi"></canvas>
                         <div class="absolute inset-0 flex flex-col items-center justify-center pointer-events-none">
-                            <span class="text-[8px] font-bold text-slate-200" id="mediaGrassi">—</span>
-                            <span class="text-[8px] font-bold mt-0.5" id="mediaGrassiPercent">—</span>
+                            <span class="text-[8px] font-bold" id="mediaGrassiPercent">—</span>
+                            <span class="text-[7px] font-bold text-slate-200 mt-0.5" id="mediaGrassi">—</span>
                         </div>
                     </div>
                 </div>
@@ -2383,36 +2384,48 @@
                 const carb = Math.round(recordOggi.carboidrati || 0);
                 const fat = Math.round(recordOggi.grassi || 0);
 
+                const isLight = document.body.classList.contains('light-theme');
+                const percentColor = isLight ? '#000000' : '#ffffff';
+                const valuesColor = isLight ? '#cbd5e1' : '#94a3b8';
+
                 // Calorie
-                document.getElementById('valCalorie').innerText = cal + '/' + targetCalorie;
+                const valCalEl = document.getElementById('valCalorie');
+                valCalEl.innerText = cal + '/' + targetCalorie;
+                valCalEl.style.color = valuesColor;
                 const pCal = targetCalorie > 0 ? Math.round((cal / targetCalorie) * 100) : 0;
                 const pctCalEl = document.getElementById('valCaloriePercent');
-                pctCalEl.innerText = pCal + '%';
-                pctCalEl.style.color = cal > targetCalorie ? '#ef4444' : '#10b981';
+                pctCalEl.innerHTML = pCal + '%' + ottieniIndicatoreTargetHtml(cal, targetCalorie);
+                pctCalEl.style.color = percentColor;
                 aggiornaGauge('oggiCalorieChart', 'oggiCalorie', cal, targetCalorie, 'rgba(244, 63, 94, 0.85)', 'rgba(136, 19, 55, 0.85)', ' kcal');
 
                 // Proteine
-                document.getElementById('valProteine').innerText = prot + '/' + targetProteine;
+                const valProtEl = document.getElementById('valProteine');
+                valProtEl.innerText = prot + '/' + targetProteine;
+                valProtEl.style.color = valuesColor;
                 const pProt = targetProteine > 0 ? Math.round((prot / targetProteine) * 100) : 0;
                 const pctProtEl = document.getElementById('valProteinePercent');
-                pctProtEl.innerText = pProt + '%';
-                pctProtEl.style.color = prot > targetProteine ? '#3b82f6' : '#10b981';
+                pctProtEl.innerHTML = pProt + '%' + ottieniIndicatoreTargetHtml(prot, targetProteine);
+                pctProtEl.style.color = percentColor;
                 aggiornaGauge('oggiProteineChart', 'oggiProteine', prot, targetProteine, 'rgba(59, 130, 246, 0.85)', 'rgba(30, 58, 138, 0.85)', 'g');
 
                 // Carboidrati
-                document.getElementById('valCarbo').innerText = carb + '/' + targetCarbo;
+                const valCarbEl = document.getElementById('valCarbo');
+                valCarbEl.innerText = carb + '/' + targetCarbo;
+                valCarbEl.style.color = valuesColor;
                 const pCarb = targetCarbo > 0 ? Math.round((carb / targetCarbo) * 100) : 0;
                 const pctCarbEl = document.getElementById('valCarboPercent');
-                pctCarbEl.innerText = pCarb + '%';
-                pctCarbEl.style.color = '#10b981';
+                pctCarbEl.innerHTML = pCarb + '%' + ottieniIndicatoreTargetHtml(carb, targetCarbo);
+                pctCarbEl.style.color = percentColor;
                 aggiornaGauge('oggiCarboChart', 'oggiCarbo', carb, targetCarbo, 'rgba(16, 185, 129, 0.85)', 'rgba(6, 78, 59, 0.85)', 'g');
 
                 // Grassi
-                document.getElementById('valGrassi').innerText = fat + '/' + targetGrassi;
+                const valFatEl = document.getElementById('valGrassi');
+                valFatEl.innerText = fat + '/' + targetGrassi;
+                valFatEl.style.color = valuesColor;
                 const pFat = targetGrassi > 0 ? Math.round((fat / targetGrassi) * 100) : 0;
                 const pctFatEl = document.getElementById('valGrassiPercent');
-                pctFatEl.innerText = pFat + '%';
-                pctFatEl.style.color = fat > targetGrassi ? '#f59e0b' : '#10b981';
+                pctFatEl.innerHTML = pFat + '%' + ottieniIndicatoreTargetHtml(fat, targetGrassi);
+                pctFatEl.style.color = percentColor;
                 aggiornaGauge('oggiGrassiChart', 'oggiGrassi', fat, targetGrassi, 'rgba(245, 158, 11, 0.85)', 'rgba(120, 53, 15, 0.85)', 'g');
             } else {
                 document.getElementById('boxTotaleGiorno').classList.add('hidden');
@@ -3234,13 +3247,31 @@ IMPORTANTE: Se l'utente non specifica le porzioni, pesi o quantità per un alime
             return chartInstance;
         }
 
+        function ottieniIndicatoreTargetHtml(attuale, target) {
+            if (!target || target <= 0) return "";
+            const ratio = attuale / target;
+            if (ratio >= 0.9 && ratio <= 1.1) {
+                return ' <span style="color: #10b981; font-weight: bold;">✓</span>';
+            } else if (ratio > 1.1) {
+                return ' <span style="color: #ef4444; font-weight: bold;">▲</span>';
+            } else {
+                return ' <span style="color: #3b82f6; font-weight: bold;">▼</span>';
+            }
+        }
+
         function aggiornaGauges(avgCal, avgProt, avgCarb, avgFat) {
+            const isLight = document.body.classList.contains('light-theme');
+            const percentColor = isLight ? '#000000' : '#ffffff';
+            const valuesColor = isLight ? '#cbd5e1' : '#94a3b8';
+
             if (avgCal !== null && avgCal !== undefined) {
-                document.getElementById('mediaCalorie').innerText = avgCal + '/' + targetCalorie;
+                const valEl = document.getElementById('mediaCalorie');
+                valEl.innerText = avgCal + '/' + targetCalorie;
+                valEl.style.color = valuesColor;
                 const percent = targetCalorie > 0 ? Math.round((avgCal / targetCalorie) * 100) : 0;
                 const pctEl = document.getElementById('mediaCaloriePercent');
-                pctEl.innerText = percent + '%';
-                pctEl.style.color = avgCal > targetCalorie ? '#ef4444' : '#10b981';
+                pctEl.innerHTML = percent + '%' + ottieniIndicatoreTargetHtml(avgCal, targetCalorie);
+                pctEl.style.color = percentColor;
                 aggiornaGauge('gaugeCalorieChart', 'gaugeCalorie', avgCal, targetCalorie, 'rgba(244, 63, 94, 0.85)', 'rgba(136, 19, 55, 0.85)', ' kcal');
             } else {
                 document.getElementById('mediaCalorie').innerText = '—';
@@ -3249,11 +3280,13 @@ IMPORTANTE: Se l'utente non specifica le porzioni, pesi o quantità per un alime
             }
 
             if (avgProt !== null && avgProt !== undefined) {
-                document.getElementById('mediaProteine').innerText = avgProt + '/' + targetProteine;
+                const valEl = document.getElementById('mediaProteine');
+                valEl.innerText = avgProt + '/' + targetProteine;
+                valEl.style.color = valuesColor;
                 const percent = targetProteine > 0 ? Math.round((avgProt / targetProteine) * 100) : 0;
                 const pctEl = document.getElementById('mediaProteinePercent');
-                pctEl.innerText = percent + '%';
-                pctEl.style.color = avgProt > targetProteine ? '#3b82f6' : '#10b981';
+                pctEl.innerHTML = percent + '%' + ottieniIndicatoreTargetHtml(avgProt, targetProteine);
+                pctEl.style.color = percentColor;
                 aggiornaGauge('gaugeProteineChart', 'gaugeProteine', avgProt, targetProteine, 'rgba(59, 130, 246, 0.85)', 'rgba(30, 58, 138, 0.85)', 'g');
             } else {
                 document.getElementById('mediaProteine').innerText = '—';
@@ -3262,11 +3295,13 @@ IMPORTANTE: Se l'utente non specifica le porzioni, pesi o quantità per un alime
             }
 
             if (avgCarb !== null && avgCarb !== undefined) {
-                document.getElementById('mediaCarbo').innerText = avgCarb + '/' + targetCarbo;
+                const valEl = document.getElementById('mediaCarbo');
+                valEl.innerText = avgCarb + '/' + targetCarbo;
+                valEl.style.color = valuesColor;
                 const percent = targetCarbo > 0 ? Math.round((avgCarb / targetCarbo) * 100) : 0;
                 const pctEl = document.getElementById('mediaCarboPercent');
-                pctEl.innerText = percent + '%';
-                pctEl.style.color = avgCarb > targetCarbo ? '#10b981' : '#10b981';
+                pctEl.innerHTML = percent + '%' + ottieniIndicatoreTargetHtml(avgCarb, targetCarbo);
+                pctEl.style.color = percentColor;
                 aggiornaGauge('gaugeCarboChart', 'gaugeCarbo', avgCarb, targetCarbo, 'rgba(16, 185, 129, 0.85)', 'rgba(6, 78, 59, 0.85)', 'g');
             } else {
                 document.getElementById('mediaCarbo').innerText = '—';
@@ -3275,11 +3310,13 @@ IMPORTANTE: Se l'utente non specifica le porzioni, pesi o quantità per un alime
             }
 
             if (avgFat !== null && avgFat !== undefined) {
-                document.getElementById('mediaGrassi').innerText = avgFat + '/' + targetGrassi;
+                const valEl = document.getElementById('mediaGrassi');
+                valEl.innerText = avgFat + '/' + targetGrassi;
+                valEl.style.color = valuesColor;
                 const percent = targetGrassi > 0 ? Math.round((avgFat / targetGrassi) * 100) : 0;
                 const pctEl = document.getElementById('mediaGrassiPercent');
-                pctEl.innerText = percent + '%';
-                pctEl.style.color = avgFat > targetGrassi ? '#f59e0b' : '#10b981';
+                pctEl.innerHTML = percent + '%' + ottieniIndicatoreTargetHtml(avgFat, targetGrassi);
+                pctEl.style.color = percentColor;
                 aggiornaGauge('gaugeGrassiChart', 'gaugeGrassi', avgFat, targetGrassi, 'rgba(245, 158, 11, 0.85)', 'rgba(120, 53, 15, 0.85)', 'g');
             } else {
                 document.getElementById('mediaGrassi').innerText = '—';
