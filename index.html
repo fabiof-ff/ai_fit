@@ -4017,7 +4017,7 @@ IMPORTANTE: Se l'utente non specifica le porzioni, pesi o quantità per un alime
                 const yMax = pesoScales.max;
                 const pesoStepSize = pesoScales.stepSize;
 
-                const maxCalVal = Math.max(targetCalorie, ...ultimiGiorni.map(g => g.calorie || 0)) * 1.05;
+                const maxCalVal = Math.max(targetCalorie, ...ultimiGiorni.map(g => g.calorie || 0)) * 1.20;
 
                 // 1. Grafico Calorie e Macronutrienti (Top)
                 trendCalorieChart = new Chart(document.getElementById('trendCalorieChart').getContext('2d'), {
@@ -4304,7 +4304,7 @@ IMPORTANTE: Se l'utente non specifica le porzioni, pesi o quantità per un alime
                 const yMax = pesoScales.max;
                 const pesoStepSize = pesoScales.stepSize;
 
-                const maxCalVal = Math.max(targetCalorie, ...datiSettimane.map(s => s.calorie || 0)) * 1.05;
+                const maxCalVal = Math.max(targetCalorie, ...datiSettimane.map(s => s.calorie || 0)) * 1.20;
 
                 // 1. Grafico Calorie e Macronutrienti (Top)
                 weekCalorieChart = new Chart(document.getElementById('weekCalorieChart').getContext('2d'), {
@@ -4670,7 +4670,7 @@ IMPORTANTE: Se l'utente non specifica le porzioni, pesi o quantità per un alime
             const yMax = pesoScales.max;
             const pesoStepSize = pesoScales.stepSize;
 
-            const maxCalVal = Math.max(targetCalorie, ...datiCalorie.map(cal => cal || 0)) * 1.05;
+            const maxCalVal = Math.max(targetCalorie, ...datiCalorie.map(cal => cal || 0)) * 1.20;
 
             // 1. Grafico Calorie e Macronutrienti (Top)
             monthCalorieChart = new Chart(document.getElementById('monthCalorieChart').getContext('2d'), {
