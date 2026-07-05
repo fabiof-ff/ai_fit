@@ -2279,6 +2279,14 @@
                     testoSuggerimenti.innerHTML = recordOggi.analisiAI.replace(/\n/g, '<br>');
                 }
 
+                // Mostra l'analisi trend salvata se presente
+                const boxTrend = document.getElementById('boxAnalisiTrendAI');
+                const testoTrend = document.getElementById('testoAnalisiTrendAI');
+                if (recordOggi.analisiTrendAI && boxTrend && testoTrend) {
+                    boxTrend.classList.remove('hidden');
+                    testoTrend.innerHTML = recordOggi.analisiTrendAI.replace(/\n/g, '<br>');
+                }
+
                 const cal = Math.round(recordOggi.calorie || 0);
                 const prot = Math.round(recordOggi.proteine || 0);
                 const carb = Math.round(recordOggi.carboidrati || 0);
@@ -4598,6 +4606,39 @@ Rispondi ESCLUSIVAMENTE con un oggetto JSON valido (senza markdown, senza racchi
             const box = document.getElementById('boxAnalisiTrendAI');
             const testo = document.getElementById('testoAnalisiTrendAI');
 
+            const dataOggi = ottieniDataOggi();
+            const db = JSON.parse(localStorage.getItem('nutriDB')) || [];
+            let giornoOggi = db.find(g => g.data === dataOggi);
+
+            // Se l'analisi trend esiste già in memoria per oggi, chiedi se vederla o rifarla
+            if (giornoOggi && giornoOggi.analisiTrendAI) {
+                const vediUltima = await customConfirm(
+                    currentLang === 'en' ? "Existing Trend Analysis" : "Analisi trend esistente",
+                    currentLang === 'en' 
+                        ? "You already have a trend analysis for today. Would you like to view the last analysis or redo it?" 
+                        : "Hai già richiesto un'analisi dei trend oggi. Vuoi visualizzare l'ultima o rifarla?",
+                    false,
+                    currentLang === 'en' ? "View Last" : "Vedi l'ultima",
+                    currentLang === 'en' ? "Redo Analysis" : "Rifai l'analisi"
+                );
+
+                if (vediUltima) {
+                    box.classList.remove('hidden');
+                    testo.innerHTML = giornoOggi.analisiTrendAI.replace(/\n/g, '<br>');
+                    return;
+                }
+            }
+
+            // Controlla se ci sono effettivamente dati registrati
+            const haDati = db.some(x => x.calorie > 0 || x.proteine > 0 || x.pasti.length > 0 || (x.peso && x.peso > 0));
+            if (!haDati) {
+                testo.innerHTML = currentLang === 'en'
+                    ? `<span class="italic text-rose-400">No data available in the diary to perform analysis.</span>`
+                    : `<span class="italic text-rose-400">Nessun dato presente nel diario per effettuare l'analisi.</span>`;
+                box.classList.remove('hidden');
+                return;
+            }
+
             btn.disabled = true;
             btn.style.opacity = "0.6";
             const prevLabelHTML = label.innerHTML;
@@ -4606,19 +4647,6 @@ Rispondi ESCLUSIVAMENTE con un oggetto JSON valido (senza markdown, senza racchi
 
             box.classList.remove('hidden');
             testo.innerHTML = currentLang === 'en' ? `<span class="italic text-slate-400">The AI is analyzing your historical trends...</span>` : `<span class="italic text-slate-400">L'AI sta analizzando i tuoi andamenti storici...</span>`;
-
-            // Raccogli i dati del database nutriDB
-            const db = JSON.parse(localStorage.getItem('nutriDB')) || [];
-            if (db.length === 0) {
-                btn.disabled = false;
-                btn.style.opacity = "1";
-                label.innerHTML = prevLabelHTML;
-                if (typeof lucide !== 'undefined') lucide.createIcons();
-                testo.innerHTML = currentLang === 'en'
-                    ? `<span class="italic text-rose-400">No data available in the diary to perform analysis.</span>`
-                    : `<span class="italic text-rose-400">Nessun dato presente nel diario per effettuare l'analisi.</span>`;
-                return;
-            }
 
             // 1. Raccoglie dati a BREVE PERIODO (Ultimi 7 Giorni reali)
             let datiBrevePeriodo = "";
@@ -4768,6 +4796,23 @@ ${datiMedioPeriodo}
                 if (!response.ok) throw new Error("Errore risposta server Gemini API");
                 const data = await response.json();
                 const rawResponse = data.candidates[0].content.parts[0].text;
+
+                // Salva nel database
+                if (!giornoOggi) {
+                    giornoOggi = {
+                        id: Date.now(),
+                        data: dataOggi,
+                        calorie: 0,
+                        proteine: 0,
+                        carboidrati: 0,
+                        grassi: 0,
+                        pasti: []
+                    };
+                    db.push(giornoOggi);
+                }
+                giornoOggi.analisiTrendAI = rawResponse;
+                salvaDatabase(db);
+
                 testo.innerHTML = rawResponse.replace(/\n/g, '<br>');
             } catch (err) {
                 console.error(err);
