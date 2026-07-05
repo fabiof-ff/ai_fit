@@ -1392,20 +1392,24 @@
         window.hiddenTrendDatasets = [false, false, false, false];
         window.toggleTrendDataset = function(datasetIndex) {
             window.hiddenTrendDatasets[datasetIndex] = !window.hiddenTrendDatasets[datasetIndex];
+            const isHidden = window.hiddenTrendDatasets[datasetIndex];
             
-            if (trendCalorieChart) {
+            if (trendCalorieChart && trendCalorieChart.data.datasets[datasetIndex]) {
+                trendCalorieChart.data.datasets[datasetIndex].hidden = isHidden;
                 const meta = trendCalorieChart.getDatasetMeta(datasetIndex);
-                meta.hidden = window.hiddenTrendDatasets[datasetIndex] ? true : null;
+                meta.hidden = isHidden ? true : null;
                 trendCalorieChart.update();
             }
-            if (weekCalorieChart) {
+            if (weekCalorieChart && weekCalorieChart.data.datasets[datasetIndex]) {
+                weekCalorieChart.data.datasets[datasetIndex].hidden = isHidden;
                 const meta = weekCalorieChart.getDatasetMeta(datasetIndex);
-                meta.hidden = window.hiddenTrendDatasets[datasetIndex] ? true : null;
+                meta.hidden = isHidden ? true : null;
                 weekCalorieChart.update();
             }
-            if (monthCalorieChart) {
+            if (monthCalorieChart && monthCalorieChart.data.datasets[datasetIndex]) {
+                monthCalorieChart.data.datasets[datasetIndex].hidden = isHidden;
                 const meta = monthCalorieChart.getDatasetMeta(datasetIndex);
-                meta.hidden = window.hiddenTrendDatasets[datasetIndex] ? true : null;
+                meta.hidden = isHidden ? true : null;
                 monthCalorieChart.update();
             }
 
@@ -1467,7 +1471,7 @@
 
                 chart.data.datasets.forEach((dataset, datasetIndex) => {
                     const meta = chart.getDatasetMeta(datasetIndex);
-                    if (meta.hidden) return;
+                    if (!chart.isDatasetVisible(datasetIndex)) return;
 
                     // Ignora la linea del Target
                     if (dataset.label && dataset.label.includes('Target')) return;
@@ -1628,7 +1632,7 @@
 
                 const dataset = chart.data.datasets[0];
                 const meta = chart.getDatasetMeta(0);
-                if (!meta || meta.hidden) return;
+                if (!meta || !chart.isDatasetVisible(0)) return;
 
                 meta.data.forEach((element, index) => {
                     const rawVal = dataset.data[index];
