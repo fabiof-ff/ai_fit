@@ -16,13 +16,33 @@
             font-size: 110% !important;
         }
 
-        .text-\[7px\] { font-size: 7.7px !important; }
-        .text-\[8px\] { font-size: 8.8px !important; }
-        .text-\[9px\] { font-size: 9.9px !important; }
-        .text-\[10px\] { font-size: 11px !important; }
-        .text-\[11px\] { font-size: 12.1px !important; }
-        .text-\[13px\] { font-size: 14.3px !important; }
-        .text-\[17px\] { font-size: 18.7px !important; }
+        .text-\[7px\] {
+            font-size: 7.7px !important;
+        }
+
+        .text-\[8px\] {
+            font-size: 8.8px !important;
+        }
+
+        .text-\[9px\] {
+            font-size: 9.9px !important;
+        }
+
+        .text-\[10px\] {
+            font-size: 11px !important;
+        }
+
+        .text-\[11px\] {
+            font-size: 12.1px !important;
+        }
+
+        .text-\[13px\] {
+            font-size: 14.3px !important;
+        }
+
+        .text-\[17px\] {
+            font-size: 18.7px !important;
+        }
 
         body {
             -webkit-tap-highlight-color: transparent;
@@ -227,19 +247,26 @@
         }
 
         /* Premium gradient progress bars */
-        #barCalorie, #barMediaCalorie {
+        #barCalorie,
+        #barMediaCalorie {
             background: linear-gradient(90deg, #f43f5e 0%, #fda4af 100%) !important;
             box-shadow: 0 0 8px rgba(244, 63, 94, 0.3) !important;
         }
-        #barProteine, #barMediaProteine {
+
+        #barProteine,
+        #barMediaProteine {
             background: linear-gradient(90deg, #3b82f6 0%, #93c5fd 100%) !important;
             box-shadow: 0 0 8px rgba(59, 130, 246, 0.3) !important;
         }
-        #barCarbo, #barMediaCarbo {
+
+        #barCarbo,
+        #barMediaCarbo {
             background: linear-gradient(90deg, #10b981 0%, #6ee7b7 100%) !important;
             box-shadow: 0 0 8px rgba(16, 185, 129, 0.3) !important;
         }
-        #barGrassi, #barMediaGrassi {
+
+        #barGrassi,
+        #barMediaGrassi {
             background: linear-gradient(90deg, #f59e0b 0%, #fde047 100%) !important;
             box-shadow: 0 0 8px rgba(245, 158, 11, 0.3) !important;
         }
@@ -254,6 +281,7 @@
         body.light-theme .fixed.inset-0.pointer-events-none.z-0 div:nth-child(1) {
             background: rgba(99, 102, 241, 0.15) !important;
         }
+
         body.light-theme .fixed.inset-0.pointer-events-none.z-0 div:nth-child(2) {
             background: rgba(244, 63, 94, 0.12) !important;
         }
@@ -287,15 +315,19 @@
         body.light-theme .text-slate-100 {
             color: #0f172a !important;
         }
+
         body.light-theme .text-slate-200 {
             color: #1e293b !important;
         }
+
         body.light-theme .text-slate-300 {
             color: #334155 !important;
         }
+
         body.light-theme .text-slate-400 {
             color: #475569 !important;
         }
+
         body.light-theme .text-slate-500 {
             color: #64748b !important;
         }
@@ -308,6 +340,7 @@
             border-color: rgba(203, 213, 225, 0.8) !important;
             color: #0f172a !important;
         }
+
         body.light-theme input::placeholder,
         body.light-theme textarea::placeholder {
             color: #94a3b8 !important;
@@ -319,6 +352,7 @@
             border-color: rgba(226, 232, 240, 0.8) !important;
             color: #64748b !important;
         }
+
         body.light-theme .tab-btn.active {
             background: #2563eb !important;
             border-color: #2563eb !important;
@@ -330,6 +364,7 @@
             background: rgba(241, 245, 249, 0.7) !important;
             color: #64748b !important;
         }
+
         body.light-theme .sub-tab-btn.active {
             background: #2563eb !important;
             color: #ffffff !important;
@@ -341,6 +376,7 @@
             border-color: rgba(226, 232, 240, 0.8) !important;
             color: #64748b !important;
         }
+
         body.light-theme .provider-btn.active-provider {
             background: rgba(99, 102, 241, 0.1) !important;
             border-color: rgba(99, 102, 241, 0.4) !important;
@@ -351,6 +387,7 @@
         body.light-theme .bg-slate-700\/30 {
             background: rgba(241, 245, 249, 0.7) !important;
         }
+
         body.light-theme .bg-slate-750,
         body.light-theme .bg-slate-700 {
             background-color: #e2e8f0 !important;
@@ -363,6 +400,7 @@
             border: 1px solid rgba(99, 102, 241, 0.2) !important;
             color: #4f46e5 !important;
         }
+
         body.light-theme .pasto-tag button {
             color: #4f46e5 !important;
         }
@@ -371,6 +409,7 @@
         body.light-theme .custom-scrollbar::-webkit-scrollbar-track {
             background: rgba(241, 245, 249, 0.3) !important;
         }
+
         body.light-theme .custom-scrollbar::-webkit-scrollbar-thumb {
             background: rgba(148, 163, 184, 0.4) !important;
         }
@@ -433,28 +472,33 @@
             <div class="mb-4 bg-slate-900/40 p-3 rounded-xl border border-slate-700/30">
                 <div class="flex items-center gap-1.5 mb-2.5">
                     <i data-lucide="keyboard" class="w-3.5 h-3.5 text-indigo-400"></i>
-                    <h4 class="text-[10px] font-bold text-slate-400 uppercase tracking-wider" data-i18n="lbl_edit_manual_values">Modifica Manuale Valori</h4>
+                    <h4 class="text-[10px] font-bold text-slate-400 uppercase tracking-wider"
+                        data-i18n="lbl_edit_manual_values">Modifica Manuale Valori</h4>
                 </div>
                 <div class="grid grid-cols-4 gap-2 mb-1">
                     <div class="flex flex-col gap-1">
-                        <label class="text-[9px] font-bold text-slate-500 uppercase tracking-wider" data-i18n="lbl_edit_cal">Calorie</label>
+                        <label class="text-[9px] font-bold text-slate-500 uppercase tracking-wider"
+                            data-i18n="lbl_edit_cal">Calorie</label>
                         <input type="number" id="editCalorie" oninput="aggiornaCoerenzaEdit()"
                             class="w-full bg-slate-900 border border-slate-700 rounded-lg p-2 text-xs text-slate-100 focus:outline-none focus:ring-1 focus:ring-indigo-500 font-mono">
                     </div>
                     <div class="flex flex-col gap-1">
-                        <label class="text-[9px] font-bold text-slate-500 uppercase tracking-wider" data-i18n="lbl_edit_prot">Prot (g)</label>
+                        <label class="text-[9px] font-bold text-slate-500 uppercase tracking-wider"
+                            data-i18n="lbl_edit_prot">Prot (g)</label>
                         <input type="number" id="editProteine" oninput="aggiornaCoerenzaEdit()"
                             class="w-full bg-slate-900 border border-slate-700 rounded-lg p-2 text-xs text-slate-100 focus:outline-none focus:ring-1 focus:ring-indigo-500 font-mono mb-0.5">
                         <span id="edit-prot-cal" class="text-[8px] text-slate-500 text-center font-mono">0 kcal</span>
                     </div>
                     <div class="flex flex-col gap-1">
-                        <label class="text-[9px] font-bold text-slate-500 uppercase tracking-wider" data-i18n="lbl_edit_carb">Carb (g)</label>
+                        <label class="text-[9px] font-bold text-slate-500 uppercase tracking-wider"
+                            data-i18n="lbl_edit_carb">Carb (g)</label>
                         <input type="number" id="editCarboidrati" oninput="aggiornaCoerenzaEdit()"
                             class="w-full bg-slate-900 border border-slate-700 rounded-lg p-2 text-xs text-slate-100 focus:outline-none focus:ring-1 focus:ring-indigo-500 font-mono mb-0.5">
                         <span id="edit-carb-cal" class="text-[8px] text-slate-500 text-center font-mono">0 kcal</span>
                     </div>
                     <div class="flex flex-col gap-1">
-                        <label class="text-[9px] font-bold text-slate-500 uppercase tracking-wider" data-i18n="lbl_edit_fat">Grass (g)</label>
+                        <label class="text-[9px] font-bold text-slate-500 uppercase tracking-wider"
+                            data-i18n="lbl_edit_fat">Grass (g)</label>
                         <input type="number" id="editGrassi" oninput="aggiornaCoerenzaEdit()"
                             class="w-full bg-slate-900 border border-slate-700 rounded-lg p-2 text-xs text-slate-100 focus:outline-none focus:ring-1 focus:ring-indigo-500 font-mono mb-0.5">
                         <span id="edit-fat-cal" class="text-[8px] text-slate-500 text-center font-mono">0 kcal</span>
@@ -470,7 +514,8 @@
                 </button>
                 <button type="button" id="btnSalvaModifica" onclick="salvaModifica()"
                     class="bg-slate-750 hover:bg-slate-700 border border-slate-600/40 text-slate-200 font-bold py-3 px-4 rounded-xl transition text-sm flex items-center justify-center gap-2 cursor-pointer">
-                    <i data-lucide="sparkles" class="w-4 h-4 text-indigo-400"></i> <span data-i18n="btn_recalculate">AI Recalc</span>
+                    <i data-lucide="sparkles" class="w-4 h-4 text-indigo-400"></i> <span data-i18n="btn_recalculate">AI
+                        Recalc</span>
                 </button>
             </div>
         </div>
@@ -491,17 +536,23 @@
             </div>
 
             <div class="mb-4">
-                <label id="weightModalLabel" class="text-[11px] font-semibold text-slate-400 uppercase tracking-wider block mb-1">Peso Corporeo (kg)</label>
+                <label id="weightModalLabel"
+                    class="text-[11px] font-semibold text-slate-400 uppercase tracking-wider block mb-1">Peso Corporeo
+                    (kg)</label>
                 <input type="number" id="weightModalInput" step="0.1" placeholder="es. 74.5"
                     class="w-full bg-slate-900 border border-slate-700 rounded-xl px-2.5 py-2.5 text-[13px] focus:outline-none focus:ring-2 focus:ring-indigo-500 text-slate-200">
-                <p id="weightModalHint" class="text-[10px] text-slate-500 mt-1.5">Lascia vuoto per rimuovere il peso.</p>
+                <p id="weightModalHint" class="text-[10px] text-slate-500 mt-1.5">Lascia vuoto per rimuovere il peso.
+                </p>
             </div>
 
             <div class="flex gap-2">
-                <button onclick="chiudiModalPeso()" class="flex-1 bg-slate-700 hover:bg-slate-600 text-slate-200 font-bold py-3 rounded-xl transition text-sm flex items-center justify-center gap-2" data-i18n="lbl_cancel">
+                <button onclick="chiudiModalPeso()"
+                    class="flex-1 bg-slate-700 hover:bg-slate-600 text-slate-200 font-bold py-3 rounded-xl transition text-sm flex items-center justify-center gap-2"
+                    data-i18n="lbl_cancel">
                     Annulla
                 </button>
-                <button onclick="salvaModalPeso()" class="flex-1 bg-indigo-600 hover:bg-indigo-500 text-white font-bold py-3 rounded-xl transition text-sm flex items-center justify-center gap-2">
+                <button onclick="salvaModalPeso()"
+                    class="flex-1 bg-indigo-600 hover:bg-indigo-500 text-white font-bold py-3 rounded-xl transition text-sm flex items-center justify-center gap-2">
                     <i data-lucide="save" class="w-4 h-4"></i> <span data-i18n="lbl_save">Salva</span>
                 </button>
             </div>
@@ -539,7 +590,7 @@
             class="flex items-center justify-between mb-4 bg-slate-800/60 p-3 rounded-2xl border border-slate-700/50 backdrop-blur">
             <div class="flex items-center gap-2">
                 <div class="bg-blue-600 p-2 rounded-xl text-white shadow-lg shadow-blue-500/20 shrink-0">
-                    <i data-lucide="brain-circuit" class="w-5 h-5"></i>
+                    <i data-lucide="wheat" class="w-5 h-5"></i>
                 </div>
                 <div>
                     <h1
@@ -648,7 +699,7 @@
                 <div class="border-t border-slate-700 mt-4 pt-4">
                     <button type="button" onclick="toggleAiTargetBox()"
                         class="w-full bg-slate-700/50 hover:bg-slate-700 text-slate-200 font-bold py-2.5 rounded-xl transition text-xs flex items-center justify-center gap-1.5 cursor-pointer">
-                        <i data-lucide="brain-circuit" class="w-4 h-4 text-purple-400"></i> <span
+                        <i data-lucide="wheat" class="w-4 h-4 text-purple-400"></i> <span
                             data-i18n="btn_calculate_ai">Calcola target con AI</span>
                     </button>
 
@@ -699,8 +750,7 @@
                         <div>
                             <label class="text-[10px] font-bold text-slate-500 uppercase tracking-wider block"
                                 data-i18n="lbl_training_style">Stile di allenamento / Attività</label>
-                            <input type="text" id="aiAttivita" oninput="saveProfileData()"
-                                data-i18n="pl_training_style"
+                            <input type="text" id="aiAttivita" oninput="saveProfileData()" data-i18n="pl_training_style"
                                 placeholder="es. Palestra 3 volte a settimana, lavoro sedentario"
                                 class="mt-1 w-full bg-slate-800 border border-slate-700 rounded-lg p-2 text-xs text-slate-200 focus:outline-none focus:ring-1 focus:ring-purple-500">
                         </div>
@@ -708,8 +758,8 @@
                         <div>
                             <label class="text-[10px] font-bold text-slate-500 uppercase tracking-wider block"
                                 data-i18n="lbl_main_goal">Obiettivo principale</label>
-                            <input type="text" id="aiObiettivo" placeholder="es. Aumentare massa muscolare magra" oninput="saveProfileData()"
-                                data-i18n="pl_main_goal"
+                            <input type="text" id="aiObiettivo" placeholder="es. Aumentare massa muscolare magra"
+                                oninput="saveProfileData()" data-i18n="pl_main_goal"
                                 class="mt-1 w-full bg-slate-800 border border-slate-700 rounded-lg p-2 text-xs text-slate-200 focus:outline-none focus:ring-1 focus:ring-purple-500">
                         </div>
 
@@ -746,13 +796,15 @@
                 </div>
 
                 <div class="border-t border-slate-700 mt-4 pt-4">
-                    <label class="text-[11px] font-semibold text-slate-400 uppercase tracking-wider block mb-2" data-i18n="title_backup_auto">Salvataggio automatico locale (JSON)</label>
+                    <label class="text-[11px] font-semibold text-slate-400 uppercase tracking-wider block mb-2"
+                        data-i18n="title_backup_auto">Salvataggio automatico locale (JSON)</label>
                     <div class="flex flex-col gap-2">
                         <div class="flex items-center gap-2">
                             <button type="button" onclick="selezionaFileAutoSalvataggio()"
                                 class="flex-1 bg-slate-700 hover:bg-slate-650 text-slate-200 border border-slate-600/50 font-bold py-2 rounded-xl transition text-xs flex items-center justify-center gap-1.5 cursor-pointer">
                                 <i data-lucide="folder-open" class="w-4 h-4 text-blue-400"></i>
-                                <span id="lblFileAutoSalvataggio" data-i18n="btn_select_file">Associa file database</span>
+                                <span id="lblFileAutoSalvataggio" data-i18n="btn_select_file">Associa file
+                                    database</span>
                             </button>
                             <button type="button" id="btnRimuoviFileAuto" onclick="rimuoviFileAutoSalvataggio()"
                                 class="hidden bg-rose-950/40 hover:bg-rose-900/60 text-rose-300 border border-rose-800/40 p-2 rounded-xl transition duration-200 cursor-pointer"
@@ -801,7 +853,8 @@
                 </div>
                 <div class="grid grid-cols-4 gap-1.5">
 
-                    <div class="bg-slate-900/50 rounded-xl p-2 text-center flex flex-col items-center justify-between min-h-[105px]">
+                    <div
+                        class="bg-slate-900/50 rounded-xl p-2 text-center flex flex-col items-center justify-between min-h-[105px]">
                         <p class="text-[9px] text-slate-400 uppercase font-semibold mb-1"
                             data-i18n="label_calorie_uppercase">Calorie</p>
                         <div class="relative w-16 h-16 flex justify-center items-center">
@@ -813,7 +866,8 @@
                         </div>
                     </div>
 
-                    <div class="bg-slate-900/50 rounded-xl p-2 text-center flex flex-col items-center justify-between min-h-[105px]">
+                    <div
+                        class="bg-slate-900/50 rounded-xl p-2 text-center flex flex-col items-center justify-between min-h-[105px]">
                         <p class="text-[9px] text-slate-400 uppercase font-semibold mb-1"
                             data-i18n="label_proteine_uppercase">Proteine</p>
                         <div class="relative w-16 h-16 flex justify-center items-center">
@@ -825,7 +879,8 @@
                         </div>
                     </div>
 
-                    <div class="bg-slate-900/50 rounded-xl p-2 text-center flex flex-col items-center justify-between min-h-[105px]">
+                    <div
+                        class="bg-slate-900/50 rounded-xl p-2 text-center flex flex-col items-center justify-between min-h-[105px]">
                         <p class="text-[9px] text-slate-400 uppercase font-semibold mb-1"
                             data-i18n="label_carbo_uppercase">Carbo</p>
                         <div class="relative w-16 h-16 flex justify-center items-center">
@@ -837,7 +892,8 @@
                         </div>
                     </div>
 
-                    <div class="bg-slate-900/50 rounded-xl p-2 text-center flex flex-col items-center justify-between min-h-[105px]">
+                    <div
+                        class="bg-slate-900/50 rounded-xl p-2 text-center flex flex-col items-center justify-between min-h-[105px]">
                         <p class="text-[9px] text-slate-400 uppercase font-semibold mb-1"
                             data-i18n="label_grassi_uppercase">Grassi</p>
                         <div class="relative w-16 h-16 flex justify-center items-center">
@@ -853,7 +909,8 @@
 
                 <div id="boxSuggerimentiAI"
                     class="mt-3 p-3 bg-slate-900/60 rounded-xl border border-slate-700/50 hidden text-xs leading-relaxed text-slate-300 relative">
-                    <button onclick="nascondoSuggerimentiAI()" class="absolute top-2.5 right-2.5 text-slate-400 hover:text-slate-200 focus:outline-none cursor-pointer">
+                    <button onclick="nascondoSuggerimentiAI()"
+                        class="absolute top-2.5 right-2.5 text-slate-400 hover:text-slate-200 focus:outline-none cursor-pointer">
                         <i data-lucide="x" class="w-3.5 h-3.5"></i>
                     </button>
                     <p id="testoSuggerimentiAI" class="pr-5"></p>
@@ -861,13 +918,16 @@
             </div>
 
             <div class="bg-slate-800/50 border border-slate-700/40 rounded-2xl p-4 mb-4">
-                <button onclick="toggleWeightSection()" class="w-full flex items-center justify-between text-left focus:outline-none" id="btnToggleWeight">
-                    <span class="text-xs text-slate-400 font-semibold uppercase tracking-wider flex items-center gap-1.5 cursor-pointer">
+                <button onclick="toggleWeightSection()"
+                    class="w-full flex items-center justify-between text-left focus:outline-none" id="btnToggleWeight">
+                    <span
+                        class="text-xs text-slate-400 font-semibold uppercase tracking-wider flex items-center gap-1.5 cursor-pointer">
                         <i data-lucide="scale" class="w-3.5 h-3.5 text-indigo-400"></i>
                         <span data-i18n="label_body_weight">Registrazione Peso Corporeo</span>
                     </span>
                     <span class="text-slate-400 hover:text-slate-200">
-                        <i id="weightToggleIcon" data-lucide="chevron-down" class="w-4 h-4 transition-transform duration-200"></i>
+                        <i id="weightToggleIcon" data-lucide="chevron-down"
+                            class="w-4 h-4 transition-transform duration-200"></i>
                     </span>
                 </button>
 
@@ -919,7 +979,8 @@
                     </button>
                     <button type="button" onclick="switchInputMode('manual')" id="tabInputManual"
                         class="sub-tab-btn flex-1 py-1.5 rounded-lg text-xs font-semibold">
-                        <i data-lucide="keyboard" class="w-3.5 h-3.5 inline mr-1"></i> <span data-i18n="btn_manual_insert">Manuale</span>
+                        <i data-lucide="keyboard" class="w-3.5 h-3.5 inline mr-1"></i> <span
+                            data-i18n="btn_manual_insert">Manuale</span>
                     </button>
                 </div>
 
@@ -948,36 +1009,48 @@
                 <div id="inputSectionManual" class="space-y-3.5 hidden">
                     <!-- Calorie -->
                     <div class="flex flex-col gap-1.5">
-                        <label class="text-[10px] font-bold text-slate-400 uppercase tracking-wider" data-i18n="label_calorie">Calorie</label>
-                        <input type="number" id="manual-calorie" oninput="aggiornaCalcoloCoerenza()" placeholder="es. 500" min="0"
+                        <label class="text-[10px] font-bold text-slate-400 uppercase tracking-wider"
+                            data-i18n="label_calorie">Calorie</label>
+                        <input type="number" id="manual-calorie" oninput="aggiornaCalcoloCoerenza()"
+                            placeholder="es. 500" min="0"
                             class="bg-slate-900 border border-slate-700 rounded-xl p-2.5 text-xs text-slate-100 focus:outline-none focus:ring-2 focus:ring-blue-500 transition font-mono">
                     </div>
 
                     <!-- Proteine, Carbo, Grassi -->
                     <div class="grid grid-cols-3 gap-2">
                         <div class="flex flex-col gap-1">
-                            <label class="text-[10px] font-bold text-slate-400 uppercase tracking-wider" data-i18n="label_proteine">Proteine (g)</label>
-                            <input type="number" id="manual-proteine" oninput="aggiornaCalcoloCoerenza()" placeholder="es. 30" min="0"
+                            <label class="text-[10px] font-bold text-slate-400 uppercase tracking-wider"
+                                data-i18n="label_proteine">Proteine (g)</label>
+                            <input type="number" id="manual-proteine" oninput="aggiornaCalcoloCoerenza()"
+                                placeholder="es. 30" min="0"
                                 class="bg-slate-900 border border-slate-700 rounded-xl p-2.5 text-xs text-slate-100 focus:outline-none focus:ring-2 focus:ring-blue-500 transition font-mono mb-0.5">
-                            <span id="manual-prot-cal" class="text-[9px] text-slate-500 font-semibold font-mono text-center">0 kcal</span>
+                            <span id="manual-prot-cal"
+                                class="text-[9px] text-slate-500 font-semibold font-mono text-center">0 kcal</span>
                         </div>
                         <div class="flex flex-col gap-1">
-                            <label class="text-[10px] font-bold text-slate-400 uppercase tracking-wider" data-i18n="label_carboidrati">Carbo (g)</label>
-                            <input type="number" id="manual-carboidrati" oninput="aggiornaCalcoloCoerenza()" placeholder="es. 50" min="0"
+                            <label class="text-[10px] font-bold text-slate-400 uppercase tracking-wider"
+                                data-i18n="label_carboidrati">Carbo (g)</label>
+                            <input type="number" id="manual-carboidrati" oninput="aggiornaCalcoloCoerenza()"
+                                placeholder="es. 50" min="0"
                                 class="bg-slate-900 border border-slate-700 rounded-xl p-2.5 text-xs text-slate-100 focus:outline-none focus:ring-2 focus:ring-blue-500 transition font-mono mb-0.5">
-                            <span id="manual-carb-cal" class="text-[9px] text-slate-500 font-semibold font-mono text-center">0 kcal</span>
+                            <span id="manual-carb-cal"
+                                class="text-[9px] text-slate-500 font-semibold font-mono text-center">0 kcal</span>
                         </div>
                         <div class="flex flex-col gap-1">
-                            <label class="text-[10px] font-bold text-slate-400 uppercase tracking-wider" data-i18n="label_grassi">Grassi (g)</label>
-                            <input type="number" id="manual-grassi" oninput="aggiornaCalcoloCoerenza()" placeholder="es. 15" min="0"
+                            <label class="text-[10px] font-bold text-slate-400 uppercase tracking-wider"
+                                data-i18n="label_grassi">Grassi (g)</label>
+                            <input type="number" id="manual-grassi" oninput="aggiornaCalcoloCoerenza()"
+                                placeholder="es. 15" min="0"
                                 class="bg-slate-900 border border-slate-700 rounded-xl p-2.5 text-xs text-slate-100 focus:outline-none focus:ring-2 focus:ring-blue-500 transition font-mono mb-0.5">
-                            <span id="manual-fat-cal" class="text-[9px] text-slate-500 font-semibold font-mono text-center">0 kcal</span>
+                            <span id="manual-fat-cal"
+                                class="text-[9px] text-slate-500 font-semibold font-mono text-center">0 kcal</span>
                         </div>
                     </div>
 
                     <!-- Descrizione -->
                     <div class="flex flex-col gap-1.5">
-                        <label class="text-[10px] font-bold text-slate-400 uppercase tracking-wider" data-i18n="lbl_meal_text">Descrizione Pasto</label>
+                        <label class="text-[10px] font-bold text-slate-400 uppercase tracking-wider"
+                            data-i18n="lbl_meal_text">Descrizione Pasto</label>
                         <textarea id="manual-descrizione" rows="2" placeholder="es. Pranzo"
                             class="bg-slate-900 border border-slate-700 rounded-xl p-2.5 text-xs text-slate-100 focus:outline-none focus:ring-2 focus:ring-blue-500 transition resize-none"></textarea>
                     </div>
@@ -1093,7 +1166,8 @@
         </div>
         <div id="boxAnalisiTrendAI"
             class="mt-3 p-3.5 bg-slate-800/80 rounded-xl border border-slate-700/50 hidden text-xs leading-relaxed text-slate-300 relative">
-            <button onclick="nascondoAnalisiTrendAI()" class="absolute top-3 right-3 text-slate-400 hover:text-slate-200 focus:outline-none cursor-pointer">
+            <button onclick="nascondoAnalisiTrendAI()"
+                class="absolute top-3 right-3 text-slate-400 hover:text-slate-200 focus:outline-none cursor-pointer">
                 <i data-lucide="x" class="w-3.5 h-3.5"></i>
             </button>
             <p id="testoAnalisiTrendAI" class="pr-5"></p>
@@ -1106,7 +1180,8 @@
                 data-i18n="title_media_complessiva">Media complessiva</p>
             <div class="grid grid-cols-4 gap-1.5">
 
-                <div class="bg-slate-800/60 rounded-xl p-2 text-center flex flex-col items-center justify-between min-h-[105px]">
+                <div
+                    class="bg-slate-800/60 rounded-xl p-2 text-center flex flex-col items-center justify-between min-h-[105px]">
                     <p class="text-[9px] text-slate-500 uppercase font-semibold mb-1"
                         data-i18n="label_calorie_uppercase">Calorie</p>
                     <div class="relative w-16 h-16 flex justify-center items-center">
@@ -1118,7 +1193,8 @@
                     </div>
                 </div>
 
-                <div class="bg-slate-800/60 rounded-xl p-2 text-center flex flex-col items-center justify-between min-h-[105px]">
+                <div
+                    class="bg-slate-800/60 rounded-xl p-2 text-center flex flex-col items-center justify-between min-h-[105px]">
                     <p class="text-[9px] text-slate-500 uppercase font-semibold mb-1"
                         data-i18n="label_proteine_uppercase">Proteine</p>
                     <div class="relative w-16 h-16 flex justify-center items-center">
@@ -1130,9 +1206,10 @@
                     </div>
                 </div>
 
-                <div class="bg-slate-800/60 rounded-xl p-2 text-center flex flex-col items-center justify-between min-h-[105px]">
-                    <p class="text-[9px] text-slate-500 uppercase font-semibold mb-1"
-                        data-i18n="label_carbo_uppercase">Carbo</p>
+                <div
+                    class="bg-slate-800/60 rounded-xl p-2 text-center flex flex-col items-center justify-between min-h-[105px]">
+                    <p class="text-[9px] text-slate-500 uppercase font-semibold mb-1" data-i18n="label_carbo_uppercase">
+                        Carbo</p>
                     <div class="relative w-16 h-16 flex justify-center items-center">
                         <canvas id="gaugeCarbo"></canvas>
                         <div class="absolute inset-0 flex flex-col items-center justify-center pointer-events-none">
@@ -1142,7 +1219,8 @@
                     </div>
                 </div>
 
-                <div class="bg-slate-800/60 rounded-xl p-2 text-center flex flex-col items-center justify-between min-h-[105px]">
+                <div
+                    class="bg-slate-800/60 rounded-xl p-2 text-center flex flex-col items-center justify-between min-h-[105px]">
                     <p class="text-[9px] text-slate-500 uppercase font-semibold mb-1"
                         data-i18n="label_grassi_uppercase">Grassi</p>
                     <div class="relative w-16 h-16 flex justify-center items-center">
@@ -1166,19 +1244,23 @@
                         <span data-i18n="title_peso_calorie">Peso &amp; Calorie</span>
                     </p>
                     <div class="flex items-center gap-2.5 text-[9px] font-semibold text-slate-400">
-                        <div class="flex items-center gap-1 cursor-pointer hover:opacity-80 select-none" data-legend-index="0" onclick="toggleTrendDataset(0)">
+                        <div class="flex items-center gap-1 cursor-pointer hover:opacity-80 select-none"
+                            data-legend-index="0" onclick="toggleTrendDataset(0)">
                             <span class="w-1.5 h-1.5 rounded-full bg-[#f43f5e]"></span>
                             <span data-i18n="legend_calorie">Calorie</span>
                         </div>
-                        <div class="flex items-center gap-1 cursor-pointer hover:opacity-80 select-none" data-legend-index="1" onclick="toggleTrendDataset(1)">
+                        <div class="flex items-center gap-1 cursor-pointer hover:opacity-80 select-none"
+                            data-legend-index="1" onclick="toggleTrendDataset(1)">
                             <span class="w-1.5 h-1.5 rounded-sm bg-[#3b82f6]"></span>
                             <span data-i18n="legend_proteine">Proteine</span>
                         </div>
-                        <div class="flex items-center gap-1 cursor-pointer hover:opacity-80 select-none" data-legend-index="2" onclick="toggleTrendDataset(2)">
+                        <div class="flex items-center gap-1 cursor-pointer hover:opacity-80 select-none"
+                            data-legend-index="2" onclick="toggleTrendDataset(2)">
                             <span class="w-1.5 h-1.5 rounded-sm bg-[#10b981]"></span>
                             <span data-i18n="legend_carboidrati">Carbo</span>
                         </div>
-                        <div class="flex items-center gap-1 cursor-pointer hover:opacity-80 select-none" data-legend-index="3" onclick="toggleTrendDataset(3)">
+                        <div class="flex items-center gap-1 cursor-pointer hover:opacity-80 select-none"
+                            data-legend-index="3" onclick="toggleTrendDataset(3)">
                             <span class="w-1.5 h-1.5 rounded-sm bg-[#f59e0b]"></span>
                             <span data-i18n="legend_grassi">Grassi</span>
                         </div>
@@ -1202,19 +1284,23 @@
                         <span data-i18n="title_peso_calorie">Peso &amp; Calorie</span>
                     </p>
                     <div class="flex items-center gap-2.5 text-[9px] font-semibold text-slate-400">
-                        <div class="flex items-center gap-1 cursor-pointer hover:opacity-80 select-none" data-legend-index="0" onclick="toggleTrendDataset(0)">
+                        <div class="flex items-center gap-1 cursor-pointer hover:opacity-80 select-none"
+                            data-legend-index="0" onclick="toggleTrendDataset(0)">
                             <span class="w-1.5 h-1.5 rounded-full bg-[#f43f5e]"></span>
                             <span data-i18n="legend_calorie">Calorie</span>
                         </div>
-                        <div class="flex items-center gap-1 cursor-pointer hover:opacity-80 select-none" data-legend-index="1" onclick="toggleTrendDataset(1)">
+                        <div class="flex items-center gap-1 cursor-pointer hover:opacity-80 select-none"
+                            data-legend-index="1" onclick="toggleTrendDataset(1)">
                             <span class="w-1.5 h-1.5 rounded-sm bg-[#3b82f6]"></span>
                             <span data-i18n="legend_proteine">Proteine</span>
                         </div>
-                        <div class="flex items-center gap-1 cursor-pointer hover:opacity-80 select-none" data-legend-index="2" onclick="toggleTrendDataset(2)">
+                        <div class="flex items-center gap-1 cursor-pointer hover:opacity-80 select-none"
+                            data-legend-index="2" onclick="toggleTrendDataset(2)">
                             <span class="w-1.5 h-1.5 rounded-sm bg-[#10b981]"></span>
                             <span data-i18n="legend_carboidrati">Carbo</span>
                         </div>
-                        <div class="flex items-center gap-1 cursor-pointer hover:opacity-80 select-none" data-legend-index="3" onclick="toggleTrendDataset(3)">
+                        <div class="flex items-center gap-1 cursor-pointer hover:opacity-80 select-none"
+                            data-legend-index="3" onclick="toggleTrendDataset(3)">
                             <span class="w-1.5 h-1.5 rounded-sm bg-[#f59e0b]"></span>
                             <span data-i18n="legend_grassi">Grassi</span>
                         </div>
@@ -1238,19 +1324,23 @@
                         <span data-i18n="title_peso_calorie">Peso &amp; Calorie</span>
                     </p>
                     <div class="flex items-center gap-2.5 text-[9px] font-semibold text-slate-400">
-                        <div class="flex items-center gap-1 cursor-pointer hover:opacity-80 select-none" data-legend-index="0" onclick="toggleTrendDataset(0)">
+                        <div class="flex items-center gap-1 cursor-pointer hover:opacity-80 select-none"
+                            data-legend-index="0" onclick="toggleTrendDataset(0)">
                             <span class="w-1.5 h-1.5 rounded-full bg-[#f43f5e]"></span>
                             <span data-i18n="legend_calorie">Calorie</span>
                         </div>
-                        <div class="flex items-center gap-1 cursor-pointer hover:opacity-80 select-none" data-legend-index="1" onclick="toggleTrendDataset(1)">
+                        <div class="flex items-center gap-1 cursor-pointer hover:opacity-80 select-none"
+                            data-legend-index="1" onclick="toggleTrendDataset(1)">
                             <span class="w-1.5 h-1.5 rounded-sm bg-[#3b82f6]"></span>
                             <span data-i18n="legend_proteine">Proteine</span>
                         </div>
-                        <div class="flex items-center gap-1 cursor-pointer hover:opacity-80 select-none" data-legend-index="2" onclick="toggleTrendDataset(2)">
+                        <div class="flex items-center gap-1 cursor-pointer hover:opacity-80 select-none"
+                            data-legend-index="2" onclick="toggleTrendDataset(2)">
                             <span class="w-1.5 h-1.5 rounded-sm bg-[#10b981]"></span>
                             <span data-i18n="legend_carboidrati">Carbo</span>
                         </div>
-                        <div class="flex items-center gap-1 cursor-pointer hover:opacity-80 select-none" data-legend-index="3" onclick="toggleTrendDataset(3)">
+                        <div class="flex items-center gap-1 cursor-pointer hover:opacity-80 select-none"
+                            data-legend-index="3" onclick="toggleTrendDataset(3)">
                             <span class="w-1.5 h-1.5 rounded-sm bg-[#f59e0b]"></span>
                             <span data-i18n="legend_grassi">Grassi</span>
                         </div>
@@ -1295,21 +1385,22 @@
             <!-- Ricerca Generale -->
             <div class="flex-[1.8] relative flex items-center">
                 <i data-lucide="search" class="w-4 h-4 text-slate-400 absolute left-3 pointer-events-none"></i>
-                <input type="text" id="ricercaRegistro" oninput="filtraRegistro()" 
-                    placeholder="Cerca nei pasti o peso..." 
+                <input type="text" id="ricercaRegistro" oninput="filtraRegistro()"
+                    placeholder="Cerca nei pasti o peso..."
                     class="w-full bg-slate-900 border border-slate-700 rounded-xl pl-8 pr-2.5 py-2 text-[12px] text-slate-200 focus:outline-none focus:ring-2 focus:ring-indigo-500">
             </div>
             <!-- Filtro Anno -->
             <div class="flex-1 relative">
-                <select id="filtroAnno" onchange="filtraRegistro()" 
+                <select id="filtroAnno" onchange="filtraRegistro()"
                     class="w-full bg-slate-900 border border-slate-700 rounded-xl pl-2 pr-6 py-2 text-[11px] text-slate-200 focus:outline-none focus:ring-2 focus:ring-indigo-500 cursor-pointer appearance-none">
                     <option value="" data-i18n="filter_all_years">Tutti gli anni</option>
                 </select>
-                <i data-lucide="chevron-down" class="w-3 h-3 text-slate-400 absolute right-2 top-1/2 -translate-y-1/2 pointer-events-none"></i>
+                <i data-lucide="chevron-down"
+                    class="w-3 h-3 text-slate-400 absolute right-2 top-1/2 -translate-y-1/2 pointer-events-none"></i>
             </div>
             <!-- Filtro Mese -->
             <div class="flex-1 relative">
-                <select id="filtroMese" onchange="filtraRegistro()" 
+                <select id="filtroMese" onchange="filtraRegistro()"
                     class="w-full bg-slate-900 border border-slate-700 rounded-xl pl-2 pr-6 py-2 text-[11px] text-slate-200 focus:outline-none focus:ring-2 focus:ring-indigo-500 cursor-pointer appearance-none">
                     <option value="" data-i18n="filter_all_months">Tutti i mesi</option>
                     <option value="01" data-i18n="month_01">Gennaio</option>
@@ -1325,7 +1416,8 @@
                     <option value="11" data-i18n="month_11">Novembre</option>
                     <option value="12" data-i18n="month_12">Dicembre</option>
                 </select>
-                <i data-lucide="chevron-down" class="w-3 h-3 text-slate-400 absolute right-2 top-1/2 -translate-y-1/2 pointer-events-none"></i>
+                <i data-lucide="chevron-down"
+                    class="w-3 h-3 text-slate-400 absolute right-2 top-1/2 -translate-y-1/2 pointer-events-none"></i>
             </div>
         </div>
 
@@ -1390,10 +1482,10 @@
         let oggiGrassiChart = null;
 
         window.hiddenTrendDatasets = [false, false, false, false];
-        window.toggleTrendDataset = function(datasetIndex) {
+        window.toggleTrendDataset = function (datasetIndex) {
             window.hiddenTrendDatasets[datasetIndex] = !window.hiddenTrendDatasets[datasetIndex];
             const isHidden = window.hiddenTrendDatasets[datasetIndex];
-            
+
             if (trendCalorieChart && trendCalorieChart.data.datasets[datasetIndex]) {
                 trendCalorieChart.data.datasets[datasetIndex].hidden = isHidden;
                 const meta = trendCalorieChart.getDatasetMeta(datasetIndex);
@@ -1484,14 +1576,14 @@
                         ctx.font = "bold 8.5px 'Outfit', sans-serif";
                         ctx.textAlign = 'center';
                         ctx.textBaseline = 'bottom';
-                        
+
                         ctx.strokeStyle = strokeColor;
                         ctx.lineWidth = 2.5;
                         ctx.lineJoin = 'round';
 
                         const x = element.x;
                         const y = element.y - 3;
-                        
+
                         // Se è la linea delle calorie (yCalorie), mostra il valore assoluto senza unità, altrimenti mostra la percentuale
                         let text = "";
                         if (dataset.yAxisID === 'yCalorie') {
@@ -1585,7 +1677,7 @@
 
                 const yTarget = y.getPixelForValue(targets.peso);
                 ctx.save();
-                
+
                 ctx.shadowColor = 'rgba(99, 102, 241, 0.2)';
                 ctx.shadowBlur = 4;
                 ctx.strokeStyle = 'rgba(99, 102, 241, 0.5)';
@@ -1595,7 +1687,7 @@
                 ctx.moveTo(left, yTarget);
                 ctx.lineTo(right, yTarget);
                 ctx.stroke();
-                
+
                 // Disegna la scritta sul target peso (numero + kg) in un box bianco a sinistra
                 ctx.font = "bold 8px 'Outfit', sans-serif";
                 ctx.textAlign = 'left';
@@ -1622,7 +1714,7 @@
 
                 ctx.fillStyle = '#4f46e5';
                 ctx.fillText(textWeight, boxX + 3, yTarget);
-                
+
                 ctx.restore();
             },
             afterDatasetsDraw(chart) {
@@ -1642,7 +1734,7 @@
                     ctx.font = "bold 8.5px 'Outfit', sans-serif";
                     ctx.textAlign = 'center';
                     ctx.textBaseline = 'bottom';
-                    
+
                     ctx.strokeStyle = strokeColor;
                     ctx.lineWidth = 2.5;
                     ctx.lineJoin = 'round';
@@ -1766,7 +1858,7 @@
                 const handle = await window.showSaveFilePicker(options);
                 await saveFileHandle(handle);
                 await aggiornaStatoFileAuto();
-                
+
                 // Salva immediatamente i dati esistenti nel file associato
                 await autoSalvaNelFileLocale();
 
@@ -1846,7 +1938,7 @@
         window.ottieniStatoCompletoDB = function () {
             const dbRaw = localStorage.getItem('nutriDB');
             const diario = JSON.parse(dbRaw || '[]');
-            
+
             const impostazioni = {
                 target_calorie: localStorage.getItem('target_calorie'),
                 target_proteine: localStorage.getItem('target_proteine'),
@@ -1923,7 +2015,7 @@
         window.ottieniProfiloUtente = function () {
             const db = JSON.parse(localStorage.getItem('nutriDB')) || [];
             const giorniConPeso = db.filter(g => g.peso).sort((a, b) => new Date(b.data) - new Date(a.data));
-            
+
             let pesoCorrente = localStorage.getItem('profile_peso') || "";
             if (giorniConPeso.length > 0) {
                 pesoCorrente = giorniConPeso[0].peso;
@@ -2334,8 +2426,8 @@
 
             // Aggiorna le etichette della legenda del grafico macronutrienti (ciambella)
             if (macroChart) {
-                macroChart.data.labels = lang === 'en' 
-                    ? ['Proteins', 'Carbohydrates', 'Fats'] 
+                macroChart.data.labels = lang === 'en'
+                    ? ['Proteins', 'Carbohydrates', 'Fats']
                     : ['Proteine', 'Carboidrati', 'Grassi'];
                 macroChart.update();
             }
@@ -2540,7 +2632,7 @@
             lucide.createIcons();
         }
 
-        window.switchInputMode = function(mode) {
+        window.switchInputMode = function (mode) {
             const tabAI = document.getElementById('tabInputAI');
             const tabManual = document.getElementById('tabInputManual');
             const sectionAI = document.getElementById('inputSectionAI');
@@ -2558,7 +2650,7 @@
                 tabManual.classList.add('active');
                 sectionAI.classList.add('hidden');
                 sectionManual.classList.remove('hidden');
-                
+
                 // Pulisci campi
                 document.getElementById('manual-calorie').value = '';
                 document.getElementById('manual-proteine').value = '';
@@ -2579,7 +2671,7 @@
             lucide.createIcons();
         };
 
-        window.aggiornaCalcoloCoerenza = function() {
+        window.aggiornaCalcoloCoerenza = function () {
             const calorieInput = document.getElementById('manual-calorie');
             const protInput = document.getElementById('manual-proteine');
             const carbInput = document.getElementById('manual-carboidrati');
@@ -2626,13 +2718,13 @@
             statusEl.innerHTML = html;
         };
 
-        window.salvaPastoManuale = async function() {
+        window.salvaPastoManuale = async function () {
             const dataPasto = document.getElementById('input-pasto-data').value || ottieniDataOggi();
             const calorieInput = document.getElementById('manual-calorie');
             const protInput = document.getElementById('manual-proteine');
             const carbInput = document.getElementById('manual-carboidrati');
             const fatInput = document.getElementById('manual-grassi');
-            
+
             const calorie = parseFloat(calorieInput.value) || 0;
             const proteine = parseFloat(protInput.value) || 0;
             const carboidrati = parseFloat(carbInput.value) || 0;
@@ -2651,7 +2743,7 @@
             const calFromMacro = (proteine * 4) + (carboidrati * 4) + (grassi * 9);
             const diff = Math.abs(calorie - calFromMacro);
             const maxAllowedDiff = Math.max(150, calFromMacro * 0.15);
-            
+
             if (diff > maxAllowedDiff) {
                 await customAlert(
                     currentLang === 'en' ? "Inconsistent Values" : "Valori incoerenti",
@@ -2697,7 +2789,7 @@
             }
 
             salvaDatabase(db);
-            
+
             // Aggiorna l'interfaccia principale se siamo sul giorno corrente
             if (dataPasto === ottieniDataOggi()) {
                 aggiornaTotaleGiorno();
@@ -2957,8 +3049,8 @@ IMPORTANTE: Se l'utente non specifica le porzioni, pesi o quantità per un alime
             if (giornoOggi && giornoOggi.analisiAI) {
                 const vediUltima = await customConfirm(
                     currentLang === 'en' ? "Existing Analysis" : "Analisi esistente",
-                    currentLang === 'en' 
-                        ? "You already have an analysis for today. Would you like to view the last analysis or redo it?" 
+                    currentLang === 'en'
+                        ? "You already have an analysis for today. Would you like to view the last analysis or redo it?"
                         : "Hai già richiesto un parere oggi. Vuoi visualizzare l'ultima analisi o rifarla?",
                     false,
                     currentLang === 'en' ? "View Last" : "Vedi l'ultima",
@@ -3295,8 +3387,8 @@ IMPORTANTE: Se l'utente non specifica le porzioni, pesi o quantità per un alime
             <div class="flex justify-between items-center mb-3 border-b border-slate-700/40 pb-2.5">
                 <div class="flex items-center gap-2">
                     <span class="text-xs font-bold text-slate-300">${giorno.data}</span>
-                    ${giorno.peso 
-                        ? `<button onclick="modificaPesoDelGiorno(${giorno.id})" class="text-[10px] bg-indigo-500/10 hover:bg-indigo-500/20 text-indigo-300 border border-indigo-500/20 px-1.5 py-0.5 rounded flex items-center gap-1 cursor-pointer transition" title="${currentLang === 'en' ? 'Edit weight' : 'Modifica peso'}"><i data-lucide="scale" class="w-3 h-3"></i> ${giorno.peso} kg <i data-lucide="pencil" class="w-2 h-2 opacity-60"></i></button>` 
+                    ${giorno.peso
+                        ? `<button onclick="modificaPesoDelGiorno(${giorno.id})" class="text-[10px] bg-indigo-500/10 hover:bg-indigo-500/20 text-indigo-300 border border-indigo-500/20 px-1.5 py-0.5 rounded flex items-center gap-1 cursor-pointer transition" title="${currentLang === 'en' ? 'Edit weight' : 'Modifica peso'}"><i data-lucide="scale" class="w-3 h-3"></i> ${giorno.peso} kg <i data-lucide="pencil" class="w-2 h-2 opacity-60"></i></button>`
                         : `<button onclick="modificaPesoDelGiorno(${giorno.id})" class="text-[10px] bg-slate-700/30 hover:bg-slate-700/60 text-slate-400 border border-slate-700/30 px-1.5 py-0.5 rounded flex items-center gap-1 cursor-pointer transition" title="${currentLang === 'en' ? 'Add weight' : 'Aggiungi peso'}"><i data-lucide="plus" class="w-3 h-3"></i> ${currentLang === 'en' ? 'Add weight' : 'Aggiungi peso'}</button>`
                     }
                 </div>
@@ -3372,8 +3464,8 @@ IMPORTANTE: Se l'utente non specifica le porzioni, pesi o quantità per un alime
                 localStorage.setItem('nutriDB', JSON.stringify(db));
                 chiudiModalPeso();
                 await customAlert(
-                    currentLang === 'en' ? "Weight Removed" : "Peso rimosso", 
-                    currentLang === 'en' ? "Weight has been successfully removed for this day." : "Il peso è stato rimosso correttamente per questo giorno.", 
+                    currentLang === 'en' ? "Weight Removed" : "Peso rimosso",
+                    currentLang === 'en' ? "Weight has been successfully removed for this day." : "Il peso è stato rimosso correttamente per questo giorno.",
                     true
                 );
                 renderStorico();
@@ -3390,7 +3482,7 @@ IMPORTANTE: Se l'utente non specifica le porzioni, pesi o quantità per un alime
                 const nuovoPeso = parseFloat(inputVal);
                 if (isNaN(nuovoPeso) || nuovoPeso <= 0) {
                     await customAlert(
-                        currentLang === 'en' ? "Invalid Value" : "Valore non valido", 
+                        currentLang === 'en' ? "Invalid Value" : "Valore non valido",
                         currentLang === 'en' ? "Please enter a valid weight number." : "Inserisci un numero di peso valido."
                     );
                     return;
@@ -3401,8 +3493,8 @@ IMPORTANTE: Se l'utente non specifica le porzioni, pesi o quantità per un alime
                 localStorage.setItem('nutriDB', JSON.stringify(db));
                 chiudiModalPeso();
                 await customAlert(
-                    currentLang === 'en' ? "Weight Saved" : "Peso salvato", 
-                    currentLang === 'en' ? `Weight updated to ${giorno.peso} kg.` : `Peso aggiornato a ${giorno.peso} kg.`, 
+                    currentLang === 'en' ? "Weight Saved" : "Peso salvato",
+                    currentLang === 'en' ? `Weight updated to ${giorno.peso} kg.` : `Peso aggiornato a ${giorno.peso} kg.`,
                     true
                 );
                 renderStorico();
@@ -3516,7 +3608,7 @@ IMPORTANTE: Se l'utente non specifica le porzioni, pesi o quantità per un alime
             }, 200);
         }
 
-        window.aggiornaCoerenzaEdit = function() {
+        window.aggiornaCoerenzaEdit = function () {
             const calorieInput = document.getElementById('editCalorie');
             const protInput = document.getElementById('editProteine');
             const carbInput = document.getElementById('editCarboidrati');
@@ -3563,7 +3655,7 @@ IMPORTANTE: Se l'utente non specifica le porzioni, pesi o quantità per un alime
             statusEl.innerHTML = html;
         };
 
-        window.salvaModificaDiretta = async function() {
+        window.salvaModificaDiretta = async function () {
             if (!editingId) return;
             const { giornoId, pastoId } = editingId;
 
@@ -3588,7 +3680,7 @@ IMPORTANTE: Se l'utente non specifica le porzioni, pesi o quantità per un alime
             const calFromMacro = (proteine * 4) + (carboidrati * 4) + (grassi * 9);
             const diff = Math.abs(calorie - calFromMacro);
             const maxAllowedDiff = Math.max(150, calFromMacro * 0.15);
-            
+
             if (diff > maxAllowedDiff) {
                 await customAlert(
                     currentLang === 'en' ? "Inconsistent Values" : "Valori incoerenti",
@@ -3600,7 +3692,7 @@ IMPORTANTE: Se l'utente non specifica le porzioni, pesi o quantità per un alime
             }
 
             let db = JSON.parse(localStorage.getItem('nutriDB')) || [];
-            
+
             // 1. Rimuovi il pasto vecchio dalla sua giornata
             let vecchioGiorno = db.find(x => x.id === giornoId);
             if (vecchioGiorno) {
@@ -3781,18 +3873,18 @@ IMPORTANTE: Se l'utente non specifica le porzioni, pesi o quantità per un alime
         function aggiornaGauge(chartKey, canvasId, valore, target, coloreChiaro, coloreScuro, unita) {
             const canvasEl = document.getElementById(canvasId);
             if (!canvasEl) return null;
-            
+
             const safeTarget = target > 0 ? target : 2000;
             const safeVal = Math.max(0, valore || 0);
-            
+
             let dataSlices = [];
             let colorSlices = [];
-            
+
             if (safeVal <= safeTarget) {
                 // Fetta attiva (chiara)
                 dataSlices.push(safeVal);
                 colorSlices.push(coloreChiaro);
-                
+
                 // Fetta sfondo (inattiva)
                 dataSlices.push(safeTarget - safeVal);
                 colorSlices.push('rgba(51, 65, 85, 0.25)');
@@ -3801,17 +3893,17 @@ IMPORTANTE: Se l'utente non specifica le porzioni, pesi o quantità per un alime
                 const excess = Math.min(safeVal - safeTarget, safeTarget);
                 dataSlices.push(excess);
                 colorSlices.push(coloreScuro);
-                
+
                 // Parte rimanente del 100% (chiara)
                 dataSlices.push(safeTarget - excess);
                 colorSlices.push(coloreChiaro);
             }
-            
+
             let chartInstance = window[chartKey];
             if (chartInstance) {
                 chartInstance.destroy();
             }
-            
+
             const ctx = canvasEl.getContext('2d');
             chartInstance = new Chart(ctx, {
                 type: 'doughnut',
@@ -3842,12 +3934,12 @@ IMPORTANTE: Se l'utente non specifica le porzioni, pesi o quantità per un alime
                     afterDraw(chart) {
                         const { ctx, chartArea: { left, right, top } } = chart;
                         const x = (left + right) / 2;
-                        
+
                         const outerRadius = chart.outerRadius;
                         const innerRadius = chart.innerRadius;
 
                         ctx.save();
-                        
+
                         // Linea di target/inizio a ore 12 (bianca sottile)
                         ctx.strokeStyle = '#ffffff';
                         ctx.lineWidth = 1.5;
@@ -3860,7 +3952,7 @@ IMPORTANTE: Se l'utente non specifica le porzioni, pesi o quantità per un alime
                     }
                 }]
             });
-            
+
             window[chartKey] = chartInstance;
             return chartInstance;
         }
@@ -4005,7 +4097,7 @@ IMPORTANTE: Se l'utente non specifica le porzioni, pesi o quantità per un alime
 
                 let pTarget = parseFloat(localStorage.getItem('targetPeso')) || 75;
                 const arrayPesi = ultimiGiorni.map(g => g.peso).filter(p => p !== null && p !== undefined && p > 0);
-                
+
                 let pesoScales;
                 if (arrayPesi.length > 0) {
                     const tuttiIValori = [...arrayPesi, pTarget];
@@ -4117,7 +4209,7 @@ IMPORTANTE: Se l'utente non specifica le porzioni, pesi o quantità per un alime
                                         const targets = context.chart.config.data.customTargets;
                                         const item = rawData[idx];
                                         if (!item) return '';
-                                        
+
                                         if (ds.label.includes('Grassi') || ds.label.includes('Fats')) {
                                             const pct = context.raw;
                                             return (currentLang === 'en' ? 'Fats: ' : 'Grassi: ') + pct + '% (' + Math.round(item.grassi || 0) + 'g / ' + targets.grassi + 'g)';
@@ -4281,7 +4373,7 @@ IMPORTANTE: Se l'utente non specifica le porzioni, pesi o quantità per un alime
                     const avgProt = Math.round(settimaneAttive.reduce((a, b) => a + b.proteine, 0) / settimaneAttive.length);
                     const avgCarb = Math.round(settimaneAttive.reduce((a, b) => a + b.carboidrati, 0) / settimaneAttive.length);
                     const avgFat = Math.round(settimaneAttive.reduce((a, b) => a + b.grassi, 0) / settimaneAttive.length);
-                    
+
                     aggiornaGauges(avgCal, avgProt, avgCarb, avgFat);
                 } else {
                     aggiornaGauges(null, null, null, null);
@@ -4292,7 +4384,7 @@ IMPORTANTE: Se l'utente non specifica le porzioni, pesi o quantità per un alime
 
                 let pTarget = parseFloat(localStorage.getItem('targetPeso')) || 75;
                 const arrayPesi = datiSettimane.map(s => s.peso).filter(p => p !== null && p !== undefined && p > 0);
-                
+
                 let pesoScales;
                 if (arrayPesi.length > 0) {
                     const tuttiIValori = [...arrayPesi, pTarget];
@@ -4404,7 +4496,7 @@ IMPORTANTE: Se l'utente non specifica le porzioni, pesi o quantità per un alime
                                         const targets = context.chart.config.data.customTargets;
                                         const item = rawData[idx];
                                         if (!item) return '';
-                                        
+
                                         if (ds.label.includes('Grassi') || ds.label.includes('Fats')) {
                                             const pct = context.raw;
                                             return (currentLang === 'en' ? 'Fats: ' : 'Grassi: ') + pct + '% (' + Math.round(item.grassi || 0) + 'g / ' + targets.grassi + 'g)';
@@ -4658,7 +4750,7 @@ IMPORTANTE: Se l'utente non specifica le porzioni, pesi o quantità per un alime
 
             let pTarget = parseFloat(localStorage.getItem('targetPeso')) || 75;
             const arrayPesi = datiPeso.filter(p => p !== null && p !== undefined && p > 0);
-            
+
             let pesoScales;
             if (arrayPesi.length > 0) {
                 const tuttiIValori = [...arrayPesi, pTarget];
@@ -4770,7 +4862,7 @@ IMPORTANTE: Se l'utente non specifica le porzioni, pesi o quantità per un alime
                                     const targets = context.chart.config.data.customTargets;
                                     const item = rawData[idx];
                                     if (!item) return '';
-                                    
+
                                     if (ds.label.includes('Grassi') || ds.label.includes('Fats')) {
                                         const pct = context.raw;
                                         return (currentLang === 'en' ? 'Fats: ' : 'Grassi: ') + pct + '% (' + Math.round(item.grassi || 0) + 'g / ' + targets.grassi + 'g)';
@@ -4909,7 +5001,7 @@ IMPORTANTE: Se l'utente non specifica le porzioni, pesi o quantità per un alime
 
         window.applicaStatoImportato = function (json) {
             let diario = [];
-            
+
             if (Array.isArray(json)) {
                 // Vecchio formato (solo array del diario)
                 diario = json;
@@ -4922,7 +5014,7 @@ IMPORTANTE: Se l'utente non specifica le porzioni, pesi o quantità per un alime
                             localStorage.setItem(key, val);
                         }
                     }
-                    
+
                     // Ricarica le variabili globali target
                     targetCalorie = parseInt(localStorage.getItem('target_calorie')) || 2000;
                     targetProteine = parseInt(localStorage.getItem('target_proteine')) || 160;
@@ -5466,8 +5558,8 @@ Rispondi ESCLUSIVAMENTE con un oggetto JSON valido (senza markdown, senza racchi
             if (giornoOggi && giornoOggi.analisiTrendAI) {
                 const vediUltima = await customConfirm(
                     currentLang === 'en' ? "Existing Trend Analysis" : "Analisi trend esistente",
-                    currentLang === 'en' 
-                        ? "You already have a trend analysis for today. Would you like to view the last analysis or redo it?" 
+                    currentLang === 'en'
+                        ? "You already have a trend analysis for today. Would you like to view the last analysis or redo it?"
                         : "Hai già richiesto un'analisi dei trend oggi. Vuoi visualizzare l'ultima o rifarla?",
                     false,
                     currentLang === 'en' ? "View Last" : "Vedi l'ultima",
@@ -5550,7 +5642,7 @@ Rispondi ESCLUSIVAMENTE con un oggetto JSON valido (senza markdown, senza racchi
             for (let w = 7; w >= 0; w--) {
                 const inizioSettimana = new Date(lunedìCorrente);
                 inizioSettimana.setDate(lunedìCorrente.getDate() - (w * 7));
-                
+
                 const fineSettimana = new Date(inizioSettimana);
                 fineSettimana.setDate(inizioSettimana.getDate() + 6);
 
