@@ -2492,19 +2492,17 @@
             if (recordOggi) {
                 document.getElementById('boxTotaleGiorno').classList.remove('hidden');
 
-                // Mostra l'analisi salvata se presente
+                // Popola l'analisi salvata se presente (rimane nascosta all'avvio)
                 const boxSuggerimenti = document.getElementById('boxSuggerimentiAI');
                 const testoSuggerimenti = document.getElementById('testoSuggerimentiAI');
                 if (recordOggi.analisiAI && boxSuggerimenti && testoSuggerimenti) {
-                    boxSuggerimenti.classList.remove('hidden');
                     testoSuggerimenti.innerHTML = recordOggi.analisiAI.replace(/\n/g, '<br>');
                 }
 
-                // Mostra l'analisi trend salvata se presente
+                // Popola l'analisi trend salvata se presente (rimane nascosta all'avvio)
                 const boxTrend = document.getElementById('boxAnalisiTrendAI');
                 const testoTrend = document.getElementById('testoAnalisiTrendAI');
                 if (recordOggi.analisiTrendAI && boxTrend && testoTrend) {
-                    boxTrend.classList.remove('hidden');
                     testoTrend.innerHTML = recordOggi.analisiTrendAI.replace(/\n/g, '<br>');
                 }
 
