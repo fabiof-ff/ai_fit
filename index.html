@@ -414,11 +414,11 @@
                 </div>
             </div>
 
-            <div class="mb-4">
+            <div class="mb-3">
                 <label class="text-[11px] font-semibold text-slate-400 uppercase tracking-wider"
                     data-i18n="lbl_meal_text">Testo del pasto</label>
                 <div class="relative mt-1">
-                    <textarea id="editTesto" rows="4"
+                    <textarea id="editTesto" rows="3"
                         class="w-full bg-slate-900 border border-slate-700 rounded-xl p-2.5 pr-12 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 text-slate-200 placeholder-slate-600 resize-none"
                         placeholder="Descrivi il pasto da ricalcolare..."></textarea>
                     <button type="button" id="btnMicEdit" onclick="toggleVoiceDictation('editTesto', 'btnMicEdit')"
@@ -427,16 +427,52 @@
                         <i id="iconMicEdit" data-lucide="mic" class="w-4 h-4"></i>
                     </button>
                 </div>
-                <p class="text-[10px] text-slate-500 mt-1.5 flex items-center gap-1"><i data-lucide="sparkles"
-                        class="w-3 h-3 text-indigo-400"></i> <span data-i18n="lbl_ai_recalculate_hint">L'AI ricalcolerà
-                        i nutrienti basandosi su questo testo.</span></p>
             </div>
 
-            <button id="btnSalvaModifica" onclick="salvaModifica()"
-                class="w-full bg-indigo-600 hover:bg-indigo-500 text-white font-bold py-3 rounded-xl transition text-sm flex items-center justify-center gap-2">
-                <i data-lucide="sparkles" class="w-4 h-4"></i> <span data-i18n="btn_recalculate_save">Ricalcola e
-                    Salva</span>
-            </button>
+            <!-- Calorie e Macronutrienti per modifica manuale -->
+            <div class="mb-4 bg-slate-900/40 p-3 rounded-xl border border-slate-700/30">
+                <div class="flex items-center gap-1.5 mb-2.5">
+                    <i data-lucide="keyboard" class="w-3.5 h-3.5 text-indigo-400"></i>
+                    <h4 class="text-[10px] font-bold text-slate-400 uppercase tracking-wider" data-i18n="lbl_edit_manual_values">Modifica Manuale Valori</h4>
+                </div>
+                <div class="grid grid-cols-4 gap-2 mb-1">
+                    <div class="flex flex-col gap-1">
+                        <label class="text-[9px] font-bold text-slate-500 uppercase tracking-wider" data-i18n="lbl_edit_cal">Calorie</label>
+                        <input type="number" id="editCalorie" oninput="aggiornaCoerenzaEdit()"
+                            class="w-full bg-slate-900 border border-slate-700 rounded-lg p-2 text-xs text-slate-100 focus:outline-none focus:ring-1 focus:ring-indigo-500 font-mono">
+                    </div>
+                    <div class="flex flex-col gap-1">
+                        <label class="text-[9px] font-bold text-slate-500 uppercase tracking-wider" data-i18n="lbl_edit_prot">Prot (g)</label>
+                        <input type="number" id="editProteine" oninput="aggiornaCoerenzaEdit()"
+                            class="w-full bg-slate-900 border border-slate-700 rounded-lg p-2 text-xs text-slate-100 focus:outline-none focus:ring-1 focus:ring-indigo-500 font-mono mb-0.5">
+                        <span id="edit-prot-cal" class="text-[8px] text-slate-500 text-center font-mono">0 kcal</span>
+                    </div>
+                    <div class="flex flex-col gap-1">
+                        <label class="text-[9px] font-bold text-slate-500 uppercase tracking-wider" data-i18n="lbl_edit_carb">Carb (g)</label>
+                        <input type="number" id="editCarboidrati" oninput="aggiornaCoerenzaEdit()"
+                            class="w-full bg-slate-900 border border-slate-700 rounded-lg p-2 text-xs text-slate-100 focus:outline-none focus:ring-1 focus:ring-indigo-500 font-mono mb-0.5">
+                        <span id="edit-carb-cal" class="text-[8px] text-slate-500 text-center font-mono">0 kcal</span>
+                    </div>
+                    <div class="flex flex-col gap-1">
+                        <label class="text-[9px] font-bold text-slate-500 uppercase tracking-wider" data-i18n="lbl_edit_fat">Grass (g)</label>
+                        <input type="number" id="editGrassi" oninput="aggiornaCoerenzaEdit()"
+                            class="w-full bg-slate-900 border border-slate-700 rounded-lg p-2 text-xs text-slate-100 focus:outline-none focus:ring-1 focus:ring-indigo-500 font-mono mb-0.5">
+                        <span id="edit-fat-cal" class="text-[8px] text-slate-500 text-center font-mono">0 kcal</span>
+                    </div>
+                </div>
+                <div id="edit-coherence-status"></div>
+            </div>
+
+            <div class="flex gap-2.5">
+                <button type="button" id="btnSalvaModificaDirect" onclick="salvaModificaDiretta()"
+                    class="flex-1 bg-emerald-600 hover:bg-emerald-500 text-white font-bold py-3 rounded-xl transition text-sm flex items-center justify-center gap-2 cursor-pointer shadow-lg shadow-emerald-600/20">
+                    <i data-lucide="save" class="w-4 h-4"></i> <span data-i18n="btn_save">Salva</span>
+                </button>
+                <button type="button" id="btnSalvaModifica" onclick="salvaModifica()"
+                    class="bg-slate-750 hover:bg-slate-700 border border-slate-600/40 text-slate-200 font-bold py-3 px-4 rounded-xl transition text-sm flex items-center justify-center gap-2 cursor-pointer">
+                    <i data-lucide="sparkles" class="w-4 h-4 text-indigo-400"></i> <span data-i18n="btn_recalculate">AI Recalc</span>
+                </button>
+            </div>
         </div>
     </div>
 
@@ -883,7 +919,7 @@
                     </button>
                     <button type="button" onclick="switchInputMode('manual')" id="tabInputManual"
                         class="sub-tab-btn flex-1 py-1.5 rounded-lg text-xs font-semibold">
-                        <i data-lucide="keyboard" class="w-3.5 h-3.5 inline mr-1"></i> Manuale
+                        <i data-lucide="keyboard" class="w-3.5 h-3.5 inline mr-1"></i> <span data-i18n="btn_manual_insert">Manuale</span>
                     </button>
                 </div>
 
@@ -2053,7 +2089,15 @@
                 legend_calorie: "Calorie",
                 legend_proteine: "Proteine",
                 legend_carboidrati: "Carbo",
-                legend_grassi: "Grassi"
+                legend_grassi: "Grassi",
+                lbl_edit_manual_values: "Modifica Manuale Valori",
+                lbl_edit_cal: "Calorie",
+                lbl_edit_prot: "Prot (g)",
+                lbl_edit_carb: "Carb (g)",
+                lbl_edit_fat: "Grass (g)",
+                btn_save: "Salva",
+                btn_recalculate: "AI Recalc",
+                pl_edit_meal_text: "Descrivi il pasto da ricalcolare..."
             },
             en: {
                 title_api_settings: "Settings",
@@ -2166,7 +2210,15 @@
                 legend_calorie: "Calories",
                 legend_proteine: "Proteins",
                 legend_carboidrati: "Carbs",
-                legend_grassi: "Fats"
+                legend_grassi: "Fats",
+                lbl_edit_manual_values: "Edit Values Manually",
+                lbl_edit_cal: "Calories",
+                lbl_edit_prot: "Prot (g)",
+                lbl_edit_carb: "Carb (g)",
+                lbl_edit_fat: "Fat (g)",
+                btn_save: "Save",
+                btn_recalculate: "AI Recalc",
+                pl_edit_meal_text: "Describe the meal to recalculate..."
             }
         };
 
@@ -2238,6 +2290,11 @@
             const aiEta = document.getElementById('aiEta');
             if (aiEta && TRANSLATIONS[window.currentLang].pl_age_placeholder) {
                 aiEta.placeholder = TRANSLATIONS[window.currentLang].pl_age_placeholder;
+            }
+
+            const editTesto = document.getElementById('editTesto');
+            if (editTesto && TRANSLATIONS[window.currentLang].pl_edit_meal_text) {
+                editTesto.placeholder = TRANSLATIONS[window.currentLang].pl_edit_meal_text;
             }
 
             // Traduzione automatica dei valori correnti nei campi profilo se corrispondono ai default
@@ -3410,7 +3467,30 @@ IMPORTANTE: Se l'utente non specifica le porzioni, pesi o quantità per un alime
                 if (pasto) {
                     document.getElementById('editData').value = giorno.data;
                     document.getElementById('editOra').value = pasto.ora || "12:00";
-                    document.getElementById('editTesto').value = pasto.testo;
+
+                    // Traduci al volo i testi fallback noti
+                    let testo = pasto.testo;
+                    const fallbackMap = {
+                        'Inserimento manuale': 'Manual entry',
+                        'Pasto modificato': 'Edited entry'
+                    };
+                    const fallbackMapReverse = {
+                        'Manual entry': 'Inserimento manuale',
+                        'Edited entry': 'Pasto modificato'
+                    };
+                    if (currentLang === 'en' && fallbackMap[testo]) {
+                        testo = fallbackMap[testo];
+                    } else if (currentLang === 'it' && fallbackMapReverse[testo]) {
+                        testo = fallbackMapReverse[testo];
+                    }
+                    document.getElementById('editTesto').value = testo;
+
+                    document.getElementById('editCalorie').value = pasto.calorie !== undefined ? Math.round(pasto.calorie) : '';
+                    document.getElementById('editProteine').value = pasto.proteine !== undefined ? Math.round(pasto.proteine) : '';
+                    document.getElementById('editCarboidrati').value = pasto.carboidrati !== undefined ? Math.round(pasto.carboidrati) : '';
+                    document.getElementById('editGrassi').value = pasto.grassi !== undefined ? Math.round(pasto.grassi) : '';
+
+                    aggiornaCoerenzaEdit();
 
                     const m = document.getElementById('modalEdit');
                     m.classList.remove('hidden');
@@ -3431,6 +3511,152 @@ IMPORTANTE: Se l'utente non specifica le porzioni, pesi o quantità per un alime
                 editingId = null;
             }, 200);
         }
+
+        window.aggiornaCoerenzaEdit = function() {
+            const calorieInput = document.getElementById('editCalorie');
+            const protInput = document.getElementById('editProteine');
+            const carbInput = document.getElementById('editCarboidrati');
+            const fatInput = document.getElementById('editGrassi');
+            const statusEl = document.getElementById('edit-coherence-status');
+
+            if (!statusEl) return;
+
+            const calorie = parseFloat(calorieInput.value) || 0;
+            const proteine = parseFloat(protInput.value) || 0;
+            const carboidrati = parseFloat(carbInput.value) || 0;
+            const grassi = parseFloat(fatInput.value) || 0;
+
+            const protCalVal = proteine * 4;
+            const carbCalVal = carboidrati * 4;
+            const fatCalVal = grassi * 9;
+
+            const protCal = document.getElementById('edit-prot-cal');
+            const carbCal = document.getElementById('edit-carb-cal');
+            const fatCal = document.getElementById('edit-fat-cal');
+            if (protCal) protCal.innerText = Math.round(protCalVal) + ' kcal';
+            if (carbCal) carbCal.innerText = Math.round(carbCalVal) + ' kcal';
+            if (fatCal) fatCal.innerText = Math.round(fatCalVal) + ' kcal';
+
+            const calFromMacro = protCalVal + carbCalVal + fatCalVal;
+            const diff = Math.abs(calorie - calFromMacro);
+            const maxAllowedDiff = Math.max(150, calFromMacro * 0.15);
+
+            if (calorie === 0 && proteine === 0 && carboidrati === 0 && grassi === 0) {
+                statusEl.innerHTML = '';
+                return;
+            }
+
+            let html = '';
+            if (diff <= maxAllowedDiff) {
+                html = `<div class="p-2 bg-emerald-500/10 border border-emerald-500/25 rounded-lg text-emerald-400 text-[10px] mt-2">
+                    ✓ ${currentLang === 'en' ? 'Consistent! Macro sum: ' : 'Coerente! Calorie dai macro: '} <strong>${Math.round(calFromMacro)} kcal</strong>
+                </div>`;
+            } else {
+                html = `<div class="p-2 bg-amber-500/10 border border-amber-500/25 rounded-lg text-amber-400 text-[10px] mt-2">
+                    ⚠️ ${currentLang === 'en' ? 'Mismatch! Macro sum: ' : 'Incoerenza! Calorie dai macro: '} <strong>${Math.round(calFromMacro)} kcal</strong> (${currentLang === 'en' ? 'difference: ' : 'differenza: '} ${Math.round(diff)} kcal)
+                </div>`;
+            }
+            statusEl.innerHTML = html;
+        };
+
+        window.salvaModificaDiretta = async function() {
+            if (!editingId) return;
+            const { giornoId, pastoId } = editingId;
+
+            const nuovaData = document.getElementById('editData').value;
+            const nuovaOra = document.getElementById('editOra').value;
+            const nuovoTesto = document.getElementById('editTesto').value.trim() || (currentLang === 'en' ? 'Edited entry' : 'Pasto modificato');
+
+            const calorie = parseFloat(document.getElementById('editCalorie').value) || 0;
+            const proteine = parseFloat(document.getElementById('editProteine').value) || 0;
+            const carboidrati = parseFloat(document.getElementById('editCarboidrati').value) || 0;
+            const grassi = parseFloat(document.getElementById('editGrassi').value) || 0;
+
+            if (calorie <= 0 && proteine <= 0 && carboidrati <= 0 && grassi <= 0) {
+                await customAlert(
+                    currentLang === 'en' ? "Empty Fields" : "Campi vuoti",
+                    currentLang === 'en' ? "Please insert at least some calories or macronutrients." : "Inserisci almeno le calorie o i macronutrienti."
+                );
+                return;
+            }
+
+            // Verifica coerenza
+            const calFromMacro = (proteine * 4) + (carboidrati * 4) + (grassi * 9);
+            const diff = Math.abs(calorie - calFromMacro);
+            const maxAllowedDiff = Math.max(150, calFromMacro * 0.15);
+            
+            if (diff > maxAllowedDiff) {
+                await customAlert(
+                    currentLang === 'en' ? "Inconsistent Values" : "Valori incoerenti",
+                    currentLang === 'en'
+                        ? `The macronutrients entered equal ${Math.round(calFromMacro)} kcal, but you declared ${Math.round(calorie)} kcal. The difference (${Math.round(diff)} kcal) is too large! Please adjust either the calories or the macronutrients.`
+                        : `I macronutrienti inseriti equivalgono a ${Math.round(calFromMacro)} kcal, ma hai dichiarato ${Math.round(calorie)} kcal. La differenza (${Math.round(diff)} kcal) è troppo elevata! Correggi le calorie o i macronutrienti.`
+                );
+                return;
+            }
+
+            let db = JSON.parse(localStorage.getItem('nutriDB')) || [];
+            
+            // 1. Rimuovi il pasto vecchio dalla sua giornata
+            let vecchioGiorno = db.find(x => x.id === giornoId);
+            if (vecchioGiorno) {
+                let vecchioPasto = vecchioGiorno.pasti.find(p => p.id === pastoId);
+                if (vecchioPasto) {
+                    vecchioGiorno.calorie = Math.max(0, vecchioGiorno.calorie - vecchioPasto.calorie);
+                    vecchioGiorno.proteine = Math.max(0, vecchioGiorno.proteine - vecchioPasto.proteine);
+                    vecchioGiorno.carboidrati = Math.max(0, vecchioGiorno.carboidrati - vecchioPasto.carboidrati);
+                    vecchioGiorno.grassi = Math.max(0, vecchioGiorno.grassi - vecchioPasto.grassi);
+                    vecchioGiorno.pasti = vecchioGiorno.pasti.filter(p => p.id !== pastoId);
+                }
+                if (vecchioGiorno.pasti.length === 0 && !vecchioGiorno.peso) {
+                    db = db.filter(x => x.id !== giornoId);
+                }
+            }
+
+            // 2. Crea il pasto modificato
+            const pastoModificato = {
+                id: pastoId,
+                ora: nuovaOra,
+                testo: nuovoTesto,
+                calorie: calorie,
+                proteine: proteine,
+                carboidrati: carboidrati,
+                grassi: grassi
+            };
+
+            // 3. Aggiungilo nella nuova giornata
+            let destinazioneGiorno = db.find(x => x.data === nuovaData);
+            if (destinazioneGiorno) {
+                destinazioneGiorno.calorie = (destinazioneGiorno.calorie || 0) + pastoModificato.calorie;
+                destinazioneGiorno.proteine = (destinazioneGiorno.proteine || 0) + pastoModificato.proteine;
+                destinazioneGiorno.carboidrati = (destinazioneGiorno.carboidrati || 0) + pastoModificato.carboidrati;
+                destinazioneGiorno.grassi = (destinazioneGiorno.grassi || 0) + pastoModificato.grassi;
+                if (!destinazioneGiorno.pasti) destinazioneGiorno.pasti = [];
+                destinazioneGiorno.pasti.push(pastoModificato);
+            } else {
+                db.push({
+                    id: Date.now(),
+                    data: nuovaData,
+                    calorie: pastoModificato.calorie,
+                    proteine: pastoModificato.proteine,
+                    carboidrati: pastoModificato.carboidrati,
+                    grassi: pastoModificato.grassi,
+                    pasti: [pastoModificato],
+                    peso: null
+                });
+            }
+
+            salvaDatabase(db);
+            chiudiModal();
+            renderStorico();
+            aggiornaTotaleGiorno();
+            caricaPesoDelGiorno();
+
+            await customAlert(
+                currentLang === 'en' ? "Success" : "Successo",
+                currentLang === 'en' ? "Meal updated successfully!" : "Pasto aggiornato con successo!"
+            );
+        };
 
         async function salvaModifica() {
             if (!editingId) return;
