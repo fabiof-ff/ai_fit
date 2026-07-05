@@ -3135,6 +3135,7 @@ IMPORTANTE: Se l'utente non specifica le porzioni, pesi o quantità per un alime
         // ================================================================
         function renderTrend() {
             const db = JSON.parse(localStorage.getItem('nutriDB')) || [];
+            const dataOggi = ottieniDataOggi();
 
             const titleEl = document.getElementById('trendMediaTitle');
 
@@ -3173,7 +3174,7 @@ IMPORTANTE: Se l'utente non specifica le porzioni, pesi o quantità per un alime
                     }
                 }
 
-                const giorniAttivi = ultimiGiorni.filter(g => g.calorie > 0 || g.proteine > 0 || g.carboidrati > 0 || g.grassi > 0);
+                const giorniAttivi = ultimiGiorni.filter(g => g.data !== dataOggi && (g.calorie > 0 || g.proteine > 0 || g.carboidrati > 0 || g.grassi > 0));
                 if (giorniAttivi.length > 0) {
                     const sum = (chiave) => giorniAttivi.reduce((acc, current) => acc + (current[chiave] || 0), 0);
                     const avgCal = Math.round(sum('calorie') / giorniAttivi.length);
@@ -3443,8 +3444,8 @@ IMPORTANTE: Se l'utente non specifica le porzioni, pesi o quantità per un alime
                     const inizioStr = formattaData(inizioSettimana);
                     const fineStr = formattaData(fineSettimana);
                     const recordSettimanali = db.filter(x => x.data >= inizioStr && x.data <= fineStr);
-                    const recordAttivi = recordSettimanali.filter(r => r.calorie > 0 || r.proteine > 0 || r.carboidrati > 0 || r.grassi > 0);
-                    const recordConPeso = recordSettimanali.filter(r => r.peso !== null && r.peso !== undefined && parseFloat(r.peso) > 0);
+                    const recordAttivi = recordSettimanali.filter(r => r.data !== dataOggi && (r.calorie > 0 || r.proteine > 0 || r.carboidrati > 0 || r.grassi > 0));
+                    const recordConPeso = recordSettimanali.filter(r => r.data !== dataOggi && r.peso !== null && r.peso !== undefined && parseFloat(r.peso) > 0);
                     const mediaC = recordAttivi.length > 0 ? recordAttivi.reduce((a, b) => a + (b.calorie || 0), 0) / recordAttivi.length : 0;
                     const mediaP = recordAttivi.length > 0 ? recordAttivi.reduce((a, b) => a + (b.proteine || 0), 0) / recordAttivi.length : 0;
                     const mediaCb = recordAttivi.length > 0 ? recordAttivi.reduce((a, b) => a + (b.carboidrati || 0), 0) / recordAttivi.length : 0;
@@ -3692,6 +3693,7 @@ IMPORTANTE: Se l'utente non specifica le porzioni, pesi o quantità per un alime
 
         function renderTrendMensile() {
             const db = JSON.parse(localStorage.getItem('nutriDB')) || [];
+            const dataOggi = ottieniDataOggi();
 
             const calcolaBarraETarget = (attuale, target) => {
                 if (!target || target <= 0) return { barra: '0%', freccia: '100%' };
@@ -3738,7 +3740,7 @@ IMPORTANTE: Se l'utente non specifica le porzioni, pesi o quantità per un alime
 
             // 2. Group by month
             db.forEach(entry => {
-                if (!entry.data) return;
+                if (!entry.data || entry.data === dataOggi) return;
                 const dateParts = entry.data.split('-');
                 if (dateParts.length < 2) return;
                 const key = `${dateParts[0]}-${dateParts[1]}`; // YYYY-MM
@@ -3799,7 +3801,7 @@ IMPORTANTE: Se l'utente non specifica le porzioni, pesi o quantità per un alime
             });
 
             // 3. Overall average on all active days of the database
-            const giorniAttivi = db.filter(g => g.calorie > 0 || g.proteine > 0 || g.carboidrati > 0 || g.grassi > 0);
+            const giorniAttivi = db.filter(g => g.data !== dataOggi && (g.calorie > 0 || g.proteine > 0 || g.carboidrati > 0 || g.grassi > 0));
             const activeMonths = monthKeys.length;
             const titleEl = document.getElementById('trendMediaTitle');
             if (titleEl) {
