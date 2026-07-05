@@ -1171,20 +1171,17 @@ IMPORTANTE: Se l'utente non specifica le porzioni, pesi o quantità per un alime
             const boxSuggerimenti = document.getElementById('boxSuggerimentiAI');
             const testoSuggerimenti = document.getElementById('testoSuggerimentiAI');
 
-            // Recupera i valori attuali dallo schermo o dallo stato dell'app
-            const calorie = document.getElementById('totCalorie').innerText;
-            const targetCalorie = document.getElementById('targetCalorieVal').innerText;
-            const proteine = document.getElementById('totProteine').innerText;
-            const targetProteine = document.getElementById('targetProteineVal').innerText;
-            const carbo = document.getElementById('totCarbo').innerText;
-            const targetCarbo = document.getElementById('targetCarboVal').innerText;
-            const grassi = document.getElementById('totGrassi').innerText;
-            const targetGrassi = document.getElementById('targetGrassiVal').innerText;
-
             // Recupera l'elenco dei pasti di oggi dal database locale
             const dataOggi = ottieniDataOggi();
             const db = JSON.parse(localStorage.getItem('nutriDB')) || [];
             const giornoOggi = db.find(g => g.data === dataOggi);
+
+            // Calcola i valori consumati odierni e usa le variabili target globali
+            const calorieConsumate = giornoOggi ? Math.round(giornoOggi.calorie || 0) : 0;
+            const proteineConsumate = giornoOggi ? Math.round(giornoOggi.proteine || 0) : 0;
+            const carboConsumati = giornoOggi ? Math.round(giornoOggi.carboidrati || 0) : 0;
+            const grassiConsumati = giornoOggi ? Math.round(giornoOggi.grassi || 0) : 0;
+
             const pastiDellaGiornata = giornoOggi && giornoOggi.pasti && giornoOggi.pasti.length > 0
                 ? giornoOggi.pasti.map(p => `- [${p.ora || ''}] ${p.testo} (${p.calorie} kcal)`).join('\n')
                 : (currentLang === 'en' ? "No meals logged yet today." : "Nessun pasto registrato ancora oggi.");
@@ -1209,10 +1206,10 @@ IMPORTANTE: Se l'utente non specifica le porzioni, pesi o quantità per un alime
             const prompt = currentLang === 'en'
                 ? `Act as an expert nutritionist and trainer. Make a very brief, friendly, and synthetic evaluation of the macronutrients consumed today compared to the user's targets, giving practical and immediate suggestions on what to eat or avoid for the rest of the day.
     Today's data:
-    - Calories: ${calorie} kcal consumed out of a target of ${targetCalorie} kcal.
-    - Proteins: ${proteine}g consumed out of a target of ${targetProteine}g.
-    - Carbohydrates: ${carbo}g consumed out of a target of ${targetCarbo}g.
-    - Fats: ${grassi}g consumed out of a target of ${targetGrassi}g.
+    - Calories: ${calorieConsumate} kcal consumed out of a target of ${targetCalorie} kcal.
+    - Proteins: ${proteineConsumate}g consumed out of a target of ${targetProteine}g.
+    - Carbohydrates: ${carboConsumati}g consumed out of a target of ${targetCarbo}g.
+    - Fats: ${grassiConsumati}g consumed out of a target of ${targetGrassi}g.
     
     Meals consumed today:
     ${pastiDellaGiornata}
@@ -1221,10 +1218,10 @@ IMPORTANTE: Se l'utente non specifica le porzioni, pesi o quantità per un alime
     Respond in maximum 3 or 4 sentences, very compactly, using bullet points if needed. Be motivational.`
                 : `Agisci come un esperto nutrizionista e trainer. Fai una brevissima valutazione sintetica e amichevole dei macronutrienti consumati oggi rispetto ai target dell'utente, dando suggerimenti pratici ed immediati su cosa mangiare o evitare per il resto della giornata.
     Dati di oggi:
-    - Calorie: ${calorie} kcal consumate su un target di ${targetCalorie} kcal.
-    - Proteine: ${proteine}g consumate su un target di ${targetProteine}g.
-    - Carboidrati: ${carbo}g consumati su un target di ${targetCarbo}g.
-    - Grassi: ${grassi}g consumati su un target di ${targetGrassi}g.
+    - Calorie: ${calorieConsumate} kcal consumate su un target di ${targetCalorie} kcal.
+    - Proteine: ${proteineConsumate}g consumate su un target di ${targetProteine}g.
+    - Carboidrati: ${carboConsumati}g consumati su un target di ${targetCarbo}g.
+    - Grassi: ${grassiConsumati}g consumati su un target di ${targetGrassi}g.
     
     Pasti consumati oggi:
     ${pastiDellaGiornata}

@@ -168,6 +168,26 @@
         }
       ],
       "peso": 80
+    },
+    {
+      "id": 1783256462502,
+      "data": "2026-07-05",
+      "calorie": 111,
+      "proteine": 6.5,
+      "carboidrati": 8,
+      "grassi": 4.3,
+      "pasti": [
+        {
+          "id": 1783256462502,
+          "ora": "15:01",
+          "testo": "yogurth",
+          "calorie": 111,
+          "proteine": 6.5,
+          "carboidrati": 8,
+          "grassi": 4.3
+        }
+      ],
+      "peso": null
     }
   ],
   "impostazioni": {
