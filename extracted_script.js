@@ -1039,6 +1039,14 @@
             const db = JSON.parse(localStorage.getItem('nutriDB')) || [];
             const recordOggi = db.find(x => x.data === oggiStr);
 
+            // Mostra l'analisi salvata se presente
+            const boxSuggerimenti = document.getElementById('boxSuggerimentiAI');
+            const testoSuggerimenti = document.getElementById('testoSuggerimentiAI');
+            if (recordOggi && recordOggi.analisiAI && boxSuggerimenti && testoSuggerimenti) {
+                boxSuggerimenti.classList.remove('hidden');
+                testoSuggerimenti.innerHTML = recordOggi.analisiAI.replace(/\n/g, '<br>');
+            }
+
             // Scrivi target nell'interfaccia UI dei trend
             document.getElementById('trendTargetCalorie').innerText = targetCalorie || '—';
             document.getElementById('trendTargetProteine').innerText = (targetProteine ? targetProteine + 'g' : '—');
@@ -1174,7 +1182,39 @@ IMPORTANTE: Se l'utente non specifica le porzioni, pesi o quantità per un alime
             // Recupera l'elenco dei pasti di oggi dal database locale
             const dataOggi = ottieniDataOggi();
             const db = JSON.parse(localStorage.getItem('nutriDB')) || [];
-            const giornoOggi = db.find(g => g.data === dataOggi);
+            let giornoOggi = db.find(g => g.data === dataOggi);
+
+            // Se l'analisi esiste già in memoria per oggi, chiedi se vederla o rifarla
+            if (giornoOggi && giornoOggi.analisiAI) {
+                const vediUltima = await customConfirm(
+                    currentLang === 'en' ? "Existing Analysis" : "Analisi esistente",
+                    currentLang === 'en' 
+                        ? "You already have an analysis for today. Would you like to view the last analysis or redo it?" 
+                        : "Hai già richiesto un parere oggi. Vuoi visualizzare l'ultima analisi o rifarla?",
+                    false,
+                    currentLang === 'en' ? "View Last" : "Vedi l'ultima",
+                    currentLang === 'en' ? "Redo Analysis" : "Rifai l'analisi"
+                );
+
+                if (vediUltima) {
+                    boxSuggerimenti.classList.remove('hidden');
+                    testoSuggerimenti.innerHTML = giornoOggi.analisiAI.replace(/\n/g, '<br>');
+                    return;
+                }
+            }
+
+            if (!giornoOggi) {
+                giornoOggi = {
+                    id: Date.now(),
+                    data: dataOggi,
+                    calorie: 0,
+                    proteine: 0,
+                    carboidrati: 0,
+                    grassi: 0,
+                    pasti: []
+                };
+                db.push(giornoOggi);
+            }
 
             // Calcola i valori consumati odierni e usa le variabili target globali
             const calorieConsumate = giornoOggi ? Math.round(giornoOggi.calorie || 0) : 0;
@@ -1242,6 +1282,10 @@ IMPORTANTE: Se l'utente non specifica le porzioni, pesi o quantità per un alime
                 const data = await response.json();
                 if (data.error) throw new Error(data.error.message);
                 rispostaTesto = data.candidates[0].content.parts[0].text;
+
+                // Salva nel database locale e salva su localStorage
+                giornoOggi.analisiAI = rispostaTesto;
+                salvaDatabase(db);
 
                 // Formatta la risposta sostituendo gli a capo con dei tag <br> per l'HTML
                 testoSuggerimenti.innerHTML = rispostaTesto.replace(/\n/g, '<br>');
@@ -3221,7 +3265,7 @@ Rispondi ESCLUSIVAMENTE con un oggetto JSON valido (senza markdown, senza racchi
         // ================================================================
         let dialogPromiseResolve = null;
 
-        window.customConfirm = function (title, message, isDanger = false, confirmText = "Conferma") {
+        window.customConfirm = function (title, message, isDanger = false, confirmText = "Conferma", cancelText = "Annulla") {
             return new Promise((resolve) => {
                 const modal = document.getElementById('dialogModal');
                 const inner = document.getElementById('dialogInner');
@@ -3235,6 +3279,7 @@ Rispondi ESCLUSIVAMENTE con un oggetto JSON valido (senza markdown, senza racchi
                 titleEl.innerText = title;
                 msgEl.innerText = message;
                 btnConfirm.innerText = confirmText;
+                btnCancel.innerText = cancelText;
                 btnCancel.classList.remove('hidden');
 
                 if (isDanger) {
