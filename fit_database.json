@@ -172,19 +172,19 @@
     {
       "id": 1783256462502,
       "data": "2026-07-05",
-      "calorie": 111,
-      "proteine": 6.5,
-      "carboidrati": 8,
-      "grassi": 4.3,
+      "calorie": 2450,
+      "proteine": 100,
+      "carboidrati": 400,
+      "grassi": 50,
       "pasti": [
         {
-          "id": 1783256462502,
-          "ora": "15:01",
-          "testo": "yogurth",
-          "calorie": 111,
-          "proteine": 6.5,
-          "carboidrati": 8,
-          "grassi": 4.3
+          "id": 1783261087459,
+          "ora": "16:18",
+          "testo": "Inserimento manuale",
+          "calorie": 2450,
+          "proteine": 100,
+          "carboidrati": 400,
+          "grassi": 50
         }
       ],
       "peso": null,

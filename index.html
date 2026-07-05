@@ -862,7 +862,7 @@
             </div>
 
             <div class="bg-slate-800/80 rounded-2xl border border-slate-700/60 p-4 shadow-xl mb-5 backdrop-blur">
-                <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 mb-3">
+                <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 mb-3.5">
                     <label class="text-sm font-semibold text-slate-300 flex items-center gap-2">
                         <i data-lucide="pencil" class="w-4 h-4 text-blue-400"></i> <span
                             data-i18n="prompt_what_did_you_eat">Cosa hai mangiato?</span>
@@ -874,23 +874,88 @@
                             class="min-w-0 bg-slate-900 border border-slate-700 rounded-xl px-2 py-1 text-xs text-slate-100 focus:outline-none focus:ring-2 focus:ring-blue-500 transition">
                     </div>
                 </div>
-                <div class="relative">
-                    <textarea id="testoInput" rows="4"
-                        class="w-full bg-slate-900/90 border border-slate-700 rounded-xl p-3 pr-12 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 text-slate-100 placeholder-slate-500 resize-none"
-                        placeholder="Es: Stamattina yogurt greco..."></textarea>
-                    <button type="button" id="btnMic" onclick="toggleVoiceDictation('testoInput', 'btnMic')"
-                        class="absolute bottom-3 right-3 text-slate-400 hover:text-indigo-400 p-2 rounded-xl bg-slate-800/80 hover:bg-slate-800 border border-slate-700/50 transition duration-200 cursor-pointer flex items-center justify-center animate-none"
-                        title="Dettatura vocale">
-                        <i id="iconMic" data-lucide="mic" class="w-4 h-4"></i>
+
+                <!-- Selettore dei sotto-tab interni (AI vs Manuale) -->
+                <div class="flex gap-1.5 p-1 bg-slate-900/60 rounded-xl mb-3.5 border border-slate-800/50">
+                    <button type="button" onclick="switchInputMode('ai')" id="tabInputAI"
+                        class="sub-tab-btn flex-1 py-1.5 rounded-lg text-xs font-semibold active">
+                        <i data-lucide="sparkles" class="w-3.5 h-3.5 inline mr-1"></i> AI
+                    </button>
+                    <button type="button" onclick="switchInputMode('manual')" id="tabInputManual"
+                        class="sub-tab-btn flex-1 py-1.5 rounded-lg text-xs font-semibold">
+                        <i data-lucide="keyboard" class="w-3.5 h-3.5 inline mr-1"></i> Manuale
                     </button>
                 </div>
-                <button onclick="analizzaDatiConAI()" id="btnInvia"
-                    class="mt-3 w-full bg-blue-600 hover:bg-blue-500 text-white font-bold py-3 px-4 rounded-xl shadow-lg shadow-blue-600/20 active:scale-[0.98] transition flex items-center justify-center gap-2 text-sm cursor-pointer">
-                    <span id="btnLabel" data-i18n="btn_ask_ai_opinion">Elabora con AI</span>
-                    <i data-lucide="sparkles" class="w-4 h-4"></i>
-                </button>
-                <div id="stato" class="text-xs text-slate-400 text-center mt-2.5 italic hidden"><span
-                        data-i18n="lbl_ai_analyzing_meals">L'AI sta analizzando i tuoi pasti...</span></div>
+
+                <!-- CONTENUTO DEL SUBTAB AI -->
+                <div id="inputSectionAI" class="space-y-3">
+                    <div class="relative">
+                        <textarea id="testoInput" rows="4"
+                            class="w-full bg-slate-900/90 border border-slate-700 rounded-xl p-3 pr-12 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 text-slate-100 placeholder-slate-500 resize-none"
+                            placeholder="Es: Stamattina yogurt greco..."></textarea>
+                        <button type="button" id="btnMic" onclick="toggleVoiceDictation('testoInput', 'btnMic')"
+                            class="absolute bottom-3 right-3 text-slate-400 hover:text-indigo-400 p-2 rounded-xl bg-slate-800/80 hover:bg-slate-800 border border-slate-700/50 transition duration-200 cursor-pointer flex items-center justify-center animate-none"
+                            title="Dettatura vocale">
+                            <i id="iconMic" data-lucide="mic" class="w-4 h-4"></i>
+                        </button>
+                    </div>
+                    <button onclick="analizzaDatiConAI()" id="btnInvia"
+                        class="w-full bg-blue-600 hover:bg-blue-500 text-white font-bold py-3 px-4 rounded-xl shadow-lg shadow-blue-600/20 active:scale-[0.98] transition flex items-center justify-center gap-2 text-sm cursor-pointer">
+                        <span id="btnLabel" data-i18n="btn_ask_ai_opinion">Elabora con AI</span>
+                        <i data-lucide="sparkles" class="w-4 h-4"></i>
+                    </button>
+                    <div id="stato" class="text-xs text-slate-400 text-center mt-2.5 italic hidden"><span
+                            data-i18n="lbl_ai_analyzing_meals">L'AI sta analizzando i tuoi pasti...</span></div>
+                </div>
+
+                <!-- CONTENUTO DEL SUBTAB MANUALE -->
+                <div id="inputSectionManual" class="space-y-3.5 hidden">
+                    <!-- Calorie -->
+                    <div class="flex flex-col gap-1.5">
+                        <label class="text-[10px] font-bold text-slate-400 uppercase tracking-wider" data-i18n="label_calorie">Calorie</label>
+                        <input type="number" id="manual-calorie" oninput="aggiornaCalcoloCoerenza()" placeholder="es. 500" min="0"
+                            class="bg-slate-900 border border-slate-700 rounded-xl p-2.5 text-xs text-slate-100 focus:outline-none focus:ring-2 focus:ring-blue-500 transition font-mono">
+                    </div>
+
+                    <!-- Proteine, Carbo, Grassi -->
+                    <div class="grid grid-cols-3 gap-2">
+                        <div class="flex flex-col gap-1">
+                            <label class="text-[10px] font-bold text-slate-400 uppercase tracking-wider" data-i18n="label_proteine">Proteine (g)</label>
+                            <input type="number" id="manual-proteine" oninput="aggiornaCalcoloCoerenza()" placeholder="es. 30" min="0"
+                                class="bg-slate-900 border border-slate-700 rounded-xl p-2.5 text-xs text-slate-100 focus:outline-none focus:ring-2 focus:ring-blue-500 transition font-mono mb-0.5">
+                            <span id="manual-prot-cal" class="text-[9px] text-slate-500 font-semibold font-mono text-center">0 kcal</span>
+                        </div>
+                        <div class="flex flex-col gap-1">
+                            <label class="text-[10px] font-bold text-slate-400 uppercase tracking-wider" data-i18n="label_carboidrati">Carbo (g)</label>
+                            <input type="number" id="manual-carboidrati" oninput="aggiornaCalcoloCoerenza()" placeholder="es. 50" min="0"
+                                class="bg-slate-900 border border-slate-700 rounded-xl p-2.5 text-xs text-slate-100 focus:outline-none focus:ring-2 focus:ring-blue-500 transition font-mono mb-0.5">
+                            <span id="manual-carb-cal" class="text-[9px] text-slate-500 font-semibold font-mono text-center">0 kcal</span>
+                        </div>
+                        <div class="flex flex-col gap-1">
+                            <label class="text-[10px] font-bold text-slate-400 uppercase tracking-wider" data-i18n="label_grassi">Grassi (g)</label>
+                            <input type="number" id="manual-grassi" oninput="aggiornaCalcoloCoerenza()" placeholder="es. 15" min="0"
+                                class="bg-slate-900 border border-slate-700 rounded-xl p-2.5 text-xs text-slate-100 focus:outline-none focus:ring-2 focus:ring-blue-500 transition font-mono mb-0.5">
+                            <span id="manual-fat-cal" class="text-[9px] text-slate-500 font-semibold font-mono text-center">0 kcal</span>
+                        </div>
+                    </div>
+
+                    <!-- Descrizione -->
+                    <div class="flex flex-col gap-1.5">
+                        <label class="text-[10px] font-bold text-slate-400 uppercase tracking-wider" data-i18n="lbl_meal_text">Descrizione Pasto</label>
+                        <textarea id="manual-descrizione" rows="2" placeholder="es. Pranzo"
+                            class="bg-slate-900 border border-slate-700 rounded-xl p-2.5 text-xs text-slate-100 focus:outline-none focus:ring-2 focus:ring-blue-500 transition resize-none"></textarea>
+                    </div>
+
+                    <!-- Indicatore di Coerenza -->
+                    <div id="manual-coherence-status"></div>
+
+                    <!-- Pulsante Salva -->
+                    <button type="button" onclick="salvaPastoManuale()"
+                        class="w-full bg-emerald-600 hover:bg-emerald-500 text-white font-bold py-3 px-4 rounded-xl shadow-lg shadow-emerald-600/20 active:scale-[0.98] transition flex items-center justify-center gap-2 text-sm cursor-pointer mt-1">
+                        <i data-lucide="save" class="w-4 h-4"></i>
+                        <span data-i18n="btn_save_to_diary">Salva nel diario</span>
+                    </button>
+                </div>
             </div>
 
             <div id="boxRisultati" class="hidden">
@@ -964,6 +1029,8 @@
 
 
     </div>
+
+
 
     <div id="panel-trend" class="tab-panel pt-1 pb-4 px-4 max-w-md mx-auto w-full">
 
@@ -1894,6 +1961,8 @@
                 label_body_weight: "Registrazione Peso Corporeo",
                 btn_save_weight: "Salva Peso",
                 btn_ask_ai_opinion: "Elabora con AI",
+                btn_manual_insert: "Manuale",
+                title_manual_insert: "Inserimento Manuale",
                 btn_ask_ai_trend: "Chiedi parere ad AI sull'andamento",
                 trend_title_days: "Andamento ultimi 7 giorni",
                 trend_title_weeks: "Andamento ultime 8 settimane (Media/Giorno)",
@@ -2005,6 +2074,8 @@
                 label_body_weight: "Body Weight Logger",
                 btn_save_weight: "Save Weight",
                 btn_ask_ai_opinion: "Analyze with AI",
+                btn_manual_insert: "Manual Input",
+                title_manual_insert: "Manual Input",
                 btn_ask_ai_trend: "Ask AI for trend analysis",
                 trend_title_days: "Trend last 7 days",
                 trend_title_weeks: "Trend last 8 weeks (Average/Day)",
@@ -2386,11 +2457,15 @@
         // ================================================================
         function switchTab(tab) {
             ['oggi', 'storico', 'trend'].forEach(t => {
-                document.getElementById('panel-' + t).classList.remove('active');
-                document.getElementById('tab-' + t).classList.remove('active');
+                const panel = document.getElementById('panel-' + t);
+                const tabBtn = document.getElementById('tab-' + t);
+                if (panel) panel.classList.remove('active');
+                if (tabBtn) tabBtn.classList.remove('active');
             });
-            document.getElementById('panel-' + tab).classList.add('active');
-            document.getElementById('tab-' + tab).classList.add('active');
+            const activePanel = document.getElementById('panel-' + tab);
+            const activeTabBtn = document.getElementById('tab-' + tab);
+            if (activePanel) activePanel.classList.add('active');
+            if (activeTabBtn) activeTabBtn.classList.add('active');
 
             if (tab === 'storico') renderStorico();
             if (tab === 'trend') {
@@ -2403,6 +2478,192 @@
             }
             lucide.createIcons();
         }
+
+        window.switchInputMode = function(mode) {
+            const tabAI = document.getElementById('tabInputAI');
+            const tabManual = document.getElementById('tabInputManual');
+            const sectionAI = document.getElementById('inputSectionAI');
+            const sectionManual = document.getElementById('inputSectionManual');
+
+            if (!tabAI || !tabManual || !sectionAI || !sectionManual) return;
+
+            if (mode === 'ai') {
+                tabAI.classList.add('active');
+                tabManual.classList.remove('active');
+                sectionAI.classList.remove('hidden');
+                sectionManual.classList.add('hidden');
+            } else {
+                tabAI.classList.remove('active');
+                tabManual.classList.add('active');
+                sectionAI.classList.add('hidden');
+                sectionManual.classList.remove('hidden');
+                
+                // Pulisci campi
+                document.getElementById('manual-calorie').value = '';
+                document.getElementById('manual-proteine').value = '';
+                document.getElementById('manual-carboidrati').value = '';
+                document.getElementById('manual-grassi').value = '';
+                document.getElementById('manual-descrizione').value = '';
+                const statusEl = document.getElementById('manual-coherence-status');
+                if (statusEl) statusEl.innerHTML = '';
+
+                // Reset calorie dei macro
+                const protCal = document.getElementById('manual-prot-cal');
+                const carbCal = document.getElementById('manual-carb-cal');
+                const fatCal = document.getElementById('manual-fat-cal');
+                if (protCal) protCal.innerText = '0 kcal';
+                if (carbCal) carbCal.innerText = '0 kcal';
+                if (fatCal) fatCal.innerText = '0 kcal';
+            }
+            lucide.createIcons();
+        };
+
+        window.aggiornaCalcoloCoerenza = function() {
+            const calorieInput = document.getElementById('manual-calorie');
+            const protInput = document.getElementById('manual-proteine');
+            const carbInput = document.getElementById('manual-carboidrati');
+            const fatInput = document.getElementById('manual-grassi');
+            const statusEl = document.getElementById('manual-coherence-status');
+
+            if (!statusEl) return;
+
+            const calorie = parseFloat(calorieInput.value) || 0;
+            const proteine = parseFloat(protInput.value) || 0;
+            const carboidrati = parseFloat(carbInput.value) || 0;
+            const grassi = parseFloat(fatInput.value) || 0;
+
+            const protCalVal = proteine * 4;
+            const carbCalVal = carboidrati * 4;
+            const fatCalVal = grassi * 9;
+
+            const protCal = document.getElementById('manual-prot-cal');
+            const carbCal = document.getElementById('manual-carb-cal');
+            const fatCal = document.getElementById('manual-fat-cal');
+            if (protCal) protCal.innerText = Math.round(protCalVal) + ' kcal';
+            if (carbCal) carbCal.innerText = Math.round(carbCalVal) + ' kcal';
+            if (fatCal) fatCal.innerText = Math.round(fatCalVal) + ' kcal';
+
+            const calFromMacro = protCalVal + carbCalVal + fatCalVal;
+            const diff = Math.abs(calorie - calFromMacro);
+            const maxAllowedDiff = Math.max(150, calFromMacro * 0.15);
+
+            if (calorie === 0 && proteine === 0 && carboidrati === 0 && grassi === 0) {
+                statusEl.innerHTML = '';
+                return;
+            }
+
+            let html = '';
+            if (diff <= maxAllowedDiff) {
+                html = `<div class="p-2.5 bg-emerald-500/10 border border-emerald-500/25 rounded-xl text-emerald-400 text-xs">
+                    ✓ ${currentLang === 'en' ? 'Consistent values! Calorie from macro: ' : 'Valori coerenti! Calorie dai macro: '} <strong>${Math.round(calFromMacro)} kcal</strong>
+                </div>`;
+            } else {
+                html = `<div class="p-2.5 bg-amber-500/10 border border-amber-500/25 rounded-xl text-amber-400 text-xs">
+                    ⚠️ ${currentLang === 'en' ? 'Mismatch! Calorie from macro: ' : 'Incoerenza! Calorie dai macro: '} <strong>${Math.round(calFromMacro)} kcal</strong> (${currentLang === 'en' ? 'difference: ' : 'differenza: '} ${Math.round(diff)} kcal)
+                </div>`;
+            }
+            statusEl.innerHTML = html;
+        };
+
+        window.salvaPastoManuale = async function() {
+            const dataPasto = document.getElementById('input-pasto-data').value || ottieniDataOggi();
+            const calorieInput = document.getElementById('manual-calorie');
+            const protInput = document.getElementById('manual-proteine');
+            const carbInput = document.getElementById('manual-carboidrati');
+            const fatInput = document.getElementById('manual-grassi');
+            
+            const calorie = parseFloat(calorieInput.value) || 0;
+            const proteine = parseFloat(protInput.value) || 0;
+            const carboidrati = parseFloat(carbInput.value) || 0;
+            const grassi = parseFloat(fatInput.value) || 0;
+            const testoPasto = document.getElementById('manual-descrizione').value.trim() || (currentLang === 'en' ? 'Manual entry' : 'Inserimento manuale');
+
+            if (calorie <= 0 && proteine <= 0 && carboidrati <= 0 && grassi <= 0) {
+                await customAlert(
+                    currentLang === 'en' ? "Empty Fields" : "Campi vuoti",
+                    currentLang === 'en' ? "Please insert at least some calories or macronutrients." : "Inserisci almeno le calorie o i macronutrienti."
+                );
+                return;
+            }
+
+            // Verifica coerenza
+            const calFromMacro = (proteine * 4) + (carboidrati * 4) + (grassi * 9);
+            const diff = Math.abs(calorie - calFromMacro);
+            const maxAllowedDiff = Math.max(150, calFromMacro * 0.15);
+            
+            if (diff > maxAllowedDiff) {
+                await customAlert(
+                    currentLang === 'en' ? "Inconsistent Values" : "Valori incoerenti",
+                    currentLang === 'en'
+                        ? `The macronutrients entered equal ${Math.round(calFromMacro)} kcal, but you declared ${Math.round(calorie)} kcal. The difference (${Math.round(diff)} kcal) is too large! Please adjust either the calories or the macronutrients.`
+                        : `I macronutrienti inseriti equivalgono a ${Math.round(calFromMacro)} kcal, ma hai dichiarato ${Math.round(calorie)} kcal. La differenza (${Math.round(diff)} kcal) è troppo elevata! Correggi le calorie o i macronutrienti.`
+                );
+                return;
+            }
+
+            const oraStr = new Date().toTimeString().slice(0, 5);
+            const nuovoPasto = {
+                id: Date.now(),
+                ora: oraStr,
+                testo: testoPasto,
+                calorie: calorie,
+                proteine: proteine,
+                carboidrati: carboidrati,
+                grassi: grassi
+            };
+
+            let db = JSON.parse(localStorage.getItem('nutriDB')) || [];
+            let record = db.find(x => x.data === dataPasto);
+
+            if (record) {
+                record.calorie = (record.calorie || 0) + calorie;
+                record.proteine = (record.proteine || 0) + proteine;
+                record.carboidrati = (record.carboidrati || 0) + carboidrati;
+                record.grassi = (record.grassi || 0) + grassi;
+                if (!record.pasti) record.pasti = [];
+                record.pasti.push(nuovoPasto);
+            } else {
+                db.push({
+                    id: Date.now(),
+                    data: dataPasto,
+                    calorie: calorie,
+                    proteine: proteine,
+                    carboidrati: carboidrati,
+                    grassi: grassi,
+                    pasti: [nuovoPasto],
+                    peso: null
+                });
+            }
+
+            salvaDatabase(db);
+            
+            // Aggiorna l'interfaccia principale se siamo sul giorno corrente
+            if (dataPasto === ottieniDataOggi()) {
+                aggiornaTotaleGiorno();
+            }
+
+            // Pulisci i campi
+            calorieInput.value = '';
+            protInput.value = '';
+            carbInput.value = '';
+            fatInput.value = '';
+            document.getElementById('manual-descrizione').value = '';
+            const statusEl = document.getElementById('manual-coherence-status');
+            if (statusEl) statusEl.innerHTML = '';
+
+            // Reset calorie dei macro
+            const protCal = document.getElementById('manual-prot-cal');
+            const carbCal = document.getElementById('manual-carb-cal');
+            const fatCal = document.getElementById('manual-fat-cal');
+            if (protCal) protCal.innerText = '0 kcal';
+            if (carbCal) carbCal.innerText = '0 kcal';
+            if (fatCal) fatCal.innerText = '0 kcal';
+
+            await customAlert(
+                currentLang === 'en' ? "Meal Saved" : "Pasto Salvato",
+                currentLang === 'en' ? "Meal saved successfully!" : "Pasto salvato con successo!"
+            );
+        };
 
         function switchTrendView(view) {
             trendView = view;
