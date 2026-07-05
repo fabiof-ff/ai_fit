@@ -1062,6 +1062,24 @@
                         <i data-lucide="flame" class="w-3.5 h-3.5 text-rose-400"></i>
                         <span data-i18n="title_peso_calorie">Peso &amp; Calorie</span>
                     </p>
+                    <div class="flex items-center gap-2.5 text-[9px] font-semibold text-slate-400">
+                        <div class="flex items-center gap-1 cursor-pointer hover:opacity-80 select-none" data-legend-index="0" onclick="toggleTrendDataset(0)">
+                            <span class="w-1.5 h-1.5 rounded-full bg-[#f43f5e]"></span>
+                            <span data-i18n="legend_calorie">Calorie</span>
+                        </div>
+                        <div class="flex items-center gap-1 cursor-pointer hover:opacity-80 select-none" data-legend-index="1" onclick="toggleTrendDataset(1)">
+                            <span class="w-1.5 h-1.5 rounded-sm bg-[#3b82f6]"></span>
+                            <span data-i18n="legend_proteine">Proteine</span>
+                        </div>
+                        <div class="flex items-center gap-1 cursor-pointer hover:opacity-80 select-none" data-legend-index="2" onclick="toggleTrendDataset(2)">
+                            <span class="w-1.5 h-1.5 rounded-sm bg-[#10b981]"></span>
+                            <span data-i18n="legend_carboidrati">Carbo</span>
+                        </div>
+                        <div class="flex items-center gap-1 cursor-pointer hover:opacity-80 select-none" data-legend-index="3" onclick="toggleTrendDataset(3)">
+                            <span class="w-1.5 h-1.5 rounded-sm bg-[#f59e0b]"></span>
+                            <span data-i18n="legend_grassi">Grassi</span>
+                        </div>
+                    </div>
                 </div>
                 <div class="h-44 w-full mb-3">
                     <canvas id="trendCalorieChart"></canvas>
@@ -1080,6 +1098,24 @@
                         <i data-lucide="flame" class="w-3.5 h-3.5 text-rose-400"></i>
                         <span data-i18n="title_peso_calorie">Peso &amp; Calorie</span>
                     </p>
+                    <div class="flex items-center gap-2.5 text-[9px] font-semibold text-slate-400">
+                        <div class="flex items-center gap-1 cursor-pointer hover:opacity-80 select-none" data-legend-index="0" onclick="toggleTrendDataset(0)">
+                            <span class="w-1.5 h-1.5 rounded-full bg-[#f43f5e]"></span>
+                            <span data-i18n="legend_calorie">Calorie</span>
+                        </div>
+                        <div class="flex items-center gap-1 cursor-pointer hover:opacity-80 select-none" data-legend-index="1" onclick="toggleTrendDataset(1)">
+                            <span class="w-1.5 h-1.5 rounded-sm bg-[#3b82f6]"></span>
+                            <span data-i18n="legend_proteine">Proteine</span>
+                        </div>
+                        <div class="flex items-center gap-1 cursor-pointer hover:opacity-80 select-none" data-legend-index="2" onclick="toggleTrendDataset(2)">
+                            <span class="w-1.5 h-1.5 rounded-sm bg-[#10b981]"></span>
+                            <span data-i18n="legend_carboidrati">Carbo</span>
+                        </div>
+                        <div class="flex items-center gap-1 cursor-pointer hover:opacity-80 select-none" data-legend-index="3" onclick="toggleTrendDataset(3)">
+                            <span class="w-1.5 h-1.5 rounded-sm bg-[#f59e0b]"></span>
+                            <span data-i18n="legend_grassi">Grassi</span>
+                        </div>
+                    </div>
                 </div>
                 <div class="h-44 w-full mb-3">
                     <canvas id="weekCalorieChart"></canvas>
@@ -1098,6 +1134,24 @@
                         <i data-lucide="flame" class="w-3.5 h-3.5 text-rose-400"></i>
                         <span data-i18n="title_peso_calorie">Peso &amp; Calorie</span>
                     </p>
+                    <div class="flex items-center gap-2.5 text-[9px] font-semibold text-slate-400">
+                        <div class="flex items-center gap-1 cursor-pointer hover:opacity-80 select-none" data-legend-index="0" onclick="toggleTrendDataset(0)">
+                            <span class="w-1.5 h-1.5 rounded-full bg-[#f43f5e]"></span>
+                            <span data-i18n="legend_calorie">Calorie</span>
+                        </div>
+                        <div class="flex items-center gap-1 cursor-pointer hover:opacity-80 select-none" data-legend-index="1" onclick="toggleTrendDataset(1)">
+                            <span class="w-1.5 h-1.5 rounded-sm bg-[#3b82f6]"></span>
+                            <span data-i18n="legend_proteine">Proteine</span>
+                        </div>
+                        <div class="flex items-center gap-1 cursor-pointer hover:opacity-80 select-none" data-legend-index="2" onclick="toggleTrendDataset(2)">
+                            <span class="w-1.5 h-1.5 rounded-sm bg-[#10b981]"></span>
+                            <span data-i18n="legend_carboidrati">Carbo</span>
+                        </div>
+                        <div class="flex items-center gap-1 cursor-pointer hover:opacity-80 select-none" data-legend-index="3" onclick="toggleTrendDataset(3)">
+                            <span class="w-1.5 h-1.5 rounded-sm bg-[#f59e0b]"></span>
+                            <span data-i18n="legend_grassi">Grassi</span>
+                        </div>
+                    </div>
                 </div>
                 <div class="h-44 w-full mb-3">
                     <canvas id="monthCalorieChart"></canvas>
@@ -1232,6 +1286,40 @@
         let oggiCarboChart = null;
         let oggiGrassiChart = null;
 
+        window.hiddenTrendDatasets = [false, false, false, false];
+        window.toggleTrendDataset = function(datasetIndex) {
+            window.hiddenTrendDatasets[datasetIndex] = !window.hiddenTrendDatasets[datasetIndex];
+            
+            if (trendCalorieChart) {
+                const meta = trendCalorieChart.getDatasetMeta(datasetIndex);
+                meta.hidden = window.hiddenTrendDatasets[datasetIndex] ? true : null;
+                trendCalorieChart.update();
+            }
+            if (weekCalorieChart) {
+                const meta = weekCalorieChart.getDatasetMeta(datasetIndex);
+                meta.hidden = window.hiddenTrendDatasets[datasetIndex] ? true : null;
+                weekCalorieChart.update();
+            }
+            if (monthCalorieChart) {
+                const meta = monthCalorieChart.getDatasetMeta(datasetIndex);
+                meta.hidden = window.hiddenTrendDatasets[datasetIndex] ? true : null;
+                monthCalorieChart.update();
+            }
+
+            const legendItems = document.querySelectorAll(`[data-legend-index="${datasetIndex}"]`);
+            legendItems.forEach(item => {
+                if (window.hiddenTrendDatasets[datasetIndex]) {
+                    item.classList.add('opacity-40');
+                    const textSpan = item.querySelector('span[data-i18n]');
+                    if (textSpan) textSpan.classList.add('line-through');
+                } else {
+                    item.classList.remove('opacity-40');
+                    const textSpan = item.querySelector('span[data-i18n]');
+                    if (textSpan) textSpan.classList.remove('line-through');
+                }
+            });
+        };
+
         let targetCalorie = 0; // Target giornaliero calorie
         let targetProteine = 0; // Target giornaliero proteine
         let targetCarbo = 0; // Target giornaliero carboidrati
@@ -1265,145 +1353,119 @@
             }
         }
 
-        // Plugin per disegnare i semafori dei target macro sopra le barre delle calorie
-        const macroStatusLightsPlugin = {
-               beforeDatasetsDraw(chart) {
-                const { ctx, chartArea: { left, right }, scales: { y } } = chart;
-                const targets = chart.config.data.customTargets;
-                if (!targets) return;
-
-                // Disegna la linea di target con bagliore (glow) in secondo piano (dietro le barre)
-                if (targets.calorie > 0) {
-                    const yTarget = y.getPixelForValue(targets.calorie);
-                    ctx.save();
-                    
-                    // Bagliore neon soffuso
-                    ctx.shadowColor = 'rgba(244, 63, 94, 0.2)';
-                    ctx.shadowBlur = 4;
-                    ctx.strokeStyle = 'rgba(244, 63, 94, 0.5)';
-                    ctx.lineWidth = 1.2;
-                    ctx.setLineDash([5, 4]);
-                    ctx.beginPath();
-                    ctx.moveTo(left, yTarget);
-                    ctx.lineTo(right, yTarget);
-                    ctx.stroke();
-                    
-                    ctx.restore();
-                }
-            },
+        // Plugin per disegnare le etichette delle percentuali sopra le colonne dei macro e la linea delle calorie
+        const macroTrendLabelsPlugin = {
+            id: 'macroTrendLabels',
             afterDatasetsDraw(chart) {
-                const { ctx } = chart;
-                const rawData = chart.config.data.customRawData;
+                const { ctx, chartArea: { left, right } } = chart;
+                const isLight = document.body.classList.contains('light-theme');
+                const strokeColor = isLight ? '#ffffff' : '#0f172a';
                 const targets = chart.config.data.customTargets;
-                if (!rawData || !targets) return;
 
-                rawData.forEach((item, index) => {
-                    let displayedCalories = 0;
-                    const metaFat = chart.getDatasetMeta(0);
-                    if (metaFat && !metaFat.hidden) {
-                        displayedCalories += Math.round((item.grassi || 0) * 9);
-                    }
-                    const metaCarb = chart.getDatasetMeta(1);
-                    if (metaCarb && !metaCarb.hidden) {
-                        displayedCalories += Math.round((item.carboidrati || 0) * 4);
-                    }
-                    const metaProt = chart.getDatasetMeta(2);
-                    if (metaProt && !metaProt.hidden) {
-                        displayedCalories += Math.round((item.proteine || 0) * 4);
-                    }
+                chart.data.datasets.forEach((dataset, datasetIndex) => {
+                    const meta = chart.getDatasetMeta(datasetIndex);
+                    if (meta.hidden) return;
 
-                    if (displayedCalories <= 0) return;
+                    // Ignora la linea del Target
+                    if (dataset.label && dataset.label.includes('Target')) return;
 
-                    let xPos = null;
-                    let yTop = null;
-
-                    // Trova la coordinata X e la sommità visibile del bar impilato
-                    for (let i = 2; i >= 0; i--) {
-                        const meta = chart.getDatasetMeta(i);
-                        if (meta && !meta.hidden && meta.data[index]) {
-                            xPos = meta.data[index].x;
-                            yTop = meta.data[index].y;
-                            break;
-                        }
-                    }
-
-                    if (xPos === null || yTop === null) return;
-
-                    // Disegna il totale calorie sopra la barra in rosso
-                    ctx.save();
-                    ctx.font = "bold 8.5px 'Outfit', sans-serif";
-                    ctx.textAlign = 'center';
-                    ctx.textBaseline = 'bottom';
-                    const isLight = document.body.classList.contains('light-theme');
-                    ctx.strokeStyle = isLight ? '#ffffff' : '#0f172a';
-                    ctx.lineWidth = 2.5;
-                    ctx.lineJoin = 'round';
-                    ctx.strokeText(Math.round(displayedCalories), xPos, yTop - 3);
-                    ctx.fillStyle = '#ef4444';
-                    ctx.fillText(Math.round(displayedCalories), xPos, yTop - 3);
-                    ctx.restore();
-
-                    const badges = [];
-
-                    // Grassi (dataset index 0)
-                    if (metaFat && !metaFat.hidden && metaFat.data[index]) {
-                        const yFatsTop = metaFat.data[index].y;
-                        const yFatsBase = metaFat.data[index].base;
-                        const pctFat = targets.grassi > 0 ? ((item.grassi || 0) / targets.grassi) * 100 : 0;
-                        if (Math.abs(yFatsBase - yFatsTop) >= 8) {
-                            badges.push({ val: pctFat, y: (yFatsBase + yFatsTop) / 2 });
-                        }
-                    }
-
-                    // Carboidrati (dataset index 1)
-                    if (metaCarb && !metaCarb.hidden && metaCarb.data[index]) {
-                        const yCarbsTop = metaCarb.data[index].y;
-                        const yCarbsBase = metaCarb.data[index].base;
-                        const pctCarb = targets.carboidrati > 0 ? ((item.carboidrati || 0) / targets.carboidrati) * 100 : 0;
-                        if (Math.abs(yCarbsBase - yCarbsTop) >= 8) {
-                            badges.push({ val: pctCarb, y: (yCarbsBase + yCarbsTop) / 2 });
-                        }
-                    }
-
-                    // Proteine (dataset index 2)
-                    if (metaProt && !metaProt.hidden && metaProt.data[index]) {
-                        const yProtsTop = metaProt.data[index].y;
-                        const yProtsBase = metaProt.data[index].base;
-                        const pctProt = targets.proteine > 0 ? ((item.proteine || 0) / targets.proteine) * 100 : 0;
-                        if (Math.abs(yProtsBase - yProtsTop) >= 8) {
-                            badges.push({ val: pctProt, y: (yProtsBase + yProtsTop) / 2 });
-                        }
-                    }
-
-                    badges.forEach((badge) => {
-                        let color = '#3b82f6'; // Sotto target (Blu/Azzurro)
-                        let icon = '▼';
-                        if (badge.val >= 90 && badge.val <= 110) {
-                            color = '#10b981'; // On target (Verde)
-                            icon = '✔';
-                        } else if (badge.val > 110) {
-                            color = '#ef4444'; // Sopra target (Rosso)
-                            icon = '▲';
-                        }
-
-                        const text = Math.round(badge.val) + '%' + (icon ? ' ' + icon : '');
+                    meta.data.forEach((element, index) => {
+                        const rawVal = dataset.data[index];
+                        if (rawVal === undefined || rawVal === null || rawVal <= 0) return;
 
                         ctx.save();
                         ctx.font = "bold 8.5px 'Outfit', sans-serif";
                         ctx.textAlign = 'center';
-                        ctx.textBaseline = 'middle';
-
-                        ctx.strokeStyle = isLight ? '#ffffff' : '#0f172a';
-                        ctx.lineWidth = 3;
+                        ctx.textBaseline = 'bottom';
+                        
+                        ctx.strokeStyle = strokeColor;
+                        ctx.lineWidth = 2.5;
                         ctx.lineJoin = 'round';
-                        ctx.strokeText(text, xPos, badge.y);
 
-                        ctx.fillStyle = color;
-                        ctx.fillText(text, xPos, badge.y);
+                        const x = element.x;
+                        const y = element.y - 3;
+                        
+                        // Se è la linea delle calorie (yCalorie), mostra il valore assoluto senza unità, altrimenti mostra la percentuale
+                        let text = "";
+                        if (dataset.yAxisID === 'yCalorie') {
+                            text = Math.round(rawVal).toString();
+                        } else {
+                            text = Math.round(rawVal) + '%';
+                        }
 
+                        ctx.strokeText(text, x, y);
+                        ctx.fillStyle = dataset.borderColor || dataset.backgroundColor || '#ffffff';
+                        ctx.fillText(text, x, y);
                         ctx.restore();
                     });
                 });
+
+                // Disegna le scritte per le linee target
+                if (targets) {
+                    const yScale = chart.scales.y;
+                    const yCalorieScale = chart.scales.yCalorie;
+
+                    ctx.save();
+                    ctx.font = "bold 8px 'Outfit', sans-serif";
+                    ctx.textAlign = 'left';
+                    ctx.textBaseline = 'middle';
+
+                    // Scritta Target Macro (100%)
+                    if (yScale) {
+                        const yPos = yScale.getPixelForValue(100);
+                        const textMacro = '100%';
+                        const textWidth = ctx.measureText(textMacro).width;
+                        const boxWidth = textWidth + 6;
+                        const boxHeight = 12;
+                        const boxX = left + 4;
+                        const boxY = yPos - boxHeight / 2;
+
+                        ctx.fillStyle = '#ffffff';
+                        ctx.beginPath();
+                        if (ctx.roundRect) {
+                            ctx.roundRect(boxX, boxY, boxWidth, boxHeight, 2);
+                        } else {
+                            ctx.rect(boxX, boxY, boxWidth, boxHeight);
+                        }
+                        ctx.fill();
+
+                        ctx.strokeStyle = 'rgba(148, 163, 184, 0.25)';
+                        ctx.lineWidth = 1;
+                        ctx.stroke();
+
+                        ctx.fillStyle = '#475569';
+                        ctx.fillText(textMacro, boxX + 3, yPos);
+                    }
+
+                    // Scritta Target Calorie (con unità di misura)
+                    if (yCalorieScale && targets.calorie) {
+                        const yPos = yCalorieScale.getPixelForValue(targets.calorie);
+                        const textCal = Math.round(targets.calorie) + ' kcal';
+                        const textWidth = ctx.measureText(textCal).width;
+                        const boxWidth = textWidth + 6;
+                        const boxHeight = 12;
+                        const boxX = left + 4;
+                        const boxY = yPos - boxHeight / 2;
+
+                        ctx.fillStyle = '#ffffff';
+                        ctx.beginPath();
+                        if (ctx.roundRect) {
+                            ctx.roundRect(boxX, boxY, boxWidth, boxHeight, 2);
+                        } else {
+                            ctx.rect(boxX, boxY, boxWidth, boxHeight);
+                        }
+                        ctx.fill();
+
+                        ctx.strokeStyle = 'rgba(244, 63, 94, 0.25)';
+                        ctx.lineWidth = 1;
+                        ctx.stroke();
+
+                        ctx.fillStyle = '#e11d48';
+                        ctx.fillText(textCal, boxX + 3, yPos);
+                    }
+
+                    ctx.restore();
+                }
             }
         };
 
@@ -1427,7 +1489,66 @@
                 ctx.lineTo(right, yTarget);
                 ctx.stroke();
                 
+                // Disegna la scritta sul target peso (numero + kg) in un box bianco a sinistra
+                ctx.font = "bold 8px 'Outfit', sans-serif";
+                ctx.textAlign = 'left';
+                ctx.textBaseline = 'middle';
+                const textWeight = targets.peso + ' kg';
+                const textWidth = ctx.measureText(textWeight).width;
+                const boxWidth = textWidth + 6;
+                const boxHeight = 12;
+                const boxX = left + 4;
+                const boxY = yTarget - boxHeight / 2;
+
+                ctx.fillStyle = '#ffffff';
+                ctx.beginPath();
+                if (ctx.roundRect) {
+                    ctx.roundRect(boxX, boxY, boxWidth, boxHeight, 2);
+                } else {
+                    ctx.rect(boxX, boxY, boxWidth, boxHeight);
+                }
+                ctx.fill();
+
+                ctx.strokeStyle = 'rgba(99, 102, 241, 0.25)';
+                ctx.lineWidth = 1;
+                ctx.stroke();
+
+                ctx.fillStyle = '#4f46e5';
+                ctx.fillText(textWeight, boxX + 3, yTarget);
+                
                 ctx.restore();
+            },
+            afterDatasetsDraw(chart) {
+                const { ctx } = chart;
+                const isLight = document.body.classList.contains('light-theme');
+                const strokeColor = isLight ? '#ffffff' : '#0f172a';
+
+                const dataset = chart.data.datasets[0];
+                const meta = chart.getDatasetMeta(0);
+                if (!meta || meta.hidden) return;
+
+                meta.data.forEach((element, index) => {
+                    const rawVal = dataset.data[index];
+                    if (rawVal === undefined || rawVal === null || rawVal <= 0) return;
+
+                    ctx.save();
+                    ctx.font = "bold 8.5px 'Outfit', sans-serif";
+                    ctx.textAlign = 'center';
+                    ctx.textBaseline = 'bottom';
+                    
+                    ctx.strokeStyle = strokeColor;
+                    ctx.lineWidth = 2.5;
+                    ctx.lineJoin = 'round';
+
+                    const x = element.x;
+                    const y = element.y - 5;
+                    const text = rawVal.toString();
+
+                    ctx.strokeText(text, x, y);
+                    ctx.fillStyle = '#6366f1';
+                    ctx.fillText(text, x, y);
+                    ctx.restore();
+                });
             }
         };
 
@@ -1859,7 +1980,11 @@
                 month_09: "Settembre",
                 month_10: "Ottobre",
                 month_11: "Novembre",
-                month_12: "Dicembre"
+                month_12: "Dicembre",
+                legend_calorie: "Calorie",
+                legend_proteine: "Proteine",
+                legend_carboidrati: "Carbo",
+                legend_grassi: "Grassi"
             },
             en: {
                 title_api_settings: "Settings",
@@ -1966,7 +2091,11 @@
                 month_09: "September",
                 month_10: "October",
                 month_11: "November",
-                month_12: "December"
+                month_12: "December",
+                legend_calorie: "Calories",
+                legend_proteine: "Proteins",
+                legend_carboidrati: "Carbs",
+                legend_grassi: "Fats"
             }
         };
 
@@ -3399,14 +3528,11 @@ IMPORTANTE: Se l'utente non specifica le porzioni, pesi o quantità per un alime
                 const yMax = pesoScales.max;
                 const pesoStepSize = pesoScales.stepSize;
 
-                const maxCal = Math.max(...ultimiGiorni.map(g => g.calorie), targetCalorie);
-                const calorieScales = calcolaLimitiAsseY(0, maxCal, true);
-                const maxCalValue = calorieScales.max;
-                const calorieStepSize = calorieScales.stepSize;
+                const maxCalVal = Math.max(targetCalorie, ...ultimiGiorni.map(g => g.calorie || 0)) * 1.05;
 
                 // 1. Grafico Calorie e Macronutrienti (Top)
                 trendCalorieChart = new Chart(document.getElementById('trendCalorieChart').getContext('2d'), {
-                    plugins: [macroStatusLightsPlugin],
+                    plugins: [macroTrendLabelsPlugin],
                     data: {
                         labels: etichetteGiorni,
                         customRawData: ultimiGiorni,
@@ -3418,72 +3544,109 @@ IMPORTANTE: Se l'utente non specifica le porzioni, pesi o quantità per un alime
                         },
                         datasets: [
                             {
-                                type: 'bar',
-                                label: currentLang === 'en' ? 'Fats' : 'Grassi',
-                                data: ultimiGiorni.map(g => Math.round((g.grassi || 0) * 9)),
-                                backgroundColor: 'rgba(245, 158, 11, 0.75)',
-                                borderRadius: 4,
-                                yAxisID: 'y',
-                                stack: 'calories'
-                            },
-                            {
-                                type: 'bar',
-                                label: currentLang === 'en' ? 'Carbs' : 'Carboidrati',
-                                data: ultimiGiorni.map(g => Math.round((g.carboidrati || 0) * 4)),
-                                backgroundColor: 'rgba(16, 185, 129, 0.75)',
-                                borderRadius: 4,
-                                yAxisID: 'y',
-                                stack: 'calories'
+                                type: 'line',
+                                label: currentLang === 'en' ? 'Calories' : 'Calorie',
+                                data: ultimiGiorni.map(g => g.calorie > 0 ? Math.round(g.calorie) : null),
+                                borderColor: '#f43f5e',
+                                backgroundColor: 'rgba(244, 63, 94, 0.1)',
+                                borderWidth: 2,
+                                pointRadius: 2.5,
+                                pointBackgroundColor: '#f43f5e',
+                                fill: false,
+                                yAxisID: 'yCalorie'
                             },
                             {
                                 type: 'bar',
                                 label: currentLang === 'en' ? 'Proteins' : 'Proteine',
-                                data: ultimiGiorni.map(g => Math.round((g.proteine || 0) * 4)),
+                                data: ultimiGiorni.map(g => targetProteine > 0 ? Math.round(((g.proteine || 0) / targetProteine) * 100) : 0),
                                 backgroundColor: 'rgba(59, 130, 246, 0.75)',
-                                borderRadius: 4,
-                                yAxisID: 'y',
-                                stack: 'calories'
+                                borderRadius: 3,
+                                barPercentage: 0.8,
+                                categoryPercentage: 0.8,
+                                yAxisID: 'y'
+                            },
+                            {
+                                type: 'bar',
+                                label: currentLang === 'en' ? 'Carbs' : 'Carboidrati',
+                                data: ultimiGiorni.map(g => targetCarbo > 0 ? Math.round(((g.carboidrati || 0) / targetCarbo) * 100) : 0),
+                                backgroundColor: 'rgba(16, 185, 129, 0.75)',
+                                borderRadius: 3,
+                                barPercentage: 0.8,
+                                categoryPercentage: 0.8,
+                                yAxisID: 'y'
+                            },
+                            {
+                                type: 'bar',
+                                label: currentLang === 'en' ? 'Fats' : 'Grassi',
+                                data: ultimiGiorni.map(g => targetGrassi > 0 ? Math.round(((g.grassi || 0) / targetGrassi) * 100) : 0),
+                                backgroundColor: 'rgba(245, 158, 11, 0.75)',
+                                borderRadius: 3,
+                                barPercentage: 0.8,
+                                categoryPercentage: 0.8,
+                                yAxisID: 'y'
                             },
                             {
                                 type: 'line',
-                                label: currentLang === 'en' ? 'Calories Target' : 'Target Calorie',
-                                data: etichetteGiorni.map(() => targetCalorie),
-                                borderColor: 'transparent',
-                                borderWidth: 0,
+                                label: 'Target Macro (100%)',
+                                data: etichetteGiorni.map(() => 100),
+                                borderColor: 'rgba(148, 163, 184, 0.35)',
+                                borderWidth: 1,
                                 borderDash: [5, 5],
                                 pointRadius: 0,
                                 fill: false,
                                 yAxisID: 'y'
+                            },
+                            {
+                                type: 'line',
+                                label: 'Target Calorie',
+                                data: etichetteGiorni.map(() => targetCalorie),
+                                borderColor: 'rgba(244, 63, 94, 0.35)',
+                                borderWidth: 1,
+                                borderDash: [3, 3],
+                                pointRadius: 0,
+                                fill: false,
+                                yAxisID: 'yCalorie'
                             }
-                        ]
+                        ].map((ds, idx) => {
+                            if (idx < 4 && window.hiddenTrendDatasets[idx]) {
+                                ds.hidden = true;
+                            }
+                            return ds;
+                        })
                     },
                     options: {
                         plugins: {
                             legend: {
-                                display: true,
-                                position: 'top',
-                                labels: {
-                                    color: '#94a3b8',
-                                    boxWidth: 10,
-                                    font: { size: 9, family: "'Outfit', sans-serif" },
-                                    filter: function (item) {
-                                        return !item.text.includes('Target');
-                                    }
-                                }
+                                display: false
                             },
                             tooltip: {
                                 callbacks: {
                                     label: function (context) {
                                         const idx = context.dataIndex;
-                                        const dsIdx = context.datasetIndex;
+                                        const ds = context.dataset;
                                         const rawData = context.chart.config.data.customRawData;
                                         const targets = context.chart.config.data.customTargets;
                                         const item = rawData[idx];
                                         if (!item) return '';
-                                        if (dsIdx === 0) return (currentLang === 'en' ? 'Fats: ' : 'Grassi: ') + Math.round(item.grassi || 0) + 'g / ' + targets.grassi + 'g';
-                                        if (dsIdx === 1) return (currentLang === 'en' ? 'Carbs: ' : 'Carboidrati: ') + Math.round(item.carboidrati || 0) + 'g / ' + targets.carboidrati + 'g';
-                                        if (dsIdx === 2) return (currentLang === 'en' ? 'Proteins: ' : 'Proteine: ') + Math.round(item.proteine || 0) + 'g / ' + targets.proteine + 'g';
-                                        if (dsIdx === 3) return (currentLang === 'en' ? 'Calories Target: ' : 'Target Calorie: ') + targets.calorie + ' kcal';
+                                        
+                                        if (ds.label.includes('Grassi') || ds.label.includes('Fats')) {
+                                            const pct = context.raw;
+                                            return (currentLang === 'en' ? 'Fats: ' : 'Grassi: ') + pct + '% (' + Math.round(item.grassi || 0) + 'g / ' + targets.grassi + 'g)';
+                                        }
+                                        if (ds.label.includes('Carbo') || ds.label.includes('Carbs')) {
+                                            const pct = context.raw;
+                                            return (currentLang === 'en' ? 'Carbs: ' : 'Carboidrati: ') + pct + '% (' + Math.round(item.carboidrati || 0) + 'g / ' + targets.carboidrati + 'g)';
+                                        }
+                                        if (ds.label.includes('Proteine') || ds.label.includes('Proteins')) {
+                                            const pct = context.raw;
+                                            return (currentLang === 'en' ? 'Proteins: ' : 'Proteine: ') + pct + '% (' + Math.round(item.proteine || 0) + 'g / ' + targets.proteine + 'g)';
+                                        }
+                                        if (ds.label.includes('Calorie') || ds.label.includes('Calories')) {
+                                            const val = context.raw;
+                                            if (val === null || val === undefined) return '';
+                                            const pct = targets.calorie > 0 ? Math.round((val / targets.calorie) * 100) : 0;
+                                            return (currentLang === 'en' ? 'Calories: ' : 'Calorie: ') + val + ' kcal / ' + targets.calorie + ' kcal (' + pct + '%)';
+                                        }
                                         return '';
                                     }
                                 }
@@ -3493,29 +3656,18 @@ IMPORTANTE: Se l'utente non specifica le porzioni, pesi o quantità per un alime
                         maintainAspectRatio: false,
                         scales: {
                             x: {
-                                stacked: true,
                                 grid: { color: 'rgba(71,85,105,0.08)', drawTicks: false },
                                 ticks: { display: false }
                             },
                             y: {
-                                stacked: true,
-                                type: 'linear',
-                                position: 'left',
-                                grid: { color: 'rgba(71,85,105,0.08)' },
-                                ticks: { 
-                                    color: '#f43f5e', 
-                                    font: { size: 9, weight: 'bold' },
-                                    stepSize: calorieStepSize
-                                },
+                                display: false,
                                 min: 0,
-                                max: maxCalValue,
-                                title: {
-                                    display: true,
-                                    text: currentLang === 'en' ? 'Calories (kcal)' : 'Calorie (kcal)',
-                                    color: '#f43f5e',
-                                    font: { size: 9, weight: 'bold' }
-                                },
-                                afterFit: (scale) => { scale.width = 50; }
+                                max: 200
+                            },
+                            yCalorie: {
+                                display: false,
+                                min: -maxCalVal,
+                                max: maxCalVal
                             }
                         }
                     }
@@ -3584,23 +3736,9 @@ IMPORTANTE: Se l'utente non specifica le porzioni, pesi o quantità per un alime
                                 ticks: { color: '#64748b', font: { size: 9 } }
                             },
                             y: {
-                                type: 'linear',
-                                position: 'left',
-                                grid: { color: 'rgba(71,85,105,0.08)' },
-                                ticks: { 
-                                    color: '#6366f1', 
-                                    font: { size: 9, weight: 'bold' },
-                                    stepSize: pesoStepSize
-                                },
+                                display: false,
                                 min: yMin,
-                                max: yMax,
-                                title: {
-                                    display: true,
-                                    text: currentLang === 'en' ? 'Weight (kg)' : 'Peso (kg)',
-                                    color: '#6366f1',
-                                    font: { size: 9, weight: 'bold' }
-                                },
-                                afterFit: (scale) => { scale.width = 50; }
+                                max: yMax
                             }
                         }
                     }
@@ -3677,14 +3815,11 @@ IMPORTANTE: Se l'utente non specifica le porzioni, pesi o quantità per un alime
                 const yMax = pesoScales.max;
                 const pesoStepSize = pesoScales.stepSize;
 
-                const maxCal = Math.max(...datiSettimane.map(s => s.calorie), targetCalorie);
-                const calorieScales = calcolaLimitiAsseY(0, maxCal, true);
-                const maxCalValue = calorieScales.max;
-                const calorieStepSize = calorieScales.stepSize;
+                const maxCalVal = Math.max(targetCalorie, ...datiSettimane.map(s => s.calorie || 0)) * 1.05;
 
                 // 1. Grafico Calorie e Macronutrienti (Top)
                 weekCalorieChart = new Chart(document.getElementById('weekCalorieChart').getContext('2d'), {
-                    plugins: [macroStatusLightsPlugin],
+                    plugins: [macroTrendLabelsPlugin],
                     data: {
                         labels: etichetteSettimane,
                         customRawData: datiSettimane,
@@ -3696,72 +3831,109 @@ IMPORTANTE: Se l'utente non specifica le porzioni, pesi o quantità per un alime
                         },
                         datasets: [
                             {
-                                type: 'bar',
-                                label: currentLang === 'en' ? 'Fats' : 'Grassi',
-                                data: datiSettimane.map(s => Math.round((s.grassi || 0) * 9)),
-                                backgroundColor: 'rgba(245, 158, 11, 0.75)',
-                                borderRadius: 4,
-                                yAxisID: 'y',
-                                stack: 'calories'
-                            },
-                            {
-                                type: 'bar',
-                                label: currentLang === 'en' ? 'Carbs' : 'Carboidrati',
-                                data: datiSettimane.map(s => Math.round((s.carboidrati || 0) * 4)),
-                                backgroundColor: 'rgba(16, 185, 129, 0.75)',
-                                borderRadius: 4,
-                                yAxisID: 'y',
-                                stack: 'calories'
+                                type: 'line',
+                                label: currentLang === 'en' ? 'Calories' : 'Calorie',
+                                data: datiSettimane.map(s => s.calorie > 0 ? Math.round(s.calorie) : null),
+                                borderColor: '#f43f5e',
+                                backgroundColor: 'rgba(244, 63, 94, 0.1)',
+                                borderWidth: 2,
+                                pointRadius: 2.5,
+                                pointBackgroundColor: '#f43f5e',
+                                fill: false,
+                                yAxisID: 'yCalorie'
                             },
                             {
                                 type: 'bar',
                                 label: currentLang === 'en' ? 'Proteins' : 'Proteine',
-                                data: datiSettimane.map(s => Math.round((s.proteine || 0) * 4)),
+                                data: datiSettimane.map(s => targetProteine > 0 ? Math.round(((s.proteine || 0) / targetProteine) * 100) : 0),
                                 backgroundColor: 'rgba(59, 130, 246, 0.75)',
-                                borderRadius: 4,
-                                yAxisID: 'y',
-                                stack: 'calories'
+                                borderRadius: 3,
+                                barPercentage: 0.8,
+                                categoryPercentage: 0.8,
+                                yAxisID: 'y'
+                            },
+                            {
+                                type: 'bar',
+                                label: currentLang === 'en' ? 'Carbs' : 'Carboidrati',
+                                data: datiSettimane.map(s => targetCarbo > 0 ? Math.round(((s.carboidrati || 0) / targetCarbo) * 100) : 0),
+                                backgroundColor: 'rgba(16, 185, 129, 0.75)',
+                                borderRadius: 3,
+                                barPercentage: 0.8,
+                                categoryPercentage: 0.8,
+                                yAxisID: 'y'
+                            },
+                            {
+                                type: 'bar',
+                                label: currentLang === 'en' ? 'Fats' : 'Grassi',
+                                data: datiSettimane.map(s => targetGrassi > 0 ? Math.round(((s.grassi || 0) / targetGrassi) * 100) : 0),
+                                backgroundColor: 'rgba(245, 158, 11, 0.75)',
+                                borderRadius: 3,
+                                barPercentage: 0.8,
+                                categoryPercentage: 0.8,
+                                yAxisID: 'y'
                             },
                             {
                                 type: 'line',
-                                label: currentLang === 'en' ? 'Calories Target' : 'Target Calorie',
-                                data: etichetteSettimane.map(() => targetCalorie),
-                                borderColor: 'transparent',
-                                borderWidth: 0,
+                                label: 'Target Macro (100%)',
+                                data: etichetteSettimane.map(() => 100),
+                                borderColor: 'rgba(148, 163, 184, 0.35)',
+                                borderWidth: 1,
                                 borderDash: [5, 5],
                                 pointRadius: 0,
                                 fill: false,
                                 yAxisID: 'y'
+                            },
+                            {
+                                type: 'line',
+                                label: 'Target Calorie',
+                                data: etichetteSettimane.map(() => targetCalorie),
+                                borderColor: 'rgba(244, 63, 94, 0.35)',
+                                borderWidth: 1,
+                                borderDash: [3, 3],
+                                pointRadius: 0,
+                                fill: false,
+                                yAxisID: 'yCalorie'
                             }
-                        ]
+                        ].map((ds, idx) => {
+                            if (idx < 4 && window.hiddenTrendDatasets[idx]) {
+                                ds.hidden = true;
+                            }
+                            return ds;
+                        })
                     },
                     options: {
                         plugins: {
                             legend: {
-                                display: true,
-                                position: 'top',
-                                labels: {
-                                    color: '#94a3b8',
-                                    boxWidth: 10,
-                                    font: { size: 9, family: "'Outfit', sans-serif" },
-                                    filter: function (item) {
-                                        return !item.text.includes('Target');
-                                    }
-                                }
+                                display: false
                             },
                             tooltip: {
                                 callbacks: {
                                     label: function (context) {
                                         const idx = context.dataIndex;
-                                        const dsIdx = context.datasetIndex;
+                                        const ds = context.dataset;
                                         const rawData = context.chart.config.data.customRawData;
                                         const targets = context.chart.config.data.customTargets;
                                         const item = rawData[idx];
                                         if (!item) return '';
-                                        if (dsIdx === 0) return (currentLang === 'en' ? 'Fats: ' : 'Grassi: ') + Math.round(item.grassi || 0) + 'g / ' + targets.grassi + 'g';
-                                        if (dsIdx === 1) return (currentLang === 'en' ? 'Carbs: ' : 'Carboidrati: ') + Math.round(item.carboidrati || 0) + 'g / ' + targets.carboidrati + 'g';
-                                        if (dsIdx === 2) return (currentLang === 'en' ? 'Proteins: ' : 'Proteine: ') + Math.round(item.proteine || 0) + 'g / ' + targets.proteine + 'g';
-                                        if (dsIdx === 3) return (currentLang === 'en' ? 'Calories Target: ' : 'Target Calorie: ') + targets.calorie + ' kcal';
+                                        
+                                        if (ds.label.includes('Grassi') || ds.label.includes('Fats')) {
+                                            const pct = context.raw;
+                                            return (currentLang === 'en' ? 'Fats: ' : 'Grassi: ') + pct + '% (' + Math.round(item.grassi || 0) + 'g / ' + targets.grassi + 'g)';
+                                        }
+                                        if (ds.label.includes('Carbo') || ds.label.includes('Carbs')) {
+                                            const pct = context.raw;
+                                            return (currentLang === 'en' ? 'Carbs: ' : 'Carboidrati: ') + pct + '% (' + Math.round(item.carboidrati || 0) + 'g / ' + targets.carboidrati + 'g)';
+                                        }
+                                        if (ds.label.includes('Proteine') || ds.label.includes('Proteins')) {
+                                            const pct = context.raw;
+                                            return (currentLang === 'en' ? 'Proteins: ' : 'Proteine: ') + pct + '% (' + Math.round(item.proteine || 0) + 'g / ' + targets.proteine + 'g)';
+                                        }
+                                        if (ds.label.includes('Calorie') || ds.label.includes('Calories')) {
+                                            const val = context.raw;
+                                            if (val === null || val === undefined) return '';
+                                            const pct = targets.calorie > 0 ? Math.round((val / targets.calorie) * 100) : 0;
+                                            return (currentLang === 'en' ? 'Calories: ' : 'Calorie: ') + val + ' kcal / ' + targets.calorie + ' kcal (' + pct + '%)';
+                                        }
                                         return '';
                                     }
                                 }
@@ -3771,29 +3943,18 @@ IMPORTANTE: Se l'utente non specifica le porzioni, pesi o quantità per un alime
                         maintainAspectRatio: false,
                         scales: {
                             x: {
-                                stacked: true,
                                 grid: { color: 'rgba(71,85,105,0.08)', drawTicks: false },
                                 ticks: { display: false }
                             },
                             y: {
-                                stacked: true,
-                                type: 'linear',
-                                position: 'left',
-                                grid: { color: 'rgba(71,85,105,0.08)' },
-                                ticks: { 
-                                    color: '#f43f5e', 
-                                    font: { size: 9, weight: 'bold' },
-                                    stepSize: calorieStepSize
-                                },
+                                display: false,
                                 min: 0,
-                                max: maxCalValue,
-                                title: {
-                                    display: true,
-                                    text: currentLang === 'en' ? 'Calories (kcal)' : 'Calorie (kcal)',
-                                    color: '#f43f5e',
-                                    font: { size: 9, weight: 'bold' }
-                                },
-                                afterFit: (scale) => { scale.width = 50; }
+                                max: 200
+                            },
+                            yCalorie: {
+                                display: false,
+                                min: -maxCalVal,
+                                max: maxCalVal
                             }
                         }
                     }
@@ -3862,23 +4023,9 @@ IMPORTANTE: Se l'utente non specifica le porzioni, pesi o quantità per un alime
                                 ticks: { color: '#64748b', font: { size: 9 } }
                             },
                             y: {
-                                type: 'linear',
-                                position: 'left',
-                                grid: { color: 'rgba(71,85,105,0.08)' },
-                                ticks: { 
-                                    color: '#6366f1', 
-                                    font: { size: 9, weight: 'bold' },
-                                    stepSize: pesoStepSize
-                                },
+                                display: false,
                                 min: yMin,
-                                max: yMax,
-                                title: {
-                                    display: true,
-                                    text: currentLang === 'en' ? 'Weight (kg)' : 'Peso (kg)',
-                                    color: '#6366f1',
-                                    font: { size: 9, weight: 'bold' }
-                                },
-                                afterFit: (scale) => { scale.width = 50; }
+                                max: yMax
                             }
                         }
                     }
@@ -4034,14 +4181,11 @@ IMPORTANTE: Se l'utente non specifica le porzioni, pesi o quantità per un alime
             const yMax = pesoScales.max;
             const pesoStepSize = pesoScales.stepSize;
 
-            const maxCal = Math.max(...datiCalorie, targetCalorie);
-            const calorieScales = calcolaLimitiAsseY(0, maxCal, true);
-            const maxCalValue = calorieScales.max;
-            const calorieStepSize = calorieScales.stepSize;
+            const maxCalVal = Math.max(targetCalorie, ...datiCalorie.map(cal => cal || 0)) * 1.05;
 
             // 1. Grafico Calorie e Macronutrienti (Top)
             monthCalorieChart = new Chart(document.getElementById('monthCalorieChart').getContext('2d'), {
-                plugins: [macroStatusLightsPlugin],
+                plugins: [macroTrendLabelsPlugin],
                 data: {
                     labels: labels,
                     customRawData: datiMensili,
@@ -4053,72 +4197,109 @@ IMPORTANTE: Se l'utente non specifica le porzioni, pesi o quantità per un alime
                     },
                     datasets: [
                         {
-                            type: 'bar',
-                            label: currentLang === 'en' ? 'Fats' : 'Grassi',
-                            data: datiGrassi.map(g => Math.round((g || 0) * 9)),
-                            backgroundColor: 'rgba(245, 158, 11, 0.75)',
-                            borderRadius: 4,
-                            yAxisID: 'y',
-                            stack: 'calories'
-                        },
-                        {
-                            type: 'bar',
-                            label: currentLang === 'en' ? 'Carbs' : 'Carboidrati',
-                            data: datiCarboidrati.map(c => Math.round((c || 0) * 4)),
-                            backgroundColor: 'rgba(16, 185, 129, 0.75)',
-                            borderRadius: 4,
-                            yAxisID: 'y',
-                            stack: 'calories'
+                            type: 'line',
+                            label: currentLang === 'en' ? 'Calories' : 'Calorie',
+                            data: datiCalorie.map(cal => cal > 0 ? Math.round(cal) : null),
+                            borderColor: '#f43f5e',
+                            backgroundColor: 'rgba(244, 63, 94, 0.1)',
+                            borderWidth: 2,
+                            pointRadius: 2.5,
+                            pointBackgroundColor: '#f43f5e',
+                            fill: false,
+                            yAxisID: 'yCalorie'
                         },
                         {
                             type: 'bar',
                             label: currentLang === 'en' ? 'Proteins' : 'Proteine',
-                            data: datiProteine.map(p => Math.round((p || 0) * 4)),
+                            data: datiProteine.map(p => targetProteine > 0 ? Math.round(((p || 0) / targetProteine) * 100) : 0),
                             backgroundColor: 'rgba(59, 130, 246, 0.75)',
-                            borderRadius: 4,
-                            yAxisID: 'y',
-                            stack: 'calories'
+                            borderRadius: 3,
+                            barPercentage: 0.8,
+                            categoryPercentage: 0.8,
+                            yAxisID: 'y'
+                        },
+                        {
+                            type: 'bar',
+                            label: currentLang === 'en' ? 'Carbs' : 'Carboidrati',
+                            data: datiCarboidrati.map(c => targetCarbo > 0 ? Math.round(((c || 0) / targetCarbo) * 100) : 0),
+                            backgroundColor: 'rgba(16, 185, 129, 0.75)',
+                            borderRadius: 3,
+                            barPercentage: 0.8,
+                            categoryPercentage: 0.8,
+                            yAxisID: 'y'
+                        },
+                        {
+                            type: 'bar',
+                            label: currentLang === 'en' ? 'Fats' : 'Grassi',
+                            data: datiGrassi.map(g => targetGrassi > 0 ? Math.round(((g || 0) / targetGrassi) * 100) : 0),
+                            backgroundColor: 'rgba(245, 158, 11, 0.75)',
+                            borderRadius: 3,
+                            barPercentage: 0.8,
+                            categoryPercentage: 0.8,
+                            yAxisID: 'y'
                         },
                         {
                             type: 'line',
-                            label: currentLang === 'en' ? 'Calories Target' : 'Target Calorie',
-                            data: labels.map(() => targetCalorie),
-                            borderColor: 'transparent',
-                            borderWidth: 0,
+                            label: 'Target Macro (100%)',
+                            data: labels.map(() => 100),
+                            borderColor: 'rgba(148, 163, 184, 0.35)',
+                            borderWidth: 1,
                             borderDash: [5, 5],
                             pointRadius: 0,
                             fill: false,
                             yAxisID: 'y'
+                        },
+                        {
+                            type: 'line',
+                            label: 'Target Calorie',
+                            data: labels.map(() => targetCalorie),
+                            borderColor: 'rgba(244, 63, 94, 0.35)',
+                            borderWidth: 1,
+                            borderDash: [3, 3],
+                            pointRadius: 0,
+                            fill: false,
+                            yAxisID: 'yCalorie'
                         }
-                    ]
+                    ].map((ds, idx) => {
+                        if (idx < 4 && window.hiddenTrendDatasets[idx]) {
+                            ds.hidden = true;
+                        }
+                        return ds;
+                    })
                 },
                 options: {
                     plugins: {
                         legend: {
-                            display: true,
-                            position: 'top',
-                            labels: {
-                                color: '#94a3b8',
-                                boxWidth: 10,
-                                font: { size: 9, family: "'Outfit', sans-serif" },
-                                filter: function (item) {
-                                    return !item.text.includes('Target');
-                                }
-                            }
+                            display: false
                         },
                         tooltip: {
                             callbacks: {
                                 label: function (context) {
                                     const idx = context.dataIndex;
-                                    const dsIdx = context.datasetIndex;
+                                    const ds = context.dataset;
                                     const rawData = context.chart.config.data.customRawData;
                                     const targets = context.chart.config.data.customTargets;
                                     const item = rawData[idx];
                                     if (!item) return '';
-                                    if (dsIdx === 0) return (currentLang === 'en' ? 'Fats: ' : 'Grassi: ') + Math.round(item.grassi || 0) + 'g / ' + targets.grassi + 'g';
-                                    if (dsIdx === 1) return (currentLang === 'en' ? 'Carbs: ' : 'Carboidrati: ') + Math.round(item.carboidrati || 0) + 'g / ' + targets.carboidrati + 'g';
-                                    if (dsIdx === 2) return (currentLang === 'en' ? 'Proteins: ' : 'Proteine: ') + Math.round(item.proteine || 0) + 'g / ' + targets.proteine + 'g';
-                                    if (dsIdx === 3) return (currentLang === 'en' ? 'Calories Target: ' : 'Target Calorie: ') + targets.calorie + ' kcal';
+                                    
+                                    if (ds.label.includes('Grassi') || ds.label.includes('Fats')) {
+                                        const pct = context.raw;
+                                        return (currentLang === 'en' ? 'Fats: ' : 'Grassi: ') + pct + '% (' + Math.round(item.grassi || 0) + 'g / ' + targets.grassi + 'g)';
+                                    }
+                                    if (ds.label.includes('Carbo') || ds.label.includes('Carbs')) {
+                                        const pct = context.raw;
+                                        return (currentLang === 'en' ? 'Carbs: ' : 'Carboidrati: ') + pct + '% (' + Math.round(item.carboidrati || 0) + 'g / ' + targets.carboidrati + 'g)';
+                                    }
+                                    if (ds.label.includes('Proteine') || ds.label.includes('Proteins')) {
+                                        const pct = context.raw;
+                                        return (currentLang === 'en' ? 'Proteins: ' : 'Proteine: ') + pct + '% (' + Math.round(item.proteine || 0) + 'g / ' + targets.proteine + 'g)';
+                                    }
+                                    if (ds.label.includes('Calorie') || ds.label.includes('Calories')) {
+                                        const val = context.raw;
+                                        if (val === null || val === undefined) return '';
+                                        const pct = targets.calorie > 0 ? Math.round((val / targets.calorie) * 100) : 0;
+                                        return (currentLang === 'en' ? 'Calories: ' : 'Calorie: ') + val + ' kcal / ' + targets.calorie + ' kcal (' + pct + '%)';
+                                    }
                                     return '';
                                 }
                             }
@@ -4128,29 +4309,18 @@ IMPORTANTE: Se l'utente non specifica le porzioni, pesi o quantità per un alime
                     maintainAspectRatio: false,
                     scales: {
                         x: {
-                            stacked: true,
                             grid: { color: 'rgba(71,85,105,0.08)', drawTicks: false },
                             ticks: { display: false }
                         },
                         y: {
-                            stacked: true,
-                            type: 'linear',
-                            position: 'left',
-                            grid: { color: 'rgba(71,85,105,0.08)' },
-                            ticks: { 
-                                color: '#f43f5e', 
-                                font: { size: 9, weight: 'bold' },
-                                stepSize: calorieStepSize
-                            },
+                            display: false,
                             min: 0,
-                            max: maxCalValue,
-                            title: {
-                                display: true,
-                                text: currentLang === 'en' ? 'Calories (kcal)' : 'Calorie (kcal)',
-                                color: '#f43f5e',
-                                font: { size: 9, weight: 'bold' }
-                            },
-                            afterFit: (scale) => { scale.width = 50; }
+                            max: 200
+                        },
+                        yCalorie: {
+                            display: false,
+                            min: -maxCalVal,
+                            max: maxCalVal
                         }
                     }
                 }
@@ -4219,23 +4389,9 @@ IMPORTANTE: Se l'utente non specifica le porzioni, pesi o quantità per un alime
                             ticks: { color: '#64748b', font: { size: 9 } }
                         },
                         y: {
-                            type: 'linear',
-                            position: 'left',
-                            grid: { color: 'rgba(71,85,105,0.08)' },
-                            ticks: { 
-                                color: '#6366f1', 
-                                font: { size: 9, weight: 'bold' },
-                                stepSize: pesoStepSize
-                            },
+                            display: false,
                             min: yMin,
-                            max: yMax,
-                            title: {
-                                display: true,
-                                text: currentLang === 'en' ? 'Weight (kg)' : 'Peso (kg)',
-                                color: '#6366f1',
-                                font: { size: 9, weight: 'bold' }
-                            },
-                            afterFit: (scale) => { scale.width = 50; }
+                            max: yMax
                         }
                     }
                 }
