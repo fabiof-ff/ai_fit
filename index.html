@@ -4499,7 +4499,7 @@ IMPORTANTE: Se l'utente non specifica le porzioni, pesi o quantità per un alime
                     const fineStr = formattaData(fineSettimana);
                     const recordSettimanali = db.filter(x => x.data >= inizioStr && x.data <= fineStr);
                     const recordAttivi = recordSettimanali.filter(r => r.data !== dataOggi && (r.calorie > 0 || r.proteine > 0 || r.carboidrati > 0 || r.grassi > 0));
-                    const recordConPeso = recordSettimanali.filter(r => r.data !== dataOggi && r.peso !== null && r.peso !== undefined && parseFloat(r.peso) > 0);
+                    const recordConPeso = recordSettimanali.filter(r => r.peso !== null && r.peso !== undefined && parseFloat(r.peso) > 0);
                     const mediaC = recordAttivi.length > 0 ? recordAttivi.reduce((a, b) => a + (b.calorie || 0), 0) / recordAttivi.length : 0;
                     const mediaP = recordAttivi.length > 0 ? recordAttivi.reduce((a, b) => a + (b.proteine || 0), 0) / recordAttivi.length : 0;
                     const mediaCb = recordAttivi.length > 0 ? recordAttivi.reduce((a, b) => a + (b.carboidrati || 0), 0) / recordAttivi.length : 0;
@@ -4817,14 +4817,15 @@ IMPORTANTE: Se l'utente non specifica le porzioni, pesi o quantità per un alime
 
             // 2. Group by month
             db.forEach(entry => {
-                if (!entry.data || entry.data === dataOggi) return;
+                if (!entry.data) return;
+                const isToday = (entry.data === dataOggi);
                 const dateParts = entry.data.split('-');
                 if (dateParts.length < 2) return;
                 const key = `${dateParts[0]}-${dateParts[1]}`; // YYYY-MM
 
                 // Only aggregate if the entry falls within the last 12 months
                 if (grouped[key]) {
-                    if (entry.calorie > 0 || entry.proteine > 0 || entry.carboidrati > 0 || entry.grassi > 0) {
+                    if (!isToday && (entry.calorie > 0 || entry.proteine > 0 || entry.carboidrati > 0 || entry.grassi > 0)) {
                         grouped[key].calorieSum += (entry.calorie || 0);
                         grouped[key].proteineSum += (entry.proteine || 0);
                         grouped[key].carboidratiSum += (entry.carboidrati || 0);
