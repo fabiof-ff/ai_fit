@@ -696,6 +696,9 @@
                     </div>
                 </div>
 
+                <!-- Indicatore di Coerenza Target -->
+                <div id="target-coherence-status" class="mt-2.5"></div>
+
                 <div class="border-t border-slate-700 mt-4 pt-4">
                     <button type="button" onclick="toggleAiTargetBox()"
                         class="w-full bg-slate-700/50 hover:bg-slate-700 text-slate-200 font-bold py-2.5 rounded-xl transition text-xs flex items-center justify-center gap-1.5 cursor-pointer">
@@ -2437,6 +2440,9 @@
 
             // 4. Ri-esegue il render delle varie liste per aggiornare i testi
             aggiornaTotaleGiorno();
+            if (typeof aggiornaCoerenzaTarget === 'function') {
+                aggiornaCoerenzaTarget();
+            }
             if (document.getElementById('panel-storico').classList.contains('active')) renderStorico();
             if (document.getElementById('panel-trend').classList.contains('active')) {
                 if (trendView === 'mesi') {
@@ -2526,6 +2532,10 @@
             document.getElementById('targetCarbo').value = targetCarbo;
             document.getElementById('targetGrassi').value = targetGrassi;
             document.getElementById('targetPeso').value = localStorage.getItem('targetPeso') || "";
+
+            if (typeof aggiornaCoerenzaTarget === 'function') {
+                aggiornaCoerenzaTarget();
+            }
 
             if (!savedGemini) document.getElementById('settingsBox').classList.remove('hidden');
 
@@ -2671,6 +2681,46 @@
             lucide.createIcons();
         };
 
+        window.aggiornaCoerenzaTarget = function () {
+            const calorieInput = document.getElementById('targetCalorie');
+            const protInput = document.getElementById('targetProteine');
+            const carbInput = document.getElementById('targetCarbo');
+            const fatInput = document.getElementById('targetGrassi');
+            const statusEl = document.getElementById('target-coherence-status');
+
+            if (!statusEl) return;
+
+            const calorie = parseFloat(calorieInput.value) || 0;
+            const proteine = parseFloat(protInput.value) || 0;
+            const carboidrati = parseFloat(carbInput.value) || 0;
+            const grassi = parseFloat(fatInput.value) || 0;
+
+            if (calorie === 0 && proteine === 0 && carboidrati === 0 && grassi === 0) {
+                statusEl.innerHTML = '';
+                return;
+            }
+
+            const protCalVal = proteine * 4;
+            const carbCalVal = carboidrati * 4;
+            const fatCalVal = grassi * 9;
+
+            const calFromMacro = protCalVal + carbCalVal + fatCalVal;
+            const diff = Math.abs(calorie - calFromMacro);
+            const maxAllowedDiff = calorie * 0.03;
+
+            let html = '';
+            if (diff <= maxAllowedDiff) {
+                html = `<div class="p-2.5 bg-emerald-500/10 border border-emerald-500/25 rounded-xl text-emerald-400 text-xs">
+                    ✓ ${currentLang === 'en' ? 'Consistent targets! Calorie from macro: ' : 'Target coerenti! Calorie dai macro: '} <strong>${Math.round(calFromMacro)} kcal</strong>
+                </div>`;
+            } else {
+                html = `<div class="p-2.5 bg-amber-500/10 border border-amber-500/25 rounded-xl text-amber-400 text-xs">
+                    ⚠️ ${currentLang === 'en' ? 'Target mismatch! Calorie from macro: ' : 'Incoerenza target! Calorie dai macro: '} <strong>${Math.round(calFromMacro)} kcal</strong> (${currentLang === 'en' ? 'diff: ' : 'diff: '} ${Math.round(diff)} kcal)
+                </div>`;
+            }
+            statusEl.innerHTML = html;
+        };
+
         window.aggiornaCalcoloCoerenza = function () {
             const calorieInput = document.getElementById('manual-calorie');
             const protInput = document.getElementById('manual-proteine');
@@ -2698,7 +2748,7 @@
 
             const calFromMacro = protCalVal + carbCalVal + fatCalVal;
             const diff = Math.abs(calorie - calFromMacro);
-            const maxAllowedDiff = Math.max(150, calFromMacro * 0.15);
+            const maxAllowedDiff = calorie * 0.03;
 
             if (calorie === 0 && proteine === 0 && carboidrati === 0 && grassi === 0) {
                 statusEl.innerHTML = '';
@@ -2742,7 +2792,7 @@
             // Verifica coerenza
             const calFromMacro = (proteine * 4) + (carboidrati * 4) + (grassi * 9);
             const diff = Math.abs(calorie - calFromMacro);
-            const maxAllowedDiff = Math.max(150, calFromMacro * 0.15);
+            const maxAllowedDiff = calorie * 0.03;
 
             if (diff > maxAllowedDiff) {
                 await customAlert(
@@ -2880,6 +2930,9 @@
                 } else {
                     renderTrend();
                 }
+            }
+            if (typeof aggiornaCoerenzaTarget === 'function') {
+                aggiornaCoerenzaTarget();
             }
             aggiornaTotaleGiorno();
             autoSalvaNelFileLocale();
@@ -3635,7 +3688,7 @@ IMPORTANTE: Se l'utente non specifica le porzioni, pesi o quantità per un alime
 
             const calFromMacro = protCalVal + carbCalVal + fatCalVal;
             const diff = Math.abs(calorie - calFromMacro);
-            const maxAllowedDiff = Math.max(150, calFromMacro * 0.15);
+            const maxAllowedDiff = calorie * 0.03;
 
             if (calorie === 0 && proteine === 0 && carboidrati === 0 && grassi === 0) {
                 statusEl.innerHTML = '';
@@ -3679,7 +3732,7 @@ IMPORTANTE: Se l'utente non specifica le porzioni, pesi o quantità per un alime
             // Verifica coerenza
             const calFromMacro = (proteine * 4) + (carboidrati * 4) + (grassi * 9);
             const diff = Math.abs(calorie - calFromMacro);
-            const maxAllowedDiff = Math.max(150, calFromMacro * 0.15);
+            const maxAllowedDiff = calorie * 0.03;
 
             if (diff > maxAllowedDiff) {
                 await customAlert(
