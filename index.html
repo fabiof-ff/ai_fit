@@ -2968,6 +2968,19 @@
             autoSalvaNelFileLocale();
         }
 
+        function formattazioneTestoAI(str) {
+            if (!str) return "";
+            // Riconosce i doppi asterischi **testo** e li converte in <strong>testo</strong>
+            let html = str.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>');
+            // Converte le righe con elenchi puntati (* pasto o - pasto) in pallini (•)
+            html = html.replace(/(?:^|\n)[*\-]\s+(.+)/g, (match, p1) => '<br>• ' + p1);
+            // Sostituisce i newline con <br>
+            html = html.replace(/\n/g, '<br>');
+            // Rimuove eventuali doppie interlinee create da br consecutivi
+            html = html.replace(/(<br>){3,}/g, '<br><br>');
+            return html;
+        }
+
         // ================================================================
         // LOGICA DI CALCOLO E PROGRESSI ODIERNI
         // ================================================================
@@ -2993,14 +3006,14 @@
                 const boxSuggerimenti = document.getElementById('boxSuggerimentiAI');
                 const testoSuggerimenti = document.getElementById('testoSuggerimentiAI');
                 if (recordOggi.analisiAI && boxSuggerimenti && testoSuggerimenti) {
-                    testoSuggerimenti.innerHTML = recordOggi.analisiAI.replace(/\n/g, '<br>');
+                    testoSuggerimenti.innerHTML = formattazioneTestoAI(recordOggi.analisiAI);
                 }
 
                 // Popola l'analisi trend salvata se presente (rimane nascosta all'avvio)
                 const boxTrend = document.getElementById('boxAnalisiTrendAI');
                 const testoTrend = document.getElementById('testoAnalisiTrendAI');
                 if (recordOggi.analisiTrendAI && boxTrend && testoTrend) {
-                    testoTrend.innerHTML = recordOggi.analisiTrendAI.replace(/\n/g, '<br>');
+                    testoTrend.innerHTML = formattazioneTestoAI(recordOggi.analisiTrendAI);
                 }
 
                 const cal = Math.round(recordOggi.calorie || 0);
@@ -3142,7 +3155,7 @@ IMPORTANTE: Se l'utente non specifica le porzioni, pesi o quantità per un alime
 
                 if (vediUltima) {
                     boxSuggerimenti.classList.remove('hidden');
-                    testoSuggerimenti.innerHTML = giornoOggi.analisiAI.replace(/\n/g, '<br>');
+                    testoSuggerimenti.innerHTML = formattazioneTestoAI(giornoOggi.analisiAI);
                     return;
                 }
             }
@@ -3231,8 +3244,8 @@ IMPORTANTE: Se l'utente non specifica le porzioni, pesi o quantità per un alime
                 giornoOggi.analisiAI = rispostaTesto;
                 salvaDatabase(db);
 
-                // Formatta la risposta sostituendo gli a capo con dei tag <br> per l'HTML
-                testoSuggerimenti.innerHTML = rispostaTesto.replace(/\n/g, '<br>');
+                // Formatta la risposta sostituendo gli a capo e i markdown per l'HTML
+                testoSuggerimenti.innerHTML = formattazioneTestoAI(rispostaTesto);
 
             } catch (error) {
                 console.error(error);
@@ -5967,7 +5980,7 @@ ${datiMedioPeriodo}
                 giornoOggi.analisiTrendAI = rawResponse;
                 salvaDatabase(db);
 
-                testo.innerHTML = rawResponse.replace(/\n/g, '<br>');
+                testo.innerHTML = formattazioneTestoAI(rawResponse);
             } catch (err) {
                 console.error(err);
                 testo.innerHTML = currentLang === 'en'

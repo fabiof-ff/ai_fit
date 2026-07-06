@@ -193,11 +193,22 @@
       "id": 1783355445031,
       "data": "2026-07-06",
       "peso": 80,
-      "calorie": 0,
-      "proteine": 0,
-      "carboidrati": 0,
-      "grassi": 0,
-      "pasti": []
+      "calorie": 2900,
+      "proteine": 100,
+      "carboidrati": 400,
+      "grassi": 100,
+      "pasti": [
+        {
+          "id": 1783355718189,
+          "ora": "18:35",
+          "testo": "Inserimento manuale",
+          "calorie": 2900,
+          "proteine": 100,
+          "carboidrati": 400,
+          "grassi": 100
+        }
+      ],
+      "analisiAI": "Ciao! Ottimo lavoro, hai raggiunto il tuo target calorico giornaliero!\n\nAnalisi rapida:\n*   **Calorie:** Perfette.\n*   **Proteine:** Un po' basse (mancano circa 56g).\n*   **Carboidrati e Grassi:** Leggermente sopra i target.\n\nConsiderando che hai già registrato tutte le calorie alle 18:35, la giornata alimentare è chiusa. Per le **prossime scelte**, cerca di bilanciare meglio i tuoi pasti: dai priorità a fonti proteiche magre (pollo, pesce, legumi, albumi) e limita cibi troppo ricchi di carboidrati e grassi combinati. Continua così a monitorare, sei sulla strada giusta per affinare il tuo piano!"
     }
   ],
   "impostazioni": {
