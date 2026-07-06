@@ -726,13 +726,13 @@
                             </div>
                             <div>
                                 <label class="text-[9px] font-bold text-slate-500 uppercase tracking-wider block"
-                                    data-i18n="lbl_height_cm">Altezza (cm)</label>
-                                <input type="number" id="aiAltezza" placeholder="es. 180" oninput="saveProfileData()"
+                                    data-i18n="lbl_target_time_weeks">Tempo (settimane)</label>
+                                <input type="number" id="aiTempoSettimane" placeholder="es. 8" oninput="saveProfileData()"
                                     class="mt-1 w-full bg-slate-800 border border-slate-700 rounded-lg p-2 text-xs text-slate-200 focus:outline-none focus:ring-1 focus:ring-purple-500">
                             </div>
                         </div>
 
-                        <div class="grid grid-cols-2 gap-2">
+                        <div class="grid grid-cols-3 gap-2">
                             <div>
                                 <label class="text-[9px] font-bold text-slate-500 uppercase tracking-wider block"
                                     data-i18n="lbl_gender">Sesso</label>
@@ -746,6 +746,12 @@
                                 <label class="text-[9px] font-bold text-slate-500 uppercase tracking-wider block"
                                     data-i18n="lbl_age">Età (anni)</label>
                                 <input type="number" id="aiEta" placeholder="es. 30" oninput="saveProfileData()"
+                                    class="mt-1 w-full bg-slate-800 border border-slate-700 rounded-lg p-2 text-xs text-slate-200 focus:outline-none focus:ring-1 focus:ring-purple-500">
+                            </div>
+                            <div>
+                                <label class="text-[9px] font-bold text-slate-500 uppercase tracking-wider block"
+                                    data-i18n="lbl_height_cm">Altezza (cm)</label>
+                                <input type="number" id="aiAltezza" placeholder="es. 180" oninput="saveProfileData()"
                                     class="mt-1 w-full bg-slate-800 border border-slate-700 rounded-lg p-2 text-xs text-slate-200 focus:outline-none focus:ring-1 focus:ring-purple-500">
                             </div>
                         </div>
@@ -789,6 +795,10 @@
                                         class="font-bold text-slate-100">0</span> g</div>
                                 <div><span data-i18n="lbl_fats_colon">Grassi:</span> <span id="sugFat"
                                         class="font-bold text-slate-100">0</span> g</div>
+                            </div>
+                            <!-- Box Nota/Realismo Suggerimento -->
+                            <div id="sugNotaBox" class="mt-2 p-2 bg-amber-500/10 border border-amber-500/25 rounded-lg text-amber-400 text-[11px] hidden">
+                                <span id="sugNota"></span>
                             </div>
                             <button type="button" onclick="applicaTargetSuggeriti()"
                                 class="w-full mt-2 bg-emerald-600 hover:bg-emerald-500 text-white font-bold py-1.5 rounded text-xs transition cursor-pointer">
@@ -1954,7 +1964,8 @@
                 profile_obiettivo: localStorage.getItem('profile_obiettivo'),
                 profile_peso_target: localStorage.getItem('profile_peso_target'),
                 profile_sesso: localStorage.getItem('profile_sesso'),
-                profile_eta: localStorage.getItem('profile_eta')
+                profile_eta: localStorage.getItem('profile_eta'),
+                profile_tempo_settimane: localStorage.getItem('profile_tempo_settimane')
             };
 
             return {
@@ -2003,6 +2014,7 @@
             const pesoTargetInput = document.getElementById('aiPesoTarget')?.value.trim();
             const sesso = document.getElementById('aiSesso')?.value;
             const eta = document.getElementById('aiEta')?.value.trim();
+            const tempo = document.getElementById('aiTempoSettimane')?.value.trim();
 
             if (peso) localStorage.setItem('profile_peso', peso);
             if (altezza) localStorage.setItem('profile_altezza', altezza);
@@ -2011,6 +2023,7 @@
             if (pesoTargetInput) localStorage.setItem('profile_peso_target', pesoTargetInput);
             if (sesso) localStorage.setItem('profile_sesso', sesso);
             if (eta) localStorage.setItem('profile_eta', eta);
+            if (tempo) localStorage.setItem('profile_tempo_settimane', tempo);
 
             autoSalvaNelFileLocale();
         };
@@ -2145,6 +2158,7 @@
                 lbl_ai_target_title: "Generatore Target AI",
                 lbl_cur_weight: "Peso Att. (kg)",
                 lbl_target_weight_short: "Peso Des. (kg)",
+                lbl_target_time_weeks: "Tempo Des. (sett.)",
                 lbl_height_cm: "Altezza (cm)",
                 lbl_training_style: "Stile di allenamento / Attivit\u00e0",
                 lbl_main_goal: "Obiettivo principale",
@@ -2168,6 +2182,7 @@
                 pl_main_goal: "es. Aumentare massa muscolare magra",
                 pl_weight: "es. 75",
                 pl_target_weight: "es. 70",
+                pl_target_time: "es. 8",
                 pl_height: "es. 180",
                 pl_age_placeholder: "es. 30",
                 placeholder_search_meals: "Cerca nei pasti o peso...",
@@ -2266,6 +2281,7 @@
                 lbl_ai_target_title: "AI Target Generator",
                 lbl_cur_weight: "Curr. Weight (kg)",
                 lbl_target_weight_short: "Goal Weight (kg)",
+                lbl_target_time_weeks: "Goal Time (weeks)",
                 lbl_height_cm: "Height (cm)",
                 lbl_training_style: "Training style / Activity",
                 lbl_main_goal: "Main goal",
@@ -2289,6 +2305,7 @@
                 pl_main_goal: "e.g. Increase lean muscle mass",
                 pl_weight: "e.g. 75",
                 pl_target_weight: "e.g. 70",
+                pl_target_time: "e.g. 8",
                 pl_height: "e.g. 180",
                 pl_age_placeholder: "e.g. 30",
                 placeholder_search_meals: "Search meals or weight...",
@@ -2389,6 +2406,11 @@
             const aiEta = document.getElementById('aiEta');
             if (aiEta && TRANSLATIONS[window.currentLang].pl_age_placeholder) {
                 aiEta.placeholder = TRANSLATIONS[window.currentLang].pl_age_placeholder;
+            }
+
+            const aiTempoSettimane = document.getElementById('aiTempoSettimane');
+            if (aiTempoSettimane && TRANSLATIONS[window.currentLang].pl_target_time) {
+                aiTempoSettimane.placeholder = TRANSLATIONS[window.currentLang].pl_target_time;
             }
 
             const editTesto = document.getElementById('editTesto');
@@ -2517,6 +2539,11 @@
             if (pEta) {
                 const aiEtaInput = document.getElementById('aiEta');
                 if (aiEtaInput) aiEtaInput.value = pEta;
+            }
+            const pTempo = localStorage.getItem('profile_tempo_settimane');
+            if (pTempo) {
+                const aiTempoInput = document.getElementById('aiTempoSettimane');
+                if (aiTempoInput) aiTempoInput.value = pTempo;
             }
 
             // Carica target
@@ -5097,6 +5124,8 @@ IMPORTANTE: Se l'utente non specifica le porzioni, pesi o quantità per un alime
                     if (pSesso) document.getElementById('aiSesso').value = pSesso;
                     const pEta = localStorage.getItem('profile_eta');
                     if (pEta) document.getElementById('aiEta').value = pEta;
+                    const pTempo = localStorage.getItem('profile_tempo_settimane');
+                    if (pTempo) document.getElementById('aiTempoSettimane').value = pTempo;
 
                     // Forza la traduzione dei testi appena importati
                     changeLanguage(window.currentLang);
@@ -5289,6 +5318,7 @@ IMPORTANTE: Se l'utente non specifica le porzioni, pesi o quantità per un alime
             const obiettivo = document.getElementById('aiObiettivo').value.trim();
             const sesso = document.getElementById('aiSesso').value;
             const eta = document.getElementById('aiEta').value.trim();
+            const tempoSettimane = document.getElementById('aiTempoSettimane').value.trim();
 
             if (!peso || !altezza || !attivita || !obiettivo || !eta) {
                 await customAlert(
@@ -5321,11 +5351,33 @@ IMPORTANTE: Se l'utente non specifica le porzioni, pesi o quantità per un alime
 - Età: ${eta} anni
 - Peso attuale: ${peso} kg
 ${pesoTargetInput ? `- Peso target desiderato dall'utente: ${pesoTargetInput} kg` : ''}
+${tempoSettimane ? `- Tempo desiderato per raggiungere l'obiettivo: ${tempoSettimane} settimane` : ''}
 - Altezza: ${altezza} cm
 - Stile di vita e livello di attività fisica: ${attivita}
 - Obiettivo principale: ${obiettivo}
 
-Rispondi ESCLUSIVAMENTE con un oggetto JSON valido (senza markdown, senza racchiuderlo in codice tipo \`\`\`json) contenente le seguenti chiavi numeriche: "calorie", "proteine", "carboidrati", "grassi", "pesoTarget". Il "pesoTarget" restituito deve essere possibilmente allineato a quello desiderato dell'utente se fornito, oppure ottimizzato/calibrato se irrealistico o non salutare a breve/medio termine. Sii accurato e realistico nei calcoli (es. proteine circa 1.6-2.2g per kg per aumento massa, grassi circa 0.8-1g per kg, calorie calibrate sul TDEE calcolato considerando il sesso biologico e l'età dell'utente).`;
+Rispondi ESCLUSIVAMENTE con un oggetto JSON valido (senza markdown, senza racchiuderlo in codice tipo \`\`\`json) contenente le seguenti chiavi: "calorie" (numero), "proteine" (numero), "carboidrati" (numero), "grassi" (numero), "pesoTarget" (numero), "nota" (stringa).
+
+Istruzioni per il calcolo e la risposta:
+1. Calcola accuratamente il TDEE (Total Daily Energy Expenditure) dell'utente utilizzando una formula nutrizionale scientifica standard (es. Mifflin-St Jeor o Harris-Benedict) basandoti rigorosamente su:
+   - Sesso biologico (Maschio/Femmina)
+   - Età (in anni)
+   - Peso attuale (in kg)
+   - Altezza (in cm)
+   - Livello di attività fisica fornito.
+2. Il "pesoTarget" restituito deve essere possibilmente allineato a quello desiderato dell'utente se fornito.
+3. Calcola con precisione il deficit o surplus calorico giornaliero in base al tempo fornito (se presente):
+   - Calcola la differenza di peso: Delta = Peso target desiderato - Peso attuale (in kg).
+   - Sapendo che 1 kg di variazione di peso corporeo equivale a circa 7700 kcal, calcola il fabbisogno calorico totale necessario per la variazione: Totale_kcal = Delta * 7700.
+   - Dividi questa quota per il numero di giorni totali del percorso (settimane * 7) per trovare la correzione calorica giornaliera teorica: Variazione_Giornaliera = Totale_kcal / (settimane * 7).
+   - Applica questa Variazione_Giornaliera al TDEE calcolato al punto 1 (Calorie finali = TDEE + Variazione_Giornaliera).
+   - ATTENZIONE: Se la Variazione_Giornaliera calcolata è irrealistica o non sicura per la salute (es. deficit calorico giornaliero richiesto superiore a 800-1000 kcal o surplus richiesto superiore a 500 kcal, o comunque tempistiche estreme come voler prendere 5 kg in 2 settimane), devi forzare una correzione di sicurezza portando la variazione calorica giornaliera effettiva entro limiti sani (deficit max 500-800 kcal, surplus max 300-500 kcal) e spiegare chiaramente nella "nota" che la tempistica originale era irrealistica e pericolosa e che i target calorici sono stati adattati di conseguenza per una progressione sana e sostenibile.
+   - Se invece la variazione calcolata è realistica e sicura, applicala per intero e indica nella "nota" che il piano è sostenibile e ben calibrato.
+4. Calcola accuratamente i macronutrienti basandoti sui dati fisici dell'utente:
+   - Proteine: circa 1.6-2.2g per kg di Peso attuale dell'utente (in base all'Obiettivo principale e all'attività).
+   - Grassi: circa 0.8-1.0g per kg di Peso attuale dell'utente.
+   - Carboidrati: per colmare le calorie rimanenti del target finale calcolato al punto 3 (es. (Calorie finali - (proteine * 4 + grassi * 9)) / 4).
+5. Nel campo "nota", scrivi una breve valutazione in lingua ${currentLang === 'en' ? 'inglese' : 'italiana'} sul realismo e la sostenibilità del target di peso in base alle settimane desiderate (se indicate). Se l'obiettivo di tempo non è realistico (es. perdere o prendere 5 o più kg in 1 mese o tempistiche eccessivamente rapide e pericolose), indicalo chiaramente nel campo "nota" inserendo all'inizio il simbolo di pericolo ⚠️ e spiegando perché (es. "⚠️ Attenzione: Aumentare/Perdere 5 kg in 4 settimane è irrealistico e pericoloso per la salute..."). Se è realistico o se non è indicato il tempo, scrivi una nota breve e incoraggiante.`;
 
             try {
                 const response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/${GEMINI_MODEL}:generateContent?key=${apiKey}`, {
@@ -5352,6 +5404,22 @@ Rispondi ESCLUSIVAMENTE con un oggetto JSON valido (senza markdown, senza racchi
                 document.getElementById('sugProt').innerText = Math.round(suggested.proteine) || 0;
                 document.getElementById('sugCarb').innerText = Math.round(suggested.carboidrati) || 0;
                 document.getElementById('sugFat').innerText = Math.round(suggested.grassi) || 0;
+
+                const notaBox = document.getElementById('sugNotaBox');
+                const notaText = document.getElementById('sugNota');
+                if (notaBox && notaText) {
+                    if (suggested.nota) {
+                        notaText.innerText = suggested.nota;
+                        notaBox.classList.remove('hidden');
+                        if (suggested.nota.includes('⚠️')) {
+                            notaBox.className = "mt-2 p-2 bg-amber-500/10 border border-amber-500/25 rounded-lg text-amber-400 text-[11px]";
+                        } else {
+                            notaBox.className = "mt-2 p-2 bg-purple-500/10 border border-purple-500/25 rounded-lg text-purple-300 text-[11px]";
+                        }
+                    } else {
+                        notaBox.classList.add('hidden');
+                    }
+                }
 
                 resultsBox.classList.remove('hidden');
             } catch (error) {
