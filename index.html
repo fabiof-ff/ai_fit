@@ -150,6 +150,7 @@
         details summary {
             list-style: none;
         }
+
         details summary::-webkit-details-marker {
             display: none;
         }
@@ -623,7 +624,8 @@
             </div>
         </div>
 
-        <div id="settingsBox" class="hidden mb-5 p-4 bg-slate-800 rounded-2xl border border-slate-700 shadow-xl space-y-3.5">
+        <div id="settingsBox"
+            class="hidden mb-5 p-4 bg-slate-800 rounded-2xl border border-slate-700 shadow-xl space-y-3.5">
             <div class="flex items-center mb-1">
                 <h3 class="text-sm font-semibold text-slate-200 flex items-center gap-2">
                     <i data-lucide="settings-2" class="w-4 h-4 text-amber-400"></i> <span
@@ -632,17 +634,22 @@
             </div>
 
             <!-- SEZIONE 1: ApiKey -->
-            <details class="group bg-slate-700/30 border border-slate-600/50 rounded-xl overflow-hidden transition-all duration-300">
-                <summary class="flex items-center justify-between p-3 font-semibold text-xs text-slate-300 uppercase tracking-wider cursor-pointer list-none select-none hover:bg-slate-700/50 transition">
+            <details
+                class="group bg-slate-700/30 border border-slate-600/50 rounded-xl overflow-hidden transition-all duration-300">
+                <summary
+                    class="flex items-center justify-between p-3 font-semibold text-xs text-slate-300 uppercase tracking-wider cursor-pointer list-none select-none hover:bg-slate-700/50 transition">
                     <div class="flex items-center gap-2.5">
                         <i data-lucide="key" class="w-4 h-4 text-purple-400"></i>
                         <span data-i18n="label_api_key_section">Gemini API Key</span>
                     </div>
-                    <i data-lucide="chevron-down" class="w-4 h-4 text-slate-400 transition-transform duration-300 group-open:rotate-180"></i>
+                    <i data-lucide="chevron-down"
+                        class="w-4 h-4 text-slate-400 transition-transform duration-300 group-open:rotate-180"></i>
                 </summary>
                 <div class="p-3.5 border-t border-slate-700/30 space-y-3 bg-transparent">
                     <div>
-                        <label data-i18n="label_api_key" class="text-[10px] font-semibold text-slate-400 uppercase tracking-wider block mb-1">Gemini API Key</label>
+                        <label data-i18n="label_api_key"
+                            class="text-[10px] font-semibold text-slate-400 uppercase tracking-wider block mb-1">Gemini
+                            API Key</label>
                         <input type="password" id="geminiKey" oninput="saveGeminiKey()"
                             class="w-full bg-slate-700/40 border border-slate-650/50 rounded-xl p-2.5 text-xs focus:outline-none focus:ring-2 focus:ring-purple-500 text-slate-200"
                             placeholder="AIza...">
@@ -651,19 +658,25 @@
             </details>
 
             <!-- SEZIONE 2: Target Giornaliero -->
-            <details class="group bg-slate-700/30 border border-slate-600/50 rounded-xl overflow-hidden transition-all duration-300">
-                <summary class="flex items-center justify-between p-3 font-semibold text-xs text-slate-300 uppercase tracking-wider cursor-pointer list-none select-none hover:bg-slate-700/50 transition">
+            <details
+                class="group bg-slate-700/30 border border-slate-600/50 rounded-xl overflow-hidden transition-all duration-300">
+                <summary
+                    class="flex items-center justify-between p-3 font-semibold text-xs text-slate-300 uppercase tracking-wider cursor-pointer list-none select-none hover:bg-slate-700/50 transition">
                     <div class="flex items-center gap-2.5">
                         <i data-lucide="target" class="w-4 h-4 text-rose-400"></i>
                         <span data-i18n="label_daily_targets">Target Giornalieri</span>
                     </div>
-                    <i data-lucide="chevron-down" class="w-4 h-4 text-slate-400 transition-transform duration-300 group-open:rotate-180"></i>
+                    <i data-lucide="chevron-down"
+                        class="w-4 h-4 text-slate-400 transition-transform duration-300 group-open:rotate-180"></i>
                 </summary>
                 <div class="p-3.5 border-t border-slate-700/30 space-y-3 bg-transparent">
                     <!-- Riga 1: Peso e Calorie (2 colonne) -->
                     <div class="grid grid-cols-2 gap-2">
-                        <div class="flex items-center justify-between bg-slate-700/40 border border-slate-600/50 py-2 px-3 rounded-xl">
-                            <span data-i18n="label_peso" class="text-[10px] font-semibold text-slate-400 uppercase tracking-wider">Target Peso</span>
+                        <div
+                            class="flex items-center justify-between bg-slate-700/40 border border-slate-600/50 py-2 px-3 rounded-xl">
+                            <span data-i18n="label_peso"
+                                class="text-[10px] font-semibold text-slate-400 uppercase tracking-wider">Target
+                                Peso</span>
                             <div class="flex items-center gap-1">
                                 <input type="number" id="targetPeso" oninput="saveTarget()" step="0.1"
                                     class="w-12 bg-slate-800 border border-slate-700 rounded-lg py-1 px-1.5 text-center text-xs focus:outline-none focus:ring-1 focus:ring-indigo-500 text-slate-200"
@@ -671,8 +684,10 @@
                                 <span class="text-[10px] text-slate-500">kg</span>
                             </div>
                         </div>
-                        <div class="flex items-center justify-between bg-slate-700/40 border border-slate-600/50 py-2 px-3 rounded-xl">
-                            <span data-i18n="label_calorie" class="text-[10px] font-semibold text-slate-400 uppercase tracking-wider">Calorie</span>
+                        <div
+                            class="flex items-center justify-between bg-slate-700/40 border border-slate-600/50 py-2 px-3 rounded-xl">
+                            <span data-i18n="label_calorie"
+                                class="text-[10px] font-semibold text-slate-400 uppercase tracking-wider">Calorie</span>
                             <div class="flex items-center gap-1">
                                 <input type="number" id="targetCalorie" oninput="saveTarget()"
                                     class="w-14 bg-slate-800 border border-slate-700 rounded-lg py-1 px-1.5 text-center text-xs focus:outline-none focus:ring-1 focus:ring-rose-500 text-slate-200"
@@ -683,8 +698,10 @@
                     </div>
                     <!-- Riga 2: Proteine, Carboidrati, Grassi (3 colonne) -->
                     <div class="grid grid-cols-3 gap-2">
-                        <div class="flex flex-col items-center bg-slate-700/40 border border-slate-600/50 py-1.5 px-2 rounded-xl">
-                            <span data-i18n="label_proteine" class="text-[9px] font-semibold text-slate-400 uppercase tracking-wider mb-1">Proteine</span>
+                        <div
+                            class="flex flex-col items-center bg-slate-700/40 border border-slate-600/50 py-1.5 px-2 rounded-xl">
+                            <span data-i18n="label_proteine"
+                                class="text-[9px] font-semibold text-slate-400 uppercase tracking-wider mb-1">Proteine</span>
                             <div class="flex items-center gap-1">
                                 <input type="number" id="targetProteine" oninput="saveTarget()"
                                     class="w-10 bg-slate-800 border border-slate-700 rounded-lg py-0.5 px-1 text-center text-xs focus:outline-none focus:ring-1 focus:ring-blue-500 text-slate-200"
@@ -692,8 +709,10 @@
                                 <span class="text-[9px] text-slate-500">g</span>
                             </div>
                         </div>
-                        <div class="flex flex-col items-center bg-slate-700/40 border border-slate-600/50 py-1.5 px-2 rounded-xl">
-                            <span data-i18n="label_carboidrati" class="text-[9px] font-semibold text-slate-400 uppercase tracking-wider mb-1">Carboidrati</span>
+                        <div
+                            class="flex flex-col items-center bg-slate-700/40 border border-slate-600/50 py-1.5 px-2 rounded-xl">
+                            <span data-i18n="label_carboidrati"
+                                class="text-[9px] font-semibold text-slate-400 uppercase tracking-wider mb-1">Carboidrati</span>
                             <div class="flex items-center gap-1">
                                 <input type="number" id="targetCarbo" oninput="saveTarget()"
                                     class="w-10 bg-slate-800 border border-slate-700 rounded-lg py-0.5 px-1 text-center text-xs focus:outline-none focus:ring-1 focus:ring-emerald-500 text-slate-200"
@@ -701,8 +720,10 @@
                                 <span class="text-[9px] text-slate-500">g</span>
                             </div>
                         </div>
-                        <div class="flex flex-col items-center bg-slate-700/40 border border-slate-600/50 py-1.5 px-2 rounded-xl">
-                            <span data-i18n="label_grassi" class="text-[9px] font-semibold text-slate-400 uppercase tracking-wider mb-1">Grassi</span>
+                        <div
+                            class="flex flex-col items-center bg-slate-700/40 border border-slate-600/50 py-1.5 px-2 rounded-xl">
+                            <span data-i18n="label_grassi"
+                                class="text-[9px] font-semibold text-slate-400 uppercase tracking-wider mb-1">Grassi</span>
                             <div class="flex items-center gap-1">
                                 <input type="number" id="targetGrassi" oninput="saveTarget()"
                                     class="w-10 bg-slate-800 border border-slate-700 rounded-lg py-0.5 px-1 text-center text-xs focus:outline-none focus:ring-1 focus:ring-amber-500 text-slate-200"
@@ -717,28 +738,34 @@
             </details>
 
             <!-- SEZIONE 3: Calcola Target con AI -->
-            <details id="detailsTargetAI" class="group bg-slate-700/30 border border-slate-600/50 rounded-xl overflow-hidden transition-all duration-300">
-                <summary class="flex items-center justify-between p-3 font-semibold text-xs text-slate-300 uppercase tracking-wider cursor-pointer list-none select-none hover:bg-slate-700/50 transition">
+            <details id="detailsTargetAI"
+                class="group bg-slate-700/30 border border-slate-600/50 rounded-xl overflow-hidden transition-all duration-300">
+                <summary
+                    class="flex items-center justify-between p-3 font-semibold text-xs text-slate-300 uppercase tracking-wider cursor-pointer list-none select-none hover:bg-slate-700/50 transition">
                     <div class="flex items-center gap-2.5">
                         <i data-lucide="wheat" class="w-4 h-4 text-purple-400"></i>
                         <span data-i18n="btn_calculate_ai">Calcola Target con AI</span>
                     </div>
-                    <i data-lucide="chevron-down" class="w-4 h-4 text-slate-400 transition-transform duration-300 group-open:rotate-180"></i>
+                    <i data-lucide="chevron-down"
+                        class="w-4 h-4 text-slate-400 transition-transform duration-300 group-open:rotate-180"></i>
                 </summary>
                 <div class="p-3.5 border-t border-slate-700/30 space-y-3 bg-transparent">
                     <div class="grid grid-cols-3 gap-2">
                         <div>
-                            <label class="text-[9px] font-bold text-slate-500 uppercase tracking-wider block" data-i18n="lbl_cur_weight">Peso Att. (kg)</label>
+                            <label class="text-[9px] font-bold text-slate-500 uppercase tracking-wider block"
+                                data-i18n="lbl_cur_weight">Peso Att. (kg)</label>
                             <input type="number" id="aiPeso" placeholder="es. 75" oninput="saveProfileData()"
                                 class="mt-1 w-full bg-slate-700/50 border border-slate-600/50 rounded-lg p-2 text-xs text-slate-200 focus:outline-none focus:ring-1 focus:ring-purple-500">
                         </div>
                         <div>
-                            <label class="text-[9px] font-bold text-slate-500 uppercase tracking-wider block" data-i18n="lbl_target_weight_short">Peso Des. (kg)</label>
+                            <label class="text-[9px] font-bold text-slate-500 uppercase tracking-wider block"
+                                data-i18n="lbl_target_weight_short">Peso Des. (kg)</label>
                             <input type="number" id="aiPesoTarget" placeholder="es. 70" oninput="saveProfileData()"
                                 class="mt-1 w-full bg-slate-700/50 border border-slate-600/50 rounded-lg p-2 text-xs text-slate-200 focus:outline-none focus:ring-1 focus:ring-purple-500">
                         </div>
                         <div>
-                            <label class="text-[9px] font-bold text-slate-500 uppercase tracking-wider block" data-i18n="lbl_target_time_weeks">Tempo (sett.)</label>
+                            <label class="text-[9px] font-bold text-slate-500 uppercase tracking-wider block"
+                                data-i18n="lbl_target_time_weeks">Tempo (sett.)</label>
                             <input type="number" id="aiTempoSettimane" placeholder="es. 8" oninput="saveProfileData()"
                                 class="mt-1 w-full bg-slate-700/50 border border-slate-600/50 rounded-lg p-2 text-xs text-slate-200 focus:outline-none focus:ring-1 focus:ring-purple-500">
                         </div>
@@ -746,7 +773,8 @@
 
                     <div class="grid grid-cols-3 gap-2">
                         <div>
-                            <label class="text-[9px] font-bold text-slate-500 uppercase tracking-wider block" data-i18n="lbl_gender">Sesso</label>
+                            <label class="text-[9px] font-bold text-slate-500 uppercase tracking-wider block"
+                                data-i18n="lbl_gender">Sesso</label>
                             <select id="aiSesso" onchange="saveProfileData()"
                                 class="mt-1 w-full bg-slate-700/50 border border-slate-600/50 rounded-lg p-2 text-xs text-slate-200 focus:outline-none focus:ring-1 focus:ring-purple-500">
                                 <option value="uomo" data-i18n="opt_male">Uomo</option>
@@ -754,26 +782,30 @@
                             </select>
                         </div>
                         <div>
-                            <label class="text-[9px] font-bold text-slate-500 uppercase tracking-wider block" data-i18n="lbl_age">Età (anni)</label>
+                            <label class="text-[9px] font-bold text-slate-500 uppercase tracking-wider block"
+                                data-i18n="lbl_age">Età (anni)</label>
                             <input type="number" id="aiEta" placeholder="es. 30" oninput="saveProfileData()"
                                 class="mt-1 w-full bg-slate-700/50 border border-slate-600/50 rounded-lg p-2 text-xs text-slate-200 focus:outline-none focus:ring-1 focus:ring-purple-500">
                         </div>
                         <div>
-                            <label class="text-[9px] font-bold text-slate-500 uppercase tracking-wider block" data-i18n="lbl_height_cm">Altezza (cm)</label>
+                            <label class="text-[9px] font-bold text-slate-500 uppercase tracking-wider block"
+                                data-i18n="lbl_height_cm">Altezza (cm)</label>
                             <input type="number" id="aiAltezza" placeholder="es. 180" oninput="saveProfileData()"
                                 class="mt-1 w-full bg-slate-700/50 border border-slate-600/50 rounded-lg p-2 text-xs text-slate-200 focus:outline-none focus:ring-1 focus:ring-purple-500">
                         </div>
                     </div>
 
                     <div>
-                        <label class="text-[10px] font-bold text-slate-500 uppercase tracking-wider block" data-i18n="lbl_training_style">Stile di allenamento / Attività</label>
+                        <label class="text-[10px] font-bold text-slate-500 uppercase tracking-wider block"
+                            data-i18n="lbl_training_style">Stile di allenamento / Attività</label>
                         <input type="text" id="aiAttivita" oninput="saveProfileData()" data-i18n="pl_training_style"
                             placeholder="es. Palestra 3 volte a settimana, lavoro sedentario"
                             class="mt-1 w-full bg-slate-700/50 border border-slate-600/50 rounded-lg p-2 text-xs text-slate-200 focus:outline-none focus:ring-1 focus:ring-purple-500">
                     </div>
 
                     <div>
-                        <label class="text-[10px] font-bold text-slate-500 uppercase tracking-wider block" data-i18n="lbl_main_goal">Obiettivo principale</label>
+                        <label class="text-[10px] font-bold text-slate-500 uppercase tracking-wider block"
+                            data-i18n="lbl_main_goal">Obiettivo principale</label>
                         <input type="text" id="aiObiettivo" placeholder="es. Aumentare massa muscolare magra"
                             oninput="saveProfileData()" data-i18n="pl_main_goal"
                             class="mt-1 w-full bg-slate-700/50 border border-slate-600/50 rounded-lg p-2 text-xs text-slate-200 focus:outline-none focus:ring-1 focus:ring-purple-500">
@@ -781,20 +813,30 @@
 
                     <button type="button" onclick="generaTargetConAI()" id="btnGeneraTargetAI"
                         class="w-full bg-purple-600 hover:bg-purple-500 text-white font-bold py-2 rounded-lg transition text-xs flex items-center justify-center gap-1.5 cursor-pointer">
-                        <i data-lucide="sparkles" class="w-3.5 h-3.5"></i> <span data-i18n="btn_generate_target">Calcola target</span>
+                        <i data-lucide="sparkles" class="w-3.5 h-3.5"></i> <span data-i18n="btn_generate_target">Calcola
+                            target</span>
                     </button>
-                    <div id="statoTargetAI" class="text-[11px] text-slate-400 text-center italic hidden" data-i18n="lbl_ai_calculating">L'AI sta calcolando i tuoi target...</div>
+                    <div id="statoTargetAI" class="text-[11px] text-slate-400 text-center italic hidden"
+                        data-i18n="lbl_ai_calculating">L'AI sta calcolando i tuoi target...</div>
 
-                    <div id="aiTargetResults" class="hidden space-y-2 p-2 bg-slate-700/50 rounded-lg border border-purple-500/30 text-xs">
-                        <p class="font-bold text-purple-400" data-i18n="lbl_ai_suggestion_title">Suggerimento Target AI:</p>
+                    <div id="aiTargetResults"
+                        class="hidden space-y-2 p-2 bg-slate-700/50 rounded-lg border border-purple-500/30 text-xs">
+                        <p class="font-bold text-purple-400" data-i18n="lbl_ai_suggestion_title">Suggerimento Target AI:
+                        </p>
                         <div class="grid grid-cols-2 gap-1.5 text-slate-300">
-                            <div><span data-i18n="lbl_calories_colon">Calorie:</span> <span id="sugCal" class="font-bold text-slate-100">0</span> kcal</div>
-                            <div><span data-i18n="lbl_target_weight_colon">Peso Target:</span> <span id="sugPeso" class="font-bold text-slate-100">0</span> kg</div>
-                            <div><span data-i18n="lbl_proteins_colon">Proteine:</span> <span id="sugProt" class="font-bold text-slate-100">0</span> g</div>
-                            <div><span data-i18n="lbl_carbs_colon">Carbo:</span> <span id="sugCarb" class="font-bold text-slate-100">0</span> g</div>
-                            <div><span data-i18n="lbl_fats_colon">Grassi:</span> <span id="sugFat" class="font-bold text-slate-100">0</span> g</div>
+                            <div><span data-i18n="lbl_calories_colon">Calorie:</span> <span id="sugCal"
+                                    class="font-bold text-slate-100">0</span> kcal</div>
+                            <div><span data-i18n="lbl_target_weight_colon">Peso Target:</span> <span id="sugPeso"
+                                    class="font-bold text-slate-100">0</span> kg</div>
+                            <div><span data-i18n="lbl_proteins_colon">Proteine:</span> <span id="sugProt"
+                                    class="font-bold text-slate-100">0</span> g</div>
+                            <div><span data-i18n="lbl_carbs_colon">Carbo:</span> <span id="sugCarb"
+                                    class="font-bold text-slate-100">0</span> g</div>
+                            <div><span data-i18n="lbl_fats_colon">Grassi:</span> <span id="sugFat"
+                                    class="font-bold text-slate-100">0</span> g</div>
                         </div>
-                        <div id="sugNotaBox" class="mt-2 p-2 bg-amber-500/10 border border-amber-500/25 rounded-lg text-amber-400 text-[11px] hidden">
+                        <div id="sugNotaBox"
+                            class="mt-2 p-2 bg-amber-500/10 border border-amber-500/25 rounded-lg text-amber-400 text-[11px] hidden">
                             <span id="sugNota"></span>
                         </div>
                         <button type="button" onclick="applicaTargetSuggeriti()"
@@ -806,13 +848,16 @@
             </details>
 
             <!-- SEZIONE 4: Salvataggio Locale -->
-            <details class="group bg-slate-700/30 border border-slate-600/50 rounded-xl overflow-hidden transition-all duration-300">
-                <summary class="flex items-center justify-between p-3 font-semibold text-xs text-slate-300 uppercase tracking-wider cursor-pointer list-none select-none hover:bg-slate-700/50 transition">
+            <details
+                class="group bg-slate-700/30 border border-slate-600/50 rounded-xl overflow-hidden transition-all duration-300">
+                <summary
+                    class="flex items-center justify-between p-3 font-semibold text-xs text-slate-300 uppercase tracking-wider cursor-pointer list-none select-none hover:bg-slate-700/50 transition">
                     <div class="flex items-center gap-2.5">
                         <i data-lucide="hard-drive" class="w-4 h-4 text-emerald-400"></i>
                         <span data-i18n="title_backup_auto">Salvataggio Locale</span>
                     </div>
-                    <i data-lucide="chevron-down" class="w-4 h-4 text-slate-400 transition-transform duration-300 group-open:rotate-180"></i>
+                    <i data-lucide="chevron-down"
+                        class="w-4 h-4 text-slate-400 transition-transform duration-300 group-open:rotate-180"></i>
                 </summary>
                 <div class="p-3.5 border-t border-slate-700/30 space-y-3 bg-transparent">
                     <div class="flex flex-col gap-2">
@@ -820,7 +865,8 @@
                             <button type="button" onclick="selezionaFileAutoSalvataggio()"
                                 class="flex-1 bg-slate-700 hover:bg-slate-650 text-slate-200 border border-slate-600/50 font-bold py-2 rounded-xl transition text-xs flex items-center justify-center gap-1.5 cursor-pointer">
                                 <i data-lucide="folder-open" class="w-4 h-4 text-blue-400"></i>
-                                <span id="lblFileAutoSalvataggio" data-i18n="btn_select_file">Associa file database</span>
+                                <span id="lblFileAutoSalvataggio" data-i18n="btn_select_file">Associa file
+                                    database</span>
                             </button>
                             <button type="button" id="btnRimuoviFileAuto" onclick="rimuoviFileAutoSalvataggio()"
                                 class="hidden bg-rose-950/40 hover:bg-rose-900/60 text-rose-300 border border-rose-800/40 p-2 rounded-xl transition duration-200 cursor-pointer"
@@ -833,7 +879,8 @@
                 </div>
             </details>
 
-            <p class="text-[10px] text-slate-500 mt-2 text-center" data-i18n="lbl_privacy_note">Le chiavi e i target vengono memorizzati solo sul tuo dispositivo (localStorage).</p>
+            <p class="text-[10px] text-slate-500 mt-2 text-center" data-i18n="lbl_privacy_note">Le chiavi e i target
+                vengono memorizzati solo sul tuo dispositivo (localStorage).</p>
         </div>
 
         <div class="flex gap-2 mb-3">
@@ -2583,7 +2630,7 @@
             }
 
             // Pre-popola i dati AI Target quando si espande la sezione Calcola Target con AI
-            document.getElementById('detailsTargetAI')?.addEventListener('toggle', function() {
+            document.getElementById('detailsTargetAI')?.addEventListener('toggle', function () {
                 if (this.open) {
                     const aiPesoInput = document.getElementById('aiPeso');
                     if (aiPesoInput && !aiPesoInput.value) {
@@ -5925,6 +5972,7 @@ Provide a separate and compact evaluation, structured exactly as follows (maximu
 **Short Term**: [Clear and conversational evaluation of recent calories and macronutrients].
 **Medium Term**: [Clear and conversational evaluation of weight trend compared to the target].
 **Advice**: [A practical, motivational, and immediate tip to optimize progress or consistency].`
+
                 : `Sei un esperto nutrizionista clinico e trainer sportivo. Analizza l'andamento recente dei pasti e del peso corporeo dell'utente su due finestre temporali rispetto ai suoi target impostati.
 
 Target attuali dell'utente:
