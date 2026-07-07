@@ -3242,20 +3242,23 @@ Rispondi ESCLUSIVAMENTE con un oggetto JSON valido. NO blocchi di codice (no \`\
                         }],
                         generationConfig: {
                             responseMimeType: "application/json",
-                            temperature: 0.2,
-                            maxOutputTokens: 1000
+                            temperature: 0.2
                         }
                     })
                 });
-                if (!response.ok) throw new Error("Errore risposta server Gemini API");
+                if (!response.ok) {
+                    const errData = await response.json().catch(() => ({}));
+                    throw new Error(errData?.error?.message || `HTTP ${response.status}`);
+                }
                 const data = await response.json();
                 const rawContent = data.candidates[0].content.parts[0].text.trim();
+                console.log("Gemini Raw Response:", rawContent);
                 const jsonRes = JSON.parse(rawContent);
 
                 mostraRisultati(jsonRes);
             } catch (err) {
-                console.error(err);
-                await customAlert("Errore di analisi", "Si è verificato un errore nell'analisi AI. Controlla la chiave di configurazione e la connessione internet.");
+                console.error("Errore Dettagliato AI:", err);
+                await customAlert("Errore di analisi AI", (currentLang === 'en' ? "Details: " : "Dettagli: ") + err.message);
             } finally {
                 document.getElementById('stato').classList.add('hidden');
                 document.getElementById('btnInvia').disabled = false;
@@ -3367,8 +3370,7 @@ Rispondi ESCLUSIVAMENTE con un oggetto JSON valido. NO blocchi di codice (no \`\
                     body: JSON.stringify({
                         contents: [{ parts: [{ text: prompt }] }],
                         generationConfig: {
-                            temperature: 0.4,
-                            maxOutputTokens: 600
+                            temperature: 0.4
                         }
                     })
                 });
@@ -4111,11 +4113,17 @@ Rispondi ESCLUSIVAMENTE con un oggetto JSON valido. NO blocchi di codice (no \`\
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({
                         contents: [{ parts: [{ text: promptSistema + "\n\n" + (currentLang === 'en' ? "User text to analyze:" : "Testo utente da analizzare:") + "\n" + nuovoTesto }] }],
-                        generationConfig: { responseMimeType: "application/json", temperature: 0.2, maxOutputTokens: 1000 }
+                        generationConfig: { responseMimeType: "application/json", temperature: 0.2 }
                     })
                 });
-                if (!response.ok) throw new Error("Risposta del server non valida da Gemini");
-                const jsonRes = JSON.parse((await response.json()).candidates[0].content.parts[0].text.trim());
+                if (!response.ok) {
+                    const errData = await response.json().catch(() => ({}));
+                    throw new Error(errData?.error?.message || `HTTP ${response.status}`);
+                }
+                const resJsonRaw = await response.json();
+                const rawText = resJsonRaw.candidates[0].content.parts[0].text.trim();
+                console.log("Gemini Raw Response (Edit):", rawText);
+                const jsonRes = JSON.parse(rawText);
 
                 let db = JSON.parse(localStorage.getItem('nutriDB')) || [];
                 let vecchioGiorno = db.find(x => x.id === giornoId);
@@ -4172,8 +4180,8 @@ Rispondi ESCLUSIVAMENTE con un oggetto JSON valido. NO blocchi di codice (no \`\
                 aggiornaTotaleGiorno();
                 caricaPesoDelGiorno();
             } catch (err) {
-                console.error(err);
-                await customAlert("Errore", currentLang === 'en' ? "Error during update." : "Errore durante la modifica.");
+                console.error("Errore Dettagliato Ricalcolo:", err);
+                await customAlert("Errore di ricalcolo AI", (currentLang === 'en' ? "Details: " : "Dettagli: ") + err.message);
             } finally {
                 btn.disabled = false;
                 btn.innerHTML = `<i data-lucide="sparkles" class="w-4 h-4"></i> ${currentLang === 'en' ? 'Recalculate & Save' : 'Ricalcola e Salva'}`;
@@ -5644,15 +5652,18 @@ Istruzioni per il calcolo e la risposta:
                         contents: [{ parts: [{ text: promptAI }] }],
                         generationConfig: {
                             responseMimeType: "application/json",
-                            temperature: 0.2,
-                            maxOutputTokens: 1000
+                            temperature: 0.2
                         }
                     })
                 });
 
-                if (!response.ok) throw new Error("Errore nella risposta da Gemini API");
+                if (!response.ok) {
+                    const errData = await response.json().catch(() => ({}));
+                    throw new Error(errData?.error?.message || `HTTP ${response.status}`);
+                }
                 const data = await response.json();
                 const textResponse = data.candidates[0].content.parts[0].text.trim();
+                console.log("Gemini Target Raw Response:", textResponse);
                 const suggested = JSON.parse(textResponse);
 
                 targetSuggeritiAI = suggested;
@@ -5681,10 +5692,10 @@ Istruzioni per il calcolo e la risposta:
 
                 resultsBox.classList.remove('hidden');
             } catch (error) {
-                console.error(error);
+                console.error("Errore Dettagliato Target:", error);
                 await customAlert(
                     currentLang === 'en' ? "Calculation error" : "Errore di calcolo",
-                    currentLang === 'en' ? "An error occurred while calculating the AI targets. Check your API key and connection." : "Si è verificato un errore nel calcolo dei target con l'AI. Verifica la chiave API e la connessione."
+                    (currentLang === 'en' ? "Details: " : "Dettagli: ") + error.message
                 );
             } finally {
                 btn.disabled = false;
@@ -6116,14 +6127,17 @@ ${datiMedioPeriodo}
                     body: JSON.stringify({
                         contents: [{ parts: [{ text: promptAI }] }],
                         generationConfig: {
-                            temperature: 0.3,
-                            maxOutputTokens: 1200
+                            temperature: 0.3
                         }
                     })
                 });
-                if (!response.ok) throw new Error("Errore risposta server Gemini API");
+                if (!response.ok) {
+                    const errData = await response.json().catch(() => ({}));
+                    throw new Error(errData?.error?.message || `HTTP ${response.status}`);
+                }
                 const data = await response.json();
                 const rawResponse = data.candidates[0].content.parts[0].text;
+                console.log("Gemini Trend Raw Response:", rawResponse);
 
                 // Salva nel database
                 if (!giornoOggi) {
@@ -6143,10 +6157,10 @@ ${datiMedioPeriodo}
 
                 testo.innerHTML = formattazioneTestoAI(rawResponse);
             } catch (err) {
-                console.error(err);
+                console.error("Errore Dettagliato Trend:", err);
                 testo.innerHTML = currentLang === 'en'
-                    ? `<span class="italic text-rose-400">An error occurred during analysis. Verify your internet connection or API key.</span>`
-                    : `<span class="italic text-rose-400">Si è verificato un errore durante l'analisi. Verifica la tua connessione internet o la chiave API.</span>`;
+                    ? `<span class="italic text-rose-400">An error occurred: ${err.message}</span>`
+                    : `<span class="italic text-rose-400">Si è verificato un errore: ${err.message}</span>`;
             } finally {
                 btn.disabled = false;
                 btn.style.opacity = "1";
