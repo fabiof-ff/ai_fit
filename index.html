@@ -3243,7 +3243,7 @@ Rispondi ESCLUSIVAMENTE con un oggetto JSON valido. NO blocchi di codice (no \`\
                         generationConfig: {
                             responseMimeType: "application/json",
                             temperature: 0.2,
-                            maxOutputTokens: 450
+                            maxOutputTokens: 1000
                         }
                     })
                 });
@@ -3368,7 +3368,7 @@ Rispondi ESCLUSIVAMENTE con un oggetto JSON valido. NO blocchi di codice (no \`\
                         contents: [{ parts: [{ text: prompt }] }],
                         generationConfig: {
                             temperature: 0.4,
-                            maxOutputTokens: 350
+                            maxOutputTokens: 600
                         }
                     })
                 });
@@ -4111,7 +4111,7 @@ Rispondi ESCLUSIVAMENTE con un oggetto JSON valido. NO blocchi di codice (no \`\
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({
                         contents: [{ parts: [{ text: promptSistema + "\n\n" + (currentLang === 'en' ? "User text to analyze:" : "Testo utente da analizzare:") + "\n" + nuovoTesto }] }],
-                        generationConfig: { responseMimeType: "application/json", temperature: 0.2, maxOutputTokens: 450 }
+                        generationConfig: { responseMimeType: "application/json", temperature: 0.2, maxOutputTokens: 1000 }
                     })
                 });
                 if (!response.ok) throw new Error("Risposta del server non valida da Gemini");
@@ -5645,7 +5645,7 @@ Istruzioni per il calcolo e la risposta:
                         generationConfig: {
                             responseMimeType: "application/json",
                             temperature: 0.2,
-                            maxOutputTokens: 600
+                            maxOutputTokens: 1000
                         }
                     })
                 });
@@ -6117,7 +6117,7 @@ ${datiMedioPeriodo}
                         contents: [{ parts: [{ text: promptAI }] }],
                         generationConfig: {
                             temperature: 0.3,
-                            maxOutputTokens: 500
+                            maxOutputTokens: 1200
                         }
                     })
                 });
