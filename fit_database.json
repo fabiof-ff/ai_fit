@@ -90,26 +90,6 @@
       "peso": null
     },
     {
-      "id": 1782672054307,
-      "data": "2026-03-18",
-      "calorie": 100,
-      "proteine": 25,
-      "carboidrati": 0,
-      "grassi": 0,
-      "pasti": [
-        {
-          "id": 1782672054307,
-          "ora": "20:40",
-          "testo": "25gr proteine",
-          "calorie": 100,
-          "proteine": 25,
-          "carboidrati": 0,
-          "grassi": 0
-        }
-      ],
-      "peso": null
-    },
-    {
       "id": 1782831897993,
       "data": "2026-06-30",
       "peso": 80,
@@ -230,26 +210,6 @@
         }
       ],
       "analisiTrendAI": "Ecco un'analisi del tuo andamento recente, con un focus sui progressi e suggerimenti"
-    },
-    {
-      "id": 1783535658486,
-      "data": "2026-07-08",
-      "calorie": 2450,
-      "proteine": 100,
-      "carboidrati": 400,
-      "grassi": 50,
-      "pasti": [
-        {
-          "id": 1783535658486,
-          "ora": "20:34",
-          "testo": "pasta",
-          "calorie": 2450,
-          "proteine": 100,
-          "carboidrati": 400,
-          "grassi": 50
-        }
-      ],
-      "peso": null
     }
   ],
   "impostazioni": {

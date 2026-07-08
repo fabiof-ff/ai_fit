@@ -1452,25 +1452,18 @@
 
     <div id="panel-storico" class="tab-panel pt-1 pb-4 px-4 max-w-md mx-auto w-full">
 
-        <div class="flex items-center justify-between mb-3">
-            <p class="text-sm font-semibold text-slate-300 flex items-center gap-2">
-                <i data-lucide="book-open" class="w-4 h-4 text-blue-400"></i> <span data-i18n="lbl_food_diary">Diario
-                    alimentare</span>
-            </p>
-            <button onclick="confermaReset()"
-                class="text-[11px] text-slate-500 hover:text-rose-400 transition flex items-center gap-1">
-                <i data-lucide="trash-2" class="w-3.5 h-3.5"></i> <span data-i18n="btn_delete_all">Cancella tutto</span>
-            </button>
-        </div>
-
-        <div class="flex gap-2 mb-4">
+        <div class="flex gap-1.5 mb-4">
             <button onclick="esportaDB()"
-                class="flex-1 flex items-center justify-center gap-1.5 py-2.5 rounded-xl text-xs font-bold border bg-slate-800/60 border-slate-700/50 text-slate-400 hover:text-emerald-400 hover:border-emerald-500/40 transition">
+                class="flex-1 flex items-center justify-center gap-1 py-2 rounded-xl text-[10px] sm:text-xs font-bold border bg-slate-800/60 border-slate-700/50 text-slate-400 hover:text-emerald-400 hover:border-emerald-500/40 transition">
                 <i data-lucide="download" class="w-3.5 h-3.5"></i> <span data-i18n="btn_export_data">Esporta dati</span>
             </button>
             <button onclick="document.getElementById('importInput').click()"
-                class="flex-1 flex items-center justify-center gap-1.5 py-2.5 rounded-xl text-xs font-bold border bg-slate-800/60 border-slate-700/50 text-slate-400 hover:text-blue-400 hover:border-blue-500/40 transition">
+                class="flex-1 flex items-center justify-center gap-1 py-2 rounded-xl text-[10px] sm:text-xs font-bold border bg-slate-800/60 border-slate-700/50 text-slate-400 hover:text-blue-400 hover:border-blue-500/40 transition">
                 <i data-lucide="upload" class="w-3.5 h-3.5"></i> <span data-i18n="btn_import_data">Importa dati</span>
+            </button>
+            <button onclick="confermaReset()"
+                class="flex-1 flex items-center justify-center gap-1 py-2 rounded-xl text-[10px] sm:text-xs font-bold border bg-slate-800/60 border-slate-700/50 text-slate-400 hover:text-rose-400 hover:border-rose-500/40 transition">
+                <i data-lucide="trash-2" class="w-3.5 h-3.5"></i> <span data-i18n="btn_delete_all">Cancella tutto</span>
             </button>
         </div>
 
@@ -3647,6 +3640,30 @@ Rispondi ESCLUSIVAMENTE con un oggetto JSON valido. NO blocchi di codice (no \`\
 
         window.renderStorico = renderStorico;
 
+        window.toggleDettagliPasto = function (event, id) {
+            if (event) {
+                event.stopPropagation();
+                event.preventDefault();
+            }
+            const el = document.getElementById(id);
+            if (!el) return;
+            
+            const isHidden = el.classList.contains('hidden');
+            const buttonId = id.replace('dettaglio-pasto-', '');
+            const labelEl = document.getElementById('label-toggle-pasto-' + buttonId);
+            const iconEl = document.getElementById('icon-toggle-pasto-' + buttonId);
+            
+            if (isHidden) {
+                el.classList.remove('hidden');
+                if (labelEl) labelEl.innerText = window.currentLang === 'en' ? 'Hide details' : 'Nascondi dettagli';
+                if (iconEl) iconEl.classList.add('rotate-180');
+            } else {
+                el.classList.add('hidden');
+                if (labelEl) labelEl.innerText = window.currentLang === 'en' ? 'Show details' : 'Mostra dettagli';
+                if (iconEl) iconEl.classList.remove('rotate-180');
+            }
+        };
+
         function renderStorico() {
             const db = window.diarioMemoria;
             const lista = document.getElementById('listaStorico');
@@ -3757,7 +3774,17 @@ Rispondi ESCLUSIVAMENTE con un oggetto JSON valido. NO blocchi di codice (no \`\
                     
                     <p class="text-xs text-slate-300 font-normal leading-relaxed overflow-x-auto pr-1 whitespace-pre-wrap">${p.testo}</p>
                     
-                    ${p._analisi_singoli_alimenti ? `<div class="text-[10px] text-slate-400 bg-slate-800/30 p-2 rounded-lg border border-slate-700/20 leading-normal italic whitespace-pre-line my-1.5">${p._analisi_singoli_alimenti.trim()}</div>` : ''}
+                    ${p._analisi_singoli_alimenti ? `
+                    <div class="mt-1.5">
+                        <button onclick="toggleDettagliPasto(event, 'dettaglio-pasto-${p.id}')" class="text-[9px] text-indigo-400 hover:text-indigo-300 font-medium flex items-center gap-1 cursor-pointer transition select-none">
+                            <span id="label-toggle-pasto-${p.id}">${currentLang === 'en' ? 'Show details' : 'Mostra dettagli'}</span>
+                            <i id="icon-toggle-pasto-${p.id}" data-lucide="chevron-down" class="w-3 h-3 transition-transform duration-200"></i>
+                        </button>
+                        <div id="dettaglio-pasto-${p.id}" class="hidden text-[10px] text-slate-400 bg-slate-800/30 p-2 rounded-lg border border-slate-700/20 leading-normal italic whitespace-pre-line my-1.5">
+                            ${p._analisi_singoli_alimenti.trim()}
+                        </div>
+                    </div>
+                    ` : ''}
 
                     <div class="flex flex-wrap gap-1.5 mt-0.5">
                         <span class="pasto-tag"><i data-lucide="flame" class="w-3 h-3 text-rose-400"></i>${Math.round(p.calorie)} kcal</span>
