@@ -2,7 +2,7 @@
 
 **AI NutriTracker** è un'applicazione web single-page (SPA) moderna, ultra-leggera e focalizzata sulla privacy per il tracciamento alimentare, il monitoraggio dei macronutrienti e il controllo del peso corporeo, integrata con le capacità avanzate di intelligenza artificiale offerte da **Gemini API (modello gemini-2.5-flash)**.
 
-Il tool è sviluppato con una filosofia **offline-first**: tutti i dati e le chiavi API vengono memorizzati esclusivamente in locale sul browser del dispositivo dell'utente (`localStorage`), offrendo un controllo assoluto sulla propria privacy senza richiedere database esterni o server di terze parti.
+Il tool è sviluppato con una filosofia **offline-first**: tutti i dati e le chiavi API vengono memorizzati esclusivamente in locale sul browser del dispositivo dell'utente. Il diario alimentare storico viene salvato in **IndexedDB** per superare i limiti di spazio (5MB) del browser e ospitare anni di analisi, mentre le preferenze di base e la chiave API risiedono in `localStorage`, offrendo un controllo assoluto sulla propria privacy senza richiedere database esterni o server di terze parti.
 
 ---
 
@@ -53,7 +53,7 @@ L'applicazione è progettata per essere efficiente in termini di costi e consumo
 * **Grafica e Visualizzazione**: Chart.js (Grafici andamento e indicatori radiali ad anello).
 * **Icone**: Lucide Icons.
 * **Motore AI**: Google Gemini API (`gemini-2.5-flash`).
-* **Storage**: Web Storage API (`localStorage`) & File System Access API (Salvataggio automatico sul disco locale).
+* **Storage**: **IndexedDB** (per il diario storico, per rimuovere i limiti di memoria), Web Storage API (`localStorage` per le impostazioni) & File System Access API (Salvataggio automatico sul disco locale).
 
 ---
 
@@ -89,13 +89,13 @@ L'applicazione gestisce un database relazionale fittizio serializzato in un sing
 ### 2. Flusso del Ciclo di Vita dei Dati
 ```mermaid
 graph TD
-    A[Avvio App] --> B(Caricamento localStorage 'nutriDB')
+    A[Avvio App] --> B(Caricamento diario da IndexedDB 'diarioCompleto')
     B --> C(Inizializzazione grafici Chart.js)
-    B --> D(Lettura FileHandle da IndexedDB)
+    B --> D(Lettura FileHandle da IndexedDB 'handles')
     D -->|Se associato| E[Associazione File locale JSON]
     
     F[Azione Utente: Aggiunta Pasto/Peso] --> G(Aggiornamento Stato in Memoria)
-    G --> H(Aggiornamento localStorage 'nutriDB')
+    G --> H(Aggiornamento IndexedDB 'diarioCompleto')
     G --> I(Aggiornamento Grafici UI)
     H -->|Se File locale associato| J[Salvataggio in background su file JSON fisico]
 ```
