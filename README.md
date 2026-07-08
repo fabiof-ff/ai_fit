@@ -240,6 +240,8 @@ L'applicazione invia chiamate HTTP dirette (senza backend intermediario) verso g
   2. NON riportare analisi giorno per giorno o settimana per settimana. NON ripetere, elencare o citare date o dati specifici ricevuti, ma limitati a riassumere l'andamento globale con un tono costruttivo e motivante.
   3. Considera solo i giorni/settimane in cui ci sono delle registrazioni effettive.
   4. Se la costanza di inserimento è bassa, incoraggia brevemente l'utente a registrare con più regolarità.
+  5. Se noti molti giorni o settimane senza dati ("Nessun dato registrato"), basati matematicamente solo sui punti attivi. Non calcolare lo zero come un digiuno reale dell'utente, ma interpretalo esclusivamente come una giornata in cui l'utente si è dimenticato di tracciare.
+  6. Correla l'apporto calorico medio rilevato con la variazione del peso: evidenzia se l'utente sta rispettando il bilancio energetico atteso (es. se l'obiettivo è perdere peso, valuta se le calorie reali medie sono inferiori al TDEE/Target e se il peso sta effettivamente scendendo, segnalando eventuali stalli causati da un tracciamento impreciso).
   
   Fornisci una valutazione separata e compatta, strutturata esattamente come segue (massimo 2-3 frasi per sezione, usa il grassetto per i titoli):
   
