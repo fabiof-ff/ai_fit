@@ -5891,11 +5891,42 @@ Rispondi ESCLUSIVAMENTE con un oggetto JSON valido. NO blocchi di codice (no \`\
             const resultsBox = document.getElementById('aiTargetResults');
 
             btn.disabled = true;
-            btn.style.opacity = "0.6";
-            stato.classList.remove('hidden');
-            resultsBox.classList.add('hidden');
+              const promptAI = currentLang === 'en'
+                ? `You are an expert nutritionist and sports trainer. Calculate the daily ideal targets for calories (kcal), proteins (g), carbohydrates (g), fats (g) and suggest an indicative target weight (kg) based on the user's data:
+- Biological sex: ${sesso === 'donna' ? 'Female' : 'Male'}
+- Age: ${eta} years old
+- Current weight: ${peso} kg
+${pesoTargetInput ? `- User's desired target weight: ${pesoTargetInput} kg` : ''}
+${tempoSettimane ? `- Desired time to reach the goal: ${tempoSettimane} weeks` : ''}
+- Height: ${altezza} cm
+- Lifestyle and physical activity level: ${attivita}
+- Main goal: ${obiettivo}
 
-            const promptAI = `Sei un esperto nutrizionista e trainer sportivo. Calcola i target ideali giornalieri di calorie (kcal), proteine (g), carboidrati (g), grassi (g) e suggerisci un peso target (kg) indicativo basato sui dati dell'utente:
+Respond EXCLUSIVELY with a valid JSON object (without markdown, without enclosing it in code blocks like \`\`\`json) containing the following keys: "calorie" (number), "proteine" (number), "carboidrati" (number), "grassi" (number), "pesoTarget" (number), "nota" (stringa).
+The values of "calorie", "proteine", "carboidrati", "grassi" and "pesoTarget" must be returned as pure numbers (e.g. 2150), without strings, without appending "kcal" or "g" inside the numerical value.
+
+Instructions for calculation and response:
+1. Accurately calculate the user's TDEE (Total Daily Energy Expenditure) using a standard scientific nutritional formula (e.g. Mifflin-St Jeor or Harris-Benedict) strictly based on:
+   - Biological sex (Male/Female)
+   - Age (in years)
+   - Current weight (in kg)
+   - Height (in cm)
+   - Physical activity level provided.
+   Be conservative with the physical activity coefficient (PAL): do not overestimate it. If the user indicates "sedentary work" but trains 3 times a week, use a maximum PAL multiplier of 1.375 (moderately active). Do not exceed official scientific formulas.
+2. The returned "pesoTarget" should be possibly aligned with the user's desired target if provided.
+3. Precisely calculate the daily caloric deficit or surplus based on the provided time (if present):
+   - Calculate the weight difference: Delta = Desired target weight - Current weight (in kg).
+   - Knowing that a 1 kg change in body weight is equivalent to approximately 7700 kcal, calculate the total caloric requirement needed for the change: Total_kcal = Delta * 7700.
+   - Divide this amount by the total number of days in the path (weeks * 7) to find the theoretical daily caloric correction: Daily_Variation = Total_kcal / (weeks * 7).
+   - Apply this Daily_Variation to the TDEE calculated in step 1 (Final calories = TDEE + Daily_Variation).
+   - WARNING: If the calculated Daily_Variation is unrealistic or unsafe for health (e.g. daily caloric deficit required greater than 800-1000 kcal or required surplus greater than 500 kcal, or extreme timing like wanting to gain 5 kg in 2 weeks), you must force a safety correction by bringing the actual daily caloric variation within healthy limits (max deficit 500-800 kcal, max surplus 300-500 kcal) and explain clearly in the "nota" that the original timing was unrealistic and dangerous and that the caloric targets have been adapted accordingly for a healthy and sustainable progression.
+   - If instead the calculated variation is realistic and safe, apply it in full and indicate in the "nota" that the plan is sustainable and well calibrated.
+4. Accurately calculate the macronutrients based on the user's data:
+   - Proteins: approximately 1.6-2.2g per kg of the user's Current weight (based on the Main goal and activity).
+   - Fats: approximately 0.8-1.0g per kg of the user's Current weight.
+   - Carbohydrates: to fill the remaining calories of the final target calculated in step 3 (e.g. (Final calories - (proteins * 4 + fats * 9)) / 4).
+5. In the "nota" field, write a brief evaluation in English about the realism and sustainability of the weight target based on the desired weeks (if indicated). If the time goal is not realistic (e.g. losing or gaining 5 or more kg in 1 month or excessively fast and dangerous timelines), indicate it clearly in the "nota" field by inserting the warning symbol ⚠️ at the beginning and explaining why (e.g. "⚠️ Warning: Gaining/Losing 5 kg in 4 weeks is unrealistic and dangerous for health..."). If it is realistic or if the time is not indicated, write a short and encouraging note.`
+                : `Sei un esperto nutrizionista e trainer sportivo. Calcola i target ideali giornalieri di calorie (kcal), proteine (g), carboidrati (g), grassi (g) e suggerisci un peso target (kg) indicativo basato sui dati dell'utente:
 - Sesso biologico: ${sesso === 'donna' ? 'Femmina' : 'Maschio'}
 - Età: ${eta} anni
 - Peso attuale: ${peso} kg
@@ -5906,6 +5937,7 @@ ${tempoSettimane ? `- Tempo desiderato per raggiungere l'obiettivo: ${tempoSetti
 - Obiettivo principale: ${obiettivo}
 
 Rispondi ESCLUSIVAMENTE con un oggetto JSON valido (senza markdown, senza racchiuderlo in codice tipo \`\`\`json) contenente le seguenti chiavi: "calorie" (numero), "proteine" (numero), "carboidrati" (numero), "grassi" (numero), "pesoTarget" (numero), "nota" (stringa).
+I valori di "calorie", "proteine", "carboidrati", "grassi" e "pesoTarget" devono essere restituiti come numeri puri (es. 2150), senza stringhe, senza appendere "kcal" o "g" all'interno del valore numerico.
 
 Istruzioni per il calcolo e la risposta:
 1. Calcola accuratamente il TDEE (Total Daily Energy Expenditure) dell'utente utilizzando una formula nutrizionale scientifica standard (es. Mifflin-St Jeor o Harris-Benedict) basandoti rigorosamente su:
@@ -5914,6 +5946,7 @@ Istruzioni per il calcolo e la risposta:
    - Peso attuale (in kg)
    - Altezza (in cm)
    - Livello di attività fisica fornito.
+   Sii conservativo con il coefficiente di attività fisica (PAL): non sovrastimarlo. Se l'utente indica "lavoro sedentario" ma si allena 3 volte a settimana, usa un moltiplicatore PAL massimo di 1.375 (moderatamente attivo). Non eccedere le formule scientifiche ufficiali.
 2. Il "pesoTarget" restituito deve essere possibilmente allineato a quello desiderato dell'utente se fornito.
 3. Calcola con precisione il deficit o surplus calorico giornaliero in base al tempo fornito (se presente):
    - Calcola la differenza di peso: Delta = Peso target desiderato - Peso attuale (in kg).

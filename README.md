@@ -183,14 +183,16 @@ L'applicazione invia chiamate HTTP dirette (senza backend intermediario) verso g
   - Obiettivo principale: ${obiettivo}
 
   Rispondi ESCLUSIVAMENTE con un oggetto JSON valido (senza markdown, senza racchiuderlo in codice tipo ```json) contenente le seguenti chiavi: "calorie" (numero), "proteine" (numero), "carboidrati" (numero), "grassi" (numero), "pesoTarget" (numero), "nota" (stringa).
+  I valori di "calorie", "proteine", "carboidrati", "grassi" e "pesoTarget" devono essere restituiti come numeri puri (es. 2150), senza stringhe, senza appendere "kcal" o "g" all'interno del valore numerico.
 
   Istruzioni per il calcolo e la risposta:
-  1. Calcola accuratamente il TDEE (Total Daily Energy Expenditure) dell'utente utilizzando una formula nutrizionale scientifica standard (es. Mifflin-St Jeor o Harris-Benedict) basandoti rigorosamente su:
+  1. Calcola accuratamente il TDEE (Total Daily Energy Expenditure) dell'utente utilizando una formula nutrizionale scientifica standard (es. Mifflin-St Jeor o Harris-Benedict) basandoti rigorosamente su:
      - Sesso biologico (Maschio/Femmina)
      - Età (in anni)
      - Peso attuale (in kg)
      - Altezza (in cm)
      - Livello di attività fisica fornito.
+     Sii conservativo con il coefficiente di attività fisica (PAL): non sovrastimarlo. Se l'utente indica "lavoro sedentario" ma si allena 3 volte a settimana, usa un moltiplicatore PAL massimo di 1.375 (moderatamente attivo). Non eccedere le formule scientifiche ufficiali.
   2. Il "pesoTarget" restituito deve essere possibilmente allineato a quello desiderato dell'utente se fornito.
   3. Calcola con precisione il deficit o surplus calorico giornaliero in base al tempo fornito (se presente):
      - Calcola la differenza di peso: Delta = Peso target desiderato - Peso attuale (in kg).
