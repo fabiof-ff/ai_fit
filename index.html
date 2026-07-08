@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>AI Fitness Tracker</title>
+    <title>AI NutriTracker</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
@@ -887,9 +887,14 @@
                 </div>
             </details>
 
-            <p class="text-[10px] text-slate-500 mt-2 text-center" data-i18n="lbl_privacy_note">Le impostazioni e le chiavi vengono memorizzate in localStorage, il diario in IndexedDB. Tutto rimane sul tuo dispositivo.</p>
-            <p class="text-[9px] text-slate-500/80 leading-normal text-center mt-3 border-t border-slate-700/35 pt-2.5 px-1" data-i18n="lbl_disclaimer">
-                <strong>Disclaimer:</strong> Questo strumento ha scopo puramente informativo e di tracciamento personale. Non fornisce consigli medici, diagnosi o piani terapeutici professionali e non sostituisce in alcun modo il parere di un medico o nutrizionista qualificato.
+            <p class="text-[10px] text-slate-500 mt-2 text-center" data-i18n="lbl_privacy_note">Le impostazioni e le
+                chiavi vengono memorizzate in localStorage, il diario in IndexedDB. Tutto rimane sul tuo dispositivo.
+            </p>
+            <p class="text-[9px] text-slate-500/80 leading-normal text-center mt-3 border-t border-slate-700/35 pt-2.5 px-1"
+                data-i18n="lbl_disclaimer">
+                <strong>Disclaimer:</strong> Questo strumento ha scopo puramente informativo e di tracciamento
+                personale. Non fornisce consigli medici, diagnosi o piani terapeutici professionali e non sostituisce in
+                alcun modo il parere di un medico o nutrizionista qualificato.
             </p>
         </div>
 
@@ -990,7 +995,8 @@
                         <i data-lucide="x" class="w-3.5 h-3.5"></i>
                     </button>
                     <p id="testoSuggerimentiAI" class="pr-5"></p>
-                    <p class="text-[9px] text-slate-500 mt-2.5 pt-2 border-t border-slate-750/30 leading-normal" data-i18n="lbl_medical_disclaimer">
+                    <p class="text-[9px] text-slate-500 mt-2.5 pt-2 border-t border-slate-750/30 leading-normal"
+                        data-i18n="lbl_medical_disclaimer">
                         * Le indicazioni fornite dall'AI non costituiscono prescrizioni o pareri medici professionali.
                     </p>
                 </div>
@@ -1207,7 +1213,8 @@
                     </div>
                 </div>
 
-                <div id="boxDettagliAlimenti" class="bg-slate-800/40 border border-slate-700/50 rounded-2xl p-3.5 mb-4 hidden text-[11px] leading-relaxed text-slate-300">
+                <div id="boxDettagliAlimenti"
+                    class="bg-slate-800/40 border border-slate-700/50 rounded-2xl p-3.5 mb-4 hidden text-[11px] leading-relaxed text-slate-300">
                     <p class="font-bold text-indigo-400 mb-1.5 flex items-center gap-1.5">
                         <i data-lucide="info" class="w-3.5 h-3.5"></i>
                         <span data-i18n="title_dettaglio_alimenti">Dettaglio Alimenti</span>
@@ -1258,7 +1265,8 @@
                 <i data-lucide="x" class="w-3.5 h-3.5"></i>
             </button>
             <p id="testoAnalisiTrendAI" class="pr-5"></p>
-            <p class="text-[9px] text-slate-500 mt-2.5 pt-2 border-t border-slate-700/35 leading-normal" data-i18n="lbl_medical_disclaimer">
+            <p class="text-[9px] text-slate-500 mt-2.5 pt-2 border-t border-slate-700/35 leading-normal"
+                data-i18n="lbl_medical_disclaimer">
                 * Le indicazioni fornite dall'AI non costituiscono prescrizioni o pareri medici professionali.
             </p>
         </div>
@@ -1468,17 +1476,21 @@
         </div>
 
         <!-- Box collassabile per Alimenti Frequenti -->
-        <div id="boxAlimentiFrequentiContainer" class="hidden mb-4 bg-slate-800/40 border border-slate-700/30 rounded-2xl p-3 shadow-xl">
+        <div id="boxAlimentiFrequentiContainer"
+            class="hidden mb-4 bg-slate-800/40 border border-slate-700/30 rounded-2xl p-3 shadow-xl">
             <details class="group" id="detailsAlimentiFrequenti">
-                <summary class="flex justify-between items-center text-xs font-bold text-slate-300 cursor-pointer select-none list-none">
+                <summary
+                    class="flex justify-between items-center text-xs font-bold text-slate-300 cursor-pointer select-none list-none">
                     <span class="flex items-center gap-1.5">
                         <i data-lucide="tag" class="w-3.5 h-3.5 text-indigo-400"></i>
                         <span data-i18n="lbl_freq_foods">Alimenti più frequenti</span>
                     </span>
-                    <i data-lucide="chevron-down" class="w-4 h-4 text-slate-400 group-open:rotate-180 transition-transform duration-200"></i>
+                    <i data-lucide="chevron-down"
+                        class="w-4 h-4 text-slate-400 group-open:rotate-180 transition-transform duration-200"></i>
                 </summary>
                 <div class="mt-3">
-                    <div id="listaAlimentiFrequenti" class="flex flex-wrap justify-center items-center gap-x-5 gap-y-3 p-3 bg-slate-900/10 dark:bg-slate-950/20 rounded-xl border border-slate-700/5 min-h-[50px] leading-relaxed">
+                    <div id="listaAlimentiFrequenti"
+                        class="flex flex-wrap justify-center items-center gap-x-5 gap-y-3 p-3 bg-slate-900/10 dark:bg-slate-950/20 rounded-xl border border-slate-700/5 min-h-[50px] leading-relaxed">
                         <!-- Tag inseriti dinamicamente -->
                     </div>
                 </div>
@@ -3459,7 +3471,7 @@ Rispondi ESCLUSIVAMENTE con un oggetto JSON valido. NO blocchi di codice (no \`\
     
     Meals consumed today:
     ${pastiDellaGiornata}
-    Current request time: ${new Date().toLocaleTimeString('it-IT', {hour: '2-digit', minute:'2-digit'})}. Use this to understand if the user needs a snack, dinner, or if the day is over (if over, provide a final daily summary and a tip for tomorrow).
+    Current request time: ${new Date().toLocaleTimeString('it-IT', { hour: '2-digit', minute: '2-digit' })}. Use this to understand if the user needs a snack, dinner, or if the day is over (if over, provide a final daily summary and a tip for tomorrow).
     
     Analyze the meals consumed today to understand context (e.g. which main meals like breakfast, lunch, dinner or snacks have already been done, or the time and food choices) and absolutely avoid proposing meals that have already been eaten (e.g. do not suggest a full lunch if they already logged lunch, or pasta at dinner if they already reached or exceeded carbs). Instead, provide targeted ideas for missing snacks or dinner/breakfast if missing.
     Respond in maximum 3 or 4 sentences, very compactly, using bullet points if needed. Be motivational.
@@ -3473,7 +3485,7 @@ Rispondi ESCLUSIVAMENTE con un oggetto JSON valido. NO blocchi di codice (no \`\
     
     Pasti consumati oggi:
     ${pastiDellaGiornata}
-    Orario attuale della richiesta: ${new Date().toLocaleTimeString('it-IT', {hour: '2-digit', minute:'2-digit'})}. Usa questo dato per capire se l'utente deve ancora fare uno spuntino, la cena, o se la giornata è conclusa (in tal caso, fornisci un bilancio finale e un consiglio per l'indomani).
+    Orario attuale della richiesta: ${new Date().toLocaleTimeString('it-IT', { hour: '2-digit', minute: '2-digit' })}. Usa questo dato per capire se l'utente deve ancora fare uno spuntino, la cena, o se la giornata è conclusa (in tal caso, fornisci un bilancio finale e un consiglio per l'indomani).
     
     Analizza i pasti consumati oggi per comprendere il contesto (ad esempio, quali pasti principali come colazione, pranzo, cena o spuntini sono già stati effettuati, o l'orario e la tipologia di alimenti scelti) ed evita assolutamente di proporre pasti che sono già stati consumati (es. non suggerire un pranzo completo se l'utente ha già pranzato, o non suggerire pasta a cena se ha già raggiunto o superato i target di carbo). Fornisci invece spunti mirati per gli spuntini mancanti o per la cena/colazione qualora manchino all'appello.
     Rispondi in massimo 3 o 4 frasi, in modo molto compatto, usando elenchi puntati se necessario. Sii motivante.
@@ -3674,12 +3686,12 @@ Rispondi ESCLUSIVAMENTE con un oggetto JSON valido. NO blocchi di codice (no \`\
             }
             const el = document.getElementById(id);
             if (!el) return;
-            
+
             const isHidden = el.classList.contains('hidden');
             const buttonId = id.replace('dettaglio-pasto-', '');
             const labelEl = document.getElementById('label-toggle-pasto-' + buttonId);
             const iconEl = document.getElementById('icon-toggle-pasto-' + buttonId);
-            
+
             if (isHidden) {
                 el.classList.remove('hidden');
                 if (labelEl) labelEl.innerText = window.currentLang === 'en' ? 'Hide details' : 'Nascondi dettagli';
@@ -3707,7 +3719,7 @@ Rispondi ESCLUSIVAMENTE con un oggetto JSON valido. NO blocchi di codice (no \`\
         function calcolaAlimentiFrequenti() {
             const db = window.diarioMemoria;
             const freqMap = {};
-            
+
             db.forEach(giorno => {
                 if (giorno.pasti) {
                     giorno.pasti.forEach(pasto => {
@@ -3723,7 +3735,7 @@ Rispondi ESCLUSIVAMENTE con un oggetto JSON valido. NO blocchi di codice (no \`\
                     });
                 }
             });
-            
+
             return Object.entries(freqMap)
                 .map(([nome, count]) => ({ nome, count }))
                 .sort((a, b) => b.count - a.count)
@@ -3736,7 +3748,7 @@ Rispondi ESCLUSIVAMENTE con un oggetto JSON valido. NO blocchi di codice (no \`\
             if (!container || !lista) return;
 
             const topAlimenti = calcolaAlimentiFrequenti();
-            
+
             if (topAlimenti.length === 0) {
                 container.classList.add('hidden');
                 return;
@@ -3750,10 +3762,10 @@ Rispondi ESCLUSIVAMENTE con un oggetto JSON valido. NO blocchi di codice (no \`\
             let html = "";
             topAlimenti.forEach(al => {
                 const ratio = maxCount > 1 ? (al.count - 1) / (maxCount - 1) : 1.0;
-                
+
                 // Dimensione font progressiva da 12px a 26px
                 const size = Math.round(12 + ratio * 14);
-                
+
                 // Spessore carattere
                 let weight = '400';
                 if (ratio > 0.7) weight = '800';
@@ -3788,7 +3800,7 @@ Rispondi ESCLUSIVAMENTE con un oggetto JSON valido. NO blocchi di codice (no \`\
             lista.innerHTML = html;
         }
 
-        window.selezionaTagAlimento = function(nome) {
+        window.selezionaTagAlimento = function (nome) {
             const input = document.getElementById('ricercaRegistro');
             if (input) {
                 input.value = nome;
@@ -4982,11 +4994,11 @@ Rispondi ESCLUSIVAMENTE con un oggetto JSON valido. NO blocchi di codice (no \`\
                 const lunedìOldest = new Date(lunedìCorrente);
                 lunedìOldest.setDate(lunedìCorrente.getDate() - (7 * 7));
                 const dataInizio8Settimane = formattaData(lunedìOldest);
-                
+
                 const recordAttivi8Settimane = db.filter(g => {
-                    return g.data >= dataInizio8Settimane && 
-                           g.data !== dataOggi && 
-                           (g.calorie > 0 || g.proteine > 0 || g.carboidrati > 0 || g.grassi > 0);
+                    return g.data >= dataInizio8Settimane &&
+                        g.data !== dataOggi &&
+                        (g.calorie > 0 || g.proteine > 0 || g.carboidrati > 0 || g.grassi > 0);
                 });
 
                 if (recordAttivi8Settimane.length > 0) {
@@ -5891,7 +5903,7 @@ Rispondi ESCLUSIVAMENTE con un oggetto JSON valido. NO blocchi di codice (no \`\
             const resultsBox = document.getElementById('aiTargetResults');
 
             btn.disabled = true;
-              const promptAI = currentLang === 'en'
+            const promptAI = currentLang === 'en'
                 ? `You are an expert nutritionist and sports trainer. Calculate the daily ideal targets for calories (kcal), proteins (g), carbohydrates (g), fats (g) and suggest an indicative target weight (kg) based on the user's data:
 - Biological sex: ${sesso === 'donna' ? 'Female' : 'Male'}
 - Age: ${eta} years old
