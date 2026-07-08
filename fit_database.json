@@ -213,12 +213,43 @@
     {
       "id": 1783404905683,
       "data": "2026-07-07",
-      "calorie": 0,
-      "proteine": 0,
-      "carboidrati": 0,
-      "grassi": 0,
-      "pasti": [],
+      "calorie": 325,
+      "proteine": 10.4,
+      "carboidrati": 57.6,
+      "grassi": 6.2,
+      "pasti": [
+        {
+          "id": 1783437618255,
+          "ora": "17:20",
+          "testo": "pasta asciutta",
+          "calorie": 325,
+          "proteine": 10.4,
+          "carboidrati": 57.6,
+          "grassi": 6.2,
+          "_analisi_singoli_alimenti": "Pasta di semola (cruda, stimato) 80g: 280kcal, 57.6C, 10.4P, 1.2G | Olio EVO (condimento stimato) 5g: 45kcal, 0C, 0P, 5G"
+        }
+      ],
       "analisiTrendAI": "Ecco un'analisi del tuo andamento recente, con un focus sui progressi e suggerimenti"
+    },
+    {
+      "id": 1783535658486,
+      "data": "2026-07-08",
+      "calorie": 2450,
+      "proteine": 100,
+      "carboidrati": 400,
+      "grassi": 50,
+      "pasti": [
+        {
+          "id": 1783535658486,
+          "ora": "20:34",
+          "testo": "pasta",
+          "calorie": 2450,
+          "proteine": 100,
+          "carboidrati": 400,
+          "grassi": 50
+        }
+      ],
+      "peso": null
     }
   ],
   "impostazioni": {

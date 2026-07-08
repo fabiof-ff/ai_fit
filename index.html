@@ -887,8 +887,7 @@
                 </div>
             </details>
 
-            <p class="text-[10px] text-slate-500 mt-2 text-center" data-i18n="lbl_privacy_note">Le chiavi e i target
-                vengono memorizzati solo sul tuo dispositivo (localStorage).</p>
+            <p class="text-[10px] text-slate-500 mt-2 text-center" data-i18n="lbl_privacy_note">Le impostazioni e le chiavi vengono memorizzate in localStorage, il diario in IndexedDB. Tutto rimane sul tuo dispositivo.</p>
             <p class="text-[9px] text-slate-500/80 leading-normal text-center mt-3 border-t border-slate-700/35 pt-2.5 px-1" data-i18n="lbl_disclaimer">
                 <strong>Disclaimer:</strong> Questo strumento ha scopo puramente informativo e di tracciamento personale. Non fornisce consigli medici, diagnosi o piani terapeutici professionali e non sostituisce in alcun modo il parere di un medico o nutrizionista qualificato.
             </p>
@@ -1893,16 +1892,69 @@
         // ================================================================
         const DB_NAME = 'FitFileStore';
         const STORE_NAME = 'handles';
+        const DIARIO_STORE = 'diario';
 
         function getIndexedDB() {
             return new Promise((resolve, reject) => {
-                const request = indexedDB.open(DB_NAME, 1);
+                const request = indexedDB.open(DB_NAME, 2);
                 request.onupgradeneeded = (e) => {
-                    e.target.result.createObjectStore(STORE_NAME);
+                    const db = e.target.result;
+                    if (!db.objectStoreNames.contains(STORE_NAME)) {
+                        db.createObjectStore(STORE_NAME);
+                    }
+                    if (!db.objectStoreNames.contains(DIARIO_STORE)) {
+                        db.createObjectStore(DIARIO_STORE);
+                    }
                 };
                 request.onsuccess = (e) => resolve(e.target.result);
                 request.onerror = (e) => reject(e.target.error);
             });
+        }
+
+        async function salvaDiarioIndexedDB(diario) {
+            try {
+                const db = await getIndexedDB();
+                return new Promise((resolve, reject) => {
+                    const tx = db.transaction(DIARIO_STORE, 'readwrite');
+                    const store = tx.objectStore(DIARIO_STORE);
+                    const request = store.put(diario, 'diarioCompleto');
+                    request.onsuccess = () => resolve();
+                    request.onerror = () => reject(request.error);
+                });
+            } catch (err) {
+                console.error("Errore durante il salvataggio in IndexedDB:", err);
+            }
+        }
+
+        async function caricaDiarioIndexedDB() {
+            try {
+                const db = await getIndexedDB();
+                return new Promise((resolve, reject) => {
+                    const tx = db.transaction(DIARIO_STORE, 'readonly');
+                    const store = tx.objectStore(DIARIO_STORE);
+                    const request = store.get('diarioCompleto');
+                    request.onsuccess = () => resolve(request.result || null);
+                    request.onerror = () => reject(request.error);
+                });
+            } catch (err) {
+                console.error("Errore durante il caricamento da IndexedDB:", err);
+                return null;
+            }
+        }
+
+        async function cancellaDiarioIndexedDB() {
+            try {
+                const db = await getIndexedDB();
+                return new Promise((resolve, reject) => {
+                    const tx = db.transaction(DIARIO_STORE, 'readwrite');
+                    const store = tx.objectStore(DIARIO_STORE);
+                    const request = store.delete('diarioCompleto');
+                    request.onsuccess = () => resolve();
+                    request.onerror = () => reject(request.error);
+                });
+            } catch (err) {
+                console.error("Errore durante l'eliminazione da IndexedDB:", err);
+            }
         }
 
         async function saveFileHandle(handle) {
@@ -2034,8 +2086,7 @@
         }
 
         window.ottieniStatoCompletoDB = function () {
-            const dbRaw = localStorage.getItem('nutriDB');
-            const diario = JSON.parse(dbRaw || '[]');
+            const diario = window.diarioMemoria || [];
 
             const impostazioni = {
                 target_calorie: localStorage.getItem('target_calorie'),
@@ -2087,7 +2138,8 @@
         };
 
         window.salvaDatabase = function (db) {
-            localStorage.setItem('nutriDB', JSON.stringify(db));
+            window.diarioMemoria = db;
+            salvaDiarioIndexedDB(db);
             autoSalvaNelFileLocale();
         };
 
@@ -2114,7 +2166,7 @@
         };
 
         window.ottieniProfiloUtente = function () {
-            const db = JSON.parse(localStorage.getItem('nutriDB')) || [];
+            const db = window.diarioMemoria;
             const giorniConPeso = db.filter(g => g.peso).sort((a, b) => new Date(b.data) - new Date(a.data));
 
             let pesoCorrente = localStorage.getItem('profile_peso') || "";
@@ -2262,7 +2314,7 @@
                 lbl_carbs_colon: "Carbo:",
                 lbl_fats_colon: "Grassi:",
                 btn_apply_targets: "Applica questi target",
-                lbl_privacy_note: "Le chiavi e i target vengono memorizzati solo sul tuo dispositivo (localStorage).",
+                lbl_privacy_note: "Le impostazioni e le chiavi vengono memorizzate in localStorage, il diario in IndexedDB. Tutto rimane sul tuo dispositivo.",
                 lbl_disclaimer: "<strong>Disclaimer:</strong> Questo strumento ha scopo puramente informativo e di tracciamento personale. Le stime e le analisi sono elaborate da un'intelligenza artificiale (AI) e sono pertanto da considerarsi solo indicative e soggette a possibili errori. Lo strumento non fornisce consigli medici, diagnosi o piani terapeutici professionali e non sostituisce in alcun modo il parere di un medico o nutrizionista qualificato.",
                 lbl_medical_disclaimer: "* Le elaborazioni e i consigli sono forniti da un'AI a scopo puramente indicativo, possono contenere errori e non costituiscono pareri medici professionali.",
                 title_backup_auto: "Salvataggio automatico locale (JSON)",
@@ -2387,7 +2439,7 @@
                 lbl_carbs_colon: "Carbs:",
                 lbl_fats_colon: "Fats:",
                 btn_apply_targets: "Apply these targets",
-                lbl_privacy_note: "Keys and targets are stored only on your device (localStorage).",
+                lbl_privacy_note: "Settings and keys are stored in localStorage, the diary in IndexedDB. Everything remains on your device.",
                 lbl_disclaimer: "<strong>Disclaimer:</strong> This tool is for informational and personal tracking purposes only. Estimates and analyses are processed by an artificial intelligence (AI) and are therefore indicative only and subject to possible errors. It does not provide medical advice, diagnosis, or treatment plans, and is not a substitute for a consultation with a qualified doctor or nutritionist.",
                 lbl_medical_disclaimer: "* Suggestions and calculations are generated by an AI for indicative purposes only, may contain errors, and do not constitute professional medical advice.",
                 title_backup_auto: "Local Auto-Save (JSON)",
@@ -2585,10 +2637,30 @@
 
 
 
+        // Cache globale in-memory per il diario alimentare
+        window.diarioMemoria = [];
+
         // ================================================================
         // INIT
         // ================================================================
-        window.onload = function () {
+        window.onload = async function () {
+            // Carica e migra il database da localStorage a IndexedDB se necessario
+            let dbCaricato = await caricaDiarioIndexedDB();
+            if (!dbCaricato) {
+                const oldDbRaw = localStorage.getItem('nutriDB');
+                if (oldDbRaw) {
+                    try {
+                        dbCaricato = JSON.parse(oldDbRaw);
+                        await salvaDiarioIndexedDB(dbCaricato);
+                        localStorage.removeItem('nutriDB');
+                        console.log("Database migrato con successo da localStorage a IndexedDB.");
+                    } catch (e) {
+                        console.error("Errore durante il parsing del database localStorage:", e);
+                    }
+                }
+            }
+            window.diarioMemoria = dbCaricato || [];
+
             const savedGemini = localStorage.getItem('gemini_apikey');
             if (savedGemini) document.getElementById('geminiKey').value = savedGemini;
 
@@ -2681,7 +2753,7 @@
                 if (this.open) {
                     const aiPesoInput = document.getElementById('aiPeso');
                     if (aiPesoInput && !aiPesoInput.value) {
-                        const db = JSON.parse(localStorage.getItem('nutriDB')) || [];
+                        const db = window.diarioMemoria;
                         const giorniConPeso = db.filter(g => g.peso).sort((a, b) => new Date(b.data) - new Date(a.data));
                         if (giorniConPeso.length > 0) {
                             aiPesoInput.value = giorniConPeso[0].peso;
@@ -2735,7 +2807,7 @@
             if (!inputPesoValore) return; // Protezione se l'elemento non viene trovato
 
             const dataSelezionata = document.getElementById('input-peso-data')?.value || ottieniDataOggi();
-            const db = JSON.parse(localStorage.getItem('nutriDB')) || [];
+            const db = window.diarioMemoria;
             const giornoEsistente = db.find(g => g.data === dataSelezionata);
 
             if (giornoEsistente && giornoEsistente.peso) {
@@ -2748,7 +2820,7 @@
         function salvaPesoDelGiorno() {
             const oggiStr = ottieniDataOggi();
             const pesoVal = parseFloat(document.getElementById('input-peso-valore')?.value) || null;
-            let db = JSON.parse(localStorage.getItem('nutriDB')) || [];
+            let db = window.diarioMemoria;
 
             let recordOggi = db.find(x => x.data === oggiStr);
             if (recordOggi) {
@@ -2968,7 +3040,7 @@
                 grassi: grassi
             };
 
-            let db = JSON.parse(localStorage.getItem('nutriDB')) || [];
+            let db = window.diarioMemoria;
             let record = db.find(x => x.data === dataPasto);
 
             if (record) {
@@ -3109,7 +3181,7 @@
         // ================================================================
         function aggiornaTotaleGiorno() {
             const oggiStr = ottieniDataOggi();
-            const db = JSON.parse(localStorage.getItem('nutriDB')) || [];
+            const db = window.diarioMemoria;
             const recordOggi = db.find(x => x.data === oggiStr);
 
             // Scrivi target nell'interfaccia UI dei trend (con controllo di esistenza degli elementi)
@@ -3299,7 +3371,7 @@ Rispondi ESCLUSIVAMENTE con un oggetto JSON valido. NO blocchi di codice (no \`\
 
             // Recupera l'elenco dei pasti di oggi dal database locale
             const dataOggi = ottieniDataOggi();
-            const db = JSON.parse(localStorage.getItem('nutriDB')) || [];
+            const db = window.diarioMemoria;
             let giornoOggi = db.find(g => g.data === dataOggi);
 
             // Se l'analisi esiste già in memoria per oggi, chiedi se vederla o rifarla
@@ -3477,7 +3549,7 @@ Rispondi ESCLUSIVAMENTE con un oggetto JSON valido. NO blocchi di codice (no \`\
             const testoInput = document.getElementById('testoInput');
             const testoPasto = testoInput ? testoInput.value.trim() : "";
 
-            let db = JSON.parse(localStorage.getItem('nutriDB')) || [];
+            let db = window.diarioMemoria;
             let record = db.find(x => x.data === dataPasto);
 
             const nuovoPasto = {
@@ -3576,7 +3648,7 @@ Rispondi ESCLUSIVAMENTE con un oggetto JSON valido. NO blocchi di codice (no \`\
         window.renderStorico = renderStorico;
 
         function renderStorico() {
-            const db = JSON.parse(localStorage.getItem('nutriDB')) || [];
+            const db = window.diarioMemoria;
             const lista = document.getElementById('listaStorico');
             if (!lista) return;
 
@@ -3727,7 +3799,7 @@ Rispondi ESCLUSIVAMENTE con un oggetto JSON valido. NO blocchi di codice (no \`\
         // ================================================================
         function modificaPesoDelGiorno(giornoId) {
             editingGiornoId = giornoId;
-            const db = JSON.parse(localStorage.getItem('nutriDB')) || [];
+            const db = window.diarioMemoria;
             const giorno = db.find(g => g.id === giornoId);
             if (!giorno) return;
 
@@ -3766,7 +3838,7 @@ Rispondi ESCLUSIVAMENTE con un oggetto JSON valido. NO blocchi di codice (no \`\
 
         async function salvaModalPeso() {
             if (!editingGiornoId) return;
-            let db = JSON.parse(localStorage.getItem('nutriDB')) || [];
+            let db = window.diarioMemoria;
             let giorno = db.find(g => g.id === editingGiornoId);
             if (!giorno) {
                 chiudiModalPeso();
@@ -3835,7 +3907,7 @@ Rispondi ESCLUSIVAMENTE con un oggetto JSON valido. NO blocchi di codice (no \`\
                 currentLang === 'en' ? "Delete" : "Elimina"
             );
             if (!procedi) return;
-            let db = JSON.parse(localStorage.getItem('nutriDB')) || [];
+            let db = window.diarioMemoria;
             db = db.filter(x => x.id !== giornoId);
             salvaDatabase(db);
             renderStorico();
@@ -3851,7 +3923,7 @@ Rispondi ESCLUSIVAMENTE con un oggetto JSON valido. NO blocchi di codice (no \`\
                 currentLang === 'en' ? "Delete" : "Elimina"
             );
             if (!procedi) return;
-            let db = JSON.parse(localStorage.getItem('nutriDB')) || [];
+            let db = window.diarioMemoria;
             let giorno = db.find(x => x.id === giornoId);
             if (giorno) {
                 const pasto = giorno.pasti.find(p => p.id === pastoId);
@@ -3873,7 +3945,7 @@ Rispondi ESCLUSIVAMENTE con un oggetto JSON valido. NO blocchi di codice (no \`\
 
         function apriModalModifica(giornoId, pastoId) {
             editingId = { giornoId, pastoId };
-            const db = JSON.parse(localStorage.getItem('nutriDB')) || [];
+            const db = window.diarioMemoria;
             const giorno = db.find(x => x.id === giornoId);
             if (giorno) {
                 const pasto = giorno.pasti.find(p => p.id === pastoId);
@@ -4008,7 +4080,7 @@ Rispondi ESCLUSIVAMENTE con un oggetto JSON valido. NO blocchi di codice (no \`\
                 return;
             }
 
-            let db = JSON.parse(localStorage.getItem('nutriDB')) || [];
+            let db = window.diarioMemoria;
 
             // 1. Rimuovi il pasto vecchio dalla sua giornata
             let vecchioGiorno = db.find(x => x.id === giornoId);
@@ -4148,7 +4220,7 @@ Rispondi ESCLUSIVAMENTE con un oggetto JSON valido. NO blocchi di codice (no \`\
                 console.log("Gemini Raw Response (Edit):", rawText);
                 const jsonRes = JSON.parse(rawText);
 
-                let db = JSON.parse(localStorage.getItem('nutriDB')) || [];
+                let db = window.diarioMemoria;
                 let vecchioGiorno = db.find(x => x.id === giornoId);
 
                 if (vecchioGiorno) {
@@ -4215,7 +4287,9 @@ Rispondi ESCLUSIVAMENTE con un oggetto JSON valido. NO blocchi di codice (no \`\
         async function confermaReset() {
             const procedi = await customConfirm(currentLang === 'en' ? "Delete Database" : "Cancellazione Database", currentLang === 'en' ? "WARNING! Do you really want to delete the entire local database of meals and weight? This action is irreversible." : "ATTENZIONE! Vuoi davvero cancellare l'intero database locale dei pasti e del peso? Questa azione è irreversibile.", true, currentLang === 'en' ? "Delete all" : "Cancella tutto");
             if (procedi) {
+                window.diarioMemoria = [];
                 localStorage.removeItem('nutriDB');
+                await cancellaDiarioIndexedDB();
                 autoSalvaNelFileLocale();
                 renderStorico();
                 aggiornaTotaleGiorno();
@@ -4401,7 +4475,7 @@ Rispondi ESCLUSIVAMENTE con un oggetto JSON valido. NO blocchi di codice (no \`\
         // LOGICA DI RENDERING GRAFICI E TREND (7 GIORNI E 8 SETTIMANE)
         // ================================================================
         function renderTrend() {
-            const db = JSON.parse(localStorage.getItem('nutriDB')) || [];
+            const db = window.diarioMemoria;
             const dataOggi = ottieniDataOggi();
 
             const titleEl = document.getElementById('trendMediaTitle');
@@ -5005,7 +5079,7 @@ Rispondi ESCLUSIVAMENTE con un oggetto JSON valido. NO blocchi di codice (no \`\
         }
 
         function renderTrendMensile() {
-            const db = JSON.parse(localStorage.getItem('nutriDB')) || [];
+            const db = window.diarioMemoria;
             const dataOggi = ottieniDataOggi();
 
             const calcolaBarraETarget = (attuale, target) => {
@@ -5507,7 +5581,7 @@ Rispondi ESCLUSIVAMENTE con un oggetto JSON valido. NO blocchi di codice (no \`\
             const pesoFlessibile = parseFloat(valoreInput);
 
             // Recupera il database reale dal localStorage
-            let db = JSON.parse(localStorage.getItem('nutriDB')) || [];
+            let db = window.diarioMemoria;
 
             // Cerca se esiste già quel giorno nel database log
             let giornoEsistente = db.find(g => g.data === dataSelezionata);
@@ -5571,7 +5645,7 @@ Rispondi ESCLUSIVAMENTE con un oggetto JSON valido. NO blocchi di codice (no \`\
             );
             if (!procedi) return;
 
-            let db = JSON.parse(localStorage.getItem('nutriDB')) || [];
+            let db = window.diarioMemoria;
             let giorno = db.find(g => g.data === dataPasto);
 
             if (giorno && giorno.pasti) {
@@ -5972,7 +6046,7 @@ Istruzioni per il calcolo e la risposta:
             const testo = document.getElementById('testoAnalisiTrendAI');
 
             const dataOggi = ottieniDataOggi();
-            const db = JSON.parse(localStorage.getItem('nutriDB')) || [];
+            const db = window.diarioMemoria;
             let giornoOggi = db.find(g => g.data === dataOggi);
 
             // Se l'analisi trend esiste già in memoria per oggi, chiedi se vederla o rifarla
