@@ -1467,6 +1467,24 @@
             </button>
         </div>
 
+        <!-- Box collassabile per Alimenti Frequenti -->
+        <div id="boxAlimentiFrequentiContainer" class="hidden mb-4 bg-slate-800/40 border border-slate-700/30 rounded-2xl p-3 shadow-xl">
+            <details class="group" id="detailsAlimentiFrequenti">
+                <summary class="flex justify-between items-center text-xs font-bold text-slate-300 cursor-pointer select-none list-none">
+                    <span class="flex items-center gap-1.5">
+                        <i data-lucide="tag" class="w-3.5 h-3.5 text-indigo-400"></i>
+                        <span data-i18n="lbl_freq_foods">Alimenti più frequenti</span>
+                    </span>
+                    <i data-lucide="chevron-down" class="w-4 h-4 text-slate-400 group-open:rotate-180 transition-transform duration-200"></i>
+                </summary>
+                <div class="mt-3">
+                    <div id="listaAlimentiFrequenti" class="flex flex-wrap justify-center items-center gap-x-5 gap-y-3 p-3 bg-slate-900/10 dark:bg-slate-950/20 rounded-xl border border-slate-700/5 min-h-[50px] leading-relaxed">
+                        <!-- Tag inseriti dinamicamente -->
+                    </div>
+                </div>
+            </details>
+        </div>
+
         <!-- Barra di ricerca e Filtro Mese/Anno (Su due righe) -->
         <div class="flex flex-col gap-2 mb-4 bg-slate-800/40 p-2.5 rounded-2xl border border-slate-700/30">
             <!-- Prima riga: Ricerca Generale -->
@@ -1871,6 +1889,9 @@
                 } else {
                     if (typeof renderTrend === 'function') renderTrend();
                 }
+            }
+            if (typeof aggiornaNuvolaAlimentiFrequenti === 'function') {
+                aggiornaNuvolaAlimentiFrequenti();
             }
         };
 
@@ -2280,6 +2301,7 @@
                 title_dettaglio_alimenti: "Dettaglio Alimenti",
                 btn_save_to_diary: "Salva nel diario",
                 lbl_food_diary: "Diario alimentare",
+                lbl_freq_foods: "Alimenti più frequenti",
                 btn_delete_all: "Cancella tutto",
                 btn_export_data: "Esporta dati",
                 btn_import_data: "Importa dati",
@@ -2405,6 +2427,7 @@
                 title_dettaglio_alimenti: "Food Breakdown",
                 btn_save_to_diary: "Save to Diary",
                 lbl_food_diary: "Food Diary",
+                lbl_freq_foods: "Most frequent foods",
                 btn_delete_all: "Delete all",
                 btn_export_data: "Export data",
                 btn_import_data: "Import data",
@@ -3664,10 +3687,117 @@ Rispondi ESCLUSIVAMENTE con un oggetto JSON valido. NO blocchi di codice (no \`\
             }
         };
 
+        function pulisciNomeAlimento(rawName) {
+            if (!rawName) return "";
+            let name = rawName.split(':')[0]; // Prendi prima dei due punti
+            name = name.replace(/\([^)]*\)/g, ''); // Rimuovi parentesi e contenuto
+            name = name.replace(/\b\d+(?:\.\d+)?\s*(?:g|ml|kg|l)?\b/gi, ''); // Rimuovi pesi/numeri (es. 80g)
+            name = name.replace(/\s+/g, ' ').trim(); // Rimuovi spazi multipli
+            if (name.length < 2) return "";
+            // Capitalizza la prima lettera
+            name = name.charAt(0).toUpperCase() + name.slice(1).toLowerCase();
+            // Ottimizzazione estetica per EVO
+            return name.replace(/\bevo\b/gi, 'EVO');
+        }
+
+        function calcolaAlimentiFrequenti() {
+            const db = window.diarioMemoria;
+            const freqMap = {};
+            
+            db.forEach(giorno => {
+                if (giorno.pasti) {
+                    giorno.pasti.forEach(pasto => {
+                        if (pasto._analisi_singoli_alimenti) {
+                            const alimenti = pasto._analisi_singoli_alimenti.split('|');
+                            alimenti.forEach(al => {
+                                const pulito = pulisciNomeAlimento(al);
+                                if (pulito) {
+                                    freqMap[pulito] = (freqMap[pulito] || 0) + 1;
+                                }
+                            });
+                        }
+                    });
+                }
+            });
+            
+            return Object.entries(freqMap)
+                .map(([nome, count]) => ({ nome, count }))
+                .sort((a, b) => b.count - a.count)
+                .slice(0, 10);
+        }
+
+        function aggiornaNuvolaAlimentiFrequenti() {
+            const container = document.getElementById('boxAlimentiFrequentiContainer');
+            const lista = document.getElementById('listaAlimentiFrequenti');
+            if (!container || !lista) return;
+
+            const topAlimenti = calcolaAlimentiFrequenti();
+            
+            if (topAlimenti.length === 0) {
+                container.classList.add('hidden');
+                return;
+            }
+
+            container.classList.remove('hidden');
+
+            const maxCount = topAlimenti[0].count;
+            const isLightTheme = document.body.classList.contains('light-theme');
+
+            let html = "";
+            topAlimenti.forEach(al => {
+                const ratio = maxCount > 1 ? (al.count - 1) / (maxCount - 1) : 1.0;
+                
+                // Dimensione font progressiva da 12px a 26px
+                const size = Math.round(12 + ratio * 14);
+                
+                // Spessore carattere
+                let weight = '400';
+                if (ratio > 0.7) weight = '800';
+                else if (ratio > 0.4) weight = '700';
+                else if (ratio > 0.1) weight = '600';
+                else weight = '500';
+
+                // Colore in base al tema per leggibilità ideale
+                let color;
+                if (isLightTheme) {
+                    if (ratio > 0.7) color = '#312e81';      // Indigo 900
+                    else if (ratio > 0.4) color = '#4338ca'; // Indigo 700
+                    else if (ratio > 0.1) color = '#4f46e5'; // Indigo 600
+                    else color = '#64748b';                  // Slate 500
+                } else {
+                    if (ratio > 0.7) color = '#e0e7ff';      // Indigo 100
+                    else if (ratio > 0.4) color = '#a5b4fc'; // Indigo 300
+                    else if (ratio > 0.1) color = '#818cf8'; // Indigo 400
+                    else color = '#94a3b8';                  // Slate 400
+                }
+
+                html += `
+                    <button onclick="selezionaTagAlimento('${al.nome.replace(/'/g, "\\'")}')" 
+                            style="font-size: ${size}px; color: ${color}; font-weight: ${weight};"
+                            class="transition-all duration-150 hover:scale-110 hover:opacity-100 active:scale-95 cursor-pointer select-none inline-flex items-start gap-0.5 py-1 px-2 opacity-90">
+                        <span>${al.nome}</span>
+                        <sup class="text-[9px] text-slate-400 font-normal select-none opacity-60">x${al.count}</sup>
+                    </button>
+                `;
+            });
+
+            lista.innerHTML = html;
+        }
+
+        window.selezionaTagAlimento = function(nome) {
+            const input = document.getElementById('ricercaRegistro');
+            if (input) {
+                input.value = nome;
+                filtraRegistro();
+            }
+        };
+
         function renderStorico() {
             const db = window.diarioMemoria;
             const lista = document.getElementById('listaStorico');
             if (!lista) return;
+
+            aggiornaNuvolaAlimentiFrequenti();
 
             popolaFiltriStorico(db);
 
