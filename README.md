@@ -42,7 +42,7 @@ Il pannello impostazioni è organizzato in sezioni espandibili (accordion) per l
 ## 🔒 Sicurezza e Gestione dei Token
 
 L'applicazione è progettata per essere efficiente in termini di costi e consumo delle API:
-* **Tetto Massimo Token (Output)**: Tutte le chiamate alla API di Gemini sono regolate dal parametro `maxOutputTokens` per evitare risposte prolisse e limitare il consumo a seconda del contesto (da 150 token per i JSON di parsing a 500 token per le analisi testuali dei trend).
+* **Gestione Risposte AI**: Le risposte dell'AI sono mantenute concise e strutturate grazie a precise regole e vincoli impostati nei prompt di sistema, senza definire un limite rigido di output (`maxOutputTokens`) al fine di evitare interruzioni o troncamenti imprevisti nel formato JSON o nel testo discorsivo.
 * **Limitazione Input**: Entrambi i campi di testo del diario sono limitati nativamente a un massimo di **500 caratteri** (`maxlength`), impedendo l'inserimento di testi massivi che aumenterebbero i costi di chiamata.
 * **Disclaimer Medici**: Note informative multilingua (Italiano/Inglese) integrate nelle impostazioni e nei box di risposta AI ricordano che le valutazioni fornite dall'AI non sostituiscono il parere di medici o nutrizionisti professionisti e che possono contenere errori.
 
@@ -90,13 +90,13 @@ L'applicazione gestisce un database relazionale fittizio serializzato in un sing
 ### 2. Flusso del Ciclo di Vita dei Dati
 ```mermaid
 graph TD
-    A[Avvio App] --> B(Caricamento diario da IndexedDB 'diarioCompleto')
+    A[Avvio App] --> B("Caricamento diario da IndexedDB (database 'FitFileStore', store 'diario', chiave 'diarioCompleto')")
     B --> C(Inizializzazione grafici Chart.js)
-    B --> D(Lettura FileHandle da IndexedDB 'handles')
+    B --> D("Lettura FileHandle da IndexedDB (database 'FitFileStore', store 'handles', chiave 'autoSaveFile')")
     D -->|Se associato| E[Associazione File locale JSON]
     
     F[Azione Utente: Aggiunta Pasto/Peso] --> G(Aggiornamento Stato in Memoria)
-    G --> H(Aggiornamento IndexedDB 'diarioCompleto')
+    G --> H("Aggiornamento IndexedDB (database 'FitFileStore', store 'diario', chiave 'diarioCompleto')")
     G --> I(Aggiornamento Grafici UI)
     H -->|Se File locale associato| J[Salvataggio in background su file JSON fisico]
 ```
@@ -116,10 +116,10 @@ L'applicazione invia chiamate HTTP dirette (senza backend intermediario) verso g
   ```text
   Sei un nutrizionista esperto e analista dati. Analizza il testo dell'utente (pasto/alimenti) e calcola calorie e macro totali usando questo flusso di calcolo rigoroso:
 
-  1. SCOMPOSIZIONE E FALLBACK: Isola ogni alimento. Se è un piatto complesso (es. lasagna), scomponilo negli ingredienti base. Usa i database CREA e BDA (IT), integrando con USDA (US), CIQUAL (FR), McCance (UK). Se un brand manca, usa l'analogia per categoria e scrivi "[stimato da categoria]" nel log.
-  2. PORZIONI E PROFILO: In assenza di pesi, stima porzioni standard SINU/LARN regolate sul profilo utente: sesso ${prof.sesso}, età ${prof.eta || '30'} anni, peso ${prof.peso || '75'} kg, altezza ${prof.altezza || '175'} cm, target ${prof.targetCalorie || '2000'} kcal.
+  1. SCOMPOSIZIONE E FALLBACK: Isola ogni alimento. Se è un piatto complesso (es. lasagna), scomponilo negli ingredienti base. Usa i database CREA e BDA (IT), integrando con USDA (US), CIQUAL (FR), McCance (UK). Se un brand manca, usa l'analogia per categoria e scrivi "[stimato da categoria]" nel log. Se l'utente descrive cibo da asporto, fast food o piatti da ristorante (es. pizza, sushi, kebab, burger), applica un fattore di correzione commerciale aumentando la stima dei grassi totali del 20% rispetto alla controparte casalinga per compensare i condimenti professionali nascosti.
+  2. PORZIONI E PROFILO: In assenza di pesi, stima porzioni standard SINU/LARN regolate sul profilo utente: sesso ${prof.sesso}, età ${prof.eta || '30'} anni, peso ${prof.peso || '75'} kg, altezza ${prof.altezza || '175'} cm, target ${prof.targetCalorie || '2000'} kcal. Traduci le unità di misura vaghe in grammi reali usando standard culinari precisi: 1 cucchiaio da cucina = 15g (10g per l'olio), 1 cucchiaino = 5g, 1 bicchiere = 200ml, 1 tazza = 250ml, 1 vasetto di yogurt = 125g.
   3. STATO E CONDIMENTI: Assumi che i pesi siano riferiti all'alimento CRUDO e al NETTO di scarti, salvo diversa specifica (es. applica conversioni se "cotto"). Se la preparazione richiede grassi (es. "in padella") non menzionati, aggiungi 5-10g di olio EVO e indicalo.
-  4. CALCOLO E COERENZA: Calcola i macro di ogni ingrediente, sommali per i totali e verifica la coerenza matematica rigorosa: 4 kcal/g per carboidrati/proteine, 9 kcal/g per i grassi.
+  4. CALCOLO E COERENZA: Calcola i macro di ogni ingrediente, sommali per i totali e verifica la coerenza matematica rigorosa: 4 kcal/g per carboidrati/proteine, 9 kcal/g per i grassi. I valori totali di calorie e macronutrienti nel JSON devono rispettare questa equazione con tolleranza zero: (Proteine * 4) + (Carboidrati * 4) + (Grassi * 9) = Calorie totali. Arrotonda i singoli valori di massimo 1-2 unità per far quadrare matematicamente il totale.
 
   FORMATO DI OUTPUT OBBLIGATORIO:
   Rispondi ESCLUSIVAMENTE con un oggetto JSON valido. NO blocchi di codice (no ```json), NO testi extra o spazi prima della parentesi {. Struttura esatta:
@@ -134,7 +134,7 @@ L'applicazione invia chiamate HTTP dirette (senza backend intermediario) verso g
   ```
 * **Configurazione e Limiti**:
   * **Modello**: `gemini-2.5-flash`
-  * **Configurazione**: `{ responseMimeType: "application/json", temperature: 0.2, maxOutputTokens: 450 }`
+  * **Configurazione**: `{ responseMimeType: "application/json", temperature: 0.2 }`
 
 #### B. Consigli Nutrizionali Giornalieri (`ottieniConsigliAI`)
 * **Scopo**: Fornire una valutazione rapida e suggerimenti pratici per completare la giornata alimentare corrente.
@@ -153,13 +153,15 @@ L'applicazione invia chiamate HTTP dirette (senza backend intermediario) verso g
   
   Pasti consumati oggi:
   ${pastiDellaGiornata}
+  Orario attuale della richiesta: ${new Date().toLocaleTimeString('it-IT', {hour: '2-digit', minute:'2-digit'})}. Usa questo dato per capire se l'utente deve ancora fare uno spuntino, la cena, o se la giornata è conclusa (in tal caso, fornisci un bilancio finale e un consiglio per l'indomani).
   
   Analizza i pasti consumati oggi per comprendere il contesto (ad esempio, quali pasti principali come colazione, pranzo, cena o spuntini sono già stati effettuati, o l'orario e la tipologia di alimenti scelti) ed evita assolutamente di proporre pasti che sono già stati consumati (es. non suggerire un pranzo completo se l'utente ha già pranzato, o non suggerire pasta a cena se ha già raggiunto o superato i target di carbo). Fornisci invece spunti mirati per gli spuntini mancanti o per la cena/colazione qualora manchino all'appello.
   Rispondi in massimo 3 o 4 frasi, in modo molto compatto, usando elenchi puntati se necessario. Sii motivante.
+  Usa una formattazione pulita: metti in grassetto i concetti chiave (es. **ottimo**, **mancano**, **attenzione**) ed evita introduzioni prolisse come "Come esperto nutrizionista...". Vai dritto al punto.
   ```
 * **Configurazione e Limiti**:
   * **Modello**: `gemini-2.5-flash`
-  * **Configurazione**: `{ temperature: 0.4, maxOutputTokens: 350 }` (risposta testuale concisa).
+  * **Configurazione**: `{ temperature: 0.4 }` (risposta testuale concisa).
 
 #### C. Generatore di Target Medici ed Energetici (`generaTargetConAI`)
 * **Scopo**: Calcolare i target nutrizionali personalizzati partendo da dati anagrafici e obiettivi fisici.
@@ -205,7 +207,7 @@ L'applicazione invia chiamate HTTP dirette (senza backend intermediario) verso g
   ```
 * **Configurazione e Limiti**:
   * **Modello**: `gemini-2.5-flash`
-  * **Configurazione**: `{ responseMimeType: "application/json", temperature: 0.2, maxOutputTokens: 600 }`
+  * **Configurazione**: `{ responseMimeType: "application/json", temperature: 0.2 }`
 
 #### D. Analisi Storica e Trend (`analizzaTrendConAI`)
 * **Scopo**: Analizzare l'andamento del peso e dei pasti su finestre a breve e medio termine per valutare i progressi.
@@ -245,12 +247,12 @@ L'applicazione invia chiamate HTTP dirette (senza backend intermediario) verso g
   ```
 * **Configurazione e Limiti**:
   * **Modello**: `gemini-2.5-flash`
-  * **Configurazione**: `{ temperature: 0.3, maxOutputTokens: 500 }` (risposta strutturata in 3 blocchi).
+  * **Configurazione**: `{ temperature: 0.3 }` (risposta strutturata in 3 blocchi).
   * **Nota**: I pasti testuali non vengono trasmessi a questo endpoint a salvaguardia della privacy dell'utente.
 
 ### 4. Gestione della Sincronizzazione File (File System Access API)
 Quando l'utente attiva il salvataggio automatico:
 1. Viene richiesta l'autorizzazione di scrittura per il file selezionato sul computer locale.
-2. Il puntatore al file (`FileSystemFileHandle`) viene memorizzato su **IndexedDB** (`fitDBStore`), poiché `localStorage` non può contenere oggetti complessi.
+2. Il puntatore al file (`FileSystemFileHandle`) viene memorizzato su **IndexedDB** (nel database `'FitFileStore'`, all'interno dell'object store `'handles'`), poiché `localStorage` non può contenere oggetti complessi.
 3. All'avvio dell'applicazione, viene tentato il ripristino silenzioso dell'autorizzazione.
 4. Ad ogni scrittura sul diario, viene invocato un flusso asincrono che sovrascrive il file JSON locale con il database aggiornato, mantenendo allineato il backup.
