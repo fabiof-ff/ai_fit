@@ -186,7 +186,7 @@ L'applicazione invia chiamate HTTP dirette (senza backend intermediario) verso g
   I valori di "calorie", "proteine", "carboidrati", "grassi" e "pesoTarget" devono essere restituiti come numeri puri (es. 2150), senza stringhe, senza appendere "kcal" o "g" all'interno del valore numerico.
 
   Istruzioni per il calcolo e la risposta:
-  1. Calcola accuratamente il TDEE (Total Daily Energy Expenditure) dell'utente utilizando una formula nutrizionale scientifica standard (es. Mifflin-St Jeor o Harris-Benedict) basandoti rigorosamente su:
+  1. Calcola accuratamente il TDEE (Total Daily Energy Expenditure) dell'utente utilizzando tassativamente la formula nutrizionale scientifica di Mifflin-St Jeor basandoti rigorosamente su:
      - Sesso biologico (Maschio/Femmina)
      - Età (in anni)
      - Peso attuale (in kg)
