@@ -4844,12 +4844,23 @@ Rispondi ESCLUSIVAMENTE con un oggetto JSON valido. NO blocchi di codice (no \`\
                     const mediaPeso = recordConPeso.length > 0 ? recordConPeso.reduce((a, b) => a + parseFloat(b.peso), 0) / recordConPeso.length : null;
                     datiSettimane.push({ calorie: mediaC, proteine: mediaP, carboidrati: mediaCb, grassi: mediaG, peso: mediaPeso });
                 }
-                const settimaneAttive = datiSettimane.filter(s => s.calorie > 0 || s.proteine > 0);
-                if (settimaneAttive.length > 0) {
-                    const avgCal = Math.round(settimaneAttive.reduce((a, b) => a + b.calorie, 0) / settimaneAttive.length);
-                    const avgProt = Math.round(settimaneAttive.reduce((a, b) => a + b.proteine, 0) / settimaneAttive.length);
-                    const avgCarb = Math.round(settimaneAttive.reduce((a, b) => a + b.carboidrati, 0) / settimaneAttive.length);
-                    const avgFat = Math.round(settimaneAttive.reduce((a, b) => a + b.grassi, 0) / settimaneAttive.length);
+                // Calcola la media globale considerando direttamente i singoli giorni attivi nell'arco delle 8 settimane
+                const lunedìOldest = new Date(lunedìCorrente);
+                lunedìOldest.setDate(lunedìCorrente.getDate() - (7 * 7));
+                const dataInizio8Settimane = formattaData(lunedìOldest);
+                
+                const recordAttivi8Settimane = db.filter(g => {
+                    return g.data >= dataInizio8Settimane && 
+                           g.data !== dataOggi && 
+                           (g.calorie > 0 || g.proteine > 0 || g.carboidrati > 0 || g.grassi > 0);
+                });
+
+                if (recordAttivi8Settimane.length > 0) {
+                    const sum = (chiave) => recordAttivi8Settimane.reduce((acc, current) => acc + (current[chiave] || 0), 0);
+                    const avgCal = Math.round(sum('calorie') / recordAttivi8Settimane.length);
+                    const avgProt = Math.round(sum('proteine') / recordAttivi8Settimane.length);
+                    const avgCarb = Math.round(sum('carboidrati') / recordAttivi8Settimane.length);
+                    const avgFat = Math.round(sum('grassi') / recordAttivi8Settimane.length);
 
                     aggiornaGauges(avgCal, avgProt, avgCarb, avgFat);
                 } else {
@@ -5215,8 +5226,15 @@ Rispondi ESCLUSIVAMENTE con un oggetto JSON valido. NO blocchi di codice (no \`\
                 });
             });
 
-            // 3. Overall average on all active days of the database
-            const giorniAttivi = db.filter(g => g.data !== dataOggi && (g.calorie > 0 || g.proteine > 0 || g.carboidrati > 0 || g.grassi > 0));
+            // 3. Overall average on all active days of the last 12 months
+            const giorniAttivi = db.filter(g => {
+                if (g.data === dataOggi) return false;
+                if (g.calorie <= 0 && g.proteine <= 0 && g.carboidrati <= 0 && g.grassi <= 0) return false;
+                const dateParts = g.data.split('-');
+                if (dateParts.length < 2) return false;
+                const key = `${dateParts[0]}-${dateParts[1]}`; // YYYY-MM
+                return grouped.hasOwnProperty(key);
+            });
             const activeMonths = monthKeys.length;
             const titleEl = document.getElementById('trendMediaTitle');
             if (titleEl) {

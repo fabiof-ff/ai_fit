@@ -26,8 +26,9 @@ Il tool è sviluppato con una filosofia **offline-first**: tutti i dati e le chi
 
 ### 4. Grafici Interattivi e Storico
 * Grafici dinamici (sviluppati con **Chart.js**) per analizzare l'andamento di calorie, proteine, carboidrati, grassi e peso.
-* Suddivisione dell'andamento storico in tre comode viste: **Giorni**, **Settimane** e **Mesi**.
-* **Registro Alimentare**: Mostra di default gli ultimi 30 giorni con scorrimento fluido. È presente un sistema di filtri (ricerca testuale per alimento, filtro per mese specifico e filtro per anno) che agisce su tutto il database storico.
+* Suddivisione dell'andamento storico in tre comode viste: **Giorni** (ultimi 7 giorni), **Settimane** (ultime 8 settimane) e **Mesi** (ultimi 12 mesi).
+* **Calcolo Medie Complessive Uniforme**: Nei diagrammi ad anello, le medie globali delle calorie e dei macronutrienti sono calcolate considerando esclusivamente i giorni con dati inseriti (escludendo i giorni vuoti), garantendo che i dati di riepilogo siano sempre accurati ed allineati con i grafici.
+* **Registro Alimentare**: Mostra gli inserimenti storici organizzati cronologicamente con filtri di ricerca (testuale, mese e anno). I dettagli nutrizionali analitici stimati dall'AI sono contratti di default e visualizzabili singolarmente al clic per massimizzare la pulizia visiva, mentre i comandi di manutenzione del database sono raggruppati in un'unica barra degli strumenti compatta.
 
 ### 5. Pannello Impostazioni Avanzato
 Il pannello impostazioni è organizzato in sezioni espandibili (accordion) per la massima pulizia visiva:
