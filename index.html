@@ -625,20 +625,15 @@
 
             <!-- Tabs/Navigation -->
             <div class="flex border-b border-slate-700/50 bg-slate-900/40 p-1.5 gap-1 shrink-0">
-                <button onclick="switchHelpTab('api')" id="help-tab-api"
+                <button onclick="switchHelpTab('commands')" id="help-tab-commands"
                     class="help-tab-btn flex-1 py-2 px-1 text-[10px] font-bold rounded-lg text-center transition active select-none">
+                    <i data-lucide="sparkles" class="w-3.5 h-3.5 mx-auto mb-1 block"></i>
+                    <span data-i18n="help_tab_commands">Funzioni & Vantaggi</span>
+                </button>
+                <button onclick="switchHelpTab('api')" id="help-tab-api"
+                    class="help-tab-btn flex-1 py-2 px-1 text-[10px] font-bold rounded-lg text-center transition select-none">
                     <i data-lucide="key" class="w-3.5 h-3.5 mx-auto mb-1 block"></i>
                     <span>API Key</span>
-                </button>
-                <button onclick="switchHelpTab('commands')" id="help-tab-commands"
-                    class="help-tab-btn flex-1 py-2 px-1 text-[10px] font-bold rounded-lg text-center transition select-none">
-                    <i data-lucide="terminal" class="w-3.5 h-3.5 mx-auto mb-1 block"></i>
-                    <span data-i18n="help_tab_commands">Funzionalità</span>
-                </button>
-                <button onclick="switchHelpTab('why')" id="help-tab-why"
-                    class="help-tab-btn flex-1 py-2 px-1 text-[10px] font-bold rounded-lg text-center transition select-none">
-                    <i data-lucide="award" class="w-3.5 h-3.5 mx-auto mb-1 block"></i>
-                    <span data-i18n="help_tab_why">Perché AI?</span>
                 </button>
                 <button onclick="switchHelpTab('info')" id="help-tab-info"
                     class="help-tab-btn flex-1 py-2 px-1 text-[10px] font-bold rounded-lg text-center transition select-none">
@@ -651,54 +646,105 @@
             <div
                 class="flex-1 overflow-y-auto p-4 space-y-4 custom-scrollbar text-xs text-slate-300 leading-relaxed bg-slate-800/30">
 
-                <!-- TAB 1: Gemini API KEY -->
-                <div id="help-content-api" class="help-tab-panel space-y-3.5">
+                <!-- TAB 1: COMANDI, FUNZIONALITÀ E VANTAGGI -->
+                <div id="help-content-commands" class="help-tab-panel space-y-4">
+                    <p class="text-slate-400" data-i18n="help_commands_intro">
+                        AI NutriTracker è un'applicazione semplice, snella e senza fronzoli, progettata per offrirti solo quello che serve realmente per tracciare la tua alimentazione e forma fisica senza complicazioni. È organizzata in 3 sezioni principali:
+                    </p>
+
+                    <div class="space-y-3.5">
+                        <div class="p-3 bg-slate-700/25 border border-slate-700/50 rounded-2xl space-y-1.5">
+                            <h4 class="font-bold text-slate-200 flex items-center gap-2">
+                                <i data-lucide="utensils" class="w-4 h-4 text-emerald-400"></i>
+                                <span data-i18n="help_commands_tab1">Sezione Dati (Oggi)</span>
+                            </h4>
+                            <p class="text-slate-400 pl-6" data-i18n="help_commands_tab1_desc">
+                                Inserisci cosa hai mangiato nel box di testo libero (es. <em>"pasta al pesto e un uovo"</em>). Puoi anche usare la <strong>dettatura vocale</strong> col microfono! L'Intelligenza Artificiale farà il calcolo esatto. Se preferisci, c'è un inserimento manuale.
+                            </p>
+                        </div>
+
+                        <div class="p-3 bg-slate-700/25 border border-slate-700/50 rounded-2xl space-y-1.5">
+                            <h4 class="font-bold text-slate-200 flex items-center gap-2">
+                                <i data-lucide="trending-up" class="w-4 h-4 text-blue-400"></i>
+                                <span data-i18n="help_commands_tab2">Sezione Trend</span>
+                            </h4>
+                            <p class="text-slate-400 pl-6" data-i18n="help_commands_tab2_desc">
+                                Mostra l'andamento del peso, delle calorie assunte e della ripartizione dei macronutrienti negli ultimi 7 giorni, nelle ultime 8 settimane e il registro mensile. Clicca su <strong>"Chiedi parere ad AI"</strong> per ricevere un'analisi dettagliata sui tuoi progressi e consigli strategici personalizzati.
+                            </p>
+                        </div>
+
+                        <div class="p-3 bg-slate-700/25 border border-slate-700/50 rounded-2xl space-y-1.5">
+                            <h4 class="font-bold text-slate-200 flex items-center gap-2">
+                                <i data-lucide="clock" class="w-4 h-4 text-amber-400"></i>
+                                <span data-i18n="help_commands_tab3">Sezione Registro</span>
+                            </h4>
+                            <p class="text-slate-400 pl-6" data-i18n="help_commands_tab3_desc">
+                                Contiene l'archivio storico di tutti i pasti inseriti. Puoi filtrare per testo, visualizzare il log dettagliato scompattato dall'AI, modificare o eliminare qualsiasi pasto.
+                            </p>
+                        </div>
+                    </div>
+
+                    <hr class="border-slate-700/30 my-4">
+
+                    <h4 class="font-semibold text-slate-200 text-sm" data-i18n="help_why_title">
+                        I punti di forza e le caratteristiche chiave di AI NutriTracker:
+                    </h4>
+
+                    <ul class="space-y-3">
+                        <li class="flex gap-2.5">
+                            <i data-lucide="check-circle" class="w-4 h-4 text-emerald-400 shrink-0 mt-0.5"></i>
+                            <div>
+                                <strong class="text-slate-200" data-i18n="help_why1_title">Decomposizione Automatica dei Piatti</strong>
+                                <p class="text-slate-400 mt-0.5" data-i18n="help_why1_desc">Non serve cercare e pesare ogni singolo ingrediente. Scrivi o detta un pasto intero e l'AI lo scompone stimando porzioni standard SINU/LARN regolate sul tuo profilo fisico.</p>
+                            </div>
+                        </li>
+                        <li class="flex gap-2.5">
+                            <i data-lucide="check-circle" class="w-4 h-4 text-emerald-400 shrink-0 mt-0.5"></i>
+                            <div>
+                                <strong class="text-slate-200" data-i18n="help_why2_title">Coerenza Matematica Rigorosa</strong>
+                                <p class="text-slate-400 mt-0.5" data-i18n="help_why2_desc">A differenza delle app tradizionali dove i macro inseriti dagli utenti non corrispondono mai alle calorie, la nostra AI garantisce la coerenza termodinamica perfetta: (Proteine * 4) + (Carboidrati * 4) + (Grassi * 9) = Calorie totali.</p>
+                            </div>
+                        </li>
+                        <li class="flex gap-2.5">
+                            <i data-lucide="check-circle" class="w-4 h-4 text-emerald-400 shrink-0 mt-0.5"></i>
+                            <div>
+                                <strong class="text-slate-200" data-i18n="help_why3_title">Privacy e Proprietà dei Dati</strong>
+                                <p class="text-slate-400 mt-0.5" data-i18n="help_why3_desc">Nessun server dell'app. Le tue chiavi API e impostazioni risiedono solo su localStorage, e l'intero diario alimentare è memorizzato sul tuo dispositivo tramite IndexedDB. I dati dei pasti vengono inviati direttamente ai server Google tramite la tua API Key personale per l'analisi, senza che l'autore dell'app o terze parti possano accedervi.</p>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+
+                <!-- TAB 2: Gemini API KEY -->
+                <div id="help-content-api" class="help-tab-panel hidden space-y-3.5">
                     <div class="p-3 bg-blue-500/10 border border-blue-500/20 rounded-2xl flex gap-3">
                         <i data-lucide="info" class="w-5 h-5 text-blue-400 shrink-0 mt-0.5"></i>
                         <p class="text-slate-300" data-i18n="help_api_intro">
-                            Per far funzionare l'analisi dei pasti tramite Intelligenza Artificiale, devi inserire la
-                            tua chiave <strong>Gemini API Key</strong> personale. È <strong>completamente
-                                gratuita</strong> per uso individuale (non serve inserire alcuna carta di credito), ed è
-                            <strong>estremamente sicura</strong> perché la chiave viene memorizzata solo in locale sul
-                            tuo browser. Avrai così il <strong>pieno controllo dei tuoi dati</strong>, a costo zero e
-                            senza intermediari!
+                            Per abilitare l'analisi dei pasti tramite Intelligenza Artificiale, è necessario inserire una chiave <strong>Gemini API Key</strong> personale. È gratuita, non richiede alcuna carta di credito o metodo di pagamento, e garantisce:
                         </p>
                     </div>
 
                     <!-- Benefits List -->
                     <div class="grid grid-cols-1 gap-2 my-1.5">
-                        <div
-                            class="flex gap-2.5 items-start bg-slate-700/25 p-2.5 rounded-xl border border-slate-700/40">
+                        <div class="flex gap-2.5 items-start bg-slate-700/25 p-2.5 rounded-xl border border-slate-700/40">
                             <i data-lucide="shield-check" class="w-4 h-4 text-emerald-400 shrink-0 mt-0.5"></i>
                             <div>
-                                <strong class="text-slate-200 block text-[11px]"
-                                    data-i18n="help_api_benefit_privacy_title">100% Privacy & Zero Account</strong>
-                                <span class="text-slate-400 text-[10px]"
-                                    data-i18n="help_api_benefit_privacy_desc">Nessuna registrazione, nessuna password o
-                                    email richiesta. I tuoi dati e le chiavi rimangono sul tuo browser.</span>
+                                <strong class="text-slate-200 block text-[11px]" data-i18n="help_api_benefit_privacy_title">100% Privacy & Zero Account</strong>
+                                <span class="text-slate-400 text-[10px]" data-i18n="help_api_benefit_privacy_desc">Nessuna registrazione, nessuna password o email richiesta. I tuoi dati e le chiavi rimangono sul tuo browser.</span>
                             </div>
                         </div>
-                        <div
-                            class="flex gap-2.5 items-start bg-slate-700/25 p-2.5 rounded-xl border border-slate-700/40">
+                        <div class="flex gap-2.5 items-start bg-slate-700/25 p-2.5 rounded-xl border border-slate-700/40">
                             <i data-lucide="zap" class="w-4 h-4 text-amber-400 shrink-0 mt-0.5"></i>
                             <div>
-                                <strong class="text-slate-200 block text-[11px]"
-                                    data-i18n="help_api_benefit_limits_title">Nessuna Coda o Limiti Condivisi</strong>
-                                <span class="text-slate-400 text-[10px]" data-i18n="help_api_benefit_limits_desc">Usi la
-                                    tua quota personale gratuita fornita da Google, senza rallentamenti dovuti ad altri
-                                    utenti dell'app.</span>
+                                <strong class="text-slate-200 block text-[11px]" data-i18n="help_api_benefit_limits_title">Nessuna Coda o Limiti Condivisi</strong>
+                                <span class="text-slate-400 text-[10px]" data-i18n="help_api_benefit_limits_desc">Usi la tua quota personale gratuita fornita da Google, senza rallentamenti dovuti ad altri utenti dell'app.</span>
                             </div>
                         </div>
-                        <div
-                            class="flex gap-2.5 items-start bg-slate-700/25 p-2.5 rounded-xl border border-slate-700/40">
+                        <div class="flex gap-2.5 items-start bg-slate-700/25 p-2.5 rounded-xl border border-slate-700/40">
                             <i data-lucide="hourglass" class="w-4 h-4 text-blue-400 shrink-0 mt-0.5"></i>
                             <div>
-                                <strong class="text-slate-200 block text-[11px]"
-                                    data-i18n="help_api_benefit_longevity_title">Longevità e Indipendenza</strong>
-                                <span class="text-slate-400 text-[10px]"
-                                    data-i18n="help_api_benefit_longevity_desc">L'applicazione funziona in modo
-                                    autonomo: continuerà a funzionare per sempre anche se il creatore decidesse di
-                                    dismetterla.</span>
+                                <strong class="text-slate-200 block text-[11px]" data-i18n="help_api_benefit_longevity_title">Longevità e Indipendenza</strong>
+                                <span class="text-slate-400 text-[10px]" data-i18n="help_api_benefit_longevity_desc">L'applicazione funziona in modo autonomo: continuerà a funzionare per sempre anche se il creatore decidesse di dismetterla.</span>
                             </div>
                         </div>
                     </div>
@@ -744,109 +790,7 @@
                     </div>
                 </div>
 
-                <!-- TAB 2: COMANDI / FUNZIONALITÀ -->
-                <div id="help-content-commands" class="help-tab-panel hidden space-y-4">
-                    <p class="text-slate-400" data-i18n="help_commands_intro">
-                        AI NutriTracker è strutturato in 3 sezioni principali per tracciare la tua alimentazione e forma
-                        fisica:
-                    </p>
-
-                    <div class="space-y-3.5">
-                        <div class="p-3 bg-slate-700/25 border border-slate-700/50 rounded-2xl space-y-1.5">
-                            <h4 class="font-bold text-slate-200 flex items-center gap-2">
-                                <i data-lucide="utensils" class="w-4 h-4 text-emerald-400"></i>
-                                <span data-i18n="help_commands_tab1">Sezione Dati (Oggi)</span>
-                            </h4>
-                            <p class="text-slate-400 pl-6" data-i18n="help_commands_tab1_desc">
-                                Inserisci cosa hai mangiato nel box di testo libero (es. <em>"pasta al pesto e un
-                                    uovo"</em>). Puoi anche usare la <strong>dettatura vocale</strong> col microfono!
-                                L'Intelligenza Artificiale farà il calcolo esatto. Se preferisci, c'è un inserimento
-                                manuale. Puoi anche alternare tra <strong>Giorno Attivo</strong> e <strong>Giorno di
-                                    Riposo</strong> per modificare istantaneamente i tuoi target calorici.
-                            </p>
-                        </div>
-
-                        <div class="p-3 bg-slate-700/25 border border-slate-700/50 rounded-2xl space-y-1.5">
-                            <h4 class="font-bold text-slate-200 flex items-center gap-2">
-                                <i data-lucide="trending-up" class="w-4 h-4 text-blue-400"></i>
-                                <span data-i18n="help_commands_tab2">Sezione Trend</span>
-                            </h4>
-                            <p class="text-slate-400 pl-6" data-i18n="help_commands_tab2_desc">
-                                Mostra l'andamento del peso, delle calorie assunte e della ripartizione dei
-                                macronutrienti negli ultimi 7 giorni, nelle ultime 8 settimane e il registro mensile.
-                                Clicca su <strong>"Chiedi parere ad AI"</strong> per ricevere un'analisi dettagliata sui
-                                tuoi progressi e consigli strategici personalizzati.
-                            </p>
-                        </div>
-
-                        <div class="p-3 bg-slate-700/25 border border-slate-700/50 rounded-2xl space-y-1.5">
-                            <h4 class="font-bold text-slate-200 flex items-center gap-2">
-                                <i data-lucide="clock" class="w-4 h-4 text-amber-400"></i>
-                                <span data-i18n="help_commands_tab3">Sezione Registro</span>
-                            </h4>
-                            <p class="text-slate-400 pl-6" data-i18n="help_commands_tab3_desc">
-                                Contiene l'archivio storico di tutti i pasti inseriti. Puoi filtrare per testo,
-                                visualizzare il log dettagliato scompattato dall'AI, modificare o eliminare qualsiasi
-                                pasto.
-                            </p>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- TAB 3: PERCHÈ AI / VANTAGGI -->
-                <div id="help-content-why" class="help-tab-panel hidden space-y-4">
-                    <h4 class="font-semibold text-slate-200 text-sm" data-i18n="help_why_title">
-                        I vantaggi di AI NutriTracker rispetto alla concorrenza:
-                    </h4>
-
-                    <ul class="space-y-3">
-                        <li class="flex gap-2.5">
-                            <i data-lucide="check-circle" class="w-4 h-4 text-emerald-400 shrink-0 mt-0.5"></i>
-                            <div>
-                                <strong class="text-slate-200" data-i18n="help_why1_title">Decomposizione Automatica dei
-                                    Piatti</strong>
-                                <p class="text-slate-400 mt-0.5" data-i18n="help_why1_desc">Non serve cercare e pesare
-                                    ogni singolo ingrediente. Scrivi o detta un pasto intero e l'AI lo scompone stimando
-                                    porzioni standard SINU/LARN regolate sul tuo profilo fisico.</p>
-                            </div>
-                        </li>
-                        <li class="flex gap-2.5">
-                            <i data-lucide="check-circle" class="w-4 h-4 text-emerald-400 shrink-0 mt-0.5"></i>
-                            <div>
-                                <strong class="text-slate-200" data-i18n="help_why2_title">Coerenza Matematica
-                                    Rigorosa</strong>
-                                <p class="text-slate-400 mt-0.5" data-i18n="help_why2_desc">A differenza delle app
-                                    tradizionali dove i macro inseriti dagli utenti non corrispondono mai alle calorie,
-                                    la nostra AI garantisce la coerenza termodinamica perfetta: (Proteine * 4) +
-                                    (Carboidrati * 4) + (Grassi * 9) = Calorie totali.</p>
-                            </div>
-                        </li>
-                        <li class="flex gap-2.5">
-                            <i data-lucide="check-circle" class="w-4 h-4 text-emerald-400 shrink-0 mt-0.5"></i>
-                            <div>
-                                <strong class="text-slate-200" data-i18n="help_why3_title">Privacy e Proprietà dei
-                                    Dati</strong>
-                                <p class="text-slate-400 mt-0.5" data-i18n="help_why3_desc">Nessun server esterno. Le
-                                    tue chiavi API e impostazioni risiedono solo su localStorage, e l'intero diario
-                                    alimentare è memorizzato sul tuo dispositivo tramite IndexedDB. I tuoi dati sono
-                                    solo tuoi.</p>
-                            </div>
-                        </li>
-                        <li class="flex gap-2.5">
-                            <i data-lucide="check-circle" class="w-4 h-4 text-emerald-400 shrink-0 mt-0.5"></i>
-                            <div>
-                                <strong class="text-slate-200" data-i18n="help_why4_title">Target Dinamico Attivo vs
-                                    Riposo</strong>
-                                <p class="text-slate-400 mt-0.5" data-i18n="help_why4_desc">Il tuo corpo ha esigenze
-                                    diverse a seconda delle giornate. Puoi pianificare target macro e calorici
-                                    differenti per i giorni di allenamento e di riposo, attivabili con un semplice
-                                    tocco.</p>
-                            </div>
-                        </li>
-                    </ul>
-                </div>
-
-                <!-- TAB 4: INFO & NOTE -->
+                <!-- TAB 3: INFO & NOTE -->
                 <div id="help-content-info" class="help-tab-panel hidden space-y-3.5">
                     <div>
                         <h4 class="font-bold text-slate-200 mb-1" data-i18n="help_info_disclaimer_title">Disclaimer</h4>
@@ -2737,10 +2681,9 @@
                 btn_recalculate: "AI Recalc",
                 pl_edit_meal_text: "Descrivi il pasto da ricalcolare...",
                 help_title: "Guida all'Uso",
-                help_tab_commands: "Funzionalità",
-                help_tab_why: "Perché AI?",
+                help_tab_commands: "Funzioni & Vantaggi",
                 help_tab_info: "Info & Note",
-                help_api_intro: "Per far funzionare l'analisi dei pasti tramite Intelligenza Artificiale, devi inserire la tua chiave <strong>Gemini API Key</strong> personale. È <strong>completamente gratuita</strong> per uso individuale (non serve inserire alcuna carta di credito), ed è <strong>estremamente sicura</strong> perché la chiave viene memorizzata solo in locale sul tuo browser. Avrai così il <strong>pieno controllo dei tuoi dati</strong>, a costo zero e senza intermediari!",
+                help_api_intro: "Per abilitare l'analisi dei pasti tramite Intelligenza Artificiale, è necessario inserire una chiave <strong>Gemini API Key</strong> personale. È gratuita, non richiede alcuna carta di credito o metodo di pagamento, e garantisce:",
                 help_api_benefit_privacy_title: "100% Privacy & Zero Account",
                 help_api_benefit_privacy_desc: "Nessuna registrazione, nessuna password o email richiesta. I tuoi dati e le chiavi rimangono sul tuo browser.",
                 help_api_benefit_limits_title: "Nessuna Coda o Limiti Condivisi",
@@ -2754,22 +2697,20 @@
                 help_api_step2_desc: "Clicca sul pulsante <strong>\"Get API Key\"</strong> o <strong>\"Create API Key\"</strong>. Se richiesto, crea un nuovo progetto e copia la chiave generata (il codice inizierà con <code>AIzaSy...</code>).",
                 help_api_step3_title: "Inserisci la chiave nell'app",
                 help_api_step3_desc: "Torna in questa applicazione, apri le <strong>Impostazioni</strong> (icona ingranaggio in alto), espandi la sezione \"Gemini API Key\", incolla il codice nel campo ed è fatta!",
-                help_commands_intro: "AI NutriTracker è strutturato in 3 sezioni principali per tracciare la tua alimentazione e forma fisica:",
+                help_commands_intro: "AI NutriTracker è un'applicazione semplice, snella e senza fronzoli, progettata per offrirti solo quello che serve realmente per tracciare la tua alimentazione e forma fisica senza complicazioni. È organizzata in 3 sezioni principali:",
                 help_commands_tab1: "Sezione Dati (Oggi)",
-                help_commands_tab1_desc: "Inserisci cosa hai mangiato nel box di testo libero (es. <em>\"pasta al pesto e un uovo\"</em>). Puoi anche usare la <strong>dettatura vocale</strong> col microfono! L'Intelligenza Artificiale farà il calcolo esatto. Se preferisci, c'è un inserimento manuale. Puoi anche alternare tra <strong>Giorno Attivo</strong> e <strong>Giorno di Riposo</strong> per modificare istantaneamente i tuoi target calorici.",
+                help_commands_tab1_desc: "Inserisci cosa hai mangiato nel box di testo libero (es. <em>\"pasta al pesto e un uovo\"</em>). Puoi anche usare la <strong>dettatura vocale</strong> col microfono! L'Intelligenza Artificiale farà il calcolo esatto. Se preferisci, c'è un inserimento manuale.",
                 help_commands_tab2: "Sezione Trend",
                 help_commands_tab2_desc: "Mostra l'andamento del peso, delle calorie assunte e della ripartizione dei macronutrienti negli ultimi 7 giorni, nelle ultime 8 settimane e il registro mensile. Clicca su <strong>\"Chiedi parere ad AI\"</strong> per ricevere un'analisi dettagliata sui tuoi progressi e consigli strategici personalizzati.",
                 help_commands_tab3: "Sezione Registro",
                 help_commands_tab3_desc: "Contiene l'archivio storico di tutti i pasti inseriti. Puoi filtrare per testo, visualizzare il log dettagliato scompattato dall'AI, modificare o eliminare qualsiasi pasto.",
-                help_why_title: "I vantaggi di AI NutriTracker rispetto alla concorrenza:",
+                help_why_title: "I punti di forza e le caratteristiche chiave di AI NutriTracker:",
                 help_why1_title: "Decomposizione Automatica dei Piatti",
                 help_why1_desc: "Non serve cercare e pesare ogni singolo ingrediente. Scrivi o detta un pasto intero e l'AI lo scompone stimando porzioni standard SINU/LARN regolate sul tuo profilo fisico.",
                 help_why2_title: "Coerenza Matematica Rigorosa",
                 help_why2_desc: "A differenza delle app tradizionali dove i macro inseriti dagli utenti non corrispondono mai alle calorie, la nostra AI garantisce la coerenza termodinamica perfetta: (Proteine * 4) + (Carboidrati * 4) + (Grassi * 9) = Calorie totali.",
                 help_why3_title: "Privacy e Proprietà dei Dati",
-                help_why3_desc: "Nessun server esterno. Le tue chiavi API e impostazioni risiedono solo su localStorage, e l'intero diario alimentare è memorizzato sul tuo dispositivo tramite IndexedDB. I tuoi dati sono solo tuoi.",
-                help_why4_title: "Target Dinamico Attivo vs Riposo",
-                help_why4_desc: "Il tuo corpo ha esigenze diverse a seconda delle giornate. Puoi pianificare target macro e calorici differenti per i giorni di allenamento e di riposo, attivabili con un semplice tocco.",
+                help_why3_desc: "Nessun server dell'app. Le tue chiavi API e impostazioni risiedono solo su localStorage, e l'intero diario alimentare è memorizzato sul tuo dispositivo tramite IndexedDB. I dati dei pasti vengono inviati direttamente ai server Google tramite la tua API Key personale per l'analisi, senza che l'autore dell'app o terze parti possano accedervi.",
                 help_info_disclaimer_title: "Disclaimer",
                 help_info_disclaimer_desc: "Questa app è uno strumento di monitoraggio personale e intrattenimento informativo. Le stime fornite dall'Intelligenza Artificiale non sostituiscono in alcun modo diagnosi, pareri medici, piani terapeutici o indicazioni nutrizionali professionali. Consulta sempre un medico prima di intraprendere diete o programmi di allenamento.",
                 help_info_storage_title: "Archiviazione dei Dati",
@@ -2902,10 +2843,9 @@
                 btn_recalculate: "AI Recalc",
                 pl_edit_meal_text: "Describe the meal to recalculate...",
                 help_title: "User Guide",
-                help_tab_commands: "Features",
-                help_tab_why: "Why AI?",
+                help_tab_commands: "Features & Benefits",
                 help_tab_info: "Info & Notes",
-                help_api_intro: "To enable meal analysis via Artificial Intelligence, you must enter your personal <strong>Gemini API Key</strong>. It is <strong>completely free</strong> for individual use (no credit card required), and <strong>highly secure</strong> because the key is stored strictly on your local browser. This guarantees you have <strong>full control over your data</strong>, at zero cost and with no intermediaries!",
+                help_api_intro: "To enable meal analysis via Artificial Intelligence, you need to enter a personal <strong>Gemini API Key</strong>. It is free, requires no credit card or payment method, and guarantees:",
                 help_api_benefit_privacy_title: "100% Privacy & Zero Accounts",
                 help_api_benefit_privacy_desc: "No registrations, passwords, or emails required. Your logs and keys remain strictly in your browser.",
                 help_api_benefit_limits_title: "No Queues or Shared Traffic",
@@ -2919,22 +2859,20 @@
                 help_api_step2_desc: "Click the <strong>\"Get API Key\"</strong> or <strong>\"Create API Key\"</strong> button. If prompted, create a new project and copy the generated key (it will start with <code>AIzaSy...</code>).",
                 help_api_step3_title: "Enter the key in the app",
                 help_api_step3_desc: "Return to this app, open the <strong>Settings</strong> (gear icon at the top), expand the \"Gemini API Key\" section, paste the code into the field, and you are done!",
-                help_commands_intro: "AI NutriTracker is structured into 3 main sections to track your nutrition and fitness:",
+                help_commands_intro: "AI NutriTracker is a simple, lightweight, fluff-free application, designed to give you exactly what you need to track your nutrition and fitness without complications. It is organized into 3 main sections:",
                 help_commands_tab1: "Data Section (Today)",
-                help_commands_tab1_desc: "Enter what you ate in the free text box (e.g. <em>\"pasta with pesto and an egg\"</em>). You can also use <strong>voice dictation</strong> with the microphone! The Artificial Intelligence will calculate the exact nutrition. If you prefer, there is a manual entry mode. You can also toggle between <strong>Active Day</strong> and <strong>Rest Day</strong> to instantly change your calorie targets.",
+                help_commands_tab1_desc: "Enter what you ate in the free text box (e.g. <em>\"pasta with pesto and an egg\"</em>). You can also use <strong>voice dictation</strong> with the microphone! The Artificial Intelligence will calculate the exact nutrition. If you prefer, there is a manual entry mode.",
                 help_commands_tab2: "Trend Section",
                 help_commands_tab2_desc: "Shows weight trends, calorie intake, and macronutrient distribution over the last 7 days, 8 weeks, and monthly logs. Click <strong>\"Ask AI opinion\"</strong> to receive a detailed analysis of your progress and personalized strategic advice.",
                 help_commands_tab3: "History Section",
                 help_commands_tab3_desc: "Contains the historical archive of all recorded meals. You can search/filter, view the detailed ingredients log parsed by the AI, edit, or delete any meal.",
-                help_why_title: "The advantages of AI NutriTracker over the competition:",
+                help_why_title: "Key features and strengths of AI NutriTracker:",
                 help_why1_title: "Automatic Recipe Deconstruction",
                 help_why1_desc: "No need to search for and weigh every single ingredient. Just write or dictate a whole meal, and the AI decomposes it, estimating standard portions adjusted to your physical profile.",
                 help_why2_title: "Strict Mathematical Consistency",
                 help_why2_desc: "Unlike traditional apps where user-entered macros never match the total calories, our AI guarantees perfect thermodynamic consistency: (Proteins * 4) + (Carbs * 4) + (Fats * 9) = Total calories.",
                 help_why3_title: "Privacy and Data Ownership",
-                help_why3_desc: "No external servers. Your API keys and settings reside solely in localStorage, and your entire food diary is stored on your device via IndexedDB. Your data is yours alone.",
-                help_why4_title: "Dynamic Active vs Rest Target",
-                help_why4_desc: "Your body has different needs depending on the day. You can set different macro and calorie targets for active and rest days, toggling between them with a single tap.",
+                help_why3_desc: "No proprietary app servers. Your API keys and settings reside strictly in localStorage, and the food diary is saved locally on your device via IndexedDB. Your meal data is sent directly to Google servers only for AI processing via your personal API Key, with no access by the app developer or third parties.",
                 help_info_disclaimer_title: "Disclaimer",
                 help_info_disclaimer_desc: "This app is a personal tracking and informational tool. AI estimates do not substitute professional medical advice, diagnosis, treatment, or nutritional counseling. Always consult a physician before starting any diet or exercise program.",
                 help_info_storage_title: "Data Storage",
