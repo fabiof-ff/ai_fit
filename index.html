@@ -1841,12 +1841,22 @@
 
         <!-- Barra di ricerca e Filtro Mese/Anno (Su due righe) -->
         <div class="flex flex-col gap-2 mb-4 bg-slate-800/40 p-2.5 rounded-2xl border border-slate-700/30">
-            <!-- Prima riga: Ricerca Generale -->
-            <div class="relative flex items-center w-full">
-                <i data-lucide="search" class="w-4 h-4 text-slate-400 absolute left-3 pointer-events-none"></i>
-                <input type="text" id="ricercaRegistro" oninput="filtraRegistro()"
-                    placeholder="Cerca nei pasti o peso..."
-                    class="w-full bg-slate-900 border border-slate-700 rounded-xl pl-8 pr-2.5 py-2 text-[12px] text-slate-200 focus:outline-none focus:ring-2 focus:ring-indigo-500">
+            <!-- Prima riga: Ricerca Generale e Filtro Solo Pesi -->
+            <div class="flex items-center gap-2 w-full">
+                <div class="relative flex items-center flex-1">
+                    <i data-lucide="search" class="w-4 h-4 text-slate-400 absolute left-3 pointer-events-none"></i>
+                    <input type="text" id="ricercaRegistro" oninput="filtraRegistro()"
+                        placeholder="Cerca nei pasti o peso..."
+                        class="w-full bg-slate-900 border border-slate-700 rounded-xl pl-8 pr-2.5 py-2 text-[12px] text-slate-200 focus:outline-none focus:ring-2 focus:ring-indigo-500">
+                </div>
+                <!-- Filtro Solo Pesi -->
+                <div class="flex items-center gap-1.5 shrink-0 px-1">
+                    <input type="checkbox" id="chkSoloPesi" onchange="filtraRegistro()"
+                        class="rounded bg-slate-900 border-slate-700 text-indigo-650 focus:ring-indigo-500 w-3.5 h-3.5 cursor-pointer">
+                    <label for="chkSoloPesi" class="text-[11px] text-slate-400 font-semibold cursor-pointer select-none whitespace-nowrap" data-i18n="lbl_only_weights">
+                        Solo peso
+                    </label>
+                </div>
             </div>
             <!-- Seconda riga: Filtro Mese e Anno -->
             <div class="flex gap-2 w-full">
@@ -2622,6 +2632,7 @@
                 tab_oggi: "Dati",
                 tab_trend: "Trend",
                 tab_storico: "Registro",
+                lbl_only_weights: "Solo peso",
                 label_body_weight: "Registrazione Peso Corporeo",
                 btn_save_weight: "Salva Peso",
                 btn_ask_ai_opinion: "Elabora con AI",
@@ -2784,6 +2795,7 @@
                 tab_oggi: "Log",
                 tab_trend: "Trends",
                 tab_storico: "Record",
+                lbl_only_weights: "Only weight",
                 label_body_weight: "Body Weight Logger",
                 btn_save_weight: "Save Weight",
                 btn_ask_ai_opinion: "Analyze with AI",
@@ -4315,6 +4327,7 @@ Rispondi ESCLUSIVAMENTE con un oggetto JSON valido. NO blocchi di codice (no \`\
             const q = document.getElementById('ricercaRegistro')?.value.toLowerCase().trim() || "";
             const selectedAnno = document.getElementById('filtroAnno')?.value || "";
             const selectedMese = document.getElementById('filtroMese')?.value || "";
+            const soloPesi = document.getElementById('chkSoloPesi')?.checked || false;
 
             if (db.length === 0) {
                 lista.innerHTML = `<p class="text-sm text-slate-500 text-center py-8" data-i18n="lbl_no_meals_saved">
@@ -4329,6 +4342,7 @@ Rispondi ESCLUSIVAMENTE con un oggetto JSON valido. NO blocchi di codice (no \`\
 
             // Filtra solo in base alle selezioni (senza limiti di data fissi)
             const dbFiltrato = db.filter(giorno => {
+                if (soloPesi && !giorno.peso) return false;
                 if (selectedAnno) {
                     const anno = giorno.data.split('-')[0];
                     if (anno !== selectedAnno) return false;
