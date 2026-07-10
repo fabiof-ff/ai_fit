@@ -1031,34 +1031,27 @@
 
                 <!-- TAB 2: Gemini API KEY -->
                 <div id="help-content-api" class="help-tab-panel hidden space-y-3.5">
-                    <div class="p-3 bg-blue-500/10 border border-blue-500/20 rounded-2xl flex gap-3">
-                        <i data-lucide="info" class="w-5 h-5 text-blue-400 shrink-0 mt-0.5"></i>
-                        <p class="text-slate-300" data-i18n="help_api_intro">
-                            Per abilitare l'analisi dei pasti tramite Intelligenza Artificiale, è necessario inserire una chiave <strong>Gemini API Key</strong> personale. È gratuita, non richiede alcuna carta di credito o metodo di pagamento, e garantisce:
-                        </p>
-                    </div>
-
-                    <!-- Benefits List -->
-                    <div class="grid grid-cols-1 gap-2 my-1.5">
-                        <div class="flex gap-2.5 items-start bg-slate-700/25 p-2.5 rounded-xl border border-slate-700/40">
-                            <i data-lucide="shield-check" class="w-4 h-4 text-emerald-400 shrink-0 mt-0.5"></i>
-                            <div>
-                                <strong class="text-slate-200 block text-[11px]" data-i18n="help_api_benefit_privacy_title">100% Privacy & Zero Account</strong>
-                                <span class="text-slate-400 text-[10px]" data-i18n="help_api_benefit_privacy_desc">Nessuna registrazione, nessuna password o email richiesta. I tuoi dati e le chiavi rimangono sul tuo browser.</span>
-                            </div>
+                    <div class="p-3 bg-blue-500/10 border border-blue-500/20 rounded-2xl flex flex-col gap-2.5">
+                        <div class="flex gap-3">
+                            <i data-lucide="info" class="w-5 h-5 text-blue-400 shrink-0 mt-0.5"></i>
+                            <p class="text-slate-300" data-i18n="help_api_intro">
+                                Per abilitare l'analisi dei pasti tramite Intelligenza Artificiale, è necessario inserire una chiave <strong>Gemini API Key</strong> personale. È gratuita, non richiede alcuna carta di credito o metodo di pagamento, e garantisce:
+                            </p>
                         </div>
-                        <div class="flex gap-2.5 items-start bg-slate-700/25 p-2.5 rounded-xl border border-slate-700/40">
-                            <i data-lucide="zap" class="w-4 h-4 text-amber-400 shrink-0 mt-0.5"></i>
-                            <div>
-                                <strong class="text-slate-200 block text-[11px]" data-i18n="help_api_benefit_limits_title">Nessuna Coda o Limiti Condivisi</strong>
-                                <span class="text-slate-400 text-[10px]" data-i18n="help_api_benefit_limits_desc">Usi la tua quota personale gratuita fornita da Google, senza rallentamenti dovuti ad altri utenti dell'app.</span>
+                        
+                        <!-- Benefits List Inside Box -->
+                        <div class="grid grid-cols-1 gap-1.5 pl-8">
+                            <div class="flex gap-2 items-center">
+                                <i data-lucide="shield-check" class="w-3.5 h-3.5 text-emerald-400 shrink-0"></i>
+                                <strong class="text-slate-200 text-[11px]" data-i18n="help_api_benefit_privacy_title">100% Privacy & Zero Account</strong>
                             </div>
-                        </div>
-                        <div class="flex gap-2.5 items-start bg-slate-700/25 p-2.5 rounded-xl border border-slate-700/40">
-                            <i data-lucide="hourglass" class="w-4 h-4 text-blue-400 shrink-0 mt-0.5"></i>
-                            <div>
-                                <strong class="text-slate-200 block text-[11px]" data-i18n="help_api_benefit_longevity_title">Longevità e Indipendenza</strong>
-                                <span class="text-slate-400 text-[10px]" data-i18n="help_api_benefit_longevity_desc">L'applicazione funziona in modo autonomo: continuerà a funzionare per sempre anche se il creatore decidesse di dismetterla.</span>
+                            <div class="flex gap-2 items-center">
+                                <i data-lucide="rocket" class="w-3.5 h-3.5 text-amber-400 shrink-0"></i>
+                                <strong class="text-slate-200 text-[11px]" data-i18n="help_api_benefit_limits_title">Nessuna Coda o Limiti Condivisi</strong>
+                            </div>
+                            <div class="flex gap-2 items-center">
+                                <i data-lucide="server-off" class="w-3.5 h-3.5 text-blue-400 shrink-0"></i>
+                                <strong class="text-slate-200 text-[11px]" data-i18n="help_api_benefit_longevity_title">Longevità e Indipendenza</strong>
                             </div>
                         </div>
                     </div>
@@ -1233,20 +1226,20 @@
 
         <div id="dropdownMenu" class="hidden mb-3 bg-slate-800/60 p-2.5 rounded-2xl border border-slate-700/50 backdrop-blur flex items-center justify-around gap-1.5 transition-all">
             <button onclick="cycleLang()" id="btnLangToggle" title="Cambia lingua / Change language"
-                class="text-slate-400 hover:text-slate-202 px-2.5 py-1.5 rounded-lg bg-slate-700/30 hover:bg-slate-700/60 transition text-[11px] font-bold flex items-center gap-1 shrink-0">
+                class="text-slate-400 hover:text-slate-200 px-2.5 py-1.5 rounded-lg bg-transparent hover:bg-slate-700/20 transition text-[11px] font-bold flex items-center gap-1 shrink-0">
                 <img id="langFlag" src="https://flagcdn.com/20x15/it.png" width="16" height="12" alt="IT"
                     class="rounded-sm"> <span id="langLabel">IT</span>
             </button>
             <button onclick="toggleTheme()" id="btnThemeToggle" title="Cambia tema / Toggle theme"
-                class="text-slate-400 hover:text-slate-202 p-1.5 rounded-lg bg-slate-700/30 hover:bg-slate-700/60 transition cursor-pointer flex items-center justify-center shrink-0">
+                class="text-slate-400 hover:text-slate-200 p-1.5 rounded-lg bg-transparent hover:bg-slate-700/20 transition cursor-pointer flex items-center justify-center shrink-0">
                 <i id="themeIcon" data-lucide="sun" class="w-4 h-4"></i>
             </button>
             <button onclick="toggleSettings()"
-                class="text-slate-400 hover:text-slate-202 p-1.5 rounded-lg bg-slate-700/30 hover:bg-slate-700/60 transition flex items-center justify-center shrink-0">
+                class="text-slate-400 hover:text-slate-200 p-1.5 rounded-lg bg-transparent hover:bg-slate-700/20 transition flex items-center justify-center shrink-0">
                 <i data-lucide="settings" class="w-4 h-4"></i>
             </button>
             <button onclick="toggleHelp()" id="btnHelpToggle" title="Guida / Help"
-                class="text-slate-400 hover:text-slate-202 p-1.5 rounded-lg bg-slate-700/30 hover:bg-slate-700/60 transition flex items-center justify-center shrink-0">
+                class="text-slate-400 hover:text-slate-200 p-1.5 rounded-lg bg-transparent hover:bg-slate-700/20 transition flex items-center justify-center shrink-0">
                 <i data-lucide="help-circle" class="w-4 h-4"></i>
             </button>
         </div>
@@ -2747,11 +2740,8 @@
                 help_tab_info: "Info & Note",
                 help_api_intro: "Per abilitare l'analisi dei pasti tramite Intelligenza Artificiale, è necessario inserire una chiave <strong>Gemini API Key</strong> personale. È gratuita, non richiede alcuna carta di credito o metodo di pagamento, e garantisce:",
                 help_api_benefit_privacy_title: "100% Privacy & Zero Account",
-                help_api_benefit_privacy_desc: "Nessuna registrazione, nessuna password o email richiesta. I tuoi dati e le chiavi rimangono sul tuo browser.",
                 help_api_benefit_limits_title: "Nessuna Coda o Limiti Condivisi",
-                help_api_benefit_limits_desc: "Usi la tua quota personale gratuita fornita da Google, senza rallentamenti dovuti ad altri utenti dell'app.",
-                help_api_benefit_longevity_title: "Longevità e Indipendenza",
-                help_api_benefit_longevity_desc: "L'applicazione funziona in modo autonomo: continuerà a funzionare per sempre anche se il creatore decidesse di dismetterla.",
+                help_api_benefit_longevity_title: "Nessun Server / Funziona Sempre",
                 help_api_step1_title: "Accedi a Google AI Studio",
                 help_api_step1_desc: "Visita il portale per gli sviluppatori di Google: ",
                 help_api_step1_desc_extra: " ed effettua il login con il tuo account Google.",
@@ -2910,11 +2900,8 @@
                 help_tab_info: "Info & Notes",
                 help_api_intro: "To enable meal analysis via Artificial Intelligence, you need to enter a personal <strong>Gemini API Key</strong>. It is free, requires no credit card or payment method, and guarantees:",
                 help_api_benefit_privacy_title: "100% Privacy & Zero Accounts",
-                help_api_benefit_privacy_desc: "No registrations, passwords, or emails required. Your logs and keys remain strictly in your browser.",
                 help_api_benefit_limits_title: "No Queues or Shared Traffic",
-                help_api_benefit_limits_desc: "You use your own personal free quota provided by Google, avoiding slow-downs from other app users.",
-                help_api_benefit_longevity_title: "Longevity and Independence",
-                help_api_benefit_longevity_desc: "The app works in a decentralized way: it will continue to function forever even if the developer stops supporting it.",
+                help_api_benefit_longevity_title: "No Server / Works Forever",
                 help_api_step1_title: "Access Google AI Studio",
                 help_api_step1_desc: "Visit Google's developer portal: ",
                 help_api_step1_desc_extra: " and log in with your Google account.",
