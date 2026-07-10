@@ -1802,46 +1802,28 @@
 
     <div id="panel-storico" class="tab-panel pt-1 pb-4 px-4 max-w-md mx-auto w-full">
 
-        <div class="flex gap-1.5 mb-4">
-            <button onclick="esportaDB()"
-                class="flex-1 flex items-center justify-center gap-1 py-2 rounded-xl text-[10px] sm:text-xs font-bold border bg-slate-800/60 border-slate-700/50 text-slate-400 hover:text-emerald-400 hover:border-emerald-500/40 transition">
-                <i data-lucide="download" class="w-3.5 h-3.5"></i> <span data-i18n="btn_export_data">Esporta dati</span>
-            </button>
-            <button onclick="document.getElementById('importInput').click()"
-                class="flex-1 flex items-center justify-center gap-1 py-2 rounded-xl text-[10px] sm:text-xs font-bold border bg-slate-800/60 border-slate-700/50 text-slate-400 hover:text-blue-400 hover:border-blue-500/40 transition">
-                <i data-lucide="upload" class="w-3.5 h-3.5"></i> <span data-i18n="btn_import_data">Importa dati</span>
-            </button>
-            <button onclick="confermaReset()"
-                class="flex-1 flex items-center justify-center gap-1 py-2 rounded-xl text-[10px] sm:text-xs font-bold border bg-slate-800/60 border-slate-700/50 text-slate-400 hover:text-rose-400 hover:border-rose-500/40 transition">
-                <i data-lucide="trash-2" class="w-3.5 h-3.5"></i> <span data-i18n="btn_delete_all">Cancella tutto</span>
-            </button>
-        </div>
+        <!-- Barra di ricerca, Filtri e Pulsanti d'Azione -->
+        <div class="flex flex-col gap-2.5 mb-4 bg-slate-800/40 p-2.5 rounded-2xl border border-slate-700/30">
+            <!-- Pulsanti d'Azione (Esporta, Importa, Cancella) in alto nel box -->
+            <div class="flex gap-1.5 w-full">
+                <button onclick="esportaDB()"
+                    class="flex-1 flex items-center justify-center gap-1 py-2 rounded-xl text-[10px] sm:text-xs font-bold border bg-slate-800/60 border-slate-700/50 text-slate-400 hover:text-emerald-400 hover:border-emerald-500/40 transition">
+                    <i data-lucide="download" class="w-3.5 h-3.5"></i> <span data-i18n="btn_export_data">Esporta</span>
+                </button>
+                <button onclick="document.getElementById('importInput').click()"
+                    class="flex-1 flex items-center justify-center gap-1 py-2 rounded-xl text-[10px] sm:text-xs font-bold border bg-slate-800/60 border-slate-700/50 text-slate-400 hover:text-blue-400 hover:border-blue-500/40 transition">
+                    <i data-lucide="upload" class="w-3.5 h-3.5"></i> <span data-i18n="btn_import_data">Importa</span>
+                </button>
+                <button onclick="confermaReset()"
+                    class="flex-1 flex items-center justify-center gap-1 py-2 rounded-xl text-[10px] sm:text-xs font-bold border bg-slate-800/60 border-slate-700/50 text-slate-400 hover:text-rose-400 hover:border-rose-500/40 transition">
+                    <i data-lucide="trash-2" class="w-3.5 h-3.5"></i> <span data-i18n="btn_delete_all">Cancella</span>
+                </button>
+            </div>
 
-        <!-- Box collassabile per Alimenti Frequenti -->
-        <div id="boxAlimentiFrequentiContainer"
-            class="hidden mb-4 bg-slate-800/40 border border-slate-700/30 rounded-2xl p-3 shadow-xl">
-            <details class="group" id="detailsAlimentiFrequenti">
-                <summary
-                    class="flex justify-between items-center text-xs font-bold text-slate-300 cursor-pointer select-none list-none">
-                    <span class="flex items-center gap-1.5">
-                        <i data-lucide="tag" class="w-3.5 h-3.5 text-indigo-400"></i>
-                        <span data-i18n="lbl_freq_foods">Alimenti più frequenti</span>
-                    </span>
-                    <i data-lucide="chevron-down"
-                        class="w-4 h-4 text-slate-400 group-open:rotate-180 transition-transform duration-200"></i>
-                </summary>
-                <div class="mt-3">
-                    <div id="listaAlimentiFrequenti"
-                        class="flex flex-wrap justify-center items-center gap-x-5 gap-y-3 p-3 bg-slate-900/10 dark:bg-slate-950/20 rounded-xl border border-slate-700/5 min-h-[50px] leading-relaxed">
-                        <!-- Tag inseriti dinamicamente -->
-                    </div>
-                </div>
-            </details>
-        </div>
+            <!-- Separatore orizzontale sottile -->
+            <div class="border-t border-slate-750/30 dark:border-slate-700/20 my-0.5"></div>
 
-        <!-- Barra di ricerca e Filtro Mese/Anno (Su due righe) -->
-        <div class="flex flex-col gap-2 mb-4 bg-slate-800/40 p-2.5 rounded-2xl border border-slate-700/30">
-            <!-- Prima riga: Ricerca Generale e Filtro Solo Pesi -->
+            <!-- Ricerca Generale e Filtro Solo Pesi -->
             <div class="flex items-center gap-2 w-full">
                 <div class="relative flex items-center flex-1">
                     <i data-lucide="search" class="w-4 h-4 text-slate-400 absolute left-3 pointer-events-none"></i>
@@ -1858,7 +1840,7 @@
                     </label>
                 </div>
             </div>
-            <!-- Seconda riga: Filtro Mese e Anno -->
+            <!-- Filtro Mese e Anno -->
             <div class="flex gap-2 w-full">
                 <!-- Filtro Mese -->
                 <div class="flex-1 relative">
@@ -1891,6 +1873,28 @@
                         class="w-3 h-3 text-slate-400 absolute right-2.5 top-1/2 -translate-y-1/2 pointer-events-none"></i>
                 </div>
             </div>
+        </div>
+
+        <!-- Box collassabile per Alimenti Frequenti (posizionato dopo il box dei filtri) -->
+        <div id="boxAlimentiFrequentiContainer"
+            class="hidden mb-4 bg-slate-800/40 border border-slate-700/30 rounded-2xl p-3 shadow-xl">
+            <details class="group" id="detailsAlimentiFrequenti">
+                <summary
+                    class="flex justify-between items-center text-xs font-bold text-slate-300 cursor-pointer select-none list-none">
+                    <span class="flex items-center gap-1.5">
+                        <i data-lucide="tag" class="w-3.5 h-3.5 text-indigo-400"></i>
+                        <span data-i18n="lbl_freq_foods">Alimenti più frequenti</span>
+                    </span>
+                    <i data-lucide="chevron-down"
+                        class="w-4 h-4 text-slate-400 group-open:rotate-180 transition-transform duration-200"></i>
+                </summary>
+                <div class="mt-3">
+                    <div id="listaAlimentiFrequenti"
+                        class="flex flex-wrap justify-center items-center gap-x-5 gap-y-3 p-3 bg-slate-900/10 dark:bg-slate-950/20 rounded-xl border border-slate-700/5 min-h-[50px] leading-relaxed">
+                        <!-- Tag inseriti dinamicamente -->
+                    </div>
+                </div>
+            </details>
         </div>
 
         <div class="max-h-[450px] overflow-y-auto pr-1 custom-scrollbar">
@@ -2672,9 +2676,9 @@
                 btn_save_to_diary: "Salva nel diario",
                 lbl_food_diary: "Diario alimentare",
                 lbl_freq_foods: "Alimenti più frequenti",
-                btn_delete_all: "Cancella tutto",
-                btn_export_data: "Esporta dati",
-                btn_import_data: "Importa dati",
+                btn_delete_all: "Cancella",
+                btn_export_data: "Esporta",
+                btn_import_data: "Importa",
                 lbl_no_meals_saved: "Nessun pasto salvato ancora.\nElabora e salva un'analisi dalla tab Dati!",
                 lbl_avg_weekly_weight: "Peso Medio Settimanale",
                 lbl_avg_monthly_weight: "Peso Medio Mensile",
@@ -2832,9 +2836,9 @@
                 btn_save_to_diary: "Save to Diary",
                 lbl_food_diary: "Food Diary",
                 lbl_freq_foods: "Most frequent foods",
-                btn_delete_all: "Delete all",
-                btn_export_data: "Export data",
-                btn_import_data: "Import data",
+                btn_delete_all: "Delete",
+                btn_export_data: "Export",
+                btn_import_data: "Import",
                 lbl_no_meals_saved: "No meals saved yet.\nAnalyze and save a meal from the Log tab!",
                 lbl_avg_weekly_weight: "Avg Weekly Weight",
                 lbl_avg_monthly_weight: "Avg Monthly Weight",
