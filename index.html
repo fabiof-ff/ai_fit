@@ -1935,6 +1935,11 @@
             });
         };
 
+        function arrotondaPeso(val) {
+            if (val === null || val === undefined || isNaN(val)) return val;
+            return Math.round(parseFloat(val) * 10) / 10;
+        }
+
         let targetCalorie = 0; // Target giornaliero calorie
         let targetProteine = 0; // Target giornaliero proteine
         let targetCarbo = 0; // Target giornaliero carboidrati
@@ -2108,7 +2113,7 @@
                 ctx.font = "bold 8px 'Outfit', sans-serif";
                 ctx.textAlign = 'left';
                 ctx.textBaseline = 'middle';
-                const textWeight = targets.peso + ' kg';
+                const textWeight = arrotondaPeso(targets.peso) + ' kg';
                 const textWidth = ctx.measureText(textWeight).width;
                 const boxWidth = textWidth + 6;
                 const boxHeight = 12;
@@ -2157,7 +2162,7 @@
 
                     const x = element.x;
                     const y = element.y - 5;
-                    const text = rawVal.toString();
+                    const text = arrotondaPeso(rawVal).toString();
 
                     ctx.strokeText(text, x, y);
                     ctx.fillStyle = '#6366f1';
@@ -3563,16 +3568,17 @@
             targetProteine = parseInt(document.getElementById('targetProteine').value) || 0;
             targetCarbo = parseInt(document.getElementById('targetCarbo').value) || 0;
             targetGrassi = parseInt(document.getElementById('targetGrassi').value) || 0;
-            pesoInput = parseInt(document.getElementById('targetPeso').value);
+            const pesoRaw = parseFloat(document.getElementById('targetPeso').value);
+            pesoInput = !isNaN(pesoRaw) ? arrotondaPeso(pesoRaw) : null;
 
             localStorage.setItem('target_calorie', targetCalorie);
             localStorage.setItem('target_proteine', targetProteine);
             localStorage.setItem('target_carbo', targetCarbo);
             localStorage.setItem('target_grassi', targetGrassi);
-            localStorage.setItem('targetPeso', pesoInput);
+            localStorage.setItem('targetPeso', pesoInput !== null ? pesoInput : '');
 
             // Aggiorna la variabile globale leggendo il valore inserito (usa il fallback se vuoto)
-            pesoTarget = parseFloat(pesoInput) || 75;
+            pesoTarget = pesoInput || 75;
 
             // Ricalcola e ridisegna il grafico
             if (document.getElementById('panel-trend').classList.contains('active')) {
@@ -4348,7 +4354,7 @@ Rispondi ESCLUSIVAMENTE con un oggetto JSON valido. NO blocchi di codice (no \`\
                 <div class="flex items-center gap-2">
                     <span class="text-xs font-bold text-slate-300">${giorno.data}</span>
                     ${giorno.peso
-                        ? `<button onclick="modificaPesoDelGiorno(${giorno.id})" class="text-[10px] bg-indigo-500/10 hover:bg-indigo-500/20 text-indigo-300 border border-indigo-500/20 px-1.5 py-0.5 rounded flex items-center gap-1 cursor-pointer transition" title="${currentLang === 'en' ? 'Edit weight' : 'Modifica peso'}"><i data-lucide="scale" class="w-3 h-3"></i> ${giorno.peso} kg <i data-lucide="pencil" class="w-2 h-2 opacity-60"></i></button>`
+                        ? `<button onclick="modificaPesoDelGiorno(${giorno.id})" class="text-[10px] bg-indigo-500/10 hover:bg-indigo-500/20 text-indigo-300 border border-indigo-500/20 px-1.5 py-0.5 rounded flex items-center gap-1 cursor-pointer transition" title="${currentLang === 'en' ? 'Edit weight' : 'Modifica peso'}"><i data-lucide="scale" class="w-3 h-3"></i> ${arrotondaPeso(giorno.peso)} kg <i data-lucide="pencil" class="w-2 h-2 opacity-60"></i></button>`
                         : `<button onclick="modificaPesoDelGiorno(${giorno.id})" class="text-[10px] bg-slate-700/30 hover:bg-slate-700/60 text-slate-400 border border-slate-700/30 px-1.5 py-0.5 rounded flex items-center gap-1 cursor-pointer transition" title="${currentLang === 'en' ? 'Add weight' : 'Aggiungi peso'}"><i data-lucide="plus" class="w-3 h-3"></i> ${currentLang === 'en' ? 'Add weight' : 'Aggiungi peso'}</button>`
                     }
                 </div>
@@ -4449,7 +4455,7 @@ Rispondi ESCLUSIVAMENTE con un oggetto JSON valido. NO blocchi di codice (no \`\
                 }
 
                 // Salva il peso
-                giorno.peso = parseFloat(nuovoPeso.toFixed(1));
+                giorno.peso = arrotondaPeso(nuovoPeso);
                 localStorage.setItem('nutriDB', JSON.stringify(db));
                 chiudiModalPeso();
                 await customAlert(
@@ -5280,7 +5286,7 @@ Rispondi ESCLUSIVAMENTE con un oggetto JSON valido. NO blocchi di codice (no \`\
                             {
                                 type: 'line',
                                 label: currentLang === 'en' ? 'Weight' : 'Peso Reale',
-                                data: ultimiGiorni.map(g => g.peso),
+                                data: ultimiGiorni.map(g => g.peso ? arrotondaPeso(g.peso) : null),
                                 borderColor: '#6366f1',
                                 backgroundColor: 'rgba(99, 102, 241, 0.1)',
                                 borderWidth: 3,
@@ -5293,7 +5299,7 @@ Rispondi ESCLUSIVAMENTE con un oggetto JSON valido. NO blocchi di codice (no \`\
                             {
                                 type: 'line',
                                 label: currentLang === 'en' ? 'Weight Target' : 'Obiettivo Peso',
-                                data: etichetteGiorni.map(() => pTarget),
+                                data: etichetteGiorni.map(() => pTarget ? arrotondaPeso(pTarget) : null),
                                 borderColor: 'transparent',
                                 borderWidth: 0,
                                 borderDash: [5, 5],
@@ -5316,8 +5322,8 @@ Rispondi ESCLUSIVAMENTE con un oggetto JSON valido. NO blocchi di codice (no \`\
                                         const rawData = context.chart.config.data.customRawData;
                                         const item = rawData[idx];
                                         if (!item) return '';
-                                        if (dsIdx === 0) return (currentLang === 'en' ? 'Weight: ' : 'Peso: ') + (item.peso ? item.peso + ' kg' : '--');
-                                        if (dsIdx === 1) return (currentLang === 'en' ? 'Weight Target: ' : 'Obiettivo Peso: ') + pTarget + ' kg';
+                                        if (dsIdx === 0) return (currentLang === 'en' ? 'Weight: ' : 'Peso: ') + (item.peso ? arrotondaPeso(item.peso) + ' kg' : '--');
+                                        if (dsIdx === 1) return (currentLang === 'en' ? 'Weight Target: ' : 'Obiettivo Peso: ') + (pTarget ? arrotondaPeso(pTarget) : '--') + ' kg';
                                         return '';
                                     }
                                 }
@@ -5592,7 +5598,7 @@ Rispondi ESCLUSIVAMENTE con un oggetto JSON valido. NO blocchi di codice (no \`\
                             {
                                 type: 'line',
                                 label: currentLang === 'en' ? 'Weight' : 'Peso Reale',
-                                data: datiSettimane.map(s => s.peso),
+                                data: datiSettimane.map(s => s.peso ? arrotondaPeso(s.peso) : null),
                                 borderColor: '#6366f1',
                                 backgroundColor: 'rgba(99, 102, 241, 0.1)',
                                 borderWidth: 3,
@@ -5605,7 +5611,7 @@ Rispondi ESCLUSIVAMENTE con un oggetto JSON valido. NO blocchi di codice (no \`\
                             {
                                 type: 'line',
                                 label: currentLang === 'en' ? 'Weight Target' : 'Obiettivo Peso',
-                                data: etichetteSettimane.map(() => pTarget),
+                                data: etichetteSettimane.map(() => pTarget ? arrotondaPeso(pTarget) : null),
                                 borderColor: 'transparent',
                                 borderWidth: 0,
                                 borderDash: [5, 5],
@@ -5628,8 +5634,8 @@ Rispondi ESCLUSIVAMENTE con un oggetto JSON valido. NO blocchi di codice (no \`\
                                         const rawData = context.chart.config.data.customRawData;
                                         const item = rawData[idx];
                                         if (!item) return '';
-                                        if (dsIdx === 0) return (currentLang === 'en' ? 'Weight: ' : 'Peso: ') + (item.peso ? item.peso.toFixed(1) + ' kg' : '--');
-                                        if (dsIdx === 1) return (currentLang === 'en' ? 'Weight Target: ' : 'Obiettivo Peso: ') + pTarget + ' kg';
+                                        if (dsIdx === 0) return (currentLang === 'en' ? 'Weight: ' : 'Peso: ') + (item.peso ? arrotondaPeso(item.peso) + ' kg' : '--');
+                                        if (dsIdx === 1) return (currentLang === 'en' ? 'Weight Target: ' : 'Obiettivo Peso: ') + (pTarget ? arrotondaPeso(pTarget) : '--') + ' kg';
                                         return '';
                                     }
                                 }
@@ -5753,7 +5759,7 @@ Rispondi ESCLUSIVAMENTE con un oggetto JSON valido. NO blocchi di codice (no \`\
                 const avgProt = mData.daysWithCal > 0 ? Math.round(mData.proteineSum / mData.daysWithCal) : 0;
                 const avgCarb = mData.daysWithCal > 0 ? Math.round(mData.carboidratiSum / mData.daysWithCal) : 0;
                 const avgFat = mData.daysWithCal > 0 ? Math.round(mData.grassiSum / mData.daysWithCal) : 0;
-                const avgPeso = mData.daysWithPeso > 0 ? parseFloat((mData.pesoSum / mData.daysWithPeso).toFixed(1)) : null;
+                const avgPeso = mData.daysWithPeso > 0 ? arrotondaPeso(mData.pesoSum / mData.daysWithPeso) : null;
 
                 datiCalorie.push(avgCal);
                 datiProteine.push(avgProt);
@@ -5980,7 +5986,7 @@ Rispondi ESCLUSIVAMENTE con un oggetto JSON valido. NO blocchi di codice (no \`\
                         {
                             type: 'line',
                             label: currentLang === 'en' ? 'Weight' : 'Peso Reale',
-                            data: datiPeso,
+                            data: datiPeso.map(p => p ? arrotondaPeso(p) : null),
                             borderColor: '#6366f1',
                             backgroundColor: 'rgba(99, 102, 241, 0.1)',
                             borderWidth: 3,
@@ -5993,7 +5999,7 @@ Rispondi ESCLUSIVAMENTE con un oggetto JSON valido. NO blocchi di codice (no \`\
                         {
                             type: 'line',
                             label: currentLang === 'en' ? 'Weight Target' : 'Obiettivo Peso',
-                            data: labels.map(() => pTarget),
+                            data: labels.map(() => pTarget ? arrotondaPeso(pTarget) : null),
                             borderColor: 'transparent',
                             borderWidth: 0,
                             borderDash: [5, 5],
@@ -6016,8 +6022,8 @@ Rispondi ESCLUSIVAMENTE con un oggetto JSON valido. NO blocchi di codice (no \`\
                                     const rawData = context.chart.config.data.customRawData;
                                     const item = rawData[idx];
                                     if (!item) return '';
-                                    if (dsIdx === 0) return (currentLang === 'en' ? 'Weight: ' : 'Peso: ') + (item.peso ? item.peso.toFixed(1) + ' kg' : '--');
-                                    if (dsIdx === 1) return (currentLang === 'en' ? 'Weight Target: ' : 'Obiettivo Peso: ') + pTarget + ' kg';
+                                    if (dsIdx === 0) return (currentLang === 'en' ? 'Weight: ' : 'Peso: ') + (item.peso ? arrotondaPeso(item.peso) + ' kg' : '--');
+                                    if (dsIdx === 1) return (currentLang === 'en' ? 'Weight Target: ' : 'Obiettivo Peso: ') + (pTarget ? arrotondaPeso(pTarget) : '--') + ' kg';
                                     return '';
                                 }
                             }
@@ -6177,13 +6183,13 @@ Rispondi ESCLUSIVAMENTE con un oggetto JSON valido. NO blocchi di codice (no \`\
 
             if (giornoEsistente) {
                 // Aggiorna il peso del giorno esistente
-                giornoEsistente.peso = pesoFlessibile;
+                giornoEsistente.peso = arrotondaPeso(pesoFlessibile);
             } else {
                 // Se il giorno non esiste, crealo inizializzando i parametri coerentemente con l'app
                 db.push({
                     id: Date.now(),
                     data: dataSelezionata,
-                    peso: pesoFlessibile,
+                    peso: arrotondaPeso(pesoFlessibile),
                     calorie: 0,
                     proteine: 0,
                     carboidrati: 0,
@@ -6396,7 +6402,7 @@ Istruzioni per il calcolo e la risposta:
                 targetSuggeritiAI = suggested;
 
                 document.getElementById('sugCal').innerText = Math.round(suggested.calorie) || 0;
-                document.getElementById('sugPeso').innerText = suggested.pesoTarget || 0;
+                document.getElementById('sugPeso').innerText = suggested.pesoTarget ? arrotondaPeso(suggested.pesoTarget) : 0;
                 document.getElementById('sugProt').innerText = Math.round(suggested.proteine) || 0;
                 document.getElementById('sugCarb').innerText = Math.round(suggested.carboidrati) || 0;
                 document.getElementById('sugFat').innerText = Math.round(suggested.grassi) || 0;
@@ -6438,7 +6444,7 @@ Istruzioni per il calcolo e la risposta:
             document.getElementById('targetProteine').value = Math.round(targetSuggeritiAI.proteine) || 160;
             document.getElementById('targetCarbo').value = Math.round(targetSuggeritiAI.carboidrati) || 200;
             document.getElementById('targetGrassi').value = Math.round(targetSuggeritiAI.grassi) || 70;
-            document.getElementById('targetPeso').value = targetSuggeritiAI.pesoTarget || "";
+            document.getElementById('targetPeso').value = targetSuggeritiAI.pesoTarget ? arrotondaPeso(targetSuggeritiAI.pesoTarget) : "";
 
             saveTarget();
 
@@ -6719,9 +6725,9 @@ Istruzioni per il calcolo e la risposta:
                 const trovato = db.find(x => x.data === costr);
                 if (trovato && (trovato.calorie > 0 || trovato.proteine > 0 || trovato.pasti.length > 0)) {
                     if (currentLang === 'en') {
-                        datiBrevePeriodo += `- Date ${costr}: Calories ${Math.round(trovato.calorie)} kcal, Proteins ${Math.round(trovato.proteine)}g, Carbs ${Math.round(trovato.carboidrati)}g, Fats ${Math.round(trovato.grassi)}g, Weight ${trovato.peso || 'not logged'} kg\n`;
+                        datiBrevePeriodo += `- Date ${costr}: Calories ${Math.round(trovato.calorie)} kcal, Proteins ${Math.round(trovato.proteine)}g, Carbs ${Math.round(trovato.carboidrati)}g, Fats ${Math.round(trovato.grassi)}g, Weight ${trovato.peso ? arrotondaPeso(trovato.peso) : 'not logged'} kg\n`;
                     } else {
-                        datiBrevePeriodo += `- Data ${costr}: Calorie ${Math.round(trovato.calorie)} kcal, Proteine ${Math.round(trovato.proteine)}g, Carbo ${Math.round(trovato.carboidrati)}g, Grassi ${Math.round(trovato.grassi)}g, Peso ${trovato.peso || 'non registrato'} kg\n`;
+                        datiBrevePeriodo += `- Data ${costr}: Calorie ${Math.round(trovato.calorie)} kcal, Proteine ${Math.round(trovato.proteine)}g, Carbo ${Math.round(trovato.carboidrati)}g, Grassi ${Math.round(trovato.grassi)}g, Peso ${trovato.peso ? arrotondaPeso(trovato.peso) : 'non registrato'} kg\n`;
                     }
                     giorniRegistratiCount++;
                 } else {
@@ -6780,9 +6786,9 @@ Istruzioni per il calcolo e la risposta:
                     const mediaPeso = recordConPeso.length > 0 ? recordConPeso.reduce((a, b) => a + b.peso, 0) / recordConPeso.length : null;
 
                     if (currentLang === 'en') {
-                        datiMedioPeriodo += `- Week ${numSettimana} (from ${inizioSettimana.toLocaleDateString('en-US')} to ${fineSettimana.toLocaleDateString('en-US')}): Average Calories ${Math.round(mediaC)} kcal/day, Proteins ${Math.round(mediaP)}g, Carbs ${Math.round(mediaCb)}g, Fats ${Math.round(mediaG)}g, Average Weight ${mediaPeso ? mediaPeso.toFixed(1) + ' kg' : 'not logged'}\n`;
+                        datiMedioPeriodo += `- Week ${numSettimana} (from ${inizioSettimana.toLocaleDateString('en-US')} to ${fineSettimana.toLocaleDateString('en-US')}): Average Calories ${Math.round(mediaC)} kcal/day, Proteins ${Math.round(mediaP)}g, Carbs ${Math.round(mediaCb)}g, Fats ${Math.round(mediaG)}g, Average Weight ${mediaPeso ? arrotondaPeso(mediaPeso) + ' kg' : 'not logged'}\n`;
                     } else {
-                        datiMedioPeriodo += `- Settimana ${numSettimana} (da ${inizioSettimana.toLocaleDateString('it-IT')} a ${fineSettimana.toLocaleDateString('it-IT')}): Calorie medie ${Math.round(mediaC)} kcal/giorno, Proteine ${Math.round(mediaP)}g, Carbo ${Math.round(mediaCb)}g, Grassi ${Math.round(mediaG)}g, Peso medio ${mediaPeso ? mediaPeso.toFixed(1) + ' kg' : 'non registrato'}\n`;
+                        datiMedioPeriodo += `- Settimana ${numSettimana} (da ${inizioSettimana.toLocaleDateString('it-IT')} a ${fineSettimana.toLocaleDateString('it-IT')}): Calorie medie ${Math.round(mediaC)} kcal/giorno, Proteine ${Math.round(mediaP)}g, Carbo ${Math.round(mediaCb)}g, Grassi ${Math.round(mediaG)}g, Peso medio ${mediaPeso ? arrotondaPeso(mediaPeso) + ' kg' : 'non registrato'}\n`;
                     }
                     settimaneRegistrateCount++;
                 } else {
