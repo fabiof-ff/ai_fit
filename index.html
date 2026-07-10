@@ -320,12 +320,17 @@
         }
 
         body.light-theme .bg-slate-900\/60,
-        body.light-theme .bg-slate-900\/50,
         body.light-theme .bg-slate-900\/40,
         body.light-theme .bg-slate-900,
         body.light-theme .bg-slate-950 {
             background: rgba(241, 245, 249, 0.85) !important;
             border-color: rgba(226, 232, 240, 0.6) !important;
+            color: #1e293b !important;
+        }
+
+        body.light-theme .bg-slate-900\/50 {
+            background: rgba(255, 255, 255, 0.6) !important;
+            border-color: rgba(226, 232, 240, 0.7) !important;
             color: #1e293b !important;
         }
 
@@ -1250,7 +1255,7 @@
 
         <div id="panel-oggi" class="tab-panel active">
 
-            <div id="boxTotaleGiorno" class="mb-4 p-3 bg-slate-800/50 border border-slate-700/40 rounded-2xl hidden">
+            <div id="boxTotaleGiorno" class="mb-4 py-3 px-2 bg-slate-800/50 border border-slate-700/40 rounded-2xl hidden">
                 <div class="flex items-center justify-between mb-3">
                     <p
                         class="text-[11px] font-semibold text-slate-400 uppercase tracking-wider flex items-center gap-1.5">
@@ -1263,13 +1268,13 @@
                             parere AI</span>
                     </button>
                 </div>
-                <div class="grid grid-cols-4 gap-1.5">
+                <div class="grid grid-cols-4 gap-1">
 
                     <div
-                        class="bg-slate-900/50 rounded-xl p-2 text-center flex flex-col items-center justify-between min-h-[105px]">
+                        class="bg-slate-900/50 rounded-xl px-1.5 py-2 text-center flex flex-col items-center justify-between min-h-[105px]">
                         <p class="text-[9px] text-slate-400 uppercase font-semibold mb-1"
                             data-i18n="label_calorie_uppercase">Calorie</p>
-                        <div class="relative w-16 h-16 flex justify-center items-center">
+                        <div class="relative w-14 h-14 flex justify-center items-center">
                             <canvas id="oggiCalorie"></canvas>
                             <div class="absolute inset-0 flex flex-col items-center justify-center pointer-events-none">
                                 <span class="text-[9.6px] font-bold" id="valCaloriePercent">—</span>
@@ -1280,10 +1285,10 @@
                     </div>
 
                     <div
-                        class="bg-slate-900/50 rounded-xl p-2 text-center flex flex-col items-center justify-between min-h-[105px]">
+                        class="bg-slate-900/50 rounded-xl px-1.5 py-2 text-center flex flex-col items-center justify-between min-h-[105px]">
                         <p class="text-[9px] text-slate-400 uppercase font-semibold mb-1"
                             data-i18n="label_proteine_uppercase">Proteine</p>
-                        <div class="relative w-16 h-16 flex justify-center items-center">
+                        <div class="relative w-14 h-14 flex justify-center items-center">
                             <canvas id="oggiProteine"></canvas>
                             <div class="absolute inset-0 flex flex-col items-center justify-center pointer-events-none">
                                 <span class="text-[9.6px] font-bold" id="valProteinePercent">—</span>
@@ -1294,10 +1299,10 @@
                     </div>
 
                     <div
-                        class="bg-slate-900/50 rounded-xl p-2 text-center flex flex-col items-center justify-between min-h-[105px]">
+                        class="bg-slate-900/50 rounded-xl px-1.5 py-2 text-center flex flex-col items-center justify-between min-h-[105px]">
                         <p class="text-[9px] text-slate-400 uppercase font-semibold mb-1"
                             data-i18n="label_carbo_uppercase">Carbo</p>
-                        <div class="relative w-16 h-16 flex justify-center items-center">
+                        <div class="relative w-14 h-14 flex justify-center items-center">
                             <canvas id="oggiCarbo"></canvas>
                             <div class="absolute inset-0 flex flex-col items-center justify-center pointer-events-none">
                                 <span class="text-[9.6px] font-bold" id="valCarboPercent">—</span>
@@ -1308,10 +1313,10 @@
                     </div>
 
                     <div
-                        class="bg-slate-900/50 rounded-xl p-2 text-center flex flex-col items-center justify-between min-h-[105px]">
+                        class="bg-slate-900/50 rounded-xl px-1.5 py-2 text-center flex flex-col items-center justify-between min-h-[105px]">
                         <p class="text-[9px] text-slate-400 uppercase font-semibold mb-1"
                             data-i18n="label_grassi_uppercase">Grassi</p>
-                        <div class="relative w-16 h-16 flex justify-center items-center">
+                        <div class="relative w-14 h-14 flex justify-center items-center">
                             <canvas id="oggiGrassi"></canvas>
                             <div class="absolute inset-0 flex flex-col items-center justify-center pointer-events-none">
                                 <span class="text-[9.6px] font-bold" id="valGrassiPercent">—</span>
@@ -1608,16 +1613,16 @@
 
 
         <div id="trendMediaComplessivaContainer"
-            class="bg-slate-800/40 border border-slate-700/50 rounded-2xl p-4 mb-4">
+            class="bg-slate-800/40 border border-slate-700/50 rounded-2xl py-4 px-2 mb-4">
             <p id="trendMediaTitle" class="text-xs text-slate-400 font-semibold uppercase tracking-wider mb-3"
                 data-i18n="title_media_complessiva">Media complessiva</p>
-            <div class="grid grid-cols-4 gap-1.5">
+            <div class="grid grid-cols-4 gap-1">
 
                 <div
-                    class="bg-slate-800/60 rounded-xl p-2 text-center flex flex-col items-center justify-between min-h-[105px]">
+                    class="bg-slate-900/50 rounded-xl px-1.5 py-2 text-center flex flex-col items-center justify-between min-h-[105px]">
                     <p class="text-[9px] text-slate-500 uppercase font-semibold mb-1"
                         data-i18n="label_calorie_uppercase">Calorie</p>
-                    <div class="relative w-16 h-16 flex justify-center items-center">
+                    <div class="relative w-14 h-14 flex justify-center items-center">
                         <canvas id="gaugeCalorie"></canvas>
                         <div class="absolute inset-0 flex flex-col items-center justify-center pointer-events-none">
                             <span class="text-[9.6px] font-bold" id="mediaCaloriePercent">—</span>
@@ -1628,10 +1633,10 @@
                 </div>
 
                 <div
-                    class="bg-slate-800/60 rounded-xl p-2 text-center flex flex-col items-center justify-between min-h-[105px]">
+                    class="bg-slate-900/50 rounded-xl px-1.5 py-2 text-center flex flex-col items-center justify-between min-h-[105px]">
                     <p class="text-[9px] text-slate-500 uppercase font-semibold mb-1"
                         data-i18n="label_proteine_uppercase">Proteine</p>
-                    <div class="relative w-16 h-16 flex justify-center items-center">
+                    <div class="relative w-14 h-14 flex justify-center items-center">
                         <canvas id="gaugeProteine"></canvas>
                         <div class="absolute inset-0 flex flex-col items-center justify-center pointer-events-none">
                             <span class="text-[9.6px] font-bold" id="mediaProteinePercent">—</span>
@@ -1642,10 +1647,10 @@
                 </div>
 
                 <div
-                    class="bg-slate-800/60 rounded-xl p-2 text-center flex flex-col items-center justify-between min-h-[105px]">
+                    class="bg-slate-900/50 rounded-xl px-1.5 py-2 text-center flex flex-col items-center justify-between min-h-[105px]">
                     <p class="text-[9px] text-slate-500 uppercase font-semibold mb-1" data-i18n="label_carbo_uppercase">
                         Carbo</p>
-                    <div class="relative w-16 h-16 flex justify-center items-center">
+                    <div class="relative w-14 h-14 flex justify-center items-center">
                         <canvas id="gaugeCarbo"></canvas>
                         <div class="absolute inset-0 flex flex-col items-center justify-center pointer-events-none">
                             <span class="text-[9.6px] font-bold" id="mediaCarboPercent">—</span>
@@ -1656,10 +1661,10 @@
                 </div>
 
                 <div
-                    class="bg-slate-800/60 rounded-xl p-2 text-center flex flex-col items-center justify-between min-h-[105px]">
+                    class="bg-slate-900/50 rounded-xl px-1.5 py-2 text-center flex flex-col items-center justify-between min-h-[105px]">
                     <p class="text-[9px] text-slate-500 uppercase font-semibold mb-1"
                         data-i18n="label_grassi_uppercase">Grassi</p>
-                    <div class="relative w-16 h-16 flex justify-center items-center">
+                    <div class="relative w-14 h-14 flex justify-center items-center">
                         <canvas id="gaugeGrassi"></canvas>
                         <div class="absolute inset-0 flex flex-col items-center justify-center pointer-events-none">
                             <span class="text-[9.6px] font-bold" id="mediaGrassiPercent">—</span>
