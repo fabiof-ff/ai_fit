@@ -61,9 +61,10 @@
         }
 
         .tab-btn.active {
-            background: #3b82f6;
-            border-color: #3b82f6;
-            color: #ffffff;
+            background: linear-gradient(135deg, #6366f1 0%, #3b82f6 100%) !important;
+            border-color: transparent !important;
+            color: #ffffff !important;
+            box-shadow: 0 4px 12px rgba(99, 102, 241, 0.3) !important;
         }
 
         .tab-btn:not(.active) {
@@ -77,8 +78,9 @@
         }
 
         .sub-tab-btn.active {
-            background: #3b82f6;
-            color: #ffffff;
+            background: linear-gradient(135deg, #6366f1 0%, #3b82f6 100%) !important;
+            color: #ffffff !important;
+            box-shadow: 0 2px 6px rgba(99, 102, 241, 0.2) !important;
         }
 
         .sub-tab-btn:not(.active) {
@@ -290,8 +292,7 @@
 
         /* Luminous (Light) Theme Overrides */
         body.light-theme {
-            background: linear-gradient(135deg, #f8fafc 0%, #f1f5f9 50%, #eff6ff 100%) !important;
-            background-color: #f8fafc !important;
+            background: linear-gradient(180deg, #eef2ff 0%, #f8fafc 150px, #f1f5f9 100%) !important;
             color: #1e293b !important;
         }
 
@@ -371,15 +372,16 @@
 
         /* Tab buttons */
         body.light-theme .tab-btn:not(.active) {
-            background: rgba(241, 245, 249, 0.7) !important;
-            border-color: rgba(226, 232, 240, 0.8) !important;
+            background: rgba(255, 255, 255, 0.6) !important;
+            border-color: rgba(226, 232, 240, 0.9) !important;
             color: #64748b !important;
         }
 
         body.light-theme .tab-btn.active {
-            background: #2563eb !important;
-            border-color: #2563eb !important;
+            background: linear-gradient(135deg, #6366f1 0%, #2563eb 100%) !important;
+            border-color: transparent !important;
             color: #ffffff !important;
+            box-shadow: 0 4px 12px rgba(99, 102, 241, 0.25) !important;
         }
 
         /* Sub-tab buttons */
@@ -389,8 +391,9 @@
         }
 
         body.light-theme .sub-tab-btn.active {
-            background: #2563eb !important;
+            background: linear-gradient(135deg, #6366f1 0%, #2563eb 100%) !important;
             color: #ffffff !important;
+            box-shadow: 0 2px 6px rgba(99, 102, 241, 0.2) !important;
         }
 
         /* Provider button (Gemini) */
