@@ -169,13 +169,13 @@
         .pasto-tag {
             display: inline-flex;
             align-items: center;
-            gap: 4px;
+            gap: 3px;
             background: rgba(99, 102, 241, 0.12);
             border: 1px solid rgba(99, 102, 241, 0.3);
             color: #a5b4fc;
-            border-radius: 8px;
-            padding: 2px 8px;
-            font-size: 12.1px;
+            border-radius: 6px;
+            padding: 1.5px 5px;
+            font-size: 10.5px;
         }
 
         .pasto-tag button {
@@ -1823,21 +1823,13 @@
             <!-- Separatore orizzontale sottile -->
             <div class="border-t border-slate-750/30 dark:border-slate-700/20 my-0.5"></div>
 
-            <!-- Ricerca Generale e Filtro Solo Pesi -->
+            <!-- Ricerca Generale -->
             <div class="flex items-center gap-2 w-full">
-                <div class="relative flex items-center flex-1">
+                <div class="relative flex items-center w-full">
                     <i data-lucide="search" class="w-4 h-4 text-slate-400 absolute left-3 pointer-events-none"></i>
                     <input type="text" id="ricercaRegistro" oninput="filtraRegistro()"
-                        placeholder="Cerca nei pasti o peso..."
+                        placeholder="Cerca nei pasti..."
                         class="w-full bg-slate-900 border border-slate-700 rounded-xl pl-8 pr-2.5 py-2 text-[12px] text-slate-200 focus:outline-none focus:ring-2 focus:ring-indigo-500">
-                </div>
-                <!-- Filtro Solo Pesi -->
-                <div class="flex items-center gap-1.5 shrink-0 px-1">
-                    <input type="checkbox" id="chkSoloPesi" onchange="filtraRegistro()"
-                        class="rounded bg-slate-900 border-slate-700 text-indigo-650 focus:ring-indigo-500 w-3.5 h-3.5 cursor-pointer">
-                    <label for="chkSoloPesi" class="text-[11px] text-slate-400 font-semibold cursor-pointer select-none whitespace-nowrap" data-i18n="lbl_only_weights">
-                        Solo peso
-                    </label>
                 </div>
             </div>
             <!-- Filtro Mese e Anno -->
@@ -2719,7 +2711,7 @@
                 pl_target_time: "es. 8",
                 pl_height: "es. 180",
                 pl_age_placeholder: "es. 30",
-                placeholder_search_meals: "Cerca nei pasti o peso...",
+                placeholder_search_meals: "Cerca nei pasti...",
                 filter_all_years: "Tutti gli anni",
                 filter_all_months: "Tutti i mesi",
                 month_01: "Gennaio",
@@ -2879,7 +2871,7 @@
                 pl_target_time: "e.g. 8",
                 pl_height: "e.g. 180",
                 pl_age_placeholder: "e.g. 30",
-                placeholder_search_meals: "Search meals or weight...",
+                placeholder_search_meals: "Search meals...",
                 filter_all_years: "All years",
                 filter_all_months: "All months",
                 month_01: "January",
@@ -4325,7 +4317,6 @@ Rispondi ESCLUSIVAMENTE con un oggetto JSON valido. NO blocchi di codice (no \`\
             const q = document.getElementById('ricercaRegistro')?.value.toLowerCase().trim() || "";
             const selectedAnno = document.getElementById('filtroAnno')?.value || "";
             const selectedMese = document.getElementById('filtroMese')?.value || "";
-            const soloPesi = document.getElementById('chkSoloPesi')?.checked || false;
 
             if (db.length === 0) {
                 lista.innerHTML = `<p class="text-sm text-slate-500 text-center py-8" data-i18n="lbl_no_meals_saved">
@@ -4336,7 +4327,6 @@ Rispondi ESCLUSIVAMENTE con un oggetto JSON valido. NO blocchi di codice (no \`\
 
             // Filtra solo in base alle selezioni (senza limiti di data fissi)
             const dbFiltrato = db.filter(giorno => {
-                if (soloPesi && !giorno.peso) return false;
                 if (selectedAnno) {
                     const anno = giorno.data.split('-')[0];
                     if (anno !== selectedAnno) return false;
@@ -4346,10 +4336,8 @@ Rispondi ESCLUSIVAMENTE con un oggetto JSON valido. NO blocchi di codice (no \`\
                     if (mese !== selectedMese) return false;
                 }
                 if (q) {
-                    const matchData = giorno.data.includes(q);
                     const matchPasti = giorno.pasti && giorno.pasti.some(p => p.testo.toLowerCase().includes(q));
-                    const matchPeso = giorno.peso && String(giorno.peso).includes(q);
-                    if (!matchData && !matchPasti && !matchPeso) return false;
+                    if (!matchPasti) return false;
                 }
                 return true;
             });
@@ -4387,7 +4375,7 @@ Rispondi ESCLUSIVAMENTE con un oggetto JSON valido. NO blocchi di codice (no \`\
                 let pastiHtml = "";
                 if (giorno.pasti && giorno.pasti.length > 0) {
                     giorno.pasti.forEach(p => {
-                        const matchPastoSingolo = !q || p.testo.toLowerCase().includes(q) || giorno.data.includes(q) || String(giorno.peso).includes(q);
+                        const matchPastoSingolo = !q || p.testo.toLowerCase().includes(q);
                         if (!matchPastoSingolo) return;
 
                         pastiHtml += `
@@ -4425,11 +4413,11 @@ Rispondi ESCLUSIVAMENTE con un oggetto JSON valido. NO blocchi di codice (no \`\
                     </div>
                     ` : ''}
 
-                    <div class="flex flex-wrap gap-1.5 mt-0.5">
-                        <span class="pasto-tag"><i data-lucide="flame" class="w-3 h-3 text-rose-400"></i>${Math.round(p.calorie)} kcal</span>
-                        <span class="pasto-tag"><i data-lucide="dumbbell" class="w-3 h-3 text-blue-400"></i>${Math.round(p.proteine)}g P</span>
-                        <span class="pasto-tag"><i data-lucide="wheat" class="w-3 h-3 text-emerald-400"></i>${Math.round(p.carboidrati)}g C</span>
-                        <span class="pasto-tag"><i data-lucide="droplet" class="w-3 h-3 text-amber-400"></i>${Math.round(p.grassi)}g G</span>
+                    <div class="flex flex-wrap gap-1 mt-0.5">
+                        <span class="pasto-tag"><i data-lucide="flame" class="w-2.5 h-2.5 text-rose-400 shrink-0"></i>${Math.round(p.calorie)} kcal</span>
+                        <span class="pasto-tag"><i data-lucide="dumbbell" class="w-2.5 h-2.5 text-blue-400 shrink-0"></i>${Math.round(p.proteine)}g P</span>
+                        <span class="pasto-tag"><i data-lucide="wheat" class="w-2.5 h-2.5 text-emerald-400 shrink-0"></i>${Math.round(p.carboidrati)}g C</span>
+                        <span class="pasto-tag"><i data-lucide="droplet" class="w-2.5 h-2.5 text-amber-400 shrink-0"></i>${Math.round(p.grassi)}g G</span>
                     </div>
                 </div>`;
                     });
