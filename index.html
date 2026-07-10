@@ -4334,10 +4334,6 @@ Rispondi ESCLUSIVAMENTE con un oggetto JSON valido. NO blocchi di codice (no \`\
                 return;
             }
 
-            const oggi = new Date();
-            const correnteAnno = oggi.getFullYear().toString();
-            const correnteMese = String(oggi.getMonth() + 1).padStart(2, '0');
-
             // Filtra solo in base alle selezioni (senza limiti di data fissi)
             const dbFiltrato = db.filter(giorno => {
                 if (soloPesi && !giorno.peso) return false;
@@ -4370,16 +4366,6 @@ Rispondi ESCLUSIVAMENTE con un oggetto JSON valido. NO blocchi di codice (no \`\
 
             const nomiMesiIt = ["Gennaio", "Febbraio", "Marzo", "Aprile", "Maggio", "Giugno", "Luglio", "Agosto", "Settembre", "Ottobre", "Novembre", "Dicembre"];
             const nomiMesiEn = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
-
-            let infoMsgHtml = "";
-            if (selectedAnno === correnteAnno && selectedMese === correnteMese && q === "") {
-                const meseIdx = parseInt(correnteMese) - 1;
-                const nomeMese = currentLang === 'en' ? nomiMesiEn[meseIdx] : nomiMesiIt[meseIdx];
-                infoMsgHtml = `
-                    <div class="text-[10px] text-slate-500 mb-3 italic text-center bg-slate-800/20 py-1.5 px-3 rounded-xl border border-slate-700/10">
-                        ${currentLang === 'en' ? `Showing logs for ${nomeMese} ${correnteAnno}. Select "All months" and "All years" to view complete history.` : `Vengono mostrati i dati di ${nomeMese} ${correnteAnno}. Seleziona "Tutti i mesi" e "Tutti gli anni" per visualizzare l'intero archivio.`}
-                    </div>`;
-            }
 
             dbOrdinato.forEach(giorno => {
                 const dateParts = giorno.data.split('-');
@@ -4471,7 +4457,7 @@ Rispondi ESCLUSIVAMENTE con un oggetto JSON valido. NO blocchi di codice (no \`\
         </div>`;
             });
 
-            lista.innerHTML = infoMsgHtml + html;
+            lista.innerHTML = html;
             if (typeof lucide !== 'undefined') lucide.createIcons();
         }
         // ================================================================
