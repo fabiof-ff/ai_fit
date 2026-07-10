@@ -309,7 +309,7 @@
         body.light-theme .bg-slate-800\/50,
         body.light-theme .bg-slate-800\/40,
         body.light-theme .bg-slate-800,
-        body.light-theme #settingsBox,
+        body.light-theme #settingsModalInner,
         body.light-theme #modalInner,
         body.light-theme #helpModalInner,
         body.light-theme #dialogInner {
@@ -498,6 +498,55 @@
         body.light-theme #helpModalInner .text-slate-300 {
             color: #334155 !important;
         }
+
+        /* Active Menu State visual highlights linking the button and dropdown menu */
+        .menu-active-state {
+            background-color: rgba(71, 85, 105, 0.6) !important;
+            border-color: rgba(148, 163, 184, 0.4) !important;
+            color: #f1f5f9 !important;
+        }
+        body.light-theme .menu-active-state {
+            background-color: rgba(219, 234, 254, 0.8) !important;
+            border-color: rgba(147, 197, 253, 0.6) !important;
+            color: #1d4ed8 !important;
+        }
+
+        /* Light theme overrides for settings modal contents matching help modal */
+        body.light-theme #settingsModalInner .bg-slate-800\/30 {
+            background: rgba(248, 250, 252, 0.9) !important;
+            color: #334155 !important;
+        }
+
+        body.light-theme #settingsModalInner .bg-slate-700\/25,
+        body.light-theme #settingsModalInner .bg-slate-700\/30,
+        body.light-theme #settingsModalInner .bg-slate-700\/40,
+        body.light-theme #settingsModalInner .bg-slate-700\/50,
+        body.light-theme #settingsModalInner .bg-slate-700 {
+            background: rgba(241, 245, 249, 0.7) !important;
+            border-color: rgba(226, 232, 240, 0.9) !important;
+        }
+
+        body.light-theme #settingsModalInner .bg-slate-900\/40,
+        body.light-theme #settingsModalInner .bg-slate-800 {
+            background: rgba(241, 245, 249, 0.5) !important;
+        }
+
+        body.light-theme #settingsModalInner .bg-slate-900 {
+            background: rgba(248, 250, 252, 0.95) !important;
+            border-color: rgba(226, 232, 240, 0.9) !important;
+        }
+
+        body.light-theme #settingsModalInner .text-slate-400 {
+            color: #475569 !important;
+        }
+
+        body.light-theme #settingsModalInner .text-slate-200 {
+            color: #1e293b !important;
+        }
+
+        body.light-theme #settingsModalInner .text-slate-300 {
+            color: #334155 !important;
+        }
     </style>
 </head>
 
@@ -602,6 +651,271 @@
                     <i data-lucide="sparkles" class="w-4 h-4 text-indigo-400"></i> <span data-i18n="btn_recalculate">AI
                         Recalc</span>
                 </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Settings Modal -->
+    <div id="settingsModal"
+        class="hidden fixed inset-0 z-50 bg-slate-900/50 backdrop-blur-sm flex items-center justify-center p-4">
+        <div id="settingsModalInner"
+            class="bg-slate-800 w-full max-w-md rounded-3xl border border-slate-700/80 shadow-2xl flex flex-col max-h-[85vh] overflow-hidden opacity-0 scale-95 transition-all duration-300">
+            <!-- Modal Header -->
+            <div class="flex items-center justify-between p-4 border-b border-slate-700/50 bg-slate-800/50">
+                <h3 class="text-sm font-bold text-slate-200 flex items-center gap-2">
+                    <i data-lucide="settings" class="w-4 h-4 text-amber-400"></i>
+                    <span data-i18n="title_api_settings">Impostazioni</span>
+                </h3>
+                <button onclick="toggleSettings()"
+                    class="text-slate-400 hover:text-slate-200 p-1.5 rounded-xl bg-slate-700/50 hover:bg-slate-700 transition">
+                    <i data-lucide="x" class="w-4 h-4"></i>
+                </button>
+            </div>
+
+            <!-- Content (Scrollable) -->
+            <div class="flex-1 overflow-y-auto p-4 space-y-3.5 custom-scrollbar bg-slate-800/30">
+                <!-- SEZIONE 1: ApiKey -->
+                <details
+                    class="group bg-slate-700/30 border border-slate-600/50 rounded-xl overflow-hidden transition-all duration-300">
+                    <summary
+                        class="flex items-center justify-between p-3 font-semibold text-xs text-slate-300 uppercase tracking-wider cursor-pointer list-none select-none hover:bg-slate-700/50 transition">
+                        <div class="flex items-center gap-2.5">
+                            <i data-lucide="key" class="w-4 h-4 text-purple-400"></i>
+                            <span data-i18n="label_api_key_section">Gemini API Key</span>
+                        </div>
+                        <i data-lucide="chevron-down"
+                            class="w-4 h-4 text-slate-400 transition-transform duration-300 group-open:rotate-180"></i>
+                    </summary>
+                    <div class="p-3.5 border-t border-slate-700/30 space-y-3 bg-transparent">
+                        <div>
+                            <label data-i18n="label_api_key"
+                                class="text-[10px] font-semibold text-slate-400 uppercase tracking-wider block mb-1">Gemini
+                                API Key</label>
+                            <input type="password" id="geminiKey" oninput="saveGeminiKey()"
+                                class="w-full bg-slate-700/40 border border-slate-650/50 rounded-xl p-2.5 text-xs focus:outline-none focus:ring-2 focus:ring-purple-500 text-slate-200"
+                                placeholder="AIza...">
+                        </div>
+                    </div>
+                </details>
+
+                <!-- SEZIONE 2: Target Giornaliero -->
+                <details
+                    class="group bg-slate-700/30 border border-slate-600/50 rounded-xl overflow-hidden transition-all duration-300">
+                    <summary
+                        class="flex items-center justify-between p-3 font-semibold text-xs text-slate-300 uppercase tracking-wider cursor-pointer list-none select-none hover:bg-slate-700/50 transition">
+                        <div class="flex items-center gap-2.5">
+                            <i data-lucide="target" class="w-4 h-4 text-rose-400"></i>
+                            <span data-i18n="label_daily_targets">Target Giornalieri</span>
+                        </div>
+                        <i data-lucide="chevron-down"
+                            class="w-4 h-4 text-slate-400 transition-transform duration-300 group-open:rotate-180"></i>
+                    </summary>
+                    <div class="p-3.5 border-t border-slate-700/30 space-y-3 bg-transparent">
+                        <!-- Riga 1: Peso e Calorie (2 colonne) -->
+                        <div class="grid grid-cols-2 gap-2">
+                            <div
+                                class="flex items-center justify-between bg-slate-700/40 border border-slate-600/50 py-2 px-3 rounded-xl">
+                                <span data-i18n="label_peso"
+                                    class="text-[10px] font-semibold text-slate-400 uppercase tracking-wider">Target
+                                    Peso</span>
+                                <div class="flex items-center gap-1">
+                                    <input type="number" id="targetPeso" oninput="saveTarget()" step="0.1"
+                                        class="w-12 bg-slate-800 border border-slate-700 rounded-lg py-1 px-1.5 text-center text-xs focus:outline-none focus:ring-1 focus:ring-indigo-500 text-slate-200"
+                                        placeholder="75" min="0">
+                                    <span class="text-[10px] text-slate-500">kg</span>
+                                </div>
+                            </div>
+                            <div
+                                class="flex items-center justify-between bg-slate-700/40 border border-slate-600/50 py-2 px-3 rounded-xl">
+                                <span data-i18n="label_calorie"
+                                    class="text-[10px] font-semibold text-slate-400 uppercase tracking-wider">Calorie</span>
+                                <div class="flex items-center gap-1">
+                                    <input type="number" id="targetCalorie" oninput="saveTarget()"
+                                        class="w-14 bg-slate-800 border border-slate-700 rounded-lg py-1 px-1.5 text-center text-xs focus:outline-none focus:ring-1 focus:ring-rose-500 text-slate-200"
+                                        placeholder="2000" min="0">
+                                    <span class="text-[10px] text-slate-500">kcal</span>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- Riga 2: Proteine, Carboidrati, Grassi (3 colonne) -->
+                        <div class="grid grid-cols-3 gap-2">
+                            <div
+                                class="flex flex-col items-center bg-slate-700/40 border border-slate-600/50 py-1.5 px-2 rounded-xl">
+                                <span data-i18n="label_proteine"
+                                    class="text-[9px] font-semibold text-slate-400 uppercase tracking-wider mb-1">Proteine</span>
+                                <div class="flex items-center gap-1">
+                                    <input type="number" id="targetProteine" oninput="saveTarget()"
+                                        class="w-10 bg-slate-800 border border-slate-700 rounded-lg py-0.5 px-1 text-center text-xs focus:outline-none focus:ring-1 focus:ring-blue-500 text-slate-200"
+                                        placeholder="160" min="0">
+                                    <span class="text-[9px] text-slate-500">g</span>
+                                </div>
+                            </div>
+                            <div
+                                class="flex flex-col items-center bg-slate-700/40 border border-slate-600/50 py-1.5 px-2 rounded-xl">
+                                <span data-i18n="label_carboidrati"
+                                    class="text-[9px] font-semibold text-slate-400 uppercase tracking-wider mb-1">Carboidrati</span>
+                                <div class="flex items-center gap-1">
+                                    <input type="number" id="targetCarbo" oninput="saveTarget()"
+                                        class="w-10 bg-slate-800 border border-slate-700 rounded-lg py-0.5 px-1 text-center text-xs focus:outline-none focus:ring-1 focus:ring-emerald-500 text-slate-200"
+                                        placeholder="200" min="0">
+                                    <span class="text-[9px] text-slate-500">g</span>
+                                </div>
+                            </div>
+                            <div
+                                class="flex flex-col items-center bg-slate-700/40 border border-slate-600/50 py-1.5 px-2 rounded-xl">
+                                <span data-i18n="label_grassi"
+                                    class="text-[9px] font-semibold text-slate-400 uppercase tracking-wider mb-1">Grassi</span>
+                                <div class="flex items-center gap-1">
+                                    <input type="number" id="targetGrassi" oninput="saveTarget()"
+                                        class="w-10 bg-slate-800 border border-slate-700 rounded-lg py-0.5 px-1 text-center text-xs focus:outline-none focus:ring-1 focus:ring-amber-500 text-slate-200"
+                                        placeholder="70" min="0">
+                                    <span class="text-[9px] text-slate-500">g</span>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- Indicatore di Coerenza Target -->
+                        <div id="target-coherence-status" class="mt-2.5"></div>
+                    </div>
+                </details>
+
+                <!-- SEZIONE 3: Calcola Target con AI -->
+                <details id="detailsTargetAI"
+                    class="group bg-slate-700/30 border border-slate-600/50 rounded-xl overflow-hidden transition-all duration-300">
+                    <summary
+                        class="flex items-center justify-between p-3 font-semibold text-xs text-slate-300 uppercase tracking-wider cursor-pointer list-none select-none hover:bg-slate-700/50 transition">
+                        <div class="flex items-center gap-2.5">
+                            <i data-lucide="wheat" class="w-4 h-4 text-purple-400"></i>
+                            <span data-i18n="btn_calculate_ai">Calcola Target con AI</span>
+                        </div>
+                        <i data-lucide="chevron-down"
+                            class="w-4 h-4 text-slate-400 transition-transform duration-300 group-open:rotate-180"></i>
+                    </summary>
+                    <div class="p-3.5 border-t border-slate-700/30 space-y-3 bg-transparent">
+                        <div class="grid grid-cols-3 gap-2">
+                            <div>
+                                <label class="text-[9px] font-bold text-slate-500 uppercase tracking-wider block"
+                                    data-i18n="lbl_cur_weight">Peso Att. (kg)</label>
+                                <input type="number" id="aiPeso" placeholder="es. 75" oninput="saveProfileData()"
+                                    class="mt-1 w-full bg-slate-700/50 border border-slate-600/50 rounded-lg p-2 text-xs text-slate-200 focus:outline-none focus:ring-1 focus:ring-purple-500">
+                            </div>
+                            <div>
+                                <label class="text-[9px] font-bold text-slate-500 uppercase tracking-wider block"
+                                    data-i18n="lbl_target_weight_short">Peso Des. (kg)</label>
+                                <input type="number" id="aiPesoTarget" placeholder="es. 70" oninput="saveProfileData()"
+                                    class="mt-1 w-full bg-slate-700/50 border border-slate-600/50 rounded-lg p-2 text-xs text-slate-200 focus:outline-none focus:ring-1 focus:ring-purple-500">
+                            </div>
+                            <div>
+                                <label class="text-[9px] font-bold text-slate-500 uppercase tracking-wider block"
+                                    data-i18n="lbl_target_time_weeks">Tempo (sett.)</label>
+                                <input type="number" id="aiTempoSettimane" placeholder="es. 8" oninput="saveProfileData()"
+                                    class="mt-1 w-full bg-slate-700/50 border border-slate-600/50 rounded-lg p-2 text-xs text-slate-200 focus:outline-none focus:ring-1 focus:ring-purple-500">
+                            </div>
+                        </div>
+
+                        <div class="grid grid-cols-3 gap-2">
+                            <div>
+                                <label class="text-[9px] font-bold text-slate-500 uppercase tracking-wider block"
+                                    data-i18n="lbl_gender">Sesso</label>
+                                <select id="aiSesso" onchange="saveProfileData()"
+                                    class="mt-1 w-full bg-slate-700/50 border border-slate-600/50 rounded-lg p-2 text-xs text-slate-200 focus:outline-none focus:ring-1 focus:ring-purple-500">
+                                    <option value="uomo" data-i18n="opt_male">Uomo</option>
+                                    <option value="donna" data-i18n="opt_female">Donna</option>
+                                </select>
+                            </div>
+                            <div>
+                                <label class="text-[9px] font-bold text-slate-500 uppercase tracking-wider block"
+                                    data-i18n="lbl_age">Età (anni)</label>
+                                <input type="number" id="aiEta" placeholder="es. 30" oninput="saveProfileData()"
+                                    class="mt-1 w-full bg-slate-700/50 border border-slate-600/50 rounded-lg p-2 text-xs text-slate-200 focus:outline-none focus:ring-1 focus:ring-purple-500">
+                            </div>
+                            <div>
+                                <label class="text-[9px] font-bold text-slate-500 uppercase tracking-wider block"
+                                    data-i18n="lbl_height_cm">Altezza (cm)</label>
+                                <input type="number" id="aiAltezza" placeholder="es. 180" oninput="saveProfileData()"
+                                    class="mt-1 w-full bg-slate-700/50 border border-slate-600/50 rounded-lg p-2 text-xs text-slate-200 focus:outline-none focus:ring-1 focus:ring-purple-500">
+                            </div>
+                        </div>
+
+                        <div>
+                            <label class="text-[10px] font-bold text-slate-500 uppercase tracking-wider block"
+                                data-i18n="lbl_training_style">Stile di allenamento / Attività</label>
+                            <input type="text" id="aiAttivita" oninput="saveProfileData()" data-i18n="pl_training_style"
+                                placeholder="es. Palestra 3 volte a settimana, lavoro sedentario"
+                                class="mt-1 w-full bg-slate-700/50 border border-slate-600/50 rounded-lg p-2 text-xs text-slate-200 focus:outline-none focus:ring-1 focus:ring-purple-500">
+                        </div>
+
+                        <div>
+                            <label class="text-[10px] font-bold text-slate-500 uppercase tracking-wider block"
+                                data-i18n="lbl_main_goal">Obiettivo principale</label>
+                            <input type="text" id="aiObiettivo" placeholder="es. Aumentare massa muscolare magra"
+                                oninput="saveProfileData()" data-i18n="pl_main_goal"
+                                class="mt-1 w-full bg-slate-700/50 border border-slate-600/50 rounded-lg p-2 text-xs text-slate-200 focus:outline-none focus:ring-1 focus:ring-purple-500">
+                        </div>
+
+                        <button type="button" onclick="generaTargetConAI()" id="btnGeneraTargetAI"
+                            class="w-full bg-purple-600 hover:bg-purple-500 text-white font-bold py-2 rounded-lg transition text-xs flex items-center justify-center gap-1.5 cursor-pointer">
+                            <i data-lucide="sparkles" class="w-3.5 h-3.5"></i> <span data-i18n="btn_generate_target">Calcola target</span>
+                        </button>
+                        <div id="statoTargetAI" class="text-[11px] text-slate-400 text-center italic hidden"
+                            data-i18n="lbl_ai_calculating">L'AI sta calcolando i tuoi target...</div>
+
+                        <div id="aiTargetResults"
+                            class="hidden space-y-2 p-2 bg-slate-700/50 rounded-lg border border-purple-500/30 text-xs">
+                            <p class="font-bold text-purple-400" data-i18n="lbl_ai_suggestion_title">Suggerimento Target AI:</p>
+                            <div class="grid grid-cols-2 gap-1.5 text-slate-300">
+                                <div><span data-i18n="lbl_calories_colon">Calorie:</span> <span id="sugCal" class="font-bold text-slate-100">0</span> kcal</div>
+                                <div><span data-i18n="lbl_target_weight_colon">Peso Target:</span> <span id="sugPeso" class="font-bold text-slate-100">0</span> kg</div>
+                                <div><span data-i18n="lbl_proteins_colon">Proteine:</span> <span id="sugProt" class="font-bold text-slate-100">0</span> g</div>
+                                <div><span data-i18n="lbl_carbs_colon">Carbo:</span> <span id="sugCarb" class="font-bold text-slate-100">0</span> g</div>
+                                <div><span data-i18n="lbl_fats_colon">Grassi:</span> <span id="sugFat" class="font-bold text-slate-100">0</span> g</div>
+                            </div>
+                            <div id="sugNotaBox"
+                                class="mt-2 p-2 bg-amber-500/10 border border-amber-500/25 rounded-lg text-amber-400 text-[11px] hidden">
+                                <span id="sugNota"></span>
+                            </div>
+                            <button type="button" onclick="applicaTargetSuggeriti()"
+                                class="w-full mt-2 bg-emerald-600 hover:bg-emerald-500 text-white font-bold py-1.5 rounded text-xs transition cursor-pointer">
+                                <span data-i18n="btn_apply_targets">Applica questi target</span>
+                            </button>
+                        </div>
+                    </div>
+                </details>
+
+                <!-- SEZIONE 4: Salvataggio Locale -->
+                <details
+                    class="group bg-slate-700/30 border border-slate-600/50 rounded-xl overflow-hidden transition-all duration-300">
+                    <summary
+                        class="flex items-center justify-between p-3 font-semibold text-xs text-slate-300 uppercase tracking-wider cursor-pointer list-none select-none hover:bg-slate-700/50 transition">
+                        <div class="flex items-center gap-2.5">
+                            <i data-lucide="hard-drive" class="w-4 h-4 text-emerald-400"></i>
+                            <span data-i18n="title_backup_auto">Salvataggio Locale</span>
+                        </div>
+                        <i data-lucide="chevron-down"
+                            class="w-4 h-4 text-slate-400 transition-transform duration-300 group-open:rotate-180"></i>
+                    </summary>
+                    <div class="p-3.5 border-t border-slate-700/30 space-y-3 bg-transparent">
+                        <div class="flex flex-col gap-2">
+                            <div class="flex items-center gap-2">
+                                <button type="button" onclick="selezionaFileAutoSalvataggio()"
+                                    class="flex-1 bg-slate-700 hover:bg-slate-650 text-slate-200 border border-slate-600/50 font-bold py-2 rounded-xl transition text-xs flex items-center justify-center gap-1.5 cursor-pointer">
+                                    <i data-lucide="folder-open" class="w-4 h-4 text-blue-400"></i>
+                                    <span id="lblFileAutoSalvataggio" data-i18n="btn_select_file">Associa file database</span>
+                                </button>
+                                <button type="button" id="btnRimuoviFileAuto" onclick="rimuoviFileAutoSalvataggio()"
+                                    class="hidden bg-rose-950/40 hover:bg-rose-900/60 text-rose-300 border border-rose-800/40 p-2 rounded-xl transition duration-200 cursor-pointer"
+                                    title="Rimuovi associazione">
+                                    <i data-lucide="trash-2" class="w-4 h-4"></i>
+                                </button>
+                            </div>
+                            <p id="pathFileAutoSalvataggio" class="text-[10px] text-slate-500 italic break-all"></p>
+                        </div>
+                    </div>
+                </details>
+
+                <p class="text-[10px] text-slate-500 mt-2 text-center" data-i18n="lbl_privacy_note">Le impostazioni e le chiavi vengono memorizzate in localStorage, il diario in IndexedDB. Tutto rimane sul tuo dispositivo.</p>
+                <p class="text-[9px] text-slate-500/80 leading-normal text-center mt-3 border-t border-slate-700/35 pt-2.5 px-1" data-i18n="lbl_disclaimer">
+                    <strong>Disclaimer:</strong> Questo strumento ha scopo puramente informativo e di tracciamento personale. Non fornisce consigli medici, diagnosi o piani terapeutici professionali e non sostituisce in alcun modo il parere di un medico o nutrizionista qualificato.
+                </p>
             </div>
         </div>
     </div>
@@ -895,319 +1209,51 @@
 
     <div class="w-full max-w-md mx-auto px-4 pt-6">
 
-        <div
-            class="flex items-center justify-between mb-4 bg-slate-800/60 p-3 rounded-2xl border border-slate-700/50 backdrop-blur">
-            <div class="flex items-center gap-2">
-                <div class="bg-blue-600 p-2 rounded-xl text-white shadow-lg shadow-blue-500/20 shrink-0">
-                    <i data-lucide="wheat" class="w-5 h-5"></i>
-                </div>
-                <div>
-                    <h1
-                        class="text-[17px] sm:text-xl font-bold tracking-tight bg-gradient-to-r from-blue-400 to-indigo-400 bg-clip-text text-transparent whitespace-nowrap">
-                        AI NutriTracker</h1>
-                </div>
-            </div>
-            <div class="flex items-center gap-1.5 shrink-0">
-                <button onclick="cycleLang()" id="btnLangToggle" title="Cambia lingua / Change language"
-                    class="text-slate-400 hover:text-slate-200 px-2 py-1 rounded-lg bg-slate-700/30 hover:bg-slate-700/60 transition text-[11px] font-bold flex items-center gap-1 shrink-0">
-                    <img id="langFlag" src="https://flagcdn.com/20x15/it.png" width="16" height="12" alt="IT"
-                        class="rounded-sm"> <span id="langLabel">IT</span>
+
+        <div class="flex items-center gap-2 mb-3">
+            <button onclick="toggleMenu()" id="btnMenuToggle" title="Menu"
+                class="text-slate-400 hover:text-slate-200 p-2.5 rounded-xl bg-slate-800/60 hover:bg-slate-700/60 border border-slate-700/50 backdrop-blur transition flex items-center justify-center cursor-pointer shrink-0">
+                <i data-lucide="menu" class="w-4 h-4"></i>
+            </button>
+            <div class="flex-1 flex gap-2">
+                <button id="tab-oggi" onclick="switchTab('oggi')"
+                    class="tab-btn flex-1 flex items-center justify-center gap-1.5 py-2.5 rounded-xl text-xs font-bold border active">
+                    <i data-lucide="utensils" class="w-3.5 h-3.5"></i> <span data-i18n="tab_oggi">Dati</span>
                 </button>
-                <button onclick="toggleTheme()" id="btnThemeToggle" title="Cambia tema / Toggle theme"
-                    class="text-slate-400 hover:text-slate-200 p-1.5 rounded-lg bg-slate-700/30 hover:bg-slate-700/60 transition cursor-pointer flex items-center justify-center shrink-0">
-                    <i id="themeIcon" data-lucide="sun" class="w-4 h-4"></i>
+                <button id="tab-trend" onclick="switchTab('trend')"
+                    class="tab-btn flex-1 flex items-center justify-center gap-1.5 py-2.5 rounded-xl text-xs font-bold border">
+                    <i data-lucide="trending-up" class="w-3.5 h-3.5"></i> <span data-i18n="tab_trend">Trend</span>
                 </button>
-                <button onclick="toggleSettings()"
-                    class="text-slate-400 hover:text-slate-200 p-1.5 rounded-lg bg-slate-700/30 hover:bg-slate-700/60 transition flex items-center justify-center shrink-0">
-                    <i data-lucide="settings" class="w-4 h-4"></i>
-                </button>
-                <button onclick="toggleHelp()" id="btnHelpToggle" title="Guida / Help"
-                    class="text-slate-400 hover:text-slate-200 p-1.5 rounded-lg bg-slate-700/30 hover:bg-slate-700/60 transition flex items-center justify-center shrink-0">
-                    <i data-lucide="help-circle" class="w-4 h-4"></i>
+                <button id="tab-storico" onclick="switchTab('storico')"
+                    class="tab-btn flex-1 flex items-center justify-center gap-1.5 py-2.5 rounded-xl text-xs font-bold border">
+                    <i data-lucide="clock" class="w-3.5 h-3.5"></i> <span data-i18n="tab_storico">Registro</span>
                 </button>
             </div>
         </div>
 
-        <div id="settingsBox"
-            class="hidden mb-5 p-4 bg-slate-800 rounded-2xl border border-slate-700 shadow-xl space-y-3.5">
-            <div class="flex items-center mb-1">
-                <h3 class="text-sm font-semibold text-slate-200 flex items-center gap-2">
-                    <i data-lucide="settings-2" class="w-4 h-4 text-amber-400"></i> <span
-                        data-i18n="title_api_settings">Impostazioni</span>
-                </h3>
-            </div>
-
-            <!-- SEZIONE 1: ApiKey -->
-            <details
-                class="group bg-slate-700/30 border border-slate-600/50 rounded-xl overflow-hidden transition-all duration-300">
-                <summary
-                    class="flex items-center justify-between p-3 font-semibold text-xs text-slate-300 uppercase tracking-wider cursor-pointer list-none select-none hover:bg-slate-700/50 transition">
-                    <div class="flex items-center gap-2.5">
-                        <i data-lucide="key" class="w-4 h-4 text-purple-400"></i>
-                        <span data-i18n="label_api_key_section">Gemini API Key</span>
-                    </div>
-                    <i data-lucide="chevron-down"
-                        class="w-4 h-4 text-slate-400 transition-transform duration-300 group-open:rotate-180"></i>
-                </summary>
-                <div class="p-3.5 border-t border-slate-700/30 space-y-3 bg-transparent">
-                    <div>
-                        <label data-i18n="label_api_key"
-                            class="text-[10px] font-semibold text-slate-400 uppercase tracking-wider block mb-1">Gemini
-                            API Key</label>
-                        <input type="password" id="geminiKey" oninput="saveGeminiKey()"
-                            class="w-full bg-slate-700/40 border border-slate-650/50 rounded-xl p-2.5 text-xs focus:outline-none focus:ring-2 focus:ring-purple-500 text-slate-200"
-                            placeholder="AIza...">
-                    </div>
-                </div>
-            </details>
-
-            <!-- SEZIONE 2: Target Giornaliero -->
-            <details
-                class="group bg-slate-700/30 border border-slate-600/50 rounded-xl overflow-hidden transition-all duration-300">
-                <summary
-                    class="flex items-center justify-between p-3 font-semibold text-xs text-slate-300 uppercase tracking-wider cursor-pointer list-none select-none hover:bg-slate-700/50 transition">
-                    <div class="flex items-center gap-2.5">
-                        <i data-lucide="target" class="w-4 h-4 text-rose-400"></i>
-                        <span data-i18n="label_daily_targets">Target Giornalieri</span>
-                    </div>
-                    <i data-lucide="chevron-down"
-                        class="w-4 h-4 text-slate-400 transition-transform duration-300 group-open:rotate-180"></i>
-                </summary>
-                <div class="p-3.5 border-t border-slate-700/30 space-y-3 bg-transparent">
-                    <!-- Riga 1: Peso e Calorie (2 colonne) -->
-                    <div class="grid grid-cols-2 gap-2">
-                        <div
-                            class="flex items-center justify-between bg-slate-700/40 border border-slate-600/50 py-2 px-3 rounded-xl">
-                            <span data-i18n="label_peso"
-                                class="text-[10px] font-semibold text-slate-400 uppercase tracking-wider">Target
-                                Peso</span>
-                            <div class="flex items-center gap-1">
-                                <input type="number" id="targetPeso" oninput="saveTarget()" step="0.1"
-                                    class="w-12 bg-slate-800 border border-slate-700 rounded-lg py-1 px-1.5 text-center text-xs focus:outline-none focus:ring-1 focus:ring-indigo-500 text-slate-200"
-                                    placeholder="75" min="0">
-                                <span class="text-[10px] text-slate-500">kg</span>
-                            </div>
-                        </div>
-                        <div
-                            class="flex items-center justify-between bg-slate-700/40 border border-slate-600/50 py-2 px-3 rounded-xl">
-                            <span data-i18n="label_calorie"
-                                class="text-[10px] font-semibold text-slate-400 uppercase tracking-wider">Calorie</span>
-                            <div class="flex items-center gap-1">
-                                <input type="number" id="targetCalorie" oninput="saveTarget()"
-                                    class="w-14 bg-slate-800 border border-slate-700 rounded-lg py-1 px-1.5 text-center text-xs focus:outline-none focus:ring-1 focus:ring-rose-500 text-slate-200"
-                                    placeholder="2000" min="0">
-                                <span class="text-[10px] text-slate-500">kcal</span>
-                            </div>
-                        </div>
-                    </div>
-                    <!-- Riga 2: Proteine, Carboidrati, Grassi (3 colonne) -->
-                    <div class="grid grid-cols-3 gap-2">
-                        <div
-                            class="flex flex-col items-center bg-slate-700/40 border border-slate-600/50 py-1.5 px-2 rounded-xl">
-                            <span data-i18n="label_proteine"
-                                class="text-[9px] font-semibold text-slate-400 uppercase tracking-wider mb-1">Proteine</span>
-                            <div class="flex items-center gap-1">
-                                <input type="number" id="targetProteine" oninput="saveTarget()"
-                                    class="w-10 bg-slate-800 border border-slate-700 rounded-lg py-0.5 px-1 text-center text-xs focus:outline-none focus:ring-1 focus:ring-blue-500 text-slate-200"
-                                    placeholder="160" min="0">
-                                <span class="text-[9px] text-slate-500">g</span>
-                            </div>
-                        </div>
-                        <div
-                            class="flex flex-col items-center bg-slate-700/40 border border-slate-600/50 py-1.5 px-2 rounded-xl">
-                            <span data-i18n="label_carboidrati"
-                                class="text-[9px] font-semibold text-slate-400 uppercase tracking-wider mb-1">Carboidrati</span>
-                            <div class="flex items-center gap-1">
-                                <input type="number" id="targetCarbo" oninput="saveTarget()"
-                                    class="w-10 bg-slate-800 border border-slate-700 rounded-lg py-0.5 px-1 text-center text-xs focus:outline-none focus:ring-1 focus:ring-emerald-500 text-slate-200"
-                                    placeholder="200" min="0">
-                                <span class="text-[9px] text-slate-500">g</span>
-                            </div>
-                        </div>
-                        <div
-                            class="flex flex-col items-center bg-slate-700/40 border border-slate-600/50 py-1.5 px-2 rounded-xl">
-                            <span data-i18n="label_grassi"
-                                class="text-[9px] font-semibold text-slate-400 uppercase tracking-wider mb-1">Grassi</span>
-                            <div class="flex items-center gap-1">
-                                <input type="number" id="targetGrassi" oninput="saveTarget()"
-                                    class="w-10 bg-slate-800 border border-slate-700 rounded-lg py-0.5 px-1 text-center text-xs focus:outline-none focus:ring-1 focus:ring-amber-500 text-slate-200"
-                                    placeholder="70" min="0">
-                                <span class="text-[9px] text-slate-500">g</span>
-                            </div>
-                        </div>
-                    </div>
-                    <!-- Indicatore di Coerenza Target -->
-                    <div id="target-coherence-status" class="mt-2.5"></div>
-                </div>
-            </details>
-
-            <!-- SEZIONE 3: Calcola Target con AI -->
-            <details id="detailsTargetAI"
-                class="group bg-slate-700/30 border border-slate-600/50 rounded-xl overflow-hidden transition-all duration-300">
-                <summary
-                    class="flex items-center justify-between p-3 font-semibold text-xs text-slate-300 uppercase tracking-wider cursor-pointer list-none select-none hover:bg-slate-700/50 transition">
-                    <div class="flex items-center gap-2.5">
-                        <i data-lucide="wheat" class="w-4 h-4 text-purple-400"></i>
-                        <span data-i18n="btn_calculate_ai">Calcola Target con AI</span>
-                    </div>
-                    <i data-lucide="chevron-down"
-                        class="w-4 h-4 text-slate-400 transition-transform duration-300 group-open:rotate-180"></i>
-                </summary>
-                <div class="p-3.5 border-t border-slate-700/30 space-y-3 bg-transparent">
-                    <div class="grid grid-cols-3 gap-2">
-                        <div>
-                            <label class="text-[9px] font-bold text-slate-500 uppercase tracking-wider block"
-                                data-i18n="lbl_cur_weight">Peso Att. (kg)</label>
-                            <input type="number" id="aiPeso" placeholder="es. 75" oninput="saveProfileData()"
-                                class="mt-1 w-full bg-slate-700/50 border border-slate-600/50 rounded-lg p-2 text-xs text-slate-200 focus:outline-none focus:ring-1 focus:ring-purple-500">
-                        </div>
-                        <div>
-                            <label class="text-[9px] font-bold text-slate-500 uppercase tracking-wider block"
-                                data-i18n="lbl_target_weight_short">Peso Des. (kg)</label>
-                            <input type="number" id="aiPesoTarget" placeholder="es. 70" oninput="saveProfileData()"
-                                class="mt-1 w-full bg-slate-700/50 border border-slate-600/50 rounded-lg p-2 text-xs text-slate-200 focus:outline-none focus:ring-1 focus:ring-purple-500">
-                        </div>
-                        <div>
-                            <label class="text-[9px] font-bold text-slate-500 uppercase tracking-wider block"
-                                data-i18n="lbl_target_time_weeks">Tempo (sett.)</label>
-                            <input type="number" id="aiTempoSettimane" placeholder="es. 8" oninput="saveProfileData()"
-                                class="mt-1 w-full bg-slate-700/50 border border-slate-600/50 rounded-lg p-2 text-xs text-slate-200 focus:outline-none focus:ring-1 focus:ring-purple-500">
-                        </div>
-                    </div>
-
-                    <div class="grid grid-cols-3 gap-2">
-                        <div>
-                            <label class="text-[9px] font-bold text-slate-500 uppercase tracking-wider block"
-                                data-i18n="lbl_gender">Sesso</label>
-                            <select id="aiSesso" onchange="saveProfileData()"
-                                class="mt-1 w-full bg-slate-700/50 border border-slate-600/50 rounded-lg p-2 text-xs text-slate-200 focus:outline-none focus:ring-1 focus:ring-purple-500">
-                                <option value="uomo" data-i18n="opt_male">Uomo</option>
-                                <option value="donna" data-i18n="opt_female">Donna</option>
-                            </select>
-                        </div>
-                        <div>
-                            <label class="text-[9px] font-bold text-slate-500 uppercase tracking-wider block"
-                                data-i18n="lbl_age">Età (anni)</label>
-                            <input type="number" id="aiEta" placeholder="es. 30" oninput="saveProfileData()"
-                                class="mt-1 w-full bg-slate-700/50 border border-slate-600/50 rounded-lg p-2 text-xs text-slate-200 focus:outline-none focus:ring-1 focus:ring-purple-500">
-                        </div>
-                        <div>
-                            <label class="text-[9px] font-bold text-slate-500 uppercase tracking-wider block"
-                                data-i18n="lbl_height_cm">Altezza (cm)</label>
-                            <input type="number" id="aiAltezza" placeholder="es. 180" oninput="saveProfileData()"
-                                class="mt-1 w-full bg-slate-700/50 border border-slate-600/50 rounded-lg p-2 text-xs text-slate-200 focus:outline-none focus:ring-1 focus:ring-purple-500">
-                        </div>
-                    </div>
-
-                    <div>
-                        <label class="text-[10px] font-bold text-slate-500 uppercase tracking-wider block"
-                            data-i18n="lbl_training_style">Stile di allenamento / Attività</label>
-                        <input type="text" id="aiAttivita" oninput="saveProfileData()" data-i18n="pl_training_style"
-                            placeholder="es. Palestra 3 volte a settimana, lavoro sedentario"
-                            class="mt-1 w-full bg-slate-700/50 border border-slate-600/50 rounded-lg p-2 text-xs text-slate-200 focus:outline-none focus:ring-1 focus:ring-purple-500">
-                    </div>
-
-                    <div>
-                        <label class="text-[10px] font-bold text-slate-500 uppercase tracking-wider block"
-                            data-i18n="lbl_main_goal">Obiettivo principale</label>
-                        <input type="text" id="aiObiettivo" placeholder="es. Aumentare massa muscolare magra"
-                            oninput="saveProfileData()" data-i18n="pl_main_goal"
-                            class="mt-1 w-full bg-slate-700/50 border border-slate-600/50 rounded-lg p-2 text-xs text-slate-200 focus:outline-none focus:ring-1 focus:ring-purple-500">
-                    </div>
-
-                    <button type="button" onclick="generaTargetConAI()" id="btnGeneraTargetAI"
-                        class="w-full bg-purple-600 hover:bg-purple-500 text-white font-bold py-2 rounded-lg transition text-xs flex items-center justify-center gap-1.5 cursor-pointer">
-                        <i data-lucide="sparkles" class="w-3.5 h-3.5"></i> <span data-i18n="btn_generate_target">Calcola
-                            target</span>
-                    </button>
-                    <div id="statoTargetAI" class="text-[11px] text-slate-400 text-center italic hidden"
-                        data-i18n="lbl_ai_calculating">L'AI sta calcolando i tuoi target...</div>
-
-                    <div id="aiTargetResults"
-                        class="hidden space-y-2 p-2 bg-slate-700/50 rounded-lg border border-purple-500/30 text-xs">
-                        <p class="font-bold text-purple-400" data-i18n="lbl_ai_suggestion_title">Suggerimento Target AI:
-                        </p>
-                        <div class="grid grid-cols-2 gap-1.5 text-slate-300">
-                            <div><span data-i18n="lbl_calories_colon">Calorie:</span> <span id="sugCal"
-                                    class="font-bold text-slate-100">0</span> kcal</div>
-                            <div><span data-i18n="lbl_target_weight_colon">Peso Target:</span> <span id="sugPeso"
-                                    class="font-bold text-slate-100">0</span> kg</div>
-                            <div><span data-i18n="lbl_proteins_colon">Proteine:</span> <span id="sugProt"
-                                    class="font-bold text-slate-100">0</span> g</div>
-                            <div><span data-i18n="lbl_carbs_colon">Carbo:</span> <span id="sugCarb"
-                                    class="font-bold text-slate-100">0</span> g</div>
-                            <div><span data-i18n="lbl_fats_colon">Grassi:</span> <span id="sugFat"
-                                    class="font-bold text-slate-100">0</span> g</div>
-                        </div>
-                        <div id="sugNotaBox"
-                            class="mt-2 p-2 bg-amber-500/10 border border-amber-500/25 rounded-lg text-amber-400 text-[11px] hidden">
-                            <span id="sugNota"></span>
-                        </div>
-                        <button type="button" onclick="applicaTargetSuggeriti()"
-                            class="w-full mt-2 bg-emerald-600 hover:bg-emerald-500 text-white font-bold py-1.5 rounded text-xs transition cursor-pointer">
-                            <span data-i18n="btn_apply_targets">Applica questi target</span>
-                        </button>
-                    </div>
-                </div>
-            </details>
-
-            <!-- SEZIONE 4: Salvataggio Locale -->
-            <details
-                class="group bg-slate-700/30 border border-slate-600/50 rounded-xl overflow-hidden transition-all duration-300">
-                <summary
-                    class="flex items-center justify-between p-3 font-semibold text-xs text-slate-300 uppercase tracking-wider cursor-pointer list-none select-none hover:bg-slate-700/50 transition">
-                    <div class="flex items-center gap-2.5">
-                        <i data-lucide="hard-drive" class="w-4 h-4 text-emerald-400"></i>
-                        <span data-i18n="title_backup_auto">Salvataggio Locale</span>
-                    </div>
-                    <i data-lucide="chevron-down"
-                        class="w-4 h-4 text-slate-400 transition-transform duration-300 group-open:rotate-180"></i>
-                </summary>
-                <div class="p-3.5 border-t border-slate-700/30 space-y-3 bg-transparent">
-                    <div class="flex flex-col gap-2">
-                        <div class="flex items-center gap-2">
-                            <button type="button" onclick="selezionaFileAutoSalvataggio()"
-                                class="flex-1 bg-slate-700 hover:bg-slate-650 text-slate-200 border border-slate-600/50 font-bold py-2 rounded-xl transition text-xs flex items-center justify-center gap-1.5 cursor-pointer">
-                                <i data-lucide="folder-open" class="w-4 h-4 text-blue-400"></i>
-                                <span id="lblFileAutoSalvataggio" data-i18n="btn_select_file">Associa file
-                                    database</span>
-                            </button>
-                            <button type="button" id="btnRimuoviFileAuto" onclick="rimuoviFileAutoSalvataggio()"
-                                class="hidden bg-rose-950/40 hover:bg-rose-900/60 text-rose-300 border border-rose-800/40 p-2 rounded-xl transition duration-200 cursor-pointer"
-                                title="Rimuovi associazione">
-                                <i data-lucide="trash-2" class="w-4 h-4"></i>
-                            </button>
-                        </div>
-                        <p id="pathFileAutoSalvataggio" class="text-[10px] text-slate-500 italic break-all"></p>
-                    </div>
-                </div>
-            </details>
-
-            <p class="text-[10px] text-slate-500 mt-2 text-center" data-i18n="lbl_privacy_note">Le impostazioni e le
-                chiavi vengono memorizzate in localStorage, il diario in IndexedDB. Tutto rimane sul tuo dispositivo.
-            </p>
-            <p class="text-[9px] text-slate-500/80 leading-normal text-center mt-3 border-t border-slate-700/35 pt-2.5 px-1"
-                data-i18n="lbl_disclaimer">
-                <strong>Disclaimer:</strong> Questo strumento ha scopo puramente informativo e di tracciamento
-                personale. Non fornisce consigli medici, diagnosi o piani terapeutici professionali e non sostituisce in
-                alcun modo il parere di un medico o nutrizionista qualificato.
-            </p>
-        </div>
-
-        <div class="flex gap-2 mb-3">
-            <button id="tab-oggi" onclick="switchTab('oggi')"
-                class="tab-btn flex-1 flex items-center justify-center gap-1.5 py-2.5 rounded-xl text-xs font-bold border active">
-                <i data-lucide="utensils" class="w-3.5 h-3.5"></i> <span data-i18n="tab_oggi">Dati</span>
+        <div id="dropdownMenu" class="hidden mb-3 bg-slate-800/60 p-2.5 rounded-2xl border border-slate-700/50 backdrop-blur flex items-center justify-around gap-1.5 transition-all">
+            <button onclick="cycleLang()" id="btnLangToggle" title="Cambia lingua / Change language"
+                class="text-slate-400 hover:text-slate-202 px-2.5 py-1.5 rounded-lg bg-slate-700/30 hover:bg-slate-700/60 transition text-[11px] font-bold flex items-center gap-1 shrink-0">
+                <img id="langFlag" src="https://flagcdn.com/20x15/it.png" width="16" height="12" alt="IT"
+                    class="rounded-sm"> <span id="langLabel">IT</span>
             </button>
-            <button id="tab-trend" onclick="switchTab('trend')"
-                class="tab-btn flex-1 flex items-center justify-center gap-1.5 py-2.5 rounded-xl text-xs font-bold border">
-                <i data-lucide="trending-up" class="w-3.5 h-3.5"></i> <span data-i18n="tab_trend">Trend</span>
+            <button onclick="toggleTheme()" id="btnThemeToggle" title="Cambia tema / Toggle theme"
+                class="text-slate-400 hover:text-slate-202 p-1.5 rounded-lg bg-slate-700/30 hover:bg-slate-700/60 transition cursor-pointer flex items-center justify-center shrink-0">
+                <i id="themeIcon" data-lucide="sun" class="w-4 h-4"></i>
             </button>
-            <button id="tab-storico" onclick="switchTab('storico')"
-                class="tab-btn flex-1 flex items-center justify-center gap-1.5 py-2.5 rounded-xl text-xs font-bold border">
-                <i data-lucide="clock" class="w-3.5 h-3.5"></i> <span data-i18n="tab_storico">Registro</span>
+            <button onclick="toggleSettings()"
+                class="text-slate-400 hover:text-slate-202 p-1.5 rounded-lg bg-slate-700/30 hover:bg-slate-700/60 transition flex items-center justify-center shrink-0">
+                <i data-lucide="settings" class="w-4 h-4"></i>
+            </button>
+            <button onclick="toggleHelp()" id="btnHelpToggle" title="Guida / Help"
+                class="text-slate-400 hover:text-slate-202 p-1.5 rounded-lg bg-slate-700/30 hover:bg-slate-700/60 transition flex items-center justify-center shrink-0">
+                <i data-lucide="help-circle" class="w-4 h-4"></i>
             </button>
         </div>
+
+
+
+
 
         <div id="panel-oggi" class="tab-panel active">
 
@@ -3136,7 +3182,7 @@
                 aggiornaCoerenzaTarget();
             }
 
-            if (!savedGemini) document.getElementById('settingsBox').classList.remove('hidden');
+            if (!savedGemini) toggleSettings();
 
             aggiornaTotaleGiorno();
             caricaPesoDelGiorno();
@@ -3524,13 +3570,58 @@
         // ================================================================
         // SETTINGS / PROVIDER
         // ================================================================
-        function toggleSettings() {
-            document.getElementById('settingsBox').classList.toggle('hidden');
-        }
+        window.toggleMenu = function () {
+            const menu = document.getElementById('dropdownMenu');
+            const btn = document.getElementById('btnMenuToggle');
+            if (menu && btn) {
+                const isClosed = menu.classList.toggle('hidden');
+                if (!isClosed) {
+                    btn.classList.add('menu-active-state');
+                    menu.classList.add('menu-active-state');
+                } else {
+                    btn.classList.remove('menu-active-state');
+                    menu.classList.remove('menu-active-state');
+                }
+            }
+        };
+
+        window.toggleSettings = function () {
+            const m = document.getElementById('settingsModal');
+            if (!m) return;
+            if (m.classList.contains('hidden')) {
+                const menu = document.getElementById('dropdownMenu');
+                const btn = document.getElementById('btnMenuToggle');
+                if (menu && btn && !menu.classList.contains('hidden')) {
+                    menu.classList.add('hidden');
+                    btn.classList.remove('menu-active-state');
+                    menu.classList.remove('menu-active-state');
+                }
+                m.classList.remove('hidden');
+                setTimeout(() => {
+                    document.getElementById('settingsModalInner').style.opacity = "1";
+                    document.getElementById('settingsModalInner').style.transform = "scale(1)";
+                }, 50);
+            } else {
+                document.getElementById('settingsModalInner').style.opacity = "0";
+                document.getElementById('settingsModalInner').style.transform = "scale(0.95)";
+                setTimeout(() => {
+                    m.classList.add('hidden');
+                }, 200);
+            }
+            lucide.createIcons();
+        };
 
         window.toggleHelp = function () {
             const m = document.getElementById('helpModal');
+            if (!m) return;
             if (m.classList.contains('hidden')) {
+                const menu = document.getElementById('dropdownMenu');
+                const btn = document.getElementById('btnMenuToggle');
+                if (menu && btn && !menu.classList.contains('hidden')) {
+                    menu.classList.add('hidden');
+                    btn.classList.remove('menu-active-state');
+                    menu.classList.remove('menu-active-state');
+                }
                 m.classList.remove('hidden');
                 setTimeout(() => {
                     document.getElementById('helpModalInner').style.opacity = "1";
@@ -3544,7 +3635,7 @@
                 }, 200);
             }
             lucide.createIcons();
-        }
+        };
 
         window.switchHelpTab = function (tabName) {
             // Hide all tab panels
