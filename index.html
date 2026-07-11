@@ -4390,9 +4390,31 @@ Rispondi ESCLUSIVAMENTE con un oggetto JSON valido. NO blocchi di codice (no \`\
             name = name.replace(/\b\d+(?:\.\d+)?\s*(?:g|ml|kg|l)?\b/gi, ''); // Rimuovi pesi/numeri (es. 80g)
             name = name.replace(/\s+/g, ' ').trim(); // Rimuovi spazi multipli
             if (name.length < 2) return "";
+
+            // Filtro per escludere liquidi, bevande non caloriche e condimenti
+            const esclusioni = [
+                'acqua', 'water',
+                'olio', 'oil',
+                'sale', 'salt',
+                'pepe', 'pepper',
+                'aceto', 'vinegar',
+                'limone', 'lemon',
+                'caffè', 'caffe', 'coffee',
+                'tè', 'te', 'tea',
+                'tisana', 'herbal tea', 'infuso',
+                'burro', 'butter',
+                'zucchero', 'sugar',
+                'dolcificante', 'sweetener', 'stevia',
+                'spezie', 'spices', 'origano', 'rosmarino', 'basilico', 'prezzemolo', 'salvia', 'timo', 'peperoncino',
+                'brodo', 'broth'
+            ];
+            const lower = name.toLowerCase();
+            const daEscludere = esclusioni.some(esc => lower.includes(esc));
+            if (daEscludere) return "";
+
             // Capitalizza la prima lettera
             name = name.charAt(0).toUpperCase() + name.slice(1).toLowerCase();
-            // Ottimizzazione estetica per EVO
+            // Ottimizzazione estetica per EVO (se per caso ammesso in altri contesti)
             return name.replace(/\bevo\b/gi, 'EVO');
         }
 
