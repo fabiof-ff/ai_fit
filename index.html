@@ -572,6 +572,34 @@
             color: #1e3a8a !important;
         }
 
+        /* Alimenti Frequenti Treemap style */
+        .treemap-item {
+            position: absolute;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: flex-start;
+            padding: 8px;
+            box-sizing: border-box;
+            transition: all 0.25s ease;
+            cursor: pointer;
+            border-radius: 0.5rem; /* rounded-lg */
+            overflow: hidden;
+            border: 1px solid transparent;
+            user-select: none;
+        }
+        .treemap-item:hover {
+            transform: scale(0.985);
+            filter: brightness(1.08);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+        }
+        body.light-theme .treemap-item:hover {
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+        }
+        .treemap-item:active {
+            transform: scale(0.96);
+        }
+
         /* Light theme overrides for settings modal contents matching help modal */
         body.light-theme #settingsModalInner .bg-slate-800\/30 {
             background: rgba(248, 250, 252, 0.9) !important;
@@ -1960,8 +1988,8 @@
                 </summary>
                 <div class="mt-3">
                     <div id="listaAlimentiFrequenti"
-                        class="flex flex-wrap justify-center items-center gap-x-5 gap-y-3 p-3 bg-slate-900/10 dark:bg-slate-950/20 rounded-xl border border-slate-700/5 min-h-[50px] leading-relaxed">
-                        <!-- Tag inseriti dinamicamente -->
+                        class="relative w-full h-[220px] rounded-xl overflow-hidden bg-slate-900/10 border border-slate-700/5">
+                        <!-- Alimenti frequenti visualizzati come rettangoli Treemap -->
                     </div>
                 </div>
             </details>
@@ -4394,6 +4422,46 @@ Rispondi ESCLUSIVAMENTE con un oggetto JSON valido. NO blocchi di codice (no \`\
                 .slice(0, 10);
         }
 
+        // Algoritmo slice-and-dice ricorsivo per la suddivisione geometrica della Treemap
+        function calcolaRettangoliTreemap(dati, x, y, w, h) {
+            if (dati.length === 0) return [];
+            if (dati.length === 1) {
+                return [{ ...dati[0], x, y, w, h }];
+            }
+
+            // Suddividi i dati in due metà con frequenze bilanciate
+            const total = dati.reduce((sum, item) => sum + item.count, 0);
+            let halfSum = 0;
+            let splitIdx = 0;
+            for (let i = 0; i < dati.length; i++) {
+                halfSum += dati[i].count;
+                if (halfSum >= total / 2 || i === dati.length - 2) {
+                    splitIdx = i + 1;
+                    break;
+                }
+            }
+
+            const part1 = dati.slice(0, splitIdx);
+            const part2 = dati.slice(splitIdx);
+            const sum1 = part1.reduce((sum, item) => sum + item.count, 0);
+
+            const rects = [];
+            if (w >= h) {
+                // Taglio verticale
+                const w1 = w * (sum1 / total);
+                const w2 = w - w1;
+                rects.push(...calcolaRettangoliTreemap(part1, x, y, w1, h));
+                rects.push(...calcolaRettangoliTreemap(part2, x + w1, y, w2, h));
+            } else {
+                // Taglio orizzontale
+                const h1 = h * (sum1 / total);
+                const h2 = h - h1;
+                rects.push(...calcolaRettangoliTreemap(part1, x, y, w, h1));
+                rects.push(...calcolaRettangoliTreemap(part2, x, y + h1, w, h2));
+            }
+            return rects;
+        }
+
         function aggiornaNuvolaAlimentiFrequenti() {
             const container = document.getElementById('boxAlimentiFrequentiContainer');
             const lista = document.getElementById('listaAlimentiFrequenti');
@@ -4408,44 +4476,52 @@ Rispondi ESCLUSIVAMENTE con un oggetto JSON valido. NO blocchi di codice (no \`\
 
             container.classList.remove('hidden');
 
-            const maxCount = topAlimenti[0].count;
             const isLightTheme = document.body.classList.contains('light-theme');
 
+            const PALETTE_DARK = [
+                { bg: 'rgba(99, 102, 241, 0.25)', border: 'rgba(99, 102, 241, 0.5)', text: '#e0e7ff' }, // Indigo
+                { bg: 'rgba(59, 130, 246, 0.25)', border: 'rgba(59, 130, 246, 0.5)', text: '#dbeafe' }, // Blue
+                { bg: 'rgba(16, 185, 129, 0.25)', border: 'rgba(16, 185, 129, 0.5)', text: '#d1fae5' }, // Emerald
+                { bg: 'rgba(245, 158, 11, 0.25)', border: 'rgba(245, 158, 11, 0.5)', text: '#fef3c7' }, // Amber
+                { bg: 'rgba(139, 92, 246, 0.25)', border: 'rgba(139, 92, 246, 0.5)', text: '#ede9fe' }, // Violet
+                { bg: 'rgba(20, 184, 166, 0.25)', border: 'rgba(20, 184, 166, 0.5)', text: '#ccfbf1' }, // Teal
+                { bg: 'rgba(236, 72, 153, 0.25)', border: 'rgba(236, 72, 153, 0.5)', text: '#fce7f3' }, // Pink
+                { bg: 'rgba(14, 165, 233, 0.25)', border: 'rgba(14, 165, 233, 0.5)', text: '#e0f2fe' }  // Sky
+            ];
+
+            const PALETTE_LIGHT = [
+                { bg: 'rgba(99, 102, 241, 0.1)', border: 'rgba(99, 102, 241, 0.3)', text: '#312e81' }, // Indigo
+                { bg: 'rgba(59, 130, 246, 0.1)', border: 'rgba(59, 130, 246, 0.3)', text: '#1e3a8a' }, // Blue
+                { bg: 'rgba(16, 185, 129, 0.1)', border: 'rgba(16, 185, 129, 0.3)', text: '#064e3b' }, // Emerald
+                { bg: 'rgba(245, 158, 11, 0.1)', border: 'rgba(245, 158, 11, 0.3)', text: '#78350f' }, // Amber
+                { bg: 'rgba(139, 92, 246, 0.1)', border: 'rgba(139, 92, 246, 0.3)', text: '#4c1d95' }, // Violet
+                { bg: 'rgba(20, 184, 166, 0.1)', border: 'rgba(20, 184, 166, 0.3)', text: '#115e59' }, // Teal
+                { bg: 'rgba(236, 72, 153, 0.1)', border: 'rgba(236, 72, 153, 0.3)', text: '#831843' }, // Pink
+                { bg: 'rgba(14, 165, 233, 0.1)', border: 'rgba(14, 165, 233, 0.3)', text: '#0c4a6e' }  // Sky
+            ];
+
+            const rettangoli = calcolaRettangoliTreemap(topAlimenti, 0, 0, 100, 100);
+
             let html = "";
-            topAlimenti.forEach(al => {
-                const ratio = maxCount > 1 ? (al.count - 1) / (maxCount - 1) : 1.0;
-
-                // Dimensione font progressiva da 12px a 26px
-                const size = Math.round(12 + ratio * 14);
-
-                // Spessore carattere
-                let weight = '400';
-                if (ratio > 0.7) weight = '800';
-                else if (ratio > 0.4) weight = '700';
-                else if (ratio > 0.1) weight = '600';
-                else weight = '500';
-
-                // Colore in base al tema per leggibilità ideale
-                let color;
-                if (isLightTheme) {
-                    if (ratio > 0.7) color = '#312e81';      // Indigo 900
-                    else if (ratio > 0.4) color = '#4338ca'; // Indigo 700
-                    else if (ratio > 0.1) color = '#4f46e5'; // Indigo 600
-                    else color = '#64748b';                  // Slate 500
-                } else {
-                    if (ratio > 0.7) color = '#e0e7ff';      // Indigo 100
-                    else if (ratio > 0.4) color = '#a5b4fc'; // Indigo 300
-                    else if (ratio > 0.1) color = '#818cf8'; // Indigo 400
-                    else color = '#94a3b8';                  // Slate 400
-                }
+            rettangoli.forEach((r, idx) => {
+                const palette = isLightTheme ? PALETTE_LIGHT[idx % PALETTE_LIGHT.length] : PALETTE_DARK[idx % PALETTE_DARK.length];
+                
+                // Se la cella è troppo stretta o bassa, nascondiamo i testi per non sovrapporli
+                const nascondiTesto = r.w < 7 || r.h < 7;
+                // Mostriamo il numero (es. x3) solo se c'è abbastanza spazio verticale (es. altezza >= 12%)
+                const mostraNumero = !nascondiTesto && r.h >= 12;
+                const labelVolte = r.count === 1 ? "volta" : "volte";
 
                 html += `
-                    <button onclick="selezionaTagAlimento('${al.nome.replace(/'/g, "\\'")}')" 
-                            style="font-size: ${size}px; color: ${color}; font-weight: ${weight};"
-                            class="transition-all duration-150 hover:scale-110 hover:opacity-100 active:scale-95 cursor-pointer select-none inline-flex items-start gap-0.5 py-1 px-2 opacity-90">
-                        <span>${al.nome}</span>
-                        <sup class="text-[9px] text-slate-400 font-normal select-none opacity-60">x${al.count}</sup>
-                    </button>
+                    <div onclick="selezionaTagAlimento('${r.nome.replace(/'/g, "\\'")}')"
+                         class="treemap-item"
+                         title="${r.nome} (${r.count} ${labelVolte})"
+                         style="left: ${r.x}%; top: ${r.y}%; width: ${r.w}%; height: ${r.h}%; background: ${palette.bg}; border-color: ${palette.border}; color: ${palette.text};">
+                        ${nascondiTesto ? '' : `
+                            <span class="font-bold text-[10px] leading-tight text-left break-words w-full">${r.nome}</span>
+                            ${mostraNumero ? `<span class="text-[8px] opacity-75 mt-0.5 font-bold">x${r.count}</span>` : ''}
+                        `}
+                    </div>
                 `;
             });
 
