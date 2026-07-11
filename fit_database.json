@@ -241,6 +241,26 @@
       "carboidrati": 0,
       "grassi": 0,
       "pasti": []
+    },
+    {
+      "id": 1783795551220,
+      "data": "2026-07-11",
+      "calorie": 850,
+      "proteine": 50,
+      "carboidrati": 50,
+      "grassi": 50,
+      "pasti": [
+        {
+          "id": 1783795551220,
+          "ora": "Cena",
+          "testo": "Inserimento manuale",
+          "calorie": 850,
+          "proteine": 50,
+          "carboidrati": 50,
+          "grassi": 50
+        }
+      ],
+      "peso": null
     }
   ],
   "impostazioni": {
