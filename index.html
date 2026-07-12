@@ -3801,7 +3801,9 @@
 
         function ottieniPastiPrecedenti(db) {
             const map = new Map();
-            db.forEach(giorno => {
+            // Ordina il db dal giorno più recente a quello più vecchio
+            const sortedDb = [...db].sort((a, b) => new Date(b.data) - new Date(a.data));
+            sortedDb.forEach(giorno => {
                 if (giorno.pasti && Array.isArray(giorno.pasti)) {
                     giorno.pasti.forEach(pasto => {
                         const desc = pasto.testo ? pasto.testo.trim() : "";
@@ -3809,6 +3811,7 @@
                             const key = desc.toLowerCase();
                             if (!map.has(key)) {
                                 map.set(key, {
+                                    data: giorno.data,
                                     testo: pasto.testo,
                                     calorie: pasto.calorie,
                                     proteine: pasto.proteine,
@@ -3821,6 +3824,60 @@
                 }
             });
             return Array.from(map.values());
+        }
+
+        function eseguiHighlight(testo, query) {
+            let escaped = testo
+                .replace(/&/g, "&amp;")
+                .replace(/</g, "&lt;")
+                .replace(/>/g, "&gt;")
+                .replace(/"/g, "&quot;")
+                .replace(/'/g, "&#039;");
+
+            if (!query) return escaped;
+
+            const escapedQuery = query
+                .replace(/&/g, "&amp;")
+                .replace(/</g, "&lt;")
+                .replace(/>/g, "&gt;");
+            
+            const regexQuery = escapedQuery.replace(/[-\/\\^$*+?.()|[\]{}]/g, '\\$&');
+            const regex = new RegExp(`(${regexQuery})`, 'gi');
+            return escaped.replace(regex, '<span class="text-indigo-400 font-bold">$1</span>');
+        }
+
+        function creaSnippetTesto(testo, query, maxLength = 50) {
+            if (!testo) return "";
+            if (!query) {
+                if (testo.length > maxLength) {
+                    return eseguiHighlight(testo.substring(0, maxLength) + "...", "");
+                }
+                return eseguiHighlight(testo, "");
+            }
+
+            const index = testo.toLowerCase().indexOf(query.toLowerCase());
+            if (index === -1) {
+                if (testo.length > maxLength) {
+                    return eseguiHighlight(testo.substring(0, maxLength) + "...", "");
+                }
+                return eseguiHighlight(testo, "");
+            }
+
+            let start = 0;
+            let prefix = "";
+            if (index > 15) {
+                start = index - 12;
+                prefix = "...";
+            }
+
+            const end = start + maxLength;
+            let suffix = "";
+            if (testo.length > end) {
+                suffix = "...";
+            }
+
+            const snippet = prefix + testo.substring(start, end) + suffix;
+            return eseguiHighlight(snippet, query);
         }
 
         window.cercaPastiPrecedenti = function () {
@@ -3847,15 +3904,29 @@
                 return;
             }
 
+            const formattaDataSemplice = (dataStr) => {
+                if (!dataStr) return "";
+                const parts = dataStr.split('-');
+                if (parts.length === 3) {
+                    return `${parts[2]}/${parts[1]}/${parts[0]}`;
+                }
+                return dataStr;
+            };
+
             let html = '';
             filtrati.forEach(p => {
-                const labelMacros = `${Math.round(p.calorie)} kcal (P: ${Math.round(p.proteine)}g, C: ${Math.round(p.carboidrati)}g, G: ${Math.round(p.grassi)}g)`;
+                const labelMacros = `${Math.round(p.calorie)} kcal`;
+                const dataFormat = formattaDataSemplice(p.data);
                 const escText = p.testo.replace(/'/g, "\\'").replace(/"/g, '&quot;');
+                const htmlSnippet = creaSnippetTesto(p.testo, query);
                 html += `
                     <div onclick="selezionaPastoPrecedente('${escText}', ${p.calorie}, ${p.proteine}, ${p.carboidrati}, ${p.grassi})" 
                          class="p-2 hover:bg-slate-700/50 cursor-pointer flex justify-between items-center transition">
-                        <span class="font-semibold text-slate-200 truncate pr-2 max-w-[200px] text-[11px]">${p.testo}</span>
-                        <span class="text-[9px] text-slate-400 font-mono shrink-0">${labelMacros}</span>
+                        <div class="flex items-center min-w-0 pr-2">
+                            <span class="font-semibold text-slate-200 text-[11px] truncate">${htmlSnippet}</span>
+                            <span class="text-[9px] text-slate-400 ml-1.5 shrink-0 font-medium">(${dataFormat})</span>
+                        </div>
+                        <span class="text-[10px] text-indigo-300 font-mono shrink-0 font-bold">${labelMacros}</span>
                     </div>
                 `;
             });
