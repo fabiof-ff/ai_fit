@@ -98,7 +98,8 @@
         .sub-tab-container {
             background: rgba(15, 23, 42, 0.4) !important;
             border: 1px solid rgba(255, 255, 255, 0.03) !important;
-            border-radius: 1rem !important; /* rounded-2xl */
+            border-radius: 1rem !important;
+            /* rounded-2xl */
             padding: 4px !important;
         }
 
@@ -262,6 +263,7 @@
         .scrollbar-hidden::-webkit-scrollbar {
             display: none;
         }
+
         .scrollbar-hidden {
             -ms-overflow-style: none;
             scrollbar-width: none;
@@ -571,10 +573,13 @@
 
         /* Active Menu State visual highlights linking the button and dropdown menu */
         .menu-active-state {
-            background-color: rgba(30, 41, 59, 0.6) !important; /* bg-slate-800/60 */
-            border: 1px solid rgba(71, 85, 105, 0.5) !important; /* border-slate-700/50 */
+            background-color: rgba(30, 41, 59, 0.6) !important;
+            /* bg-slate-800/60 */
+            border: 1px solid rgba(71, 85, 105, 0.5) !important;
+            /* border-slate-700/50 */
             color: #ffffff !important;
         }
+
         body.light-theme .menu-active-state {
             background-color: rgba(255, 255, 255, 0.938) !important;
             border: 1px solid rgba(226, 232, 240, 0.8) !important;
@@ -597,14 +602,17 @@
             border: 1px solid transparent;
             user-select: none;
         }
+
         .treemap-item:hover {
             transform: scale(0.985);
             filter: brightness(1.08);
             box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
         }
+
         body.light-theme .treemap-item:hover {
             box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
         }
+
         .treemap-item:active {
             transform: scale(0.96);
         }
@@ -820,7 +828,8 @@
                             <div
                                 class="flex flex-col items-center bg-slate-700/40 border border-slate-600/50 py-1.5 px-2 rounded-xl">
                                 <span data-i18n="label_peso"
-                                    class="text-[9px] font-semibold text-slate-400 uppercase tracking-wider mb-1">Target Peso</span>
+                                    class="text-[9px] font-semibold text-slate-400 uppercase tracking-wider mb-1">Target
+                                    Peso</span>
                                 <div class="flex items-center gap-1">
                                     <input type="number" id="targetPeso" oninput="saveTarget()" step="0.1"
                                         class="w-12 bg-slate-800 border border-slate-700 rounded-lg py-1 px-1.5 text-center text-xs focus:outline-none focus:ring-1 focus:ring-indigo-500 text-slate-200"
@@ -888,7 +897,8 @@
                         class="flex items-center justify-between p-3 font-semibold text-xs text-slate-300 uppercase tracking-wider cursor-pointer list-none select-none hover:bg-slate-700/50 transition">
                         <div class="flex items-center gap-2.5">
                             <i data-lucide="wheat" class="w-4 h-4 text-purple-400"></i>
-                            <span data-i18n="btn_calculate_ai">Calcola Target con AI</span> <span class="text-[10px] select-none opacity-85">💎</span>
+                            <span data-i18n="btn_calculate_ai">Calcola Target con AI</span> <span
+                                class="text-[10px] select-none opacity-85">💎</span>
                         </div>
                         <i data-lucide="chevron-down"
                             class="w-4 h-4 text-slate-400 transition-transform duration-300 group-open:rotate-180"></i>
@@ -910,7 +920,8 @@
                             <div>
                                 <label class="text-[9px] font-bold text-slate-500 uppercase tracking-wider block"
                                     data-i18n="lbl_target_time_weeks">Tempo (sett.)</label>
-                                <input type="number" id="aiTempoSettimane" placeholder="es. 8" oninput="saveProfileData()"
+                                <input type="number" id="aiTempoSettimane" placeholder="es. 8"
+                                    oninput="saveProfileData()"
                                     class="mt-1 w-full bg-slate-700/50 border border-slate-600/50 rounded-lg p-2 text-xs text-slate-200 focus:outline-none focus:ring-1 focus:ring-purple-500">
                             </div>
                         </div>
@@ -957,20 +968,27 @@
 
                         <button type="button" onclick="generaTargetConAI()" id="btnGeneraTargetAI"
                             class="w-full bg-purple-600 hover:bg-purple-500 text-white font-bold py-2 rounded-lg transition text-xs flex items-center justify-center gap-1.5 cursor-pointer">
-                            <i data-lucide="sparkles" class="w-3.5 h-3.5"></i> <span data-i18n="btn_generate_target">Calcola target</span>
+                            <i data-lucide="sparkles" class="w-3.5 h-3.5"></i> <span
+                                data-i18n="btn_generate_target">Calcola target</span>
                         </button>
                         <div id="statoTargetAI" class="text-[11px] text-slate-400 text-center italic hidden"
                             data-i18n="lbl_ai_calculating">L'AI sta calcolando i tuoi target...</div>
 
                         <div id="aiTargetResults"
                             class="hidden space-y-2 p-2 bg-slate-700/50 rounded-lg border border-purple-500/30 text-xs">
-                            <p class="font-bold text-purple-400" data-i18n="lbl_ai_suggestion_title">Suggerimento Target AI:</p>
+                            <p class="font-bold text-purple-400" data-i18n="lbl_ai_suggestion_title">Suggerimento Target
+                                AI:</p>
                             <div class="grid grid-cols-2 gap-1.5 text-slate-300">
-                                <div><span data-i18n="lbl_calories_colon">Calorie:</span> <span id="sugCal" class="font-bold text-slate-100">0</span> kcal</div>
-                                <div><span data-i18n="lbl_target_weight_colon">Peso Target:</span> <span id="sugPeso" class="font-bold text-slate-100">0</span> kg</div>
-                                <div><span data-i18n="lbl_proteins_colon">Proteine:</span> <span id="sugProt" class="font-bold text-slate-100">0</span> g</div>
-                                <div><span data-i18n="lbl_carbs_colon">Carbo:</span> <span id="sugCarb" class="font-bold text-slate-100">0</span> g</div>
-                                <div><span data-i18n="lbl_fats_colon">Grassi:</span> <span id="sugFat" class="font-bold text-slate-100">0</span> g</div>
+                                <div><span data-i18n="lbl_calories_colon">Calorie:</span> <span id="sugCal"
+                                        class="font-bold text-slate-100">0</span> kcal</div>
+                                <div><span data-i18n="lbl_target_weight_colon">Peso Target:</span> <span id="sugPeso"
+                                        class="font-bold text-slate-100">0</span> kg</div>
+                                <div><span data-i18n="lbl_proteins_colon">Proteine:</span> <span id="sugProt"
+                                        class="font-bold text-slate-100">0</span> g</div>
+                                <div><span data-i18n="lbl_carbs_colon">Carbo:</span> <span id="sugCarb"
+                                        class="font-bold text-slate-100">0</span> g</div>
+                                <div><span data-i18n="lbl_fats_colon">Grassi:</span> <span id="sugFat"
+                                        class="font-bold text-slate-100">0</span> g</div>
                             </div>
                             <div id="sugNotaBox"
                                 class="mt-2 p-2 bg-amber-500/10 border border-amber-500/25 rounded-lg text-amber-400 text-[11px] hidden">
@@ -1002,7 +1020,8 @@
                                 <button type="button" onclick="selezionaFileAutoSalvataggio()"
                                     class="flex-1 bg-slate-700 hover:bg-slate-650 text-slate-200 border border-slate-600/50 font-bold py-2 rounded-xl transition text-xs flex items-center justify-center gap-1.5 cursor-pointer">
                                     <i data-lucide="folder-open" class="w-4 h-4 text-blue-400"></i>
-                                    <span id="lblFileAutoSalvataggio" data-i18n="btn_select_file">Associa file database</span>
+                                    <span id="lblFileAutoSalvataggio" data-i18n="btn_select_file">Associa file
+                                        database</span>
                                 </button>
                                 <button type="button" id="btnRimuoviFileAuto" onclick="rimuoviFileAutoSalvataggio()"
                                     class="hidden bg-rose-950/40 hover:bg-rose-900/60 text-rose-300 border border-rose-800/40 p-2 rounded-xl transition duration-200 cursor-pointer"
@@ -1015,9 +1034,14 @@
                     </div>
                 </details>
 
-                <p class="text-[10px] text-slate-500 mt-2 text-center" data-i18n="lbl_privacy_note">Le impostazioni e le chiavi vengono memorizzate in localStorage, il diario in IndexedDB. Tutto rimane sul tuo dispositivo.</p>
-                <p class="text-[9px] text-slate-500/80 leading-normal text-center mt-3 border-t border-slate-700/35 pt-2.5 px-1" data-i18n="lbl_disclaimer">
-                    <strong>Disclaimer:</strong> Questo strumento ha scopo puramente informativo e di tracciamento personale. Non fornisce consigli medici, diagnosi o piani terapeutici professionali e non sostituisce in alcun modo il parere di un medico o nutrizionista qualificato.
+                <p class="text-[10px] text-slate-500 mt-2 text-center" data-i18n="lbl_privacy_note">Le impostazioni e le
+                    chiavi vengono memorizzate in localStorage, il diario in IndexedDB. Tutto rimane sul tuo
+                    dispositivo.</p>
+                <p class="text-[9px] text-slate-500/80 leading-normal text-center mt-3 border-t border-slate-700/35 pt-2.5 px-1"
+                    data-i18n="lbl_disclaimer">
+                    <strong>Disclaimer:</strong> Questo strumento ha scopo puramente informativo e di tracciamento
+                    personale. Non fornisce consigli medici, diagnosi o piani terapeutici professionali e non
+                    sostituisce in alcun modo il parere di un medico o nutrizionista qualificato.
                 </p>
             </div>
         </div>
@@ -1066,7 +1090,9 @@
                 <!-- TAB 1: COMANDI, FUNZIONALITÀ E VANTAGGI -->
                 <div id="help-content-commands" class="help-tab-panel space-y-4">
                     <p class="text-slate-400" data-i18n="help_commands_intro">
-                        AI NutriTracker è un'applicazione semplice, snella e senza fronzoli, progettata per offrirti solo quello che serve realmente per tracciare la tua alimentazione e forma fisica senza complicazioni. È organizzata in 3 sezioni principali:
+                        AI NutriTracker è un'applicazione semplice, snella e senza fronzoli, progettata per offrirti
+                        solo quello che serve realmente per tracciare la tua alimentazione e forma fisica senza
+                        complicazioni. È organizzata in 3 sezioni principali:
                     </p>
 
                     <div class="space-y-3.5">
@@ -1076,7 +1102,10 @@
                                 <span data-i18n="help_commands_tab1">Sezione Dati (Oggi)</span>
                             </h4>
                             <p class="text-slate-400 pl-6" data-i18n="help_commands_tab1_desc">
-                                Inserisci cosa hai mangiato nel box di testo libero (es. <em>"pasta al pesto e un uovo"</em>). Puoi anche usare la <strong>dettatura vocale</strong> col microfono! L'Intelligenza Artificiale farà il calcolo esatto. Se preferisci, c'è un inserimento manuale.
+                                Inserisci cosa hai mangiato nel box di testo libero (es. <em>"pasta al pesto e un
+                                    uovo"</em>). Puoi anche usare la <strong>dettatura vocale</strong> col microfono!
+                                L'Intelligenza Artificiale farà il calcolo esatto. Se preferisci, c'è un inserimento
+                                manuale.
                             </p>
                         </div>
 
@@ -1086,7 +1115,10 @@
                                 <span data-i18n="help_commands_tab2">Sezione Trend</span>
                             </h4>
                             <p class="text-slate-400 pl-6" data-i18n="help_commands_tab2_desc">
-                                Mostra l'andamento del peso, delle calorie assunte e della ripartizione dei macronutrienti negli ultimi 7 giorni, nelle ultime 8 settimane e il registro mensile. Clicca su <strong>"Chiedi parere ad AI"</strong> per ricevere un'analisi dettagliata sui tuoi progressi e consigli strategici personalizzati.
+                                Mostra l'andamento del peso, delle calorie assunte e della ripartizione dei
+                                macronutrienti negli ultimi 7 giorni, nelle ultime 8 settimane e il registro mensile.
+                                Clicca su <strong>"Chiedi parere ad AI"</strong> per ricevere un'analisi dettagliata sui
+                                tuoi progressi e consigli strategici personalizzati.
                             </p>
                         </div>
 
@@ -1096,7 +1128,9 @@
                                 <span data-i18n="help_commands_tab3">Sezione Registro</span>
                             </h4>
                             <p class="text-slate-400 pl-6" data-i18n="help_commands_tab3_desc">
-                                Contiene l'archivio storico di tutti i pasti inseriti. Puoi filtrare per testo, visualizzare il log dettagliato scompattato dall'AI, modificare o eliminare qualsiasi pasto.
+                                Contiene l'archivio storico di tutti i pasti inseriti. Puoi filtrare per testo,
+                                visualizzare il log dettagliato scompattato dall'AI, modificare o eliminare qualsiasi
+                                pasto.
                             </p>
                         </div>
                     </div>
@@ -1111,22 +1145,34 @@
                         <li class="flex gap-2.5">
                             <i data-lucide="utensils" class="w-4 h-4 text-indigo-400 shrink-0 mt-0.5"></i>
                             <div>
-                                <strong class="text-slate-200" data-i18n="help_why1_title">Decomposizione Automatica dei Piatti</strong>
-                                <p class="text-slate-400 mt-0.5" data-i18n="help_why1_desc">Non serve cercare e pesare ogni singolo ingrediente. Scrivi o detta un pasto intero e l'AI lo scompone stimando porzioni standard SINU/LARN regolate sul tuo profilo fisico.</p>
+                                <strong class="text-slate-200" data-i18n="help_why1_title">Decomposizione Automatica dei
+                                    Piatti</strong>
+                                <p class="text-slate-400 mt-0.5" data-i18n="help_why1_desc">Non serve cercare e pesare
+                                    ogni singolo ingrediente. Scrivi o detta un pasto intero e l'AI lo scompone stimando
+                                    porzioni standard SINU/LARN regolate sul tuo profilo fisico.</p>
                             </div>
                         </li>
                         <li class="flex gap-2.5">
                             <i data-lucide="sparkles" class="w-4 h-4 text-purple-400 shrink-0 mt-0.5"></i>
                             <div>
-                                <strong class="text-slate-200" data-i18n="help_why2_title">Coerenza Matematica Rigorosa</strong>
-                                <p class="text-slate-400 mt-0.5" data-i18n="help_why2_desc">A differenza delle app tradizionali dove i macro inseriti dagli utenti non corrispondono mai alle calorie, la nostra AI garantisce la coerenza termodinamica perfetta: (Proteine * 4) + (Carboidrati * 4) + (Grassi * 9) = Calorie totali.</p>
+                                <strong class="text-slate-200" data-i18n="help_why2_title">Coerenza Matematica
+                                    Rigorosa</strong>
+                                <p class="text-slate-400 mt-0.5" data-i18n="help_why2_desc">A differenza delle app
+                                    tradizionali dove i macro inseriti dagli utenti non corrispondono mai alle calorie,
+                                    la nostra AI garantisce la coerenza termodinamica perfetta: (Proteine * 4) +
+                                    (Carboidrati * 4) + (Grassi * 9) = Calorie totali.</p>
                             </div>
                         </li>
                         <li class="flex gap-2.5">
                             <i data-lucide="shield-check" class="w-4 h-4 text-emerald-400 shrink-0 mt-0.5"></i>
                             <div>
-                                <strong class="text-slate-200" data-i18n="help_why3_title">Privacy e Proprietà dei Dati</strong>
-                                <p class="text-slate-400 mt-0.5" data-i18n="help_why3_desc">Nessun server dell'app. Le tue chiavi API e impostazioni risiedono solo su localStorage, e l'intero diario alimentare è memorizzato sul tuo dispositivo tramite IndexedDB. I dati dei pasti vengono inviati direttamente ai server Google tramite la tua API Key personale per l'analisi, senza che l'autore dell'app o terze parti possano accedervi.</p>
+                                <strong class="text-slate-200" data-i18n="help_why3_title">Privacy e Proprietà dei
+                                    Dati</strong>
+                                <p class="text-slate-400 mt-0.5" data-i18n="help_why3_desc">Nessun server dell'app. Le
+                                    tue chiavi API e impostazioni risiedono solo su localStorage, e l'intero diario
+                                    alimentare è memorizzato sul tuo dispositivo tramite IndexedDB. I dati dei pasti
+                                    vengono inviati direttamente ai server Google tramite la tua API Key personale per
+                                    l'analisi, senza che l'autore dell'app o terze parti possano accedervi.</p>
                             </div>
                         </li>
                     </ul>
@@ -1138,23 +1184,28 @@
                         <div class="flex gap-3">
                             <i data-lucide="info" class="w-5 h-5 text-blue-400 shrink-0 mt-0.5"></i>
                             <p class="text-slate-300" data-i18n="help_api_intro">
-                                Per abilitare l'analisi dei pasti tramite Intelligenza Artificiale, è necessario inserire una chiave <strong>Gemini API Key</strong> personale. È gratuita, non richiede alcuna carta di credito o metodo di pagamento, e garantisce:
+                                Per abilitare l'analisi dei pasti tramite Intelligenza Artificiale, è necessario
+                                inserire una chiave <strong>Gemini API Key</strong> personale. È gratuita, non richiede
+                                alcuna carta di credito o metodo di pagamento, e garantisce:
                             </p>
                         </div>
-                        
+
                         <!-- Benefits List Inside Box -->
                         <div class="grid grid-cols-1 gap-1.5 pl-8">
                             <div class="flex gap-2 items-center">
                                 <i data-lucide="shield-check" class="w-3.5 h-3.5 text-emerald-400 shrink-0"></i>
-                                <strong class="text-slate-200 text-[11px]" data-i18n="help_api_benefit_privacy_title">100% Privacy & Zero Account</strong>
+                                <strong class="text-slate-200 text-[11px]"
+                                    data-i18n="help_api_benefit_privacy_title">100% Privacy & Zero Account</strong>
                             </div>
                             <div class="flex gap-2 items-center">
                                 <i data-lucide="rocket" class="w-3.5 h-3.5 text-amber-400 shrink-0"></i>
-                                <strong class="text-slate-200 text-[11px]" data-i18n="help_api_benefit_limits_title">Nessuna Coda o Limiti Condivisi</strong>
+                                <strong class="text-slate-200 text-[11px]"
+                                    data-i18n="help_api_benefit_limits_title">Nessuna Coda o Limiti Condivisi</strong>
                             </div>
                             <div class="flex gap-2 items-center">
                                 <i data-lucide="server-off" class="w-3.5 h-3.5 text-blue-400 shrink-0"></i>
-                                <strong class="text-slate-200 text-[11px]" data-i18n="help_api_benefit_longevity_title">Longevità e Indipendenza</strong>
+                                <strong class="text-slate-200 text-[11px]"
+                                    data-i18n="help_api_benefit_longevity_title">Longevità e Indipendenza</strong>
                             </div>
                         </div>
                     </div>
@@ -1330,10 +1381,12 @@
                 </button>
             </div>
 
-            <div id="dropdownMenu" class="hidden absolute left-1.5 top-[58px] z-50 w-[180px] bg-slate-800/95 p-2 rounded-2xl border border-slate-700/50 backdrop-blur shadow-2xl flex flex-col gap-1 transition-all">
+            <div id="dropdownMenu"
+                class="hidden absolute left-1.5 top-[58px] z-50 w-[180px] bg-slate-800/95 p-2 rounded-2xl border border-slate-700/50 backdrop-blur shadow-2xl flex flex-col gap-1 transition-all">
                 <button onclick="cycleLang()" id="btnLangToggle" title="Cambia lingua / Change language"
                     class="w-full text-slate-400 hover:text-slate-200 px-3 py-2 rounded-xl hover:bg-slate-700/20 transition text-xs font-semibold flex items-center gap-2.5 shrink-0 select-none cursor-pointer">
-                    <img id="langFlag" src="https://flagcdn.com/20x15/it.png" width="16" height="12" alt="IT" class="rounded-sm">
+                    <img id="langFlag" src="https://flagcdn.com/20x15/it.png" width="16" height="12" alt="IT"
+                        class="rounded-sm">
                     <span id="langLabel">IT</span>
                 </button>
                 <button onclick="toggleTheme()" id="btnThemeToggle" title="Cambia tema / Toggle theme"
@@ -1360,7 +1413,8 @@
 
         <div id="panel-oggi" class="tab-panel active">
 
-            <div id="boxTotaleGiorno" class="mb-4 py-3 px-2 bg-slate-800/50 border border-slate-700/40 rounded-2xl hidden">
+            <div id="boxTotaleGiorno"
+                class="mb-4 py-3 px-2 bg-slate-800/50 border border-slate-700/40 rounded-2xl hidden">
                 <div class="flex items-center justify-between mb-3">
                     <p
                         class="text-[11px] font-semibold text-slate-400 uppercase tracking-wider flex items-center gap-1.5">
@@ -1369,7 +1423,8 @@
                     </p>
                     <button onclick="valutaGiornataConAI()" id="btnValutaGiornata"
                         class="text-[10px] bg-indigo-600/80 hover:bg-indigo-600 text-white font-bold py-1 px-2.5 rounded-lg transition-all flex items-center gap-1 cursor-pointer">
-                        <i data-lucide="sparkles" class="w-3 h-3"></i> <span data-i18n="btn_ask_ai_opinion_short">Chiedi parere AI</span> <span class="text-[9px] select-none opacity-85">💎</span>
+                        <i data-lucide="sparkles" class="w-3 h-3"></i> <span data-i18n="btn_ask_ai_opinion_short">Chiedi
+                            parere AI</span> <span class="text-[9px] select-none opacity-85">💎</span>
                     </button>
                 </div>
                 <div class="grid grid-cols-4 gap-1">
@@ -1552,16 +1607,19 @@
                 <div id="inputSectionManual" class="space-y-3.5 hidden">
                     <!-- Ricerca pasti precedenti -->
                     <div class="flex flex-col gap-1.5 border-b border-slate-700/30 pb-3">
-                        <label class="text-[10px] font-bold text-indigo-400 uppercase tracking-wider" data-i18n="lbl_search_saved_meal">Cerca pasto salvato (Senza AI)</label>
+                        <label class="text-[10px] font-bold text-indigo-400 uppercase tracking-wider"
+                            data-i18n="lbl_search_saved_meal">Cerca pasto salvato (Senza AI)</label>
                         <div class="relative flex items-center">
                             <input type="text" id="manual-search-precedenti" oninput="cercaPastiPrecedenti()"
                                 placeholder="Cerca tra i pasti precedenti..."
                                 class="w-full h-8 bg-slate-900 border border-slate-700 rounded-xl px-2.5 pr-8 text-[13px] text-slate-100 focus:outline-none focus:ring-2 focus:ring-blue-500 transition">
-                            <button type="button" onclick="clearSearchPrecedenti()" id="btnClearSearchPrecedenti" class="absolute right-2.5 top-2 text-slate-500 hover:text-slate-300 hidden">
+                            <button type="button" onclick="clearSearchPrecedenti()" id="btnClearSearchPrecedenti"
+                                class="absolute right-2.5 top-2 text-slate-500 hover:text-slate-300 hidden">
                                 <i data-lucide="x" class="w-4 h-4"></i>
                             </button>
                         </div>
-                        <div id="manual-search-results" class="hidden max-h-40 overflow-y-auto mt-1 border border-slate-700 bg-slate-900 rounded-xl p-1 text-[11px] divide-y divide-slate-800/40 custom-scrollbar">
+                        <div id="manual-search-results"
+                            class="hidden max-h-40 overflow-y-auto mt-1 border border-slate-700 bg-slate-900 rounded-xl p-1 text-[11px] divide-y divide-slate-800/40 custom-scrollbar">
                             <!-- Risultati della ricerca -->
                         </div>
                     </div>
@@ -1708,336 +1766,353 @@
 
         <div id="panel-trend" class="tab-panel pt-1 pb-4 w-full">
 
-        <div class="flex items-center gap-2 mb-4">
-            <div class="flex-1 flex sub-tab-container">
-                 <button id="subtab-giorni" onclick="switchTrendView('giorni')"
-                    class="sub-tab-btn flex-1 py-1.5 rounded-lg text-xs font-semibold active">
-                    <span data-i18n="subtab_7_days">Giorni</span>
-                </button>
-                <button id="subtab-settimane" onclick="switchTrendView('settimane')"
-                    class="sub-tab-btn flex-1 py-1.5 rounded-lg text-xs font-semibold">
-                    <span data-i18n="subtab_8_weeks">Settimane</span> <span class="text-[10px] select-none opacity-85">💎</span>
-                </button>
-                <button id="subtab-mesi" onclick="switchTrendView('mesi')"
-                    class="sub-tab-btn flex-1 py-1.5 rounded-lg text-xs font-semibold">
-                    <span data-i18n="subtab_monthly_history">Mesi</span> <span class="text-[10px] select-none opacity-85">💎</span>
-                </button>
-            </div>
-            <button id="btnAnalisiTrendAI" onclick="analizzaTrendConAI()"
-                class="bg-slate-800/80 hover:bg-slate-700/80 border border-slate-700/50 text-slate-200 p-2.5 rounded-xl shadow-md transition active:scale-[0.98] flex items-center justify-center cursor-pointer shrink-0"
-                data-i18n-title="btn_ask_ai_trend" title="Chiedi parere ad AI sull'andamento">
-                <span id="btnAnalisiTrendLabel" class="flex items-center gap-1"><i data-lucide="sparkles" class="w-4 h-4 text-indigo-400"></i><span class="text-[9px] select-none opacity-85">💎</span></span>
-            </button>
-        </div>
-        <div id="boxAnalisiTrendAI"
-            class="mt-3 p-3.5 bg-slate-800/80 rounded-xl border border-slate-700/50 hidden text-xs leading-relaxed text-slate-300 relative">
-            <button onclick="nascondoAnalisiTrendAI()"
-                class="absolute top-3 right-3 text-slate-400 hover:text-slate-200 focus:outline-none cursor-pointer">
-                <i data-lucide="x" class="w-3.5 h-3.5"></i>
-            </button>
-            <p id="testoAnalisiTrendAI" class="pr-5"></p>
-            <p class="text-[9px] text-slate-500 mt-2.5 pt-2 border-t border-slate-700/35 leading-normal"
-                data-i18n="lbl_medical_disclaimer">
-                * Le indicazioni fornite dall'AI non costituiscono prescrizioni o pareri medici professionali.
-            </p>
-        </div>
-
-
-        <div id="trendMediaComplessivaContainer"
-            class="bg-slate-800/40 border border-slate-700/50 rounded-2xl py-4 px-2 mb-4">
-            <p id="trendMediaTitle" class="text-xs text-slate-400 font-semibold uppercase tracking-wider mb-3"
-                data-i18n="title_media_complessiva">Media complessiva</p>
-            <div class="grid grid-cols-4 gap-1">
-
-                <div
-                    class="bg-slate-900/50 rounded-xl px-1.5 py-2 text-center flex flex-col items-center justify-between min-h-[105px]">
-                    <p class="text-[9px] text-slate-500 uppercase font-semibold mb-1"
-                        data-i18n="label_calorie_uppercase">Calorie</p>
-                    <div class="relative w-14 h-14 flex justify-center items-center">
-                        <canvas id="gaugeCalorie"></canvas>
-                        <div class="absolute inset-0 flex flex-col items-center justify-center pointer-events-none">
-                            <span class="text-[9.6px] font-bold" id="mediaCaloriePercent">—</span>
-                            <span class="text-[8.4px] font-bold text-slate-200 mt-0.5" id="mediaCalorie">—</span>
-                            <span class="text-[9.6px] font-bold leading-none mt-0.5" id="mediaCalorieStatus"></span>
-                        </div>
-                    </div>
+            <div class="flex items-center gap-2 mb-4">
+                <div class="flex-1 flex sub-tab-container">
+                    <button id="subtab-giorni" onclick="switchTrendView('giorni')"
+                        class="sub-tab-btn flex-1 py-1.5 rounded-lg text-xs font-semibold active">
+                        <span data-i18n="subtab_7_days">Giorni</span>
+                    </button>
+                    <button id="subtab-settimane" onclick="switchTrendView('settimane')"
+                        class="sub-tab-btn flex-1 py-1.5 rounded-lg text-xs font-semibold">
+                        <span data-i18n="subtab_8_weeks">Settimane</span> <span
+                            class="text-[10px] select-none opacity-85">💎</span>
+                    </button>
+                    <button id="subtab-mesi" onclick="switchTrendView('mesi')"
+                        class="sub-tab-btn flex-1 py-1.5 rounded-lg text-xs font-semibold">
+                        <span data-i18n="subtab_monthly_history">Mesi</span> <span
+                            class="text-[10px] select-none opacity-85">💎</span>
+                    </button>
                 </div>
-
-                <div
-                    class="bg-slate-900/50 rounded-xl px-1.5 py-2 text-center flex flex-col items-center justify-between min-h-[105px]">
-                    <p class="text-[9px] text-slate-500 uppercase font-semibold mb-1"
-                        data-i18n="label_proteine_uppercase">Proteine</p>
-                    <div class="relative w-14 h-14 flex justify-center items-center">
-                        <canvas id="gaugeProteine"></canvas>
-                        <div class="absolute inset-0 flex flex-col items-center justify-center pointer-events-none">
-                            <span class="text-[9.6px] font-bold" id="mediaProteinePercent">—</span>
-                            <span class="text-[8.4px] font-bold text-slate-200 mt-0.5" id="mediaProteine">—</span>
-                            <span class="text-[9.6px] font-bold leading-none mt-0.5" id="mediaProteineStatus"></span>
-                        </div>
-                    </div>
-                </div>
-
-                <div
-                    class="bg-slate-900/50 rounded-xl px-1.5 py-2 text-center flex flex-col items-center justify-between min-h-[105px]">
-                    <p class="text-[9px] text-slate-500 uppercase font-semibold mb-1" data-i18n="label_carbo_uppercase">
-                        Carbo</p>
-                    <div class="relative w-14 h-14 flex justify-center items-center">
-                        <canvas id="gaugeCarbo"></canvas>
-                        <div class="absolute inset-0 flex flex-col items-center justify-center pointer-events-none">
-                            <span class="text-[9.6px] font-bold" id="mediaCarboPercent">—</span>
-                            <span class="text-[8.4px] font-bold text-slate-200 mt-0.5" id="mediaCarbo">—</span>
-                            <span class="text-[9.6px] font-bold leading-none mt-0.5" id="mediaCarboStatus"></span>
-                        </div>
-                    </div>
-                </div>
-
-                <div
-                    class="bg-slate-900/50 rounded-xl px-1.5 py-2 text-center flex flex-col items-center justify-between min-h-[105px]">
-                    <p class="text-[9px] text-slate-500 uppercase font-semibold mb-1"
-                        data-i18n="label_grassi_uppercase">Grassi</p>
-                    <div class="relative w-14 h-14 flex justify-center items-center">
-                        <canvas id="gaugeGrassi"></canvas>
-                        <div class="absolute inset-0 flex flex-col items-center justify-center pointer-events-none">
-                            <span class="text-[9.6px] font-bold" id="mediaGrassiPercent">—</span>
-                            <span class="text-[8.4px] font-bold text-slate-200 mt-0.5" id="mediaGrassi">—</span>
-                            <span class="text-[9.6px] font-bold leading-none mt-0.5" id="mediaGrassiStatus"></span>
-                        </div>
-                    </div>
-                </div>
-
-            </div>
-        </div>
-
-        <div id="trendGiornalieroContainer" class="space-y-4">
-            <div class="bg-slate-800/40 border border-slate-700/50 rounded-2xl p-4">
-                <div class="flex flex-col items-center gap-2 mb-3">
-                    <p class="text-xs text-slate-400 font-semibold uppercase tracking-wider flex items-center gap-1.5">
-                        <i data-lucide="scale" class="w-3.5 h-3.5 text-indigo-400"></i>
-                        <i data-lucide="flame" class="w-3.5 h-3.5 text-rose-400"></i>
-                        <span data-i18n="title_peso_calorie">Peso &amp; Calorie</span>
-                    </p>
-                    <div class="flex flex-wrap items-center justify-center gap-2.5 text-[9px] font-semibold text-slate-400">
-                        <div class="flex items-center gap-1 cursor-pointer hover:opacity-80 select-none"
-                            data-legend-index="0" onclick="toggleTrendDataset(0)">
-                            <span class="w-1.5 h-1.5 rounded-full bg-[#f43f5e]"></span>
-                            <span data-i18n="legend_calorie">Calorie</span>
-                        </div>
-                        <div class="flex items-center gap-1 cursor-pointer hover:opacity-80 select-none"
-                            data-legend-index="1" onclick="toggleTrendDataset(1)">
-                            <span class="w-1.5 h-1.5 rounded-sm bg-[#3b82f6]"></span>
-                            <span data-i18n="legend_proteine">Proteine</span>
-                        </div>
-                        <div class="flex items-center gap-1 cursor-pointer hover:opacity-80 select-none"
-                            data-legend-index="2" onclick="toggleTrendDataset(2)">
-                            <span class="w-1.5 h-1.5 rounded-sm bg-[#10b981]"></span>
-                            <span data-i18n="legend_carboidrati">Carbo</span>
-                        </div>
-                        <div class="flex items-center gap-1 cursor-pointer hover:opacity-80 select-none"
-                            data-legend-index="3" onclick="toggleTrendDataset(3)">
-                            <span class="w-1.5 h-1.5 rounded-sm bg-[#f59e0b]"></span>
-                            <span data-i18n="legend_grassi">Grassi</span>
-                        </div>
-                    </div>
-                </div>
-                <div class="w-full overflow-x-auto scrollbar-hidden">
-                    <div id="trendCalorieChartWrapper" class="h-44 min-w-full mb-3">
-                        <canvas id="trendCalorieChart"></canvas>
-                    </div>
-                </div>
-                <div class="w-full overflow-x-auto custom-scrollbar">
-                    <div id="trendPesoChartWrapper" class="h-32 min-w-full pt-2 border-t border-slate-700/35">
-                        <canvas id="trendPesoChart"></canvas>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <div id="trendSettimaneContainer" class="space-y-4 hidden">
-            <div class="bg-slate-800/40 border border-slate-700/50 rounded-2xl p-4">
-                <div class="flex flex-col items-center gap-2 mb-3">
-                    <p class="text-xs text-slate-400 font-semibold uppercase tracking-wider flex items-center gap-1.5">
-                        <i data-lucide="scale" class="w-3.5 h-3.5 text-indigo-400"></i>
-                        <i data-lucide="flame" class="w-3.5 h-3.5 text-rose-400"></i>
-                        <span data-i18n="title_peso_calorie">Peso &amp; Calorie</span>
-                    </p>
-                    <div class="flex flex-wrap items-center justify-center gap-2.5 text-[9px] font-semibold text-slate-400">
-                        <div class="flex items-center gap-1 cursor-pointer hover:opacity-80 select-none"
-                            data-legend-index="0" onclick="toggleTrendDataset(0)">
-                            <span class="w-1.5 h-1.5 rounded-full bg-[#f43f5e]"></span>
-                            <span data-i18n="legend_calorie">Calorie</span>
-                        </div>
-                        <div class="flex items-center gap-1 cursor-pointer hover:opacity-80 select-none"
-                            data-legend-index="1" onclick="toggleTrendDataset(1)">
-                            <span class="w-1.5 h-1.5 rounded-sm bg-[#3b82f6]"></span>
-                            <span data-i18n="legend_proteine">Proteine</span>
-                        </div>
-                        <div class="flex items-center gap-1 cursor-pointer hover:opacity-80 select-none"
-                            data-legend-index="2" onclick="toggleTrendDataset(2)">
-                            <span class="w-1.5 h-1.5 rounded-sm bg-[#10b981]"></span>
-                            <span data-i18n="legend_carboidrati">Carbo</span>
-                        </div>
-                        <div class="flex items-center gap-1 cursor-pointer hover:opacity-80 select-none"
-                            data-legend-index="3" onclick="toggleTrendDataset(3)">
-                            <span class="w-1.5 h-1.5 rounded-sm bg-[#f59e0b]"></span>
-                            <span data-i18n="legend_grassi">Grassi</span>
-                        </div>
-                    </div>
-                </div>
-                <div class="w-full overflow-x-auto scrollbar-hidden">
-                    <div id="weekCalorieChartWrapper" class="h-44 min-w-full mb-3">
-                        <canvas id="weekCalorieChart"></canvas>
-                    </div>
-                </div>
-                <div class="w-full overflow-x-auto custom-scrollbar">
-                    <div id="weekPesoChartWrapper" class="h-32 min-w-full pt-2 border-t border-slate-700/35">
-                        <canvas id="weekPesoChart"></canvas>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <div id="trendMesiContainer" class="space-y-4 hidden">
-            <div class="bg-slate-800/40 border border-slate-700/50 rounded-2xl p-4">
-                <div class="flex flex-col items-center gap-2 mb-3">
-                    <p class="text-xs text-slate-400 font-semibold uppercase tracking-wider flex items-center gap-1.5">
-                        <i data-lucide="scale" class="w-3.5 h-3.5 text-indigo-400"></i>
-                        <i data-lucide="flame" class="w-3.5 h-3.5 text-rose-400"></i>
-                        <span data-i18n="title_peso_calorie">Peso &amp; Calorie</span>
-                    </p>
-                    <div class="flex flex-wrap items-center justify-center gap-2.5 text-[9px] font-semibold text-slate-400">
-                        <div class="flex items-center gap-1 cursor-pointer hover:opacity-80 select-none"
-                            data-legend-index="0" onclick="toggleTrendDataset(0)">
-                            <span class="w-1.5 h-1.5 rounded-full bg-[#f43f5e]"></span>
-                            <span data-i18n="legend_calorie">Calorie</span>
-                        </div>
-                        <div class="flex items-center gap-1 cursor-pointer hover:opacity-80 select-none"
-                            data-legend-index="1" onclick="toggleTrendDataset(1)">
-                            <span class="w-1.5 h-1.5 rounded-sm bg-[#3b82f6]"></span>
-                            <span data-i18n="legend_proteine">Proteine</span>
-                        </div>
-                        <div class="flex items-center gap-1 cursor-pointer hover:opacity-80 select-none"
-                            data-legend-index="2" onclick="toggleTrendDataset(2)">
-                            <span class="w-1.5 h-1.5 rounded-sm bg-[#10b981]"></span>
-                            <span data-i18n="legend_carboidrati">Carbo</span>
-                        </div>
-                        <div class="flex items-center gap-1 cursor-pointer hover:opacity-80 select-none"
-                            data-legend-index="3" onclick="toggleTrendDataset(3)">
-                            <span class="w-1.5 h-1.5 rounded-sm bg-[#f59e0b]"></span>
-                            <span data-i18n="legend_grassi">Grassi</span>
-                        </div>
-                    </div>
-                </div>
-                <div class="w-full overflow-x-auto scrollbar-hidden">
-                    <div id="monthCalorieChartWrapper" class="h-44 min-w-full mb-3">
-                        <canvas id="monthCalorieChart"></canvas>
-                    </div>
-                </div>
-                <div class="w-full overflow-x-auto custom-scrollbar">
-                    <div id="monthPesoChartWrapper" class="h-32 min-w-full pt-2 border-t border-slate-700/35">
-                        <canvas id="monthPesoChart"></canvas>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <div id="panel-storico" class="tab-panel pt-1 pb-4 w-full">
-
-        <!-- Barra di ricerca, Filtri e Pulsanti d'Azione -->
-        <div class="flex flex-col gap-2.5 mb-4 bg-slate-800/40 p-2.5 rounded-2xl border border-slate-700/30">
-            <!-- Pulsanti d'Azione (Esporta, Importa, Cancella) in alto nel box -->
-            <div class="flex gap-1.5 w-full">
-                <button onclick="esportaDB()"
-                    class="flex-1 flex items-center justify-center gap-1 py-2 rounded-xl text-[10px] sm:text-xs font-bold border bg-slate-800/60 border-slate-700/50 text-slate-400 hover:text-emerald-400 hover:border-emerald-500/40 transition">
-                    <i data-lucide="download" class="w-3.5 h-3.5"></i> <span data-i18n="btn_export_data">Esporta</span> <span class="text-[9px] select-none opacity-85">💎</span>
-                </button>
-                <button onclick="document.getElementById('importInput').click()"
-                    class="flex-1 flex items-center justify-center gap-1 py-2 rounded-xl text-[10px] sm:text-xs font-bold border bg-slate-800/60 border-slate-700/50 text-slate-400 hover:text-blue-400 hover:border-blue-500/40 transition">
-                    <i data-lucide="upload" class="w-3.5 h-3.5"></i> <span data-i18n="btn_import_data">Importa</span>
-                </button>
-                <button onclick="confermaReset()"
-                    class="flex-1 flex items-center justify-center gap-1 py-2 rounded-xl text-[10px] sm:text-xs font-bold border bg-slate-800/60 border-slate-700/50 text-slate-400 hover:text-rose-400 hover:border-rose-500/40 transition">
-                    <i data-lucide="trash-2" class="w-3.5 h-3.5"></i> <span data-i18n="btn_delete_all">Cancella</span>
+                <button id="btnAnalisiTrendAI" onclick="analizzaTrendConAI()"
+                    class="bg-slate-800/80 hover:bg-slate-700/80 border border-slate-700/50 text-slate-200 p-2.5 rounded-xl shadow-md transition active:scale-[0.98] flex items-center justify-center cursor-pointer shrink-0"
+                    data-i18n-title="btn_ask_ai_trend" title="Chiedi parere ad AI sull'andamento">
+                    <span id="btnAnalisiTrendLabel" class="flex items-center gap-1"><i data-lucide="sparkles"
+                            class="w-4 h-4 text-indigo-400"></i><span
+                            class="text-[9px] select-none opacity-85">💎</span></span>
                 </button>
             </div>
+            <div id="boxAnalisiTrendAI"
+                class="mt-3 p-3.5 bg-slate-800/80 rounded-xl border border-slate-700/50 hidden text-xs leading-relaxed text-slate-300 relative">
+                <button onclick="nascondoAnalisiTrendAI()"
+                    class="absolute top-3 right-3 text-slate-400 hover:text-slate-200 focus:outline-none cursor-pointer">
+                    <i data-lucide="x" class="w-3.5 h-3.5"></i>
+                </button>
+                <p id="testoAnalisiTrendAI" class="pr-5"></p>
+                <p class="text-[9px] text-slate-500 mt-2.5 pt-2 border-t border-slate-700/35 leading-normal"
+                    data-i18n="lbl_medical_disclaimer">
+                    * Le indicazioni fornite dall'AI non costituiscono prescrizioni o pareri medici professionali.
+                </p>
+            </div>
 
-            <!-- Separatore orizzontale sottile -->
-            <div class="border-t border-slate-750/30 dark:border-slate-700/20 my-0.5"></div>
 
-            <!-- Ricerca Generale -->
-            <div class="flex items-center gap-2 w-full">
-                <div class="relative flex items-center w-full">
-                    <i data-lucide="search" class="w-4 h-4 text-slate-400 absolute left-3 pointer-events-none"></i>
-                    <input type="text" id="ricercaRegistro" oninput="filtraRegistro()"
-                        placeholder="Cerca nei pasti..."
-                        class="w-full bg-slate-900 border border-slate-700 rounded-xl pl-8 pr-2.5 py-2 text-[12px] text-slate-200 focus:outline-none focus:ring-2 focus:ring-indigo-500">
+            <div id="trendMediaComplessivaContainer"
+                class="bg-slate-800/40 border border-slate-700/50 rounded-2xl py-4 px-2 mb-4">
+                <p id="trendMediaTitle" class="text-xs text-slate-400 font-semibold uppercase tracking-wider mb-3"
+                    data-i18n="title_media_complessiva">Media complessiva</p>
+                <div class="grid grid-cols-4 gap-1">
+
+                    <div
+                        class="bg-slate-900/50 rounded-xl px-1.5 py-2 text-center flex flex-col items-center justify-between min-h-[105px]">
+                        <p class="text-[9px] text-slate-500 uppercase font-semibold mb-1"
+                            data-i18n="label_calorie_uppercase">Calorie</p>
+                        <div class="relative w-14 h-14 flex justify-center items-center">
+                            <canvas id="gaugeCalorie"></canvas>
+                            <div class="absolute inset-0 flex flex-col items-center justify-center pointer-events-none">
+                                <span class="text-[9.6px] font-bold" id="mediaCaloriePercent">—</span>
+                                <span class="text-[8.4px] font-bold text-slate-200 mt-0.5" id="mediaCalorie">—</span>
+                                <span class="text-[9.6px] font-bold leading-none mt-0.5" id="mediaCalorieStatus"></span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div
+                        class="bg-slate-900/50 rounded-xl px-1.5 py-2 text-center flex flex-col items-center justify-between min-h-[105px]">
+                        <p class="text-[9px] text-slate-500 uppercase font-semibold mb-1"
+                            data-i18n="label_proteine_uppercase">Proteine</p>
+                        <div class="relative w-14 h-14 flex justify-center items-center">
+                            <canvas id="gaugeProteine"></canvas>
+                            <div class="absolute inset-0 flex flex-col items-center justify-center pointer-events-none">
+                                <span class="text-[9.6px] font-bold" id="mediaProteinePercent">—</span>
+                                <span class="text-[8.4px] font-bold text-slate-200 mt-0.5" id="mediaProteine">—</span>
+                                <span class="text-[9.6px] font-bold leading-none mt-0.5"
+                                    id="mediaProteineStatus"></span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div
+                        class="bg-slate-900/50 rounded-xl px-1.5 py-2 text-center flex flex-col items-center justify-between min-h-[105px]">
+                        <p class="text-[9px] text-slate-500 uppercase font-semibold mb-1"
+                            data-i18n="label_carbo_uppercase">
+                            Carbo</p>
+                        <div class="relative w-14 h-14 flex justify-center items-center">
+                            <canvas id="gaugeCarbo"></canvas>
+                            <div class="absolute inset-0 flex flex-col items-center justify-center pointer-events-none">
+                                <span class="text-[9.6px] font-bold" id="mediaCarboPercent">—</span>
+                                <span class="text-[8.4px] font-bold text-slate-200 mt-0.5" id="mediaCarbo">—</span>
+                                <span class="text-[9.6px] font-bold leading-none mt-0.5" id="mediaCarboStatus"></span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div
+                        class="bg-slate-900/50 rounded-xl px-1.5 py-2 text-center flex flex-col items-center justify-between min-h-[105px]">
+                        <p class="text-[9px] text-slate-500 uppercase font-semibold mb-1"
+                            data-i18n="label_grassi_uppercase">Grassi</p>
+                        <div class="relative w-14 h-14 flex justify-center items-center">
+                            <canvas id="gaugeGrassi"></canvas>
+                            <div class="absolute inset-0 flex flex-col items-center justify-center pointer-events-none">
+                                <span class="text-[9.6px] font-bold" id="mediaGrassiPercent">—</span>
+                                <span class="text-[8.4px] font-bold text-slate-200 mt-0.5" id="mediaGrassi">—</span>
+                                <span class="text-[9.6px] font-bold leading-none mt-0.5" id="mediaGrassiStatus"></span>
+                            </div>
+                        </div>
+                    </div>
+
                 </div>
             </div>
-            <!-- Filtro Mese e Anno -->
-            <div class="flex gap-2 w-full">
-                <!-- Filtro Mese -->
-                <div class="flex-1 relative">
-                    <select id="filtroMese" onchange="filtraRegistro()"
-                        class="w-full bg-slate-900 border border-slate-700 rounded-xl pl-2.5 pr-8 py-2 text-[11px] text-slate-200 focus:outline-none focus:ring-2 focus:ring-indigo-500 cursor-pointer appearance-none">
-                        <option value="" data-i18n="filter_all_months">Tutti i mesi</option>
-                        <option value="01" data-i18n="month_01">Gennaio</option>
-                        <option value="02" data-i18n="month_02">Febbraio</option>
-                        <option value="03" data-i18n="month_03">Marzo</option>
-                        <option value="04" data-i18n="month_04">Aprile</option>
-                        <option value="05" data-i18n="month_05">Maggio</option>
-                        <option value="06" data-i18n="month_06">Giugno</option>
-                        <option value="07" data-i18n="month_07">Luglio</option>
-                        <option value="08" data-i18n="month_08">Agosto</option>
-                        <option value="09" data-i18n="month_09">Settembre</option>
-                        <option value="10" data-i18n="month_10">Ottobre</option>
-                        <option value="11" data-i18n="month_11">Novembre</option>
-                        <option value="12" data-i18n="month_12">Dicembre</option>
-                    </select>
-                    <i data-lucide="chevron-down"
-                        class="w-3 h-3 text-slate-400 absolute right-2.5 top-1/2 -translate-y-1/2 pointer-events-none"></i>
-                </div>
-                <!-- Filtro Anno -->
-                <div class="flex-1 relative">
-                    <select id="filtroAnno" onchange="filtraRegistro()"
-                        class="w-full bg-slate-900 border border-slate-700 rounded-xl pl-2.5 pr-8 py-2 text-[11px] text-slate-200 focus:outline-none focus:ring-2 focus:ring-indigo-500 cursor-pointer appearance-none">
-                        <option value="" data-i18n="filter_all_years">Tutti gli anni</option>
-                    </select>
-                    <i data-lucide="chevron-down"
-                        class="w-3 h-3 text-slate-400 absolute right-2.5 top-1/2 -translate-y-1/2 pointer-events-none"></i>
-                </div>
-            </div>
-        </div>
 
-        <!-- Box collassabile per Alimenti Frequenti (posizionato dopo il box dei filtri) -->
-        <div id="boxAlimentiFrequentiContainer"
-            class="hidden mb-4 bg-slate-800/40 border border-slate-700/30 rounded-2xl p-3 shadow-xl">
-            <details class="group" id="detailsAlimentiFrequenti">
-                <summary
-                    class="flex justify-between items-center text-xs font-bold text-slate-300 cursor-pointer select-none list-none">
-                    <span class="flex items-center gap-1.5">
-                        <i data-lucide="tag" class="w-3.5 h-3.5 text-indigo-400"></i>
-                        <span data-i18n="lbl_freq_foods">Alimenti più frequenti</span>
-                    </span>
-                    <i data-lucide="chevron-down"
-                        class="w-4 h-4 text-slate-400 group-open:rotate-180 transition-transform duration-200"></i>
-                </summary>
-                <div class="mt-3">
-                    <div id="listaAlimentiFrequenti"
-                        class="relative w-full h-[220px] rounded-none overflow-hidden bg-slate-900/10 border border-slate-700/5">
-                        <!-- Alimenti frequenti visualizzati come rettangoli Treemap -->
+            <div id="trendGiornalieroContainer" class="space-y-4">
+                <div class="bg-slate-800/40 border border-slate-700/50 rounded-2xl p-4">
+                    <div class="flex flex-col items-center gap-2 mb-3">
+                        <p
+                            class="text-xs text-slate-400 font-semibold uppercase tracking-wider flex items-center gap-1.5">
+                            <i data-lucide="scale" class="w-3.5 h-3.5 text-indigo-400"></i>
+                            <i data-lucide="flame" class="w-3.5 h-3.5 text-rose-400"></i>
+                            <span data-i18n="title_peso_calorie">Peso &amp; Calorie</span>
+                        </p>
+                        <div
+                            class="flex flex-wrap items-center justify-center gap-2.5 text-[9px] font-semibold text-slate-400">
+                            <div class="flex items-center gap-1 cursor-pointer hover:opacity-80 select-none"
+                                data-legend-index="0" onclick="toggleTrendDataset(0)">
+                                <span class="w-1.5 h-1.5 rounded-full bg-[#f43f5e]"></span>
+                                <span data-i18n="legend_calorie">Calorie</span>
+                            </div>
+                            <div class="flex items-center gap-1 cursor-pointer hover:opacity-80 select-none"
+                                data-legend-index="1" onclick="toggleTrendDataset(1)">
+                                <span class="w-1.5 h-1.5 rounded-sm bg-[#3b82f6]"></span>
+                                <span data-i18n="legend_proteine">Proteine</span>
+                            </div>
+                            <div class="flex items-center gap-1 cursor-pointer hover:opacity-80 select-none"
+                                data-legend-index="2" onclick="toggleTrendDataset(2)">
+                                <span class="w-1.5 h-1.5 rounded-sm bg-[#10b981]"></span>
+                                <span data-i18n="legend_carboidrati">Carbo</span>
+                            </div>
+                            <div class="flex items-center gap-1 cursor-pointer hover:opacity-80 select-none"
+                                data-legend-index="3" onclick="toggleTrendDataset(3)">
+                                <span class="w-1.5 h-1.5 rounded-sm bg-[#f59e0b]"></span>
+                                <span data-i18n="legend_grassi">Grassi</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="w-full overflow-x-auto scrollbar-hidden">
+                        <div id="trendCalorieChartWrapper" class="h-44 min-w-full mb-3">
+                            <canvas id="trendCalorieChart"></canvas>
+                        </div>
+                    </div>
+                    <div class="w-full overflow-x-auto custom-scrollbar">
+                        <div id="trendPesoChartWrapper" class="h-32 min-w-full pt-2 border-t border-slate-700/35">
+                            <canvas id="trendPesoChart"></canvas>
+                        </div>
                     </div>
                 </div>
-            </details>
-        </div>
+            </div>
 
-        <div class="max-h-[450px] overflow-y-auto pr-1 custom-scrollbar">
-            <div id="listaStorico" class="space-y-3">
-                <p id="storicoEmptyMsg" class="text-sm text-slate-500 text-center py-8" data-i18n="lbl_no_meals_saved">
-                    Nessun pasto salvato ancora.<br>Elabora e salva un'analisi dalla tab Dati!</p>
+            <div id="trendSettimaneContainer" class="space-y-4 hidden">
+                <div class="bg-slate-800/40 border border-slate-700/50 rounded-2xl p-4">
+                    <div class="flex flex-col items-center gap-2 mb-3">
+                        <p
+                            class="text-xs text-slate-400 font-semibold uppercase tracking-wider flex items-center gap-1.5">
+                            <i data-lucide="scale" class="w-3.5 h-3.5 text-indigo-400"></i>
+                            <i data-lucide="flame" class="w-3.5 h-3.5 text-rose-400"></i>
+                            <span data-i18n="title_peso_calorie">Peso &amp; Calorie</span>
+                        </p>
+                        <div
+                            class="flex flex-wrap items-center justify-center gap-2.5 text-[9px] font-semibold text-slate-400">
+                            <div class="flex items-center gap-1 cursor-pointer hover:opacity-80 select-none"
+                                data-legend-index="0" onclick="toggleTrendDataset(0)">
+                                <span class="w-1.5 h-1.5 rounded-full bg-[#f43f5e]"></span>
+                                <span data-i18n="legend_calorie">Calorie</span>
+                            </div>
+                            <div class="flex items-center gap-1 cursor-pointer hover:opacity-80 select-none"
+                                data-legend-index="1" onclick="toggleTrendDataset(1)">
+                                <span class="w-1.5 h-1.5 rounded-sm bg-[#3b82f6]"></span>
+                                <span data-i18n="legend_proteine">Proteine</span>
+                            </div>
+                            <div class="flex items-center gap-1 cursor-pointer hover:opacity-80 select-none"
+                                data-legend-index="2" onclick="toggleTrendDataset(2)">
+                                <span class="w-1.5 h-1.5 rounded-sm bg-[#10b981]"></span>
+                                <span data-i18n="legend_carboidrati">Carbo</span>
+                            </div>
+                            <div class="flex items-center gap-1 cursor-pointer hover:opacity-80 select-none"
+                                data-legend-index="3" onclick="toggleTrendDataset(3)">
+                                <span class="w-1.5 h-1.5 rounded-sm bg-[#f59e0b]"></span>
+                                <span data-i18n="legend_grassi">Grassi</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="w-full overflow-x-auto scrollbar-hidden">
+                        <div id="weekCalorieChartWrapper" class="h-44 min-w-full mb-3">
+                            <canvas id="weekCalorieChart"></canvas>
+                        </div>
+                    </div>
+                    <div class="w-full overflow-x-auto custom-scrollbar">
+                        <div id="weekPesoChartWrapper" class="h-32 min-w-full pt-2 border-t border-slate-700/35">
+                            <canvas id="weekPesoChart"></canvas>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div id="trendMesiContainer" class="space-y-4 hidden">
+                <div class="bg-slate-800/40 border border-slate-700/50 rounded-2xl p-4">
+                    <div class="flex flex-col items-center gap-2 mb-3">
+                        <p
+                            class="text-xs text-slate-400 font-semibold uppercase tracking-wider flex items-center gap-1.5">
+                            <i data-lucide="scale" class="w-3.5 h-3.5 text-indigo-400"></i>
+                            <i data-lucide="flame" class="w-3.5 h-3.5 text-rose-400"></i>
+                            <span data-i18n="title_peso_calorie">Peso &amp; Calorie</span>
+                        </p>
+                        <div
+                            class="flex flex-wrap items-center justify-center gap-2.5 text-[9px] font-semibold text-slate-400">
+                            <div class="flex items-center gap-1 cursor-pointer hover:opacity-80 select-none"
+                                data-legend-index="0" onclick="toggleTrendDataset(0)">
+                                <span class="w-1.5 h-1.5 rounded-full bg-[#f43f5e]"></span>
+                                <span data-i18n="legend_calorie">Calorie</span>
+                            </div>
+                            <div class="flex items-center gap-1 cursor-pointer hover:opacity-80 select-none"
+                                data-legend-index="1" onclick="toggleTrendDataset(1)">
+                                <span class="w-1.5 h-1.5 rounded-sm bg-[#3b82f6]"></span>
+                                <span data-i18n="legend_proteine">Proteine</span>
+                            </div>
+                            <div class="flex items-center gap-1 cursor-pointer hover:opacity-80 select-none"
+                                data-legend-index="2" onclick="toggleTrendDataset(2)">
+                                <span class="w-1.5 h-1.5 rounded-sm bg-[#10b981]"></span>
+                                <span data-i18n="legend_carboidrati">Carbo</span>
+                            </div>
+                            <div class="flex items-center gap-1 cursor-pointer hover:opacity-80 select-none"
+                                data-legend-index="3" onclick="toggleTrendDataset(3)">
+                                <span class="w-1.5 h-1.5 rounded-sm bg-[#f59e0b]"></span>
+                                <span data-i18n="legend_grassi">Grassi</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="w-full overflow-x-auto scrollbar-hidden">
+                        <div id="monthCalorieChartWrapper" class="h-44 min-w-full mb-3">
+                            <canvas id="monthCalorieChart"></canvas>
+                        </div>
+                    </div>
+                    <div class="w-full overflow-x-auto custom-scrollbar">
+                        <div id="monthPesoChartWrapper" class="h-32 min-w-full pt-2 border-t border-slate-700/35">
+                            <canvas id="monthPesoChart"></canvas>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
 
-    </div>
+        <div id="panel-storico" class="tab-panel pt-1 pb-4 w-full">
+
+            <!-- Barra di ricerca, Filtri e Pulsanti d'Azione -->
+            <div class="flex flex-col gap-2.5 mb-4 bg-slate-800/40 p-2.5 rounded-2xl border border-slate-700/30">
+                <!-- Pulsanti d'Azione (Esporta, Importa, Cancella) in alto nel box -->
+                <div class="flex gap-1.5 w-full">
+                    <button onclick="esportaDB()"
+                        class="flex-1 flex items-center justify-center gap-1 py-2 rounded-xl text-[10px] sm:text-xs font-bold border bg-slate-800/60 border-slate-700/50 text-slate-400 hover:text-emerald-400 hover:border-emerald-500/40 transition">
+                        <i data-lucide="download" class="w-3.5 h-3.5"></i> <span
+                            data-i18n="btn_export_data">Esporta</span> <span
+                            class="text-[9px] select-none opacity-85">💎</span>
+                    </button>
+                    <button onclick="document.getElementById('importInput').click()"
+                        class="flex-1 flex items-center justify-center gap-1 py-2 rounded-xl text-[10px] sm:text-xs font-bold border bg-slate-800/60 border-slate-700/50 text-slate-400 hover:text-blue-400 hover:border-blue-500/40 transition">
+                        <i data-lucide="upload" class="w-3.5 h-3.5"></i> <span
+                            data-i18n="btn_import_data">Importa</span>
+                    </button>
+                    <button onclick="confermaReset()"
+                        class="flex-1 flex items-center justify-center gap-1 py-2 rounded-xl text-[10px] sm:text-xs font-bold border bg-slate-800/60 border-slate-700/50 text-slate-400 hover:text-rose-400 hover:border-rose-500/40 transition">
+                        <i data-lucide="trash-2" class="w-3.5 h-3.5"></i> <span
+                            data-i18n="btn_delete_all">Cancella</span>
+                    </button>
+                </div>
+
+                <!-- Separatore orizzontale sottile -->
+                <div class="border-t border-slate-750/30 dark:border-slate-700/20 my-0.5"></div>
+
+                <!-- Ricerca Generale -->
+                <div class="flex items-center gap-2 w-full">
+                    <div class="relative flex items-center w-full">
+                        <i data-lucide="search" class="w-4 h-4 text-slate-400 absolute left-3 pointer-events-none"></i>
+                        <input type="text" id="ricercaRegistro" oninput="filtraRegistro()"
+                            placeholder="Cerca nei pasti..."
+                            class="w-full bg-slate-900 border border-slate-700 rounded-xl pl-8 pr-2.5 py-2 text-[12px] text-slate-200 focus:outline-none focus:ring-2 focus:ring-indigo-500">
+                    </div>
+                </div>
+                <!-- Filtro Mese e Anno -->
+                <div class="flex gap-2 w-full">
+                    <!-- Filtro Mese -->
+                    <div class="flex-1 relative">
+                        <select id="filtroMese" onchange="filtraRegistro()"
+                            class="w-full bg-slate-900 border border-slate-700 rounded-xl pl-2.5 pr-8 py-2 text-[11px] text-slate-200 focus:outline-none focus:ring-2 focus:ring-indigo-500 cursor-pointer appearance-none">
+                            <option value="" data-i18n="filter_all_months">Tutti i mesi</option>
+                            <option value="01" data-i18n="month_01">Gennaio</option>
+                            <option value="02" data-i18n="month_02">Febbraio</option>
+                            <option value="03" data-i18n="month_03">Marzo</option>
+                            <option value="04" data-i18n="month_04">Aprile</option>
+                            <option value="05" data-i18n="month_05">Maggio</option>
+                            <option value="06" data-i18n="month_06">Giugno</option>
+                            <option value="07" data-i18n="month_07">Luglio</option>
+                            <option value="08" data-i18n="month_08">Agosto</option>
+                            <option value="09" data-i18n="month_09">Settembre</option>
+                            <option value="10" data-i18n="month_10">Ottobre</option>
+                            <option value="11" data-i18n="month_11">Novembre</option>
+                            <option value="12" data-i18n="month_12">Dicembre</option>
+                        </select>
+                        <i data-lucide="chevron-down"
+                            class="w-3 h-3 text-slate-400 absolute right-2.5 top-1/2 -translate-y-1/2 pointer-events-none"></i>
+                    </div>
+                    <!-- Filtro Anno -->
+                    <div class="flex-1 relative">
+                        <select id="filtroAnno" onchange="filtraRegistro()"
+                            class="w-full bg-slate-900 border border-slate-700 rounded-xl pl-2.5 pr-8 py-2 text-[11px] text-slate-200 focus:outline-none focus:ring-2 focus:ring-indigo-500 cursor-pointer appearance-none">
+                            <option value="" data-i18n="filter_all_years">Tutti gli anni</option>
+                        </select>
+                        <i data-lucide="chevron-down"
+                            class="w-3 h-3 text-slate-400 absolute right-2.5 top-1/2 -translate-y-1/2 pointer-events-none"></i>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Box collassabile per Alimenti Frequenti (posizionato dopo il box dei filtri) -->
+            <div id="boxAlimentiFrequentiContainer"
+                class="hidden mb-4 bg-slate-800/40 border border-slate-700/30 rounded-2xl p-3 shadow-xl">
+                <details class="group" id="detailsAlimentiFrequenti">
+                    <summary
+                        class="flex justify-between items-center text-xs font-bold text-slate-300 cursor-pointer select-none list-none">
+                        <span class="flex items-center gap-1.5">
+                            <i data-lucide="tag" class="w-3.5 h-3.5 text-indigo-400"></i>
+                            <span data-i18n="lbl_freq_foods">Alimenti più frequenti</span>
+                        </span>
+                        <i data-lucide="chevron-down"
+                            class="w-4 h-4 text-slate-400 group-open:rotate-180 transition-transform duration-200"></i>
+                    </summary>
+                    <div class="mt-3">
+                        <div id="listaAlimentiFrequenti"
+                            class="relative w-full h-[220px] rounded-none overflow-hidden bg-slate-900/10 border border-slate-700/5">
+                            <!-- Alimenti frequenti visualizzati come rettangoli Treemap -->
+                        </div>
+                    </div>
+                </details>
+            </div>
+
+            <div class="max-h-[450px] overflow-y-auto pr-1 custom-scrollbar">
+                <div id="listaStorico" class="space-y-3">
+                    <p id="storicoEmptyMsg" class="text-sm text-slate-500 text-center py-8"
+                        data-i18n="lbl_no_meals_saved">
+                        Nessun pasto salvato ancora.<br>Elabora e salva un'analisi dalla tab Dati!</p>
+                </div>
+            </div>
+
+        </div>
 
     </div>
 
@@ -2080,7 +2155,7 @@
                     ? "This feature will be part of the one-time NutriTracker Pro package. Are you interested?"
                     : "Questa funzione farà parte del pacchetto Pro una tantum. Ti interessa?";
             }
-            
+
             const confirmText = currentLang === 'en' ? "Yes" : "Sì";
             const cancelText = currentLang === 'en' ? "No" : "No";
 
@@ -2094,8 +2169,8 @@
 
                 await customAlert(
                     currentLang === 'en' ? "Thank you!" : "Grazie!",
-                    currentLang === 'en' 
-                        ? "Thank you for your feedback! We will notify you as soon as this feature is available." 
+                    currentLang === 'en'
+                        ? "Thank you for your feedback! We will notify you as soon as this feature is available."
                         : "Grazie per il tuo feedback! Ti avviseremo non appena questa funzione sarà disponibile."
                 );
             }
@@ -3492,7 +3567,7 @@
             if (t === 'cena' || t === 'dinner') return lang === 'en' ? 'Dinner' : 'Cena';
             if (t === 'spuntino' || t === 'snack') return lang === 'en' ? 'Snack' : 'Spuntino';
             if (t === 'altro' || t === 'other') return lang === 'en' ? 'Other' : 'Altro';
-            
+
             // Se è un orario ereditato (es. "12:30")
             if (tipo.includes(':')) {
                 const oraInt = parseInt(tipo.split(':')[0]) || 12;
@@ -3612,7 +3687,7 @@
                     if (subtabGiorni) subtabGiorni.classList.add('active');
                     if (subtabSettimane) subtabSettimane.classList.remove('active');
                     if (subtabMesi) subtabMesi.classList.remove('active');
-                    
+
                     const cGiorni = document.getElementById('trendGiornalieroContainer');
                     const cSettimane = document.getElementById('trendSettimaneContainer');
                     const cMesi = document.getElementById('trendMesiContainer');
@@ -3900,7 +3975,7 @@
                 .replace(/&/g, "&amp;")
                 .replace(/</g, "&lt;")
                 .replace(/>/g, "&gt;");
-            
+
             const regexQuery = escapedQuery.replace(/[-\/\\^$*+?.()|[\]{}]/g, '\\$&');
             const regex = new RegExp(`(${regexQuery})`, 'gi');
             return escaped.replace(regex, '<span class="text-indigo-400 font-bold">$1</span>');
@@ -4866,7 +4941,7 @@ Rispondi ESCLUSIVAMENTE con un oggetto JSON valido. NO blocchi di codice (no \`\
             let html = "";
             rettangoli.forEach((r, idx) => {
                 const palette = isLightTheme ? PALETTE_LIGHT[idx % PALETTE_LIGHT.length] : PALETTE_DARK[idx % PALETTE_DARK.length];
-                
+
                 // Se la cella è troppo stretta o bassa, nascondiamo i testi per non sovrapporli
                 const nascondiTesto = r.w < 7 || r.h < 7;
                 // Mostriamo il numero (es. x3) solo se c'è abbastanza spazio verticale (es. altezza >= 12%)
@@ -5782,15 +5857,15 @@ Rispondi ESCLUSIVAMENTE con un oggetto JSON valido. NO blocchi di codice (no \`\
                     if (dateTrovate.length > 0) {
                         const oldestDate = new Date(Math.min(...dateTrovate));
                         const today = new Date();
-                        const msecDiff = today.setHours(0,0,0,0) - oldestDate.setHours(0,0,0,0);
+                        const msecDiff = today.setHours(0, 0, 0, 0) - oldestDate.setHours(0, 0, 0, 0);
                         const giorniDiff = Math.round(msecDiff / (1000 * 60 * 60 * 24)) + 1;
                         giorniDaMostrare = Math.max(7, giorniDiff);
                     }
                 }
 
                 if (titleEl) {
-                    titleEl.innerText = currentLang === 'en' 
-                        ? `Overall Average (last 7 days)` 
+                    titleEl.innerText = currentLang === 'en'
+                        ? `Overall Average (last 7 days)`
                         : `Media complessiva (ultimi 7 giorni)`;
                 }
                 const etichetteGiorni = [];
@@ -6109,8 +6184,8 @@ Rispondi ESCLUSIVAMENTE con un oggetto JSON valido. NO blocchi di codice (no \`\
                 }
 
                 if (titleEl) {
-                    titleEl.innerText = currentLang === 'en' 
-                        ? `Overall Average (last 8 weeks)` 
+                    titleEl.innerText = currentLang === 'en'
+                        ? `Overall Average (last 8 weeks)`
                         : `Media complessiva (ultime 8 settimane)`;
                 }
                 const etichetteSettimane = [];
