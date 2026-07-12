@@ -259,6 +259,14 @@
             background: rgba(99, 102, 241, 0.4);
         }
 
+        .scrollbar-hidden::-webkit-scrollbar {
+            display: none;
+        }
+        .scrollbar-hidden {
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+        }
+
         /* Normalize input[type="date"] and input[type="time"] on iOS/Safari */
         input[type="date"],
         input[type="time"] {
@@ -1816,7 +1824,7 @@
                         </div>
                     </div>
                 </div>
-                <div class="w-full overflow-x-auto custom-scrollbar">
+                <div class="w-full overflow-x-auto scrollbar-hidden">
                     <div id="trendCalorieChartWrapper" class="h-44 min-w-full mb-3">
                         <canvas id="trendCalorieChart"></canvas>
                     </div>
@@ -1860,7 +1868,7 @@
                         </div>
                     </div>
                 </div>
-                <div class="w-full overflow-x-auto custom-scrollbar">
+                <div class="w-full overflow-x-auto scrollbar-hidden">
                     <div id="weekCalorieChartWrapper" class="h-44 min-w-full mb-3">
                         <canvas id="weekCalorieChart"></canvas>
                     </div>
@@ -1904,7 +1912,7 @@
                         </div>
                     </div>
                 </div>
-                <div class="w-full overflow-x-auto custom-scrollbar">
+                <div class="w-full overflow-x-auto scrollbar-hidden">
                     <div id="monthCalorieChartWrapper" class="h-44 min-w-full mb-3">
                         <canvas id="monthCalorieChart"></canvas>
                     </div>
@@ -5525,9 +5533,14 @@ Rispondi ESCLUSIVAMENTE con un oggetto JSON valido. NO blocchi di codice (no \`\
                     }
                 }
 
-                // Imposta larghezza dinamica per i giorni
-                const containerWidth = document.getElementById('trendCalorieChartWrapper').parentElement.clientWidth || 350;
-                const widthCalculated = Math.max(containerWidth, ultimiGiorni.length * 50);
+                // Imposta larghezza dinamica per i giorni (esattamente 7 giorni visibili contemporaneamente)
+                let containerWidth = document.getElementById('trendCalorieChartWrapper').parentElement.clientWidth;
+                if (!containerWidth || containerWidth <= 0) {
+                    const panelWidth = document.getElementById('panel-trend')?.clientWidth || window.innerWidth;
+                    containerWidth = panelWidth - 32;
+                }
+                if (containerWidth <= 0) containerWidth = 350;
+                const widthCalculated = ultimiGiorni.length * (containerWidth / 7);
                 document.getElementById('trendCalorieChartWrapper').style.width = widthCalculated + 'px';
                 document.getElementById('trendPesoChartWrapper').style.width = widthCalculated + 'px';
 
@@ -5859,9 +5872,14 @@ Rispondi ESCLUSIVAMENTE con un oggetto JSON valido. NO blocchi di codice (no \`\
                     datiSettimane.push({ calorie: mediaC, proteine: mediaP, carboidrati: mediaCb, grassi: mediaG, peso: mediaPeso });
                 }
 
-                // Imposta larghezza dinamica per le settimane
-                const containerWidth = document.getElementById('weekCalorieChartWrapper').parentElement.clientWidth || 350;
-                const widthCalculated = Math.max(containerWidth, datiSettimane.length * 60);
+                // Imposta larghezza dinamica per le settimane (esattamente 8 settimane visibili contemporaneamente)
+                let containerWidth = document.getElementById('weekCalorieChartWrapper').parentElement.clientWidth;
+                if (!containerWidth || containerWidth <= 0) {
+                    const panelWidth = document.getElementById('panel-trend')?.clientWidth || window.innerWidth;
+                    containerWidth = panelWidth - 32;
+                }
+                if (containerWidth <= 0) containerWidth = 350;
+                const widthCalculated = datiSettimane.length * (containerWidth / 8);
                 document.getElementById('weekCalorieChartWrapper').style.width = widthCalculated + 'px';
                 document.getElementById('weekPesoChartWrapper').style.width = widthCalculated + 'px';
 
@@ -6161,14 +6179,26 @@ Rispondi ESCLUSIVAMENTE con un oggetto JSON valido. NO blocchi di codice (no \`\
                 }
             };
 
-            // 1. Pre-populate the last 6 calendar months to ensure months with no data are shown
+            // 1. Pre-populate calendar months to ensure months with no data are shown (minimum 6 months)
             const grouped = {};
             const d = new Date();
             const currentYear = d.getFullYear();
             const currentMonth = d.getMonth(); // 0-11
             const monthKeys = [];
 
-            for (let i = 5; i >= 0; i--) {
+            let mesiDaMostrare = 6;
+            if (db.length > 0) {
+                const dateTrovate = db.map(x => new Date(x.data)).filter(dt => !isNaN(dt.getTime()));
+                if (dateTrovate.length > 0) {
+                    const oldestDate = new Date(Math.min(...dateTrovate));
+                    const oldestYear = oldestDate.getFullYear();
+                    const oldestMonth = oldestDate.getMonth();
+                    const diffMesi = (currentYear - oldestYear) * 12 + (currentMonth - oldestMonth) + 1;
+                    mesiDaMostrare = Math.max(6, diffMesi);
+                }
+            }
+
+            for (let i = mesiDaMostrare - 1; i >= 0; i--) {
                 let targetMonth = currentMonth - i;
                 let targetYear = currentYear;
                 while (targetMonth < 0) {
@@ -6252,21 +6282,33 @@ Rispondi ESCLUSIVAMENTE con un oggetto JSON valido. NO blocchi di codice (no \`\
                 });
             });
 
-            // 3. Overall average on all active days of the last 12 months
+            // 3. Overall average on all active days of the last 6 months
+            const last6MonthsKeys = [];
+            for (let i = 5; i >= 0; i--) {
+                let targetMonth = currentMonth - i;
+                let targetYear = currentYear;
+                while (targetMonth < 0) {
+                    targetMonth += 12;
+                    targetYear -= 1;
+                }
+                const monthStr = String(targetMonth + 1).padStart(2, '0');
+                last6MonthsKeys.push(`${targetYear}-${monthStr}`);
+            }
+
             const giorniAttivi = db.filter(g => {
                 if (g.data === dataOggi) return false;
                 if (g.calorie <= 0 && g.proteine <= 0 && g.carboidrati <= 0 && g.grassi <= 0) return false;
                 const dateParts = g.data.split('-');
                 if (dateParts.length < 2) return false;
                 const key = `${dateParts[0]}-${dateParts[1]}`; // YYYY-MM
-                return grouped.hasOwnProperty(key);
+                return last6MonthsKeys.includes(key);
             });
-            const activeMonths = monthKeys.length;
+
             const titleEl = document.getElementById('trendMediaTitle');
             if (titleEl) {
                 titleEl.innerText = currentLang === 'en'
-                    ? `Overall Average (${activeMonths} months)`
-                    : `Media complessiva (${activeMonths} ${activeMonths === 1 ? 'mese' : 'mesi'})`;
+                    ? `Overall Average (last 6 months)`
+                    : `Media complessiva (ultimi 6 mesi)`;
             }
             if (giorniAttivi.length > 0) {
                 const sum = (chiave) => giorniAttivi.reduce((acc, current) => acc + (current[chiave] || 0), 0);
@@ -6284,9 +6326,14 @@ Rispondi ESCLUSIVAMENTE con un oggetto JSON valido. NO blocchi di codice (no \`\
             if (monthCalorieChart) monthCalorieChart.destroy();
             if (monthPesoChart) monthPesoChart.destroy();
 
-            // Imposta la larghezza dinamica per i mesi
-            const containerWidth = document.getElementById('monthCalorieChartWrapper').parentElement.clientWidth || 350;
-            const widthCalculated = Math.max(containerWidth, labels.length * 75);
+            // Imposta la larghezza dinamica per i mesi (esattamente 6 mesi visibili contemporaneamente)
+            let containerWidth = document.getElementById('monthCalorieChartWrapper').parentElement.clientWidth;
+            if (!containerWidth || containerWidth <= 0) {
+                const panelWidth = document.getElementById('panel-trend')?.clientWidth || window.innerWidth;
+                containerWidth = panelWidth - 32;
+            }
+            if (containerWidth <= 0) containerWidth = 350;
+            const widthCalculated = labels.length * (containerWidth / 6);
             document.getElementById('monthCalorieChartWrapper').style.width = widthCalculated + 'px';
             document.getElementById('monthPesoChartWrapper').style.width = widthCalculated + 'px';
 
@@ -6533,6 +6580,11 @@ Rispondi ESCLUSIVAMENTE con un oggetto JSON valido. NO blocchi di codice (no \`\
                     }
                 }
             });
+
+            setTimeout(() => {
+                const cWrap = document.getElementById('monthCalorieChartWrapper')?.parentElement;
+                if (cWrap) cWrap.scrollLeft = cWrap.scrollWidth;
+            }, 100);
         }
         // ================================================================
         // ESPORTAZIONE / IMPORTAZIONE JSON DATABASE
