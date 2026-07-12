@@ -583,7 +583,7 @@
             box-sizing: border-box;
             transition: all 0.25s ease;
             cursor: pointer;
-            border-radius: 0.5rem; /* rounded-lg */
+            border-radius: 0px;
             overflow: hidden;
             border: 1px solid transparent;
             user-select: none;
@@ -1987,7 +1987,7 @@
                 </summary>
                 <div class="mt-3">
                     <div id="listaAlimentiFrequenti"
-                        class="relative w-full h-[220px] rounded-xl overflow-hidden bg-slate-900/10 border border-slate-700/5">
+                        class="relative w-full h-[220px] rounded-none overflow-hidden bg-slate-900/10 border border-slate-700/5">
                         <!-- Alimenti frequenti visualizzati come rettangoli Treemap -->
                     </div>
                 </div>
@@ -4430,8 +4430,7 @@ Rispondi ESCLUSIVAMENTE con un oggetto JSON valido. NO blocchi di codice (no \`\
             return name.replace(/\bevo\b/gi, 'EVO');
         }
 
-        function calcolaAlimentiFrequenti() {
-            const db = window.diarioMemoria;
+        function calcolaAlimentiFrequenti(db = window.diarioMemoria) {
             const freqMap = {};
 
             db.forEach(giorno => {
@@ -4496,12 +4495,12 @@ Rispondi ESCLUSIVAMENTE con un oggetto JSON valido. NO blocchi di codice (no \`\
             return rects;
         }
 
-        function aggiornaNuvolaAlimentiFrequenti() {
+        function aggiornaNuvolaAlimentiFrequenti(db = window.diarioMemoria) {
             const container = document.getElementById('boxAlimentiFrequentiContainer');
             const lista = document.getElementById('listaAlimentiFrequenti');
             if (!container || !lista) return;
 
-            const topAlimenti = calcolaAlimentiFrequenti();
+            const topAlimenti = calcolaAlimentiFrequenti(db);
 
             if (topAlimenti.length === 0) {
                 container.classList.add('hidden');
@@ -4511,6 +4510,7 @@ Rispondi ESCLUSIVAMENTE con un oggetto JSON valido. NO blocchi di codice (no \`\
             container.classList.remove('hidden');
 
             const isLightTheme = document.body.classList.contains('light-theme');
+            const q = document.getElementById('ricercaRegistro')?.value.toLowerCase().trim() || "";
 
             const PALETTE_DARK = [
                 { bg: 'rgba(99, 102, 241, 0.25)', border: 'rgba(99, 102, 241, 0.5)', text: '#e0e7ff' }, // Indigo
@@ -4546,11 +4546,16 @@ Rispondi ESCLUSIVAMENTE con un oggetto JSON valido. NO blocchi di codice (no \`\
                 const mostraNumero = !nascondiTesto && r.h >= 12;
                 const labelVolte = r.count === 1 ? "volta" : "volte";
 
+                const isSelected = q && r.nome.toLowerCase().trim() === q;
+                const highlightStyle = isSelected
+                    ? `border: 2px solid ${isLightTheme ? '#4f46e5' : '#818cf8'} !important; z-index: 10; box-shadow: 0 0 10px rgba(99, 102, 241, 0.4);`
+                    : `border-color: ${palette.border};`;
+
                 html += `
                     <div onclick="selezionaTagAlimento('${r.nome.replace(/'/g, "\\'")}')"
                          class="treemap-item"
                          title="${r.nome} (${r.count} ${labelVolte})"
-                         style="left: ${r.x}%; top: ${r.y}%; width: ${r.w}%; height: ${r.h}%; background: ${palette.bg}; border-color: ${palette.border}; color: ${palette.text};">
+                         style="left: ${r.x}%; top: ${r.y}%; width: ${r.w}%; height: ${r.h}%; background: ${palette.bg}; ${highlightStyle} color: ${palette.text};">
                         ${nascondiTesto ? '' : `
                             <span class="font-bold text-[10px] leading-tight text-left break-words w-full">${r.nome}</span>
                             ${mostraNumero ? `<span class="text-[8px] opacity-75 mt-0.5 font-bold">x${r.count}</span>` : ''}
@@ -4565,7 +4570,11 @@ Rispondi ESCLUSIVAMENTE con un oggetto JSON valido. NO blocchi di codice (no \`\
         window.selezionaTagAlimento = function (nome) {
             const input = document.getElementById('ricercaRegistro');
             if (input) {
-                input.value = nome;
+                if (input.value.toLowerCase().trim() === nome.toLowerCase().trim()) {
+                    input.value = "";
+                } else {
+                    input.value = nome;
+                }
                 filtraRegistro();
             }
         };
@@ -4575,8 +4584,6 @@ Rispondi ESCLUSIVAMENTE con un oggetto JSON valido. NO blocchi di codice (no \`\
             const lista = document.getElementById('listaStorico');
             if (!lista) return;
 
-            aggiornaNuvolaAlimentiFrequenti();
-
             popolaFiltriStorico(db);
 
             const q = document.getElementById('ricercaRegistro')?.value.toLowerCase().trim() || "";
@@ -4584,14 +4591,15 @@ Rispondi ESCLUSIVAMENTE con un oggetto JSON valido. NO blocchi di codice (no \`\
             const selectedMese = document.getElementById('filtroMese')?.value || "";
 
             if (db.length === 0) {
+                aggiornaNuvolaAlimentiFrequenti([]);
                 lista.innerHTML = `<p class="text-sm text-slate-500 text-center py-8" data-i18n="lbl_no_meals_saved">
                     ${currentLang === 'en' ? "No meals saved yet.<br>Process and save an analysis from the Data tab!" : "Nessun pasto salvato ancora.<br>Elabora e salva un'analisi dalla tab Dati!"}
                 </p>`;
                 return;
             }
 
-            // Filtra solo in base alle selezioni (senza limiti di data fissi)
-            const dbFiltrato = db.filter(giorno => {
+            // Filtra per data (Anno/Mese) - usato per la nuvola degli alimenti
+            const dbDateFiltrato = db.filter(giorno => {
                 if (selectedAnno) {
                     const anno = giorno.data.split('-')[0];
                     if (anno !== selectedAnno) return false;
@@ -4600,6 +4608,13 @@ Rispondi ESCLUSIVAMENTE con un oggetto JSON valido. NO blocchi di codice (no \`\
                     const mese = giorno.data.split('-')[1];
                     if (mese !== selectedMese) return false;
                 }
+                return true;
+            });
+
+            aggiornaNuvolaAlimentiFrequenti(dbDateFiltrato);
+
+            // Filtra ulteriormente per la ricerca di testo per la lista del registro
+            const dbFiltrato = dbDateFiltrato.filter(giorno => {
                 if (q) {
                     const matchPasti = giorno.pasti && giorno.pasti.some(p => p.testo.toLowerCase().includes(q));
                     if (!matchPasti) return false;
