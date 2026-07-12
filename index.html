@@ -1551,6 +1551,22 @@
 
                 <!-- CONTENUTO DEL SUBTAB MANUALE -->
                 <div id="inputSectionManual" class="space-y-3.5 hidden">
+                    <!-- Ricerca pasti precedenti -->
+                    <div class="flex flex-col gap-1.5 border-b border-slate-700/30 pb-3">
+                        <label class="text-[10px] font-bold text-indigo-400 uppercase tracking-wider" data-i18n="lbl_search_saved_meal">Cerca pasto salvato (Senza AI)</label>
+                        <div class="relative flex items-center">
+                            <input type="text" id="manual-search-precedenti" oninput="cercaPastiPrecedenti()"
+                                placeholder="Cerca tra i pasti precedenti..."
+                                class="w-full h-8 bg-slate-900 border border-slate-700 rounded-xl px-2.5 pr-8 text-[13px] text-slate-100 focus:outline-none focus:ring-2 focus:ring-blue-500 transition">
+                            <button type="button" onclick="clearSearchPrecedenti()" id="btnClearSearchPrecedenti" class="absolute right-2.5 top-2 text-slate-500 hover:text-slate-300 hidden">
+                                <i data-lucide="x" class="w-4 h-4"></i>
+                            </button>
+                        </div>
+                        <div id="manual-search-results" class="hidden max-h-40 overflow-y-auto mt-1 border border-slate-700 bg-slate-900 rounded-xl p-1 text-[11px] divide-y divide-slate-800/40 custom-scrollbar">
+                            <!-- Risultati della ricerca -->
+                        </div>
+                    </div>
+
                     <!-- Calorie -->
                     <div class="flex flex-col gap-1.5">
                         <label class="text-[10px] font-bold text-slate-400 uppercase tracking-wider"
@@ -2762,6 +2778,8 @@
                 btn_ask_ai_opinion: "Elabora con AI",
                 btn_manual_insert: "Manuale",
                 title_manual_insert: "Inserimento Manuale",
+                lbl_search_saved_meal: "Cerca pasto salvato (Senza AI)",
+                placeholder_search_saved_meal: "Cerca tra i pasti precedenti...",
                 btn_ask_ai_trend: "Chiedi parere ad AI sull'andamento",
                 trend_title_days: "Andamento ultimi 7 giorni",
                 trend_title_weeks: "Andamento ultime 8 settimane (Media/Giorno)",
@@ -2931,6 +2949,8 @@
                 btn_ask_ai_opinion: "Analyze with AI",
                 btn_manual_insert: "Manual Input",
                 title_manual_insert: "Manual Input",
+                lbl_search_saved_meal: "Search saved meal (No AI)",
+                placeholder_search_saved_meal: "Search among previous meals...",
                 btn_ask_ai_trend: "Ask AI for trend analysis",
                 trend_title_days: "Trend last 7 days",
                 trend_title_weeks: "Trend last 8 weeks (Average/Day)",
@@ -3160,6 +3180,11 @@
             const editTesto = document.getElementById('editTesto');
             if (editTesto && TRANSLATIONS[window.currentLang].pl_edit_meal_text) {
                 editTesto.placeholder = TRANSLATIONS[window.currentLang].pl_edit_meal_text;
+            }
+
+            const manualSearchPrecedenti = document.getElementById('manual-search-precedenti');
+            if (manualSearchPrecedenti && TRANSLATIONS[window.currentLang].placeholder_search_saved_meal) {
+                manualSearchPrecedenti.placeholder = TRANSLATIONS[window.currentLang].placeholder_search_saved_meal;
             }
 
             // Traduzione automatica dei valori correnti nei campi profilo se corrispondono ai default
@@ -3758,6 +3783,7 @@
             if (pastoTipoEl) pastoTipoEl.value = prenotaPastoDefault();
             const statusEl = document.getElementById('manual-coherence-status');
             if (statusEl) statusEl.innerHTML = '';
+            clearSearchPrecedenti();
 
             // Reset calorie dei macro
             const protCal = document.getElementById('manual-prot-cal');
@@ -3771,6 +3797,95 @@
                 currentLang === 'en' ? "Meal Saved" : "Pasto Salvato",
                 currentLang === 'en' ? "Meal saved successfully!" : "Pasto salvato con successo!"
             );
+        };
+
+        function ottieniPastiPrecedenti(db) {
+            const map = new Map();
+            db.forEach(giorno => {
+                if (giorno.pasti && Array.isArray(giorno.pasti)) {
+                    giorno.pasti.forEach(pasto => {
+                        const desc = pasto.testo ? pasto.testo.trim() : "";
+                        if (desc) {
+                            const key = desc.toLowerCase();
+                            if (!map.has(key)) {
+                                map.set(key, {
+                                    testo: pasto.testo,
+                                    calorie: pasto.calorie,
+                                    proteine: pasto.proteine,
+                                    carboidrati: pasto.carboidrati,
+                                    grassi: pasto.grassi
+                                });
+                            }
+                        }
+                    });
+                }
+            });
+            return Array.from(map.values());
+        }
+
+        window.cercaPastiPrecedenti = function () {
+            const query = document.getElementById('manual-search-precedenti').value.toLowerCase().trim();
+            const resultsDiv = document.getElementById('manual-search-results');
+            const clearBtn = document.getElementById('btnClearSearchPrecedenti');
+
+            if (!query) {
+                resultsDiv.innerHTML = '';
+                resultsDiv.classList.add('hidden');
+                clearBtn.classList.add('hidden');
+                return;
+            }
+
+            clearBtn.classList.remove('hidden');
+
+            const db = window.diarioMemoria;
+            const pasti = ottieniPastiPrecedenti(db);
+            const filtrati = pasti.filter(p => p.testo.toLowerCase().includes(query));
+
+            if (filtrati.length === 0) {
+                resultsDiv.innerHTML = `<div class="p-2 text-slate-500 italic text-center">${currentLang === 'en' ? 'No meals found.' : 'Nessun pasto trovato.'}</div>`;
+                resultsDiv.classList.remove('hidden');
+                return;
+            }
+
+            let html = '';
+            filtrati.forEach(p => {
+                const labelMacros = `${Math.round(p.calorie)} kcal (P: ${Math.round(p.proteine)}g, C: ${Math.round(p.carboidrati)}g, G: ${Math.round(p.grassi)}g)`;
+                const escText = p.testo.replace(/'/g, "\\'").replace(/"/g, '&quot;');
+                html += `
+                    <div onclick="selezionaPastoPrecedente('${escText}', ${p.calorie}, ${p.proteine}, ${p.carboidrati}, ${p.grassi})" 
+                         class="p-2 hover:bg-slate-700/50 cursor-pointer flex justify-between items-center transition">
+                        <span class="font-semibold text-slate-200 truncate pr-2 max-w-[200px] text-[11px]">${p.testo}</span>
+                        <span class="text-[9px] text-slate-400 font-mono shrink-0">${labelMacros}</span>
+                    </div>
+                `;
+            });
+            resultsDiv.innerHTML = html;
+            resultsDiv.classList.remove('hidden');
+        };
+
+        window.selezionaPastoPrecedente = function (testo, calorie, proteine, carboidrati, grassi) {
+            document.getElementById('manual-calorie').value = Math.round(calorie);
+            document.getElementById('manual-proteine').value = Math.round(proteine);
+            document.getElementById('manual-carboidrati').value = Math.round(carboidrati);
+            document.getElementById('manual-grassi').value = Math.round(grassi);
+            document.getElementById('manual-descrizione').value = testo;
+
+            // Aggiorna l'indicatore di coerenza e calorie dei singoli macronutrienti
+            if (typeof aggiornaCalcoloCoerenza === 'function') {
+                aggiornaCalcoloCoerenza();
+            }
+
+            // Pulisce e nasconde i risultati della ricerca
+            document.getElementById('manual-search-precedenti').value = '';
+            document.getElementById('manual-search-results').classList.add('hidden');
+            document.getElementById('btnClearSearchPrecedenti').classList.add('hidden');
+        };
+
+        window.clearSearchPrecedenti = function () {
+            document.getElementById('manual-search-precedenti').value = '';
+            document.getElementById('manual-search-results').innerHTML = '';
+            document.getElementById('manual-search-results').classList.add('hidden');
+            document.getElementById('btnClearSearchPrecedenti').classList.add('hidden');
         };
 
         function switchTrendView(view) {
