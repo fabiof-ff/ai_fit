@@ -5700,8 +5700,8 @@ Rispondi ESCLUSIVAMENTE con un oggetto JSON valido. NO blocchi di codice (no \`\
 
                 if (titleEl) {
                     titleEl.innerText = currentLang === 'en' 
-                        ? `Overall Average (${giorniDaMostrare} days)` 
-                        : `Media complessiva (${giorniDaMostrare} giorni)`;
+                        ? `Overall Average (last 7 days)` 
+                        : `Media complessiva (ultimi 7 giorni)`;
                 }
                 const etichetteGiorni = [];
                 const ultimiGiorni = [];
@@ -5730,7 +5730,8 @@ Rispondi ESCLUSIVAMENTE con un oggetto JSON valido. NO blocchi di codice (no \`\
                 document.getElementById('trendCalorieChartWrapper').style.width = widthCalculated + 'px';
                 document.getElementById('trendPesoChartWrapper').style.width = widthCalculated + 'px';
 
-                const giorniAttivi = ultimiGiorni.filter(g => g.data !== dataOggi && (g.calorie > 0 || g.proteine > 0 || g.carboidrati > 0 || g.grassi > 0));
+                const ultimi7GiorniSenzaOggi = ultimiGiorni.filter(g => g.data !== dataOggi).slice(-7);
+                const giorniAttivi = ultimi7GiorniSenzaOggi.filter(g => g.calorie > 0 || g.proteine > 0 || g.carboidrati > 0 || g.grassi > 0);
                 if (giorniAttivi.length > 0) {
                     const sum = (chiave) => giorniAttivi.reduce((acc, current) => acc + (current[chiave] || 0), 0);
                     const avgCal = Math.round(sum('calorie') / giorniAttivi.length);
@@ -6019,8 +6020,8 @@ Rispondi ESCLUSIVAMENTE con un oggetto JSON valido. NO blocchi di codice (no \`\
 
                 if (titleEl) {
                     titleEl.innerText = currentLang === 'en' 
-                        ? `Overall Average (${settimaneDaMostrare} weeks)` 
-                        : `Media complessiva (${settimaneDaMostrare} settimane)`;
+                        ? `Overall Average (last 8 weeks)` 
+                        : `Media complessiva (ultime 8 settimane)`;
                 }
                 const etichetteSettimane = [];
                 const datiSettimane = [];
@@ -6069,10 +6070,10 @@ Rispondi ESCLUSIVAMENTE con un oggetto JSON valido. NO blocchi di codice (no \`\
                 document.getElementById('weekCalorieChartWrapper').style.width = widthCalculated + 'px';
                 document.getElementById('weekPesoChartWrapper').style.width = widthCalculated + 'px';
 
-                // Calcola la media globale considerando direttamente i singoli giorni attivi nell'arco delle settimane
-                const lunedìOldest = new Date(lunedìCorrente);
-                lunedìOldest.setDate(lunedìCorrente.getDate() - ((settimaneDaMostrare - 1) * 7));
-                const dataInizio8Settimane = formattaData(lunedìOldest);
+                // Calcola la media globale considerando direttamente i singoli giorni attivi nell'arco delle ultime 8 settimane
+                const lunedì8SettimaneFa = new Date(lunedìCorrente);
+                lunedì8SettimaneFa.setDate(lunedìCorrente.getDate() - (7 * 7));
+                const dataInizio8Settimane = formattaData(lunedì8SettimaneFa);
 
                 const recordAttivi8Settimane = db.filter(g => {
                     return g.data >= dataInizio8Settimane &&

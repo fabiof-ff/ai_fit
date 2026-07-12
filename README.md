@@ -9,9 +9,10 @@ Il tool è sviluppato con una filosofia **offline-first**: tutti i dati e le chi
 ## 🌟 Caratteristiche Principali
 
 ### 1. Tracciamento Alimentare Intelligente
-* **Inserimento in Linguaggio Naturale**: Permette di descruire i pasti in linguaggio libero (es. *"Stamattina ho fatto colazione con 150g di yogurt greco, una manciata di noci e un caffè"*). L'intelligenza artificiale estrae automaticamente calorie e macronutrienti (Proteine, Carboidrati, Grassi).
+* **Inserimento in Linguaggio Naturale**: Permette di descrivere i pasti in linguaggio libero (es. *"Stamattina ho fatto colazione con 150g di yogurt greco, una manciata di noci e un caffè"*). L'intelligenza artificiale estrae automaticamente calorie e macronutrienti (Proteine, Carboidrati, Grassi).
 * **Dettatura Vocale**: Icona microfono integrata per dettare i pasti a voce direttamente nei campi di testo tramite Web Speech API.
 * **Correzione e Ricalcolo**: Possibilità di modificare qualsiasi pasto salvato tramite un pannello di controllo modale, con opzione di ricalcolo tramite AI o correzione manuale immediata.
+* **Ricerca e Autocompletamento dei Pasti Storici**: Nel sotto-tab di inserimento manuale è presente una barra di ricerca ad autocompletamento. Digitando una parola, il sistema filtra all'istante i pasti passati già salvati ed elaborati, mostrando una finestra centrata sul termine cercato con evidenziazione in colore indaco e le relative calorie associate. Cliccando su un risultato, tutti i campi (calorie, macro e descrizione) vengono autopopolati istantaneamente, evitando di rieseguire richieste API all'AI.
 
 ### 2. Monitoraggio del Peso Corporeo
 * Inserimento rapido del peso corporeo associato a date specifiche.
@@ -26,7 +27,8 @@ Il tool è sviluppato con una filosofia **offline-first**: tutti i dati e le chi
 
 ### 4. Grafici Interattivi e Storico
 * Grafici dinamici (sviluppati con **Chart.js**) per analizzare l'andamento di calorie, proteine, carboidrati, grassi e peso.
-* Suddivisione dell'andamento storico in tre comode viste: **Giorni** (ultimi 7 giorni), **Settimane** (ultime 8 settimane) e **Mesi** (ultimi 12 mesi).
+* **Grafici dei Trend Scrollabili e Sincronizzati**: I grafici dei trend per Giorni, Settimane e Mesi supportano lo scorrimento orizzontale continuo. La densità visiva è bloccata per mostrare esattamente 7 giorni, 8 settimane o 6 mesi nel viewport contemporaneamente. Lo scrolling orizzontale tra il grafico delle Calorie/Macro (con scrollbar nascosta) e quello del Peso (con scrollbar visibile) è sincronizzato bidirezionalmente via codice per mantenere l'asse X allineato.
+* Suddivisione dell'andamento storico in tre comode viste: **Giorni** (tutto lo storico, min. 7 giorni), **Settimane** (tutto lo storico, min. 8 settimane) e **Mesi** (ultimo semestre, min. 6 mesi).
 * **Calcolo Medie Complessive Uniforme**: Nei diagrammi ad anello, le medie globali delle calorie e dei macronutrienti sono calcolate considerando esclusivamente i giorni con dati inseriti (escludendo i giorni vuoti), garantendo che i dati di riepilogo siano sempre accurati ed allineati con i grafici.
 * **Registro Alimentare**: Mostra gli inserimenti storici organizzati cronologicamente con filtri di ricerca (testuale, mese e anno). I dettagli nutrizionali analitici stimati dall'AI sono contratti di default e visualizzabili singolarmente al clic per massimizzare la pulizia visiva, mentre i comandi di manutenzione del database sono raggruppati in un'unica barra degli strumenti compatta.
 
