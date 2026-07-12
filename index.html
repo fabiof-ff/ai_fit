@@ -1547,25 +1547,17 @@
                         <i data-lucide="pencil" class="w-4 h-4 text-blue-400"></i> <span
                             data-i18n="prompt_what_did_you_eat">Cosa hai mangiato?</span>
                     </label>
-                    <div class="flex flex-wrap items-center gap-3">
-                        <div class="flex items-center gap-1.5">
-                            <label data-i18n="label_date_colon"
-                                class="text-[10px] font-bold text-slate-500 uppercase tracking-wider">Data:</label>
-                            <input type="date" id="input-pasto-data"
-                                class="min-w-0 h-8 bg-slate-900 border border-slate-700 rounded-xl px-2 text-[13px] text-slate-100 focus:outline-none focus:ring-2 focus:ring-blue-500 transition">
-                        </div>
-                        <div class="flex items-center gap-1.5">
-                            <label data-i18n="label_meal_type_colon"
-                                class="text-[10px] font-bold text-slate-500 uppercase tracking-wider">Pasto:</label>
-                            <select id="input-pasto-tipo"
-                                class="min-w-0 h-8 bg-slate-900 border border-slate-700 rounded-xl px-2 text-[13px] text-slate-100 focus:outline-none focus:ring-2 focus:ring-blue-500 transition">
-                                <option value="Colazione" data-i18n="opt_breakfast">Colazione</option>
-                                <option value="Pranzo" data-i18n="opt_lunch">Pranzo</option>
-                                <option value="Cena" data-i18n="opt_dinner">Cena</option>
-                                <option value="Spuntino" data-i18n="opt_snack">Spuntino</option>
-                                <option value="Altro" data-i18n="opt_other">Altro</option>
-                            </select>
-                        </div>
+                    <div class="flex items-center gap-2">
+                        <input type="date" id="input-pasto-data"
+                            class="w-[140px] h-8 bg-slate-900 border border-slate-700 rounded-xl px-2 text-[13px] text-slate-100 focus:outline-none focus:ring-2 focus:ring-blue-500 transition">
+                        <select id="input-pasto-tipo"
+                            class="w-[120px] h-8 bg-slate-900 border border-slate-700 rounded-xl px-2 text-[13px] text-slate-100 focus:outline-none focus:ring-2 focus:ring-blue-500 transition">
+                            <option value="Colazione" data-i18n="opt_breakfast">Colazione</option>
+                            <option value="Pranzo" data-i18n="opt_lunch">Pranzo</option>
+                            <option value="Cena" data-i18n="opt_dinner">Cena</option>
+                            <option value="Spuntino" data-i18n="opt_snack">Spuntino</option>
+                            <option value="Altro" data-i18n="opt_other">Altro</option>
+                        </select>
                     </div>
                 </div>
 
@@ -2898,7 +2890,6 @@
                 placeholder_weight_input: "es. 74.5",
                 prompt_what_did_you_eat: "Cosa hai mangiato?",
                 label_date: "Data",
-                label_date_colon: "Data:",
                 label_calorie_uppercase: "CALORIE",
                 label_proteine_uppercase: "PROTEINE",
                 label_carboidrati_uppercase: "CARBOIDRATI",
@@ -2993,7 +2984,6 @@
                 lbl_edit_fat: "Grass (g)",
                 btn_save: "Salva",
                 label_meal_type: "Pasto",
-                label_meal_type_colon: "Pasto:",
                 opt_breakfast: "Colazione",
                 opt_lunch: "Pranzo",
                 opt_dinner: "Cena",
@@ -3069,7 +3059,6 @@
                 placeholder_weight_input: "e.g. 74.5",
                 prompt_what_did_you_eat: "What did you eat?",
                 label_date: "Date",
-                label_date_colon: "Date:",
                 label_calorie_uppercase: "CALORIES",
                 label_proteine_uppercase: "PROTEINS",
                 label_carboidrati_uppercase: "CARBS",
@@ -3164,7 +3153,6 @@
                 lbl_edit_fat: "Fat (g)",
                 btn_save: "Save",
                 label_meal_type: "Meal",
-                label_meal_type_colon: "Meal:",
                 opt_breakfast: "Breakfast",
                 opt_lunch: "Lunch",
                 opt_dinner: "Dinner",
