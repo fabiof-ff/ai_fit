@@ -3768,6 +3768,19 @@
             }
         };
 
+        // Chiudi il menu se l'utente clicca/tocca altrove
+        document.addEventListener('click', function (event) {
+            const menu = document.getElementById('dropdownMenu');
+            const btn = document.getElementById('btnMenuToggle');
+            if (menu && btn && !menu.classList.contains('hidden')) {
+                if (!menu.contains(event.target) && !btn.contains(event.target)) {
+                    menu.classList.add('hidden');
+                    btn.classList.remove('menu-active-state');
+                    menu.classList.remove('menu-active-state');
+                }
+            }
+        });
+
         window.toggleSettings = function () {
             const m = document.getElementById('settingsModal');
             if (!m) return;
