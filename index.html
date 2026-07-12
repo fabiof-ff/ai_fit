@@ -809,7 +809,7 @@
                         class="flex items-center justify-between p-3 font-semibold text-xs text-slate-300 uppercase tracking-wider cursor-pointer list-none select-none hover:bg-slate-700/50 transition">
                         <div class="flex items-center gap-2.5">
                             <i data-lucide="target" class="w-4 h-4 text-rose-400"></i>
-                            <span data-i18n="label_daily_targets">Target Giornalieri</span>
+                            <span data-i18n="label_daily_targets">Target</span>
                         </div>
                         <i data-lucide="chevron-down"
                             class="w-4 h-4 text-slate-400 transition-transform duration-300 group-open:rotate-180"></i>
@@ -888,7 +888,7 @@
                         class="flex items-center justify-between p-3 font-semibold text-xs text-slate-300 uppercase tracking-wider cursor-pointer list-none select-none hover:bg-slate-700/50 transition">
                         <div class="flex items-center gap-2.5">
                             <i data-lucide="wheat" class="w-4 h-4 text-purple-400"></i>
-                            <span data-i18n="btn_calculate_ai">Calcola Target con AI</span>
+                            <span data-i18n="btn_calculate_ai">Calcola Target con AI</span> <span class="text-[10px] select-none opacity-85">💎</span>
                         </div>
                         <i data-lucide="chevron-down"
                             class="w-4 h-4 text-slate-400 transition-transform duration-300 group-open:rotate-180"></i>
@@ -1369,8 +1369,7 @@
                     </p>
                     <button onclick="valutaGiornataConAI()" id="btnValutaGiornata"
                         class="text-[10px] bg-indigo-600/80 hover:bg-indigo-600 text-white font-bold py-1 px-2.5 rounded-lg transition-all flex items-center gap-1 cursor-pointer">
-                        <i data-lucide="sparkles" class="w-3 h-3"></i> <span data-i18n="btn_ask_ai_opinion_short">Chiedi
-                            parere AI</span>
+                        <i data-lucide="sparkles" class="w-3 h-3"></i> <span data-i18n="btn_ask_ai_opinion_short">Chiedi parere AI</span> <span class="text-[9px] select-none opacity-85">💎</span>
                     </button>
                 </div>
                 <div class="grid grid-cols-4 gap-1">
@@ -1711,23 +1710,23 @@
 
         <div class="flex items-center gap-2 mb-4">
             <div class="flex-1 flex sub-tab-container">
-                <button id="subtab-giorni" onclick="switchTrendView('giorni')"
+                 <button id="subtab-giorni" onclick="switchTrendView('giorni')"
                     class="sub-tab-btn flex-1 py-1.5 rounded-lg text-xs font-semibold active">
                     <span data-i18n="subtab_7_days">Giorni</span>
                 </button>
                 <button id="subtab-settimane" onclick="switchTrendView('settimane')"
                     class="sub-tab-btn flex-1 py-1.5 rounded-lg text-xs font-semibold">
-                    <span data-i18n="subtab_8_weeks">Settimane</span>
+                    <span data-i18n="subtab_8_weeks">Settimane</span> <span class="text-[10px] select-none opacity-85">💎</span>
                 </button>
                 <button id="subtab-mesi" onclick="switchTrendView('mesi')"
                     class="sub-tab-btn flex-1 py-1.5 rounded-lg text-xs font-semibold">
-                    <span data-i18n="subtab_monthly_history">Mesi</span>
+                    <span data-i18n="subtab_monthly_history">Mesi</span> <span class="text-[10px] select-none opacity-85">💎</span>
                 </button>
             </div>
             <button id="btnAnalisiTrendAI" onclick="analizzaTrendConAI()"
                 class="bg-slate-800/80 hover:bg-slate-700/80 border border-slate-700/50 text-slate-200 p-2.5 rounded-xl shadow-md transition active:scale-[0.98] flex items-center justify-center cursor-pointer shrink-0"
                 data-i18n-title="btn_ask_ai_trend" title="Chiedi parere ad AI sull'andamento">
-                <span id="btnAnalisiTrendLabel"><i data-lucide="sparkles" class="w-4 h-4 text-indigo-400"></i></span>
+                <span id="btnAnalisiTrendLabel" class="flex items-center gap-1"><i data-lucide="sparkles" class="w-4 h-4 text-indigo-400"></i><span class="text-[9px] select-none opacity-85">💎</span></span>
             </button>
         </div>
         <div id="boxAnalisiTrendAI"
@@ -1950,7 +1949,7 @@
             <div class="flex gap-1.5 w-full">
                 <button onclick="esportaDB()"
                     class="flex-1 flex items-center justify-center gap-1 py-2 rounded-xl text-[10px] sm:text-xs font-bold border bg-slate-800/60 border-slate-700/50 text-slate-400 hover:text-emerald-400 hover:border-emerald-500/40 transition">
-                    <i data-lucide="download" class="w-3.5 h-3.5"></i> <span data-i18n="btn_export_data">Esporta</span>
+                    <i data-lucide="download" class="w-3.5 h-3.5"></i> <span data-i18n="btn_export_data">Esporta</span> <span class="text-[9px] select-none opacity-85">💎</span>
                 </button>
                 <button onclick="document.getElementById('importInput').click()"
                     class="flex-1 flex items-center justify-center gap-1 py-2 rounded-xl text-[10px] sm:text-xs font-bold border bg-slate-800/60 border-slate-700/50 text-slate-400 hover:text-blue-400 hover:border-blue-500/40 transition">
@@ -2067,6 +2066,42 @@
         // ================================================================
         // STATO GLOBALE
         // ================================================================
+        window.IS_PREMIUM = false;
+
+        window.mostraPopupPremium = async function (featureKey) {
+            const title = currentLang === 'en' ? "Premium Feature Coming Soon" : "Funzione Premium in arrivo";
+            let message = "";
+            if (featureKey === 'coach_ai') {
+                message = currentLang === 'en'
+                    ? "You have run out of your 3 free advices. This feature will be part of the one-time Pro package. Are you interested?"
+                    : "Hai esaurito i tuoi 3 consigli gratuiti. Questa funzione farà parte del pacchetto Pro una tantum. Ti interessa?";
+            } else {
+                message = currentLang === 'en'
+                    ? "This feature will be part of the one-time NutriTracker Pro package. Are you interested?"
+                    : "Questa funzione farà parte del pacchetto Pro una tantum. Ti interessa?";
+            }
+            
+            const confirmText = currentLang === 'en' ? "Yes" : "Sì";
+            const cancelText = currentLang === 'en' ? "No" : "No";
+
+            const interest = await customConfirm(title, message, false, confirmText, cancelText);
+            if (interest) {
+                const key = `premium_interest_${featureKey}`;
+                const count = parseInt(localStorage.getItem(key) || "0") + 1;
+                localStorage.setItem(key, count.toString());
+
+                console.log(`[Premium Tracking] User showed interest in ${featureKey}. Clicks: ${count}`);
+
+                await customAlert(
+                    currentLang === 'en' ? "Thank you!" : "Grazie!",
+                    currentLang === 'en' 
+                        ? "Thank you for your feedback! We will notify you as soon as this feature is available." 
+                        : "Grazie per il tuo feedback! Ti avviseremo non appena questa funzione sarà disponibile."
+                );
+            }
+            return interest;
+        };
+
         let trendView = 'giorni'; // 'giorni' o 'settimane'
         let ultimaAnalisi = null;
         let editingId = null; // ID entry in modifica
@@ -2762,7 +2797,7 @@
                 title_peso_calorie: "Peso & Calorie",
                 label_api_key: "Gemini API Key",
                 label_language: "Lingua / Language",
-                label_daily_targets: "Target giornalieri",
+                label_daily_targets: "Target",
                 label_calorie: "Calorie",
                 label_peso: "Target Peso",
                 label_proteine: "Proteine",
@@ -2933,7 +2968,7 @@
                 title_peso_calorie: "Weight & Calories",
                 label_api_key: "Gemini API Key",
                 label_language: "Language / Lingua",
-                label_daily_targets: "Daily Targets",
+                label_daily_targets: "Target",
                 label_calorie: "Calories",
                 label_peso: "Target Weight",
                 label_proteine: "Proteins",
@@ -3370,6 +3405,15 @@
                 document.getElementById('input-pasto-tipo').value = prenotaPastoDefault();
             }
 
+            // Intercetta l'espansione della sezione Calcola Target con AI se l'utente è Free
+            document.querySelector('#detailsTargetAI summary')?.addEventListener('click', async function (e) {
+                if (!window.IS_PREMIUM) {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    await window.mostraPopupPremium('generatore_target');
+                }
+            });
+
             // Pre-popola i dati AI Target quando si espande la sezione Calcola Target con AI
             document.getElementById('detailsTargetAI')?.addEventListener('toggle', function () {
                 if (this.open) {
@@ -3560,6 +3604,22 @@
 
             if (tab === 'storico') renderStorico();
             if (tab === 'trend') {
+                if (!window.IS_PREMIUM && (trendView === 'mesi' || trendView === 'settimane')) {
+                    trendView = 'giorni';
+                    const subtabGiorni = document.getElementById('subtab-giorni');
+                    const subtabSettimane = document.getElementById('subtab-settimane');
+                    const subtabMesi = document.getElementById('subtab-mesi');
+                    if (subtabGiorni) subtabGiorni.classList.add('active');
+                    if (subtabSettimane) subtabSettimane.classList.remove('active');
+                    if (subtabMesi) subtabMesi.classList.remove('active');
+                    
+                    const cGiorni = document.getElementById('trendGiornalieroContainer');
+                    const cSettimane = document.getElementById('trendSettimaneContainer');
+                    const cMesi = document.getElementById('trendMesiContainer');
+                    if (cGiorni) cGiorni.classList.remove('hidden');
+                    if (cSettimane) cSettimane.classList.add('hidden');
+                    if (cMesi) cMesi.classList.add('hidden');
+                }
                 // Ripristina il grafico corretto in base al sotto-tab che era attivo
                 if (trendView === 'mesi') {
                     renderTrendMensile();
@@ -3960,6 +4020,10 @@
         };
 
         function switchTrendView(view) {
+            if (!window.IS_PREMIUM && (view === 'settimane' || view === 'mesi')) {
+                window.mostraPopupPremium('trend_grafici');
+                return;
+            }
             trendView = view;
 
             // Gestione classi attive sui 3 bottoni
@@ -4348,6 +4412,26 @@ Rispondi ESCLUSIVAMENTE con un oggetto JSON valido. NO blocchi di codice (no \`\
                 }
             }
 
+            if (!window.IS_PREMIUM) {
+                let coachCalls = parseInt(localStorage.getItem('coach_calls_count') || '0');
+                if (coachCalls >= 3) {
+                    await window.mostraPopupPremium('coach_ai');
+                    return;
+                } else {
+                    const residui = 3 - coachCalls;
+                    const procedi = await customConfirm(
+                        currentLang === 'en' ? "Free Coach Advice" : "Consiglio Coach Gratuito",
+                        currentLang === 'en'
+                            ? `You have ${residui} of 3 free advices remaining. Would you like to use one to request this AI analysis?`
+                            : `Ti rimangono ${residui} di 3 consigli gratuiti. Vuoi utilizzarne uno per richiedere questa analisi all'AI?`,
+                        false,
+                        currentLang === 'en' ? "Yes, use one" : "Sì, usane uno",
+                        currentLang === 'en' ? "Cancel" : "Annulla"
+                    );
+                    if (!procedi) return;
+                }
+            }
+
             if (!giornoOggi) {
                 giornoOggi = {
                     id: Date.now(),
@@ -4439,6 +4523,11 @@ Rispondi ESCLUSIVAMENTE con un oggetto JSON valido. NO blocchi di codice (no \`\
                 giornoOggi.analisiAI = rispostaTesto;
                 salvaDatabase(db);
 
+                if (!window.IS_PREMIUM) {
+                    let coachCalls = parseInt(localStorage.getItem('coach_calls_count') || '0');
+                    localStorage.setItem('coach_calls_count', (coachCalls + 1).toString());
+                }
+
                 // Formatta la risposta sostituendo gli a capo e i markdown per l'HTML
                 testoSuggerimenti.innerHTML = formattazioneTestoAI(rispostaTesto);
 
@@ -4448,7 +4537,8 @@ Rispondi ESCLUSIVAMENTE con un oggetto JSON valido. NO blocchi di codice (no \`\
             } finally {
                 // Ripristina il bottone originale
                 btn.disabled = false;
-                btn.innerHTML = `<i data-lucide="sparkles" class="w-3 h-3"></i> Chiedi parere AI`;
+                const labelText = TRANSLATIONS[window.currentLang]?.btn_ask_ai_opinion_short || (currentLang === 'en' ? "Ask AI Opinion" : "Chiedi parere AI");
+                btn.innerHTML = `<i data-lucide="sparkles" class="w-3 h-3"></i> ${labelText} <span class="text-[9px] select-none opacity-85">💎</span>`;
                 lucide.createIcons();
             }
         };
@@ -6776,7 +6866,11 @@ Rispondi ESCLUSIVAMENTE con un oggetto JSON valido. NO blocchi di codice (no \`\
         // ================================================================
         // ESPORTAZIONE / IMPORTAZIONE JSON DATABASE
         // ================================================================
-        async function esportaDB() {
+        window.esportaDB = async function () {
+            if (!window.IS_PREMIUM) {
+                await window.mostraPopupPremium('esportazione_dati');
+                return;
+            }
             try {
                 const parsed = ottieniStatoCompletoDB();
                 const formattedJson = JSON.stringify(parsed, null, 2);
@@ -6792,7 +6886,7 @@ Rispondi ESCLUSIVAMENTE con un oggetto JSON valido. NO blocchi di codice (no \`\
             } catch (err) {
                 console.error("Errore durante l'esportazione:", err);
             }
-        }
+        };
 
         window.applicaStatoImportato = function (json) {
             let diario = [];
@@ -7417,6 +7511,26 @@ Istruzioni per il calcolo e la risposta:
                 }
             }
 
+            if (!window.IS_PREMIUM) {
+                let coachCalls = parseInt(localStorage.getItem('coach_calls_count') || '0');
+                if (coachCalls >= 3) {
+                    await window.mostraPopupPremium('coach_ai');
+                    return;
+                } else {
+                    const residui = 3 - coachCalls;
+                    const procedi = await customConfirm(
+                        currentLang === 'en' ? "Free Coach Advice" : "Consiglio Coach Gratuito",
+                        currentLang === 'en'
+                            ? `You have ${residui} of 3 free advices remaining. Would you like to use one to request this AI analysis?`
+                            : `Ti rimangono ${residui} di 3 consigli gratuiti. Vuoi utilizzarne uno per richiedere questa analisi all'AI?`,
+                        false,
+                        currentLang === 'en' ? "Yes, use one" : "Sì, usane uno",
+                        currentLang === 'en' ? "Cancel" : "Annulla"
+                    );
+                    if (!procedi) return;
+                }
+            }
+
             // Controlla se ci sono effettivamente dati registrati
             const haDati = db.some(x => x.calorie > 0 || x.proteine > 0 || x.pasti.length > 0 || (x.peso && x.peso > 0));
             if (!haDati) {
@@ -7612,6 +7726,11 @@ ${datiMedioPeriodo}
                 }
                 giornoOggi.analisiTrendAI = rawResponse;
                 salvaDatabase(db);
+
+                if (!window.IS_PREMIUM) {
+                    let coachCalls = parseInt(localStorage.getItem('coach_calls_count') || '0');
+                    localStorage.setItem('coach_calls_count', (coachCalls + 1).toString());
+                }
 
                 testo.innerHTML = formattazioneTestoAI(rawResponse);
             } catch (err) {

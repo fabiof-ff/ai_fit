@@ -35,9 +35,19 @@ Il tool è sviluppato con una filosofia **offline-first**: tutti i dati e le chi
 ### 5. Pannello Impostazioni Avanzato
 Il pannello impostazioni è organizzato in sezioni espandibili (accordion) per la massima pulizia visiva:
 *🔑 **Gemini API Key**: Per inserire la propria chiave d'accesso personale.
-*🎯 **Target Giornalieri**: Definizione dei target di peso, calorie, proteine, carboidrati e grassi, con controlli automatici di coerenza (le calorie totali devono corrispondere alla somma dei macronutrienti).
+*🎯 **Target**: Definizione dei target di peso, calorie, proteine, carboidrati e grassi, con controlli automatici di coerenza (le calorie totali devono corrispondere alla somma dei macronutrienti).
 *🌾 **Calcola Target con AI**: Compilazione assistita del profilo utente (sesso, età, peso attuale, peso desiderato, livello di attività e obiettivo) con calcolo scientifico e note personalizzate sulla sostenibilità del target stimate dall'AI.
 *💾 **Salvataggio Locale**: Associazione a un file JSON fisico sul dispositivo tramite *File System Access API* per il backup e salvataggio automatico persistente in background ad ogni modifica del diario.
+
+### 6. Versione Pro & Gating Premium (Coming Soon)
+L'applicazione integra un sistema di monetizzazione preventivo con limitazione di specifiche funzionalità (configurabile tramite la variabile globale `window.IS_PREMIUM` impostata di default su `false`):
+* **Funzionalità Gratuite**: Inserimento pasti in linguaggio naturale, calcolo calorie/macro in tempo reale con AI, storico locale degli ultimi 7 giorni (grafico giornaliero), importazione database JSON e configurazione API Key personale.
+* **Funzionalità Premium (Gated)**:
+  * **Esportazione JSON**: Disattivazione del download del backup locale dei dati.
+  * **AI Personal Coach**: Le richieste di parere giornaliero o sui trend sono limitate a un massimo di **3 consultazioni gratuite** totali. Al superamento del limite, la generazione si blocca proponendo il popup Pro.
+  * **Generatore di Target AI**: L'accordion "Calcola Target con AI" viene intercettato alla sorgente impedendone l'apertura.
+  * **Analisi e Grafici dei Trend a Lungo Termine**: I sotto-tab delle visualizzazioni "Settimane" e "Mesi" nel pannello dei trend vengono bloccati.
+* **Feedback di Interesse (Analytics Locale)**: Quando un utente tenta di accedere a una funzione Pro, compare un popup interattivo *"Funzione Premium in arrivo - Ti interessa? [Sì / No]"*. Le risposte positive ("Sì") vengono tracciate e accumulate localmente in `localStorage` sotto forma di contatori incrementali di interesse (es. `premium_interest_coach_ai`, `premium_interest_esportazione_dati`), consentendo la raccolta dei dati di interesse dei 20 tester e dei download iniziali prima dello sviluppo dei canali di pagamento reali.
 
 ---
 
