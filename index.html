@@ -241,6 +241,7 @@
         /* Barra di scorrimento personalizzata in stile Slate dell'app */
         .custom-scrollbar::-webkit-scrollbar {
             width: 6px;
+            height: 6px;
         }
 
         .custom-scrollbar::-webkit-scrollbar-track {
@@ -1815,11 +1816,15 @@
                         </div>
                     </div>
                 </div>
-                <div class="h-44 w-full mb-3">
-                    <canvas id="trendCalorieChart"></canvas>
+                <div class="w-full overflow-x-auto custom-scrollbar">
+                    <div id="trendCalorieChartWrapper" class="h-44 min-w-full mb-3">
+                        <canvas id="trendCalorieChart"></canvas>
+                    </div>
                 </div>
-                <div class="h-32 w-full pt-2 border-t border-slate-700/35">
-                    <canvas id="trendPesoChart"></canvas>
+                <div class="w-full overflow-x-auto custom-scrollbar">
+                    <div id="trendPesoChartWrapper" class="h-32 min-w-full pt-2 border-t border-slate-700/35">
+                        <canvas id="trendPesoChart"></canvas>
+                    </div>
                 </div>
             </div>
         </div>
@@ -1855,11 +1860,15 @@
                         </div>
                     </div>
                 </div>
-                <div class="h-44 w-full mb-3">
-                    <canvas id="weekCalorieChart"></canvas>
+                <div class="w-full overflow-x-auto custom-scrollbar">
+                    <div id="weekCalorieChartWrapper" class="h-44 min-w-full mb-3">
+                        <canvas id="weekCalorieChart"></canvas>
+                    </div>
                 </div>
-                <div class="h-32 w-full pt-2 border-t border-slate-700/35">
-                    <canvas id="weekPesoChart"></canvas>
+                <div class="w-full overflow-x-auto custom-scrollbar">
+                    <div id="weekPesoChartWrapper" class="h-32 min-w-full pt-2 border-t border-slate-700/35">
+                        <canvas id="weekPesoChart"></canvas>
+                    </div>
                 </div>
             </div>
         </div>
@@ -1895,11 +1904,15 @@
                         </div>
                     </div>
                 </div>
-                <div class="h-44 w-full mb-3">
-                    <canvas id="monthCalorieChart"></canvas>
+                <div class="w-full overflow-x-auto custom-scrollbar">
+                    <div id="monthCalorieChartWrapper" class="h-44 min-w-full mb-3">
+                        <canvas id="monthCalorieChart"></canvas>
+                    </div>
                 </div>
-                <div class="h-32 w-full pt-2 border-t border-slate-700/35">
-                    <canvas id="monthPesoChart"></canvas>
+                <div class="w-full overflow-x-auto custom-scrollbar">
+                    <div id="monthPesoChartWrapper" class="h-32 min-w-full pt-2 border-t border-slate-700/35">
+                        <canvas id="monthPesoChart"></canvas>
+                    </div>
                 </div>
             </div>
         </div>
@@ -3350,7 +3363,37 @@
                     }
                 }
             });
+
+            // Configura la sincronizzazione dello scrolling dei grafici dei trend
+            setupTrendScrollSync();
         };
+
+        function setupTrendScrollSync() {
+            const sync = (cWrapperId, pWrapperId) => {
+                const cWrap = document.getElementById(cWrapperId)?.parentElement;
+                const pWrap = document.getElementById(pWrapperId)?.parentElement;
+                if (cWrap && pWrap) {
+                    let isSyncing = false;
+                    cWrap.addEventListener('scroll', () => {
+                        if (!isSyncing) {
+                            isSyncing = true;
+                            pWrap.scrollLeft = cWrap.scrollLeft;
+                            isSyncing = false;
+                        }
+                    });
+                    pWrap.addEventListener('scroll', () => {
+                        if (!isSyncing) {
+                            isSyncing = true;
+                            cWrap.scrollLeft = pWrap.scrollLeft;
+                            isSyncing = false;
+                        }
+                    });
+                }
+            };
+            sync('trendCalorieChartWrapper', 'trendPesoChartWrapper');
+            sync('weekCalorieChartWrapper', 'weekPesoChartWrapper');
+            sync('monthCalorieChartWrapper', 'monthPesoChartWrapper');
+        }
 
         // ================================================================
         // UTILS PASTI & DATE
@@ -5449,12 +5492,26 @@ Rispondi ESCLUSIVAMENTE con un oggetto JSON valido. NO blocchi di codice (no \`\
             };
 
             if (trendView === 'giorni') {
+                let giorniDaMostrare = 7;
+                if (db.length > 0) {
+                    const dateTrovate = db.map(x => new Date(x.data)).filter(d => !isNaN(d.getTime()));
+                    if (dateTrovate.length > 0) {
+                        const oldestDate = new Date(Math.min(...dateTrovate));
+                        const today = new Date();
+                        const msecDiff = today.setHours(0,0,0,0) - oldestDate.setHours(0,0,0,0);
+                        const giorniDiff = Math.round(msecDiff / (1000 * 60 * 60 * 24)) + 1;
+                        giorniDaMostrare = Math.max(7, giorniDiff);
+                    }
+                }
+
                 if (titleEl) {
-                    titleEl.innerText = currentLang === 'en' ? 'Overall Average (7 days)' : 'Media complessiva (7 giorni)';
+                    titleEl.innerText = currentLang === 'en' 
+                        ? `Overall Average (${giorniDaMostrare} days)` 
+                        : `Media complessiva (${giorniDaMostrare} giorni)`;
                 }
                 const etichetteGiorni = [];
                 const ultimiGiorni = [];
-                for (let i = 6; i >= 0; i--) {
+                for (let i = giorniDaMostrare - 1; i >= 0; i--) {
                     const d = new Date();
                     d.setDate(d.getDate() - i);
                     const costr = `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`;
@@ -5467,6 +5524,12 @@ Rispondi ESCLUSIVAMENTE con un oggetto JSON valido. NO blocchi di codice (no \`\
                         ultimiGiorni.push({ data: costr, calorie: 0, proteine: 0, carboidrati: 0, grassi: 0, peso: null });
                     }
                 }
+
+                // Imposta larghezza dinamica per i giorni
+                const containerWidth = document.getElementById('trendCalorieChartWrapper').parentElement.clientWidth || 350;
+                const widthCalculated = Math.max(containerWidth, ultimiGiorni.length * 50);
+                document.getElementById('trendCalorieChartWrapper').style.width = widthCalculated + 'px';
+                document.getElementById('trendPesoChartWrapper').style.width = widthCalculated + 'px';
 
                 const giorniAttivi = ultimiGiorni.filter(g => g.data !== dataOggi && (g.calorie > 0 || g.proteine > 0 || g.carboidrati > 0 || g.grassi > 0));
                 if (giorniAttivi.length > 0) {
@@ -5727,9 +5790,38 @@ Rispondi ESCLUSIVAMENTE con un oggetto JSON valido. NO blocchi di codice (no \`\
                         }
                     }
                 });
+
+                setTimeout(() => {
+                    const cWrap = document.getElementById('trendCalorieChartWrapper')?.parentElement;
+                    if (cWrap) cWrap.scrollLeft = cWrap.scrollWidth;
+                }, 100);
             } else {
+                let settimaneDaMostrare = 8;
+                const lunedìCorrente = new Date();
+                const day = lunedìCorrente.getDay();
+                const diff = day === 0 ? 6 : day - 1;
+                lunedìCorrente.setDate(lunedìCorrente.getDate() - diff);
+                lunedìCorrente.setHours(0, 0, 0, 0);
+
+                if (db.length > 0) {
+                    const dateTrovate = db.map(x => new Date(x.data)).filter(d => !isNaN(d.getTime()));
+                    if (dateTrovate.length > 0) {
+                        const oldestDate = new Date(Math.min(...dateTrovate));
+                        const oldestDay = oldestDate.getDay();
+                        const oldestDiff = oldestDay === 0 ? 6 : oldestDay - 1;
+                        oldestDate.setDate(oldestDate.getDate() - oldestDiff);
+                        oldestDate.setHours(0, 0, 0, 0);
+
+                        const msecDiff = lunedìCorrente - oldestDate;
+                        const settimaneDiff = Math.round(msecDiff / (1000 * 60 * 60 * 24 * 7)) + 1;
+                        settimaneDaMostrare = Math.max(8, settimaneDiff);
+                    }
+                }
+
                 if (titleEl) {
-                    titleEl.innerText = currentLang === 'en' ? 'Overall Average (8 weeks)' : 'Media complessiva (8 settimane)';
+                    titleEl.innerText = currentLang === 'en' 
+                        ? `Overall Average (${settimaneDaMostrare} weeks)` 
+                        : `Media complessiva (${settimaneDaMostrare} settimane)`;
                 }
                 const etichetteSettimane = [];
                 const datiSettimane = [];
@@ -5746,12 +5838,8 @@ Rispondi ESCLUSIVAMENTE con un oggetto JSON valido. NO blocchi di codice (no \`\
                     const giorno = String(d.getDate()).padStart(2, '0');
                     return `${anno}-${mese}-${giorno}`;
                 };
-                const lunedìCorrente = new Date();
-                const day = lunedìCorrente.getDay();
-                const diff = day === 0 ? 6 : day - 1;
-                lunedìCorrente.setDate(lunedìCorrente.getDate() - diff);
-                lunedìCorrente.setHours(0, 0, 0, 0);
-                for (let w = 7; w >= 0; w--) {
+
+                for (let w = settimaneDaMostrare - 1; w >= 0; w--) {
                     const inizioSettimana = new Date(lunedìCorrente);
                     inizioSettimana.setDate(lunedìCorrente.getDate() - (w * 7));
                     const fineSettimana = new Date(inizioSettimana);
@@ -5770,9 +5858,16 @@ Rispondi ESCLUSIVAMENTE con un oggetto JSON valido. NO blocchi di codice (no \`\
                     const mediaPeso = recordConPeso.length > 0 ? recordConPeso.reduce((a, b) => a + parseFloat(b.peso), 0) / recordConPeso.length : null;
                     datiSettimane.push({ calorie: mediaC, proteine: mediaP, carboidrati: mediaCb, grassi: mediaG, peso: mediaPeso });
                 }
-                // Calcola la media globale considerando direttamente i singoli giorni attivi nell'arco delle 8 settimane
+
+                // Imposta larghezza dinamica per le settimane
+                const containerWidth = document.getElementById('weekCalorieChartWrapper').parentElement.clientWidth || 350;
+                const widthCalculated = Math.max(containerWidth, datiSettimane.length * 60);
+                document.getElementById('weekCalorieChartWrapper').style.width = widthCalculated + 'px';
+                document.getElementById('weekPesoChartWrapper').style.width = widthCalculated + 'px';
+
+                // Calcola la media globale considerando direttamente i singoli giorni attivi nell'arco delle settimane
                 const lunedìOldest = new Date(lunedìCorrente);
-                lunedìOldest.setDate(lunedìCorrente.getDate() - (7 * 7));
+                lunedìOldest.setDate(lunedìCorrente.getDate() - ((settimaneDaMostrare - 1) * 7));
                 const dataInizio8Settimane = formattaData(lunedìOldest);
 
                 const recordAttivi8Settimane = db.filter(g => {
@@ -6039,6 +6134,11 @@ Rispondi ESCLUSIVAMENTE con un oggetto JSON valido. NO blocchi di codice (no \`\
                         }
                     }
                 });
+
+                setTimeout(() => {
+                    const cWrap = document.getElementById('weekCalorieChartWrapper')?.parentElement;
+                    if (cWrap) cWrap.scrollLeft = cWrap.scrollWidth;
+                }, 100);
             }
         }
 
@@ -6061,14 +6161,14 @@ Rispondi ESCLUSIVAMENTE con un oggetto JSON valido. NO blocchi di codice (no \`\
                 }
             };
 
-            // 1. Pre-populate the last 12 calendar months to ensure months with no data are shown
+            // 1. Pre-populate the last 6 calendar months to ensure months with no data are shown
             const grouped = {};
             const d = new Date();
             const currentYear = d.getFullYear();
             const currentMonth = d.getMonth(); // 0-11
             const monthKeys = [];
 
-            for (let i = 11; i >= 0; i--) {
+            for (let i = 5; i >= 0; i--) {
                 let targetMonth = currentMonth - i;
                 let targetYear = currentYear;
                 while (targetMonth < 0) {
@@ -6183,6 +6283,12 @@ Rispondi ESCLUSIVAMENTE con un oggetto JSON valido. NO blocchi di codice (no \`\
             // PESO, CALORIE & MACROS MENSILI SEPARATI
             if (monthCalorieChart) monthCalorieChart.destroy();
             if (monthPesoChart) monthPesoChart.destroy();
+
+            // Imposta la larghezza dinamica per i mesi
+            const containerWidth = document.getElementById('monthCalorieChartWrapper').parentElement.clientWidth || 350;
+            const widthCalculated = Math.max(containerWidth, labels.length * 75);
+            document.getElementById('monthCalorieChartWrapper').style.width = widthCalculated + 'px';
+            document.getElementById('monthPesoChartWrapper').style.width = widthCalculated + 'px';
 
             let pTarget = parseFloat(localStorage.getItem('targetPeso')) || 75;
             const arrayPesi = datiPeso.filter(p => p !== null && p !== undefined && p > 0);
