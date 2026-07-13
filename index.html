@@ -653,6 +653,15 @@
         body.light-theme #settingsModalInner .text-slate-300 {
             color: #334155 !important;
         }
+
+        /* Premium icons toggle */
+        .premium-icon {
+            display: inline;
+        }
+
+        body.is-premium .premium-icon {
+            display: none !important;
+        }
     </style>
 </head>
 
@@ -898,7 +907,7 @@
                         <div class="flex items-center gap-2.5">
                             <i data-lucide="wheat" class="w-4 h-4 text-purple-400"></i>
                             <span data-i18n="btn_calculate_ai">Calcola Target con AI</span> <span
-                                class="text-[10px] select-none opacity-85">💎</span>
+                                class="premium-icon text-[10px] select-none opacity-85">💎</span>
                         </div>
                         <i data-lucide="chevron-down"
                             class="w-4 h-4 text-slate-400 transition-transform duration-300 group-open:rotate-180"></i>
@@ -1329,7 +1338,8 @@
                 </div>
                 <button id="btnWeightModalDelete" onclick="eliminaPesoDaModal()"
                     class="w-full bg-rose-600/20 hover:bg-rose-600/30 border border-rose-500/30 hover:border-rose-500/50 text-rose-300 font-bold py-2.5 rounded-xl transition text-xs flex items-center justify-center gap-2 hidden">
-                    <i data-lucide="trash-2" class="w-3.5 h-3.5"></i> <span data-i18n="btn_delete_weight">Elimina Peso</span>
+                    <i data-lucide="trash-2" class="w-3.5 h-3.5"></i> <span data-i18n="btn_delete_weight">Elimina
+                        Peso</span>
                 </button>
             </div>
         </div>
@@ -1430,7 +1440,7 @@
                     <button onclick="valutaGiornataConAI()" id="btnValutaGiornata"
                         class="text-[10px] bg-indigo-600/80 hover:bg-indigo-600 text-white font-bold py-1 px-2.5 rounded-lg transition-all flex items-center gap-1 cursor-pointer">
                         <i data-lucide="sparkles" class="w-3 h-3"></i> <span data-i18n="btn_ask_ai_opinion_short">Chiedi
-                            parere AI</span> <span class="text-[9px] select-none opacity-85">💎</span>
+                            parere AI</span> <span class="premium-icon text-[9px] select-none opacity-85">💎</span>
                     </button>
                 </div>
                 <div class="grid grid-cols-4 gap-1">
@@ -1773,12 +1783,12 @@
                     <button id="subtab-settimane" onclick="switchTrendView('settimane')"
                         class="sub-tab-btn flex-1 py-1.5 rounded-lg text-xs font-semibold">
                         <span data-i18n="subtab_8_weeks">Settimane</span> <span
-                            class="text-[10px] select-none opacity-85">💎</span>
+                            class="premium-icon text-[10px] select-none opacity-85">💎</span>
                     </button>
                     <button id="subtab-mesi" onclick="switchTrendView('mesi')"
                         class="sub-tab-btn flex-1 py-1.5 rounded-lg text-xs font-semibold">
                         <span data-i18n="subtab_monthly_history">Mesi</span> <span
-                            class="text-[10px] select-none opacity-85">💎</span>
+                            class="premium-icon text-[10px] select-none opacity-85">💎</span>
                     </button>
                 </div>
                 <button id="btnAnalisiTrendAI" onclick="analizzaTrendConAI()"
@@ -1786,7 +1796,7 @@
                     data-i18n-title="btn_ask_ai_trend" title="Chiedi parere ad AI sull'andamento">
                     <span id="btnAnalisiTrendLabel" class="flex items-center gap-1"><i data-lucide="sparkles"
                             class="w-4 h-4 text-indigo-400"></i><span
-                            class="text-[9px] select-none opacity-85">💎</span></span>
+                            class="premium-icon text-[9px] select-none opacity-85">💎</span></span>
                 </button>
             </div>
             <div id="boxAnalisiTrendAI"
@@ -2019,7 +2029,7 @@
                         class="flex-1 flex items-center justify-center gap-1 py-2 rounded-xl text-[10px] sm:text-xs font-bold border bg-slate-800/60 border-slate-700/50 text-slate-400 hover:text-emerald-400 hover:border-emerald-500/40 transition">
                         <i data-lucide="download" class="w-3.5 h-3.5"></i> <span
                             data-i18n="btn_export_data">Esporta</span> <span
-                            class="text-[9px] select-none opacity-85">💎</span>
+                            class="premium-icon text-[9px] select-none opacity-85">💎</span>
                     </button>
                     <button onclick="document.getElementById('importInput').click()"
                         class="flex-1 flex items-center justify-center gap-1 py-2 rounded-xl text-[10px] sm:text-xs font-bold border bg-slate-800/60 border-slate-700/50 text-slate-400 hover:text-blue-400 hover:border-blue-500/40 transition">
@@ -2139,9 +2149,21 @@
         // ================================================================
         // STATO GLOBALE
         // ================================================================
-        window.IS_PREMIUM = true;
+        window.IS_PREMIUM = false;
 
         window.mostraPopupPremium = async function (featureKey) {
+            const feedbackKey = `premium_feedback_given_${featureKey}`;
+            const alreadyFeedback = localStorage.getItem(feedbackKey) === 'true';
+
+            if (alreadyFeedback) {
+                const title = currentLang === 'en' ? "Premium Feature" : "Funzione Premium";
+                const message = currentLang === 'en'
+                    ? "This feature is coming soon in the NutriTracker Pro package."
+                    : "Questa funzione sarà disponibile a breve nel pacchetto NutriTracker Pro.";
+                await customAlert(title, message);
+                return false;
+            }
+
             const title = currentLang === 'en' ? "Premium Feature Coming Soon" : "Funzione Premium in arrivo";
             let message = "";
             if (featureKey === 'coach_ai') {
@@ -2158,6 +2180,10 @@
             const cancelText = currentLang === 'en' ? "No" : "No";
 
             const interest = await customConfirm(title, message, false, confirmText, cancelText);
+
+            // Registra che l'utente ha fornito un feedback
+            localStorage.setItem(feedbackKey, 'true');
+
             if (interest) {
                 const key = `premium_interest_${featureKey}`;
                 const count = parseInt(localStorage.getItem(key) || "0") + 1;
@@ -3368,6 +3394,7 @@
         // INIT
         // ================================================================
         window.onload = async function () {
+            document.body.classList.toggle('is-premium', !!window.IS_PREMIUM);
             // Carica e migra il database da localStorage a IndexedDB se necessario
             let dbCaricato = await caricaDiarioIndexedDB();
             if (!dbCaricato) {
@@ -4609,7 +4636,7 @@ Rispondi ESCLUSIVAMENTE con un oggetto JSON valido. NO blocchi di codice (no \`\
                 // Ripristina il bottone originale
                 btn.disabled = false;
                 const labelText = TRANSLATIONS[window.currentLang]?.btn_ask_ai_opinion_short || (currentLang === 'en' ? "Ask AI Opinion" : "Chiedi parere AI");
-                btn.innerHTML = `<i data-lucide="sparkles" class="w-3 h-3"></i> ${labelText} <span class="text-[9px] select-none opacity-85">💎</span>`;
+                btn.innerHTML = `<i data-lucide="sparkles" class="w-3 h-3"></i> ${labelText} <span class="premium-icon text-[9px] select-none opacity-85">💎</span>`;
                 lucide.createIcons();
             }
         };
