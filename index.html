@@ -1315,15 +1315,21 @@
                 </p>
             </div>
 
-            <div class="flex gap-2">
-                <button onclick="chiudiModalPeso()"
-                    class="flex-1 bg-slate-700 hover:bg-slate-600 text-slate-200 font-bold py-3 rounded-xl transition text-sm flex items-center justify-center gap-2"
-                    data-i18n="lbl_cancel">
-                    Annulla
-                </button>
-                <button onclick="salvaModalPeso()"
-                    class="flex-1 bg-indigo-600 hover:bg-indigo-500 text-white font-bold py-3 rounded-xl transition text-sm flex items-center justify-center gap-2">
-                    <i data-lucide="save" class="w-4 h-4"></i> <span data-i18n="lbl_save">Salva</span>
+            <div class="flex flex-col gap-2.5 mt-4">
+                <div class="flex gap-2">
+                    <button onclick="chiudiModalPeso()"
+                        class="flex-1 bg-slate-700 hover:bg-slate-600 text-slate-200 font-bold py-3 rounded-xl transition text-sm flex items-center justify-center gap-2"
+                        data-i18n="lbl_cancel">
+                        Annulla
+                    </button>
+                    <button onclick="salvaModalPeso()"
+                        class="flex-1 bg-indigo-600 hover:bg-indigo-500 text-white font-bold py-3 rounded-xl transition text-sm flex items-center justify-center gap-2">
+                        <i data-lucide="save" class="w-4 h-4"></i> <span data-i18n="lbl_save">Salva</span>
+                    </button>
+                </div>
+                <button id="btnWeightModalDelete" onclick="eliminaPesoDaModal()"
+                    class="w-full bg-rose-600/20 hover:bg-rose-600/30 border border-rose-500/30 hover:border-rose-500/50 text-rose-300 font-bold py-2.5 rounded-xl transition text-xs flex items-center justify-center gap-2 hidden">
+                    <i data-lucide="trash-2" class="w-3.5 h-3.5"></i> <span data-i18n="btn_delete_weight">Elimina Peso</span>
                 </button>
             </div>
         </div>
@@ -2133,7 +2139,7 @@
         // ================================================================
         // STATO GLOBALE
         // ================================================================
-        window.IS_PREMIUM = false;
+        window.IS_PREMIUM = true;
 
         window.mostraPopupPremium = async function (featureKey) {
             const title = currentLang === 'en' ? "Premium Feature Coming Soon" : "Funzione Premium in arrivo";
@@ -2877,6 +2883,7 @@
                 lbl_only_weights: "Solo peso",
                 label_body_weight: "Registrazione Peso Corporeo",
                 btn_save_weight: "Salva Peso",
+                btn_delete_weight: "Elimina Peso",
                 btn_ask_ai_opinion: "Elabora con AI",
                 btn_manual_insert: "Manuale",
                 title_manual_insert: "Inserimento Manuale",
@@ -3046,6 +3053,7 @@
                 lbl_only_weights: "Only weight",
                 label_body_weight: "Body Weight Logger",
                 btn_save_weight: "Save Weight",
+                btn_delete_weight: "Delete Weight",
                 btn_ask_ai_opinion: "Analyze with AI",
                 btn_manual_insert: "Manual Input",
                 title_manual_insert: "Manual Input",
@@ -5104,7 +5112,14 @@ Rispondi ESCLUSIVAMENTE con un oggetto JSON valido. NO blocchi di codice (no \`\
                 <div class="flex items-center gap-2">
                     <span class="text-xs font-bold text-slate-300">${giorno.data}</span>
                     ${giorno.peso
-                        ? `<button onclick="modificaPesoDelGiorno(${giorno.id})" class="text-[10px] bg-indigo-500/10 hover:bg-indigo-500/20 text-indigo-300 border border-indigo-500/20 px-1.5 py-0.5 rounded flex items-center gap-1 cursor-pointer transition" title="${currentLang === 'en' ? 'Edit weight' : 'Modifica peso'}"><i data-lucide="scale" class="w-3 h-3"></i> ${arrotondaPeso(giorno.peso)} kg <i data-lucide="pencil" class="w-2 h-2 opacity-60"></i></button>`
+                        ? `<div class="inline-flex items-center bg-indigo-500/10 border border-indigo-500/20 rounded overflow-hidden">
+                            <button onclick="modificaPesoDelGiorno(${giorno.id})" class="text-[10px] text-indigo-300 px-1.5 py-0.5 flex items-center gap-1 cursor-pointer hover:bg-indigo-500/20 transition" title="${currentLang === 'en' ? 'Edit weight' : 'Modifica peso'}">
+                                <i data-lucide="scale" class="w-3 h-3"></i> ${arrotondaPeso(giorno.peso)} kg <i data-lucide="pencil" class="w-2 h-2 opacity-60"></i>
+                            </button>
+                            <button onclick="eliminaPesoDelGiorno(${giorno.id})" class="text-[10px] text-rose-400 px-1.5 py-0.5 border-l border-indigo-500/20 flex items-center justify-center cursor-pointer hover:bg-rose-500/20 transition" title="${currentLang === 'en' ? 'Delete weight' : 'Elimina peso'}">
+                                <i data-lucide="trash-2" class="w-3 h-3"></i>
+                            </button>
+                           </div>`
                         : `<button onclick="modificaPesoDelGiorno(${giorno.id})" class="text-[10px] bg-slate-700/30 hover:bg-slate-700/60 text-slate-400 border border-slate-700/30 px-1.5 py-0.5 rounded flex items-center gap-1 cursor-pointer transition" title="${currentLang === 'en' ? 'Add weight' : 'Aggiungi peso'}"><i data-lucide="plus" class="w-3 h-3"></i> ${currentLang === 'en' ? 'Add weight' : 'Aggiungi peso'}</button>`
                     }
                 </div>
@@ -5143,6 +5158,16 @@ Rispondi ESCLUSIVAMENTE con un oggetto JSON valido. NO blocchi di codice (no \`\
                 inputEl.value = (giorno.peso !== undefined && giorno.peso !== null) ? giorno.peso : "";
             }
 
+            // Mostra o nasconde il tasto Elimina Peso nel modal
+            const btnDeleteModal = document.getElementById('btnWeightModalDelete');
+            if (btnDeleteModal) {
+                if (giorno.peso !== undefined && giorno.peso !== null && giorno.peso !== "") {
+                    btnDeleteModal.classList.remove('hidden');
+                } else {
+                    btnDeleteModal.classList.add('hidden');
+                }
+            }
+
             const m = document.getElementById('modalWeightEdit');
             m.classList.remove('hidden');
             setTimeout(() => {
@@ -5177,7 +5202,7 @@ Rispondi ESCLUSIVAMENTE con un oggetto JSON valido. NO blocchi di codice (no \`\
             if (inputVal === "") {
                 // Rimuove il peso
                 delete giorno.peso;
-                localStorage.setItem('nutriDB', JSON.stringify(db));
+                salvaDatabase(db);
                 chiudiModalPeso();
                 await customAlert(
                     currentLang === 'en' ? "Weight Removed" : "Peso rimosso",
@@ -5185,6 +5210,7 @@ Rispondi ESCLUSIVAMENTE con un oggetto JSON valido. NO blocchi di codice (no \`\
                     true
                 );
                 renderStorico();
+                aggiornaTotaleGiorno();
                 // Se i pannelli Trend sono attivi, li aggiorna
                 if (document.getElementById('panel-trend').classList.contains('active')) {
                     if (trendView === 'mesi') {
@@ -5206,7 +5232,7 @@ Rispondi ESCLUSIVAMENTE con un oggetto JSON valido. NO blocchi di codice (no \`\
 
                 // Salva il peso
                 giorno.peso = arrotondaPeso(nuovoPeso);
-                localStorage.setItem('nutriDB', JSON.stringify(db));
+                salvaDatabase(db);
                 chiudiModalPeso();
                 await customAlert(
                     currentLang === 'en' ? "Weight Saved" : "Peso salvato",
@@ -5214,6 +5240,7 @@ Rispondi ESCLUSIVAMENTE con un oggetto JSON valido. NO blocchi di codice (no \`\
                     true
                 );
                 renderStorico();
+                aggiornaTotaleGiorno();
                 // Se i pannelli Trend sono attivi, li aggiorna
                 if (document.getElementById('panel-trend').classList.contains('active')) {
                     if (trendView === 'mesi') {
@@ -5224,6 +5251,79 @@ Rispondi ESCLUSIVAMENTE con un oggetto JSON valido. NO blocchi di codice (no \`\
                 }
                 caricaPesoDelGiorno();
             }
+        }
+
+        async function eliminaPesoDaModal() {
+            if (!editingGiornoId) return;
+            const procedi = await customConfirm(
+                currentLang === 'en' ? "Delete Weight" : "Elimina Peso",
+                currentLang === 'en' ? "Are you sure you want to delete the weight for this day?" : "Sei sicuro di voler eliminare il peso per questa giornata?",
+                true,
+                currentLang === 'en' ? "Delete" : "Elimina"
+            );
+            if (!procedi) return;
+
+            let db = window.diarioMemoria;
+            let giorno = db.find(g => g.id === editingGiornoId);
+            if (!giorno) {
+                chiudiModalPeso();
+                return;
+            }
+
+            delete giorno.peso;
+            salvaDatabase(db);
+            chiudiModalPeso();
+
+            await customAlert(
+                currentLang === 'en' ? "Weight Removed" : "Peso rimosso",
+                currentLang === 'en' ? "Weight has been successfully removed for this day." : "Il peso è stato rimosso correttamente per questo giorno.",
+                true
+            );
+
+            renderStorico();
+            aggiornaTotaleGiorno();
+            if (document.getElementById('panel-trend').classList.contains('active')) {
+                if (trendView === 'mesi') {
+                    renderTrendMensile();
+                } else {
+                    renderTrend();
+                }
+            }
+            caricaPesoDelGiorno();
+        }
+
+        async function eliminaPesoDelGiorno(giornoId) {
+            const procedi = await customConfirm(
+                currentLang === 'en' ? "Delete Weight" : "Elimina Peso",
+                currentLang === 'en' ? "Are you sure you want to delete the weight for this day?" : "Sei sicuro di voler eliminare il peso per questa giornata?",
+                true,
+                currentLang === 'en' ? "Delete" : "Elimina"
+            );
+            if (!procedi) return;
+
+            let db = window.diarioMemoria;
+            let giorno = db.find(g => g.id === giornoId);
+            if (!giorno) return;
+
+            delete giorno.peso;
+            salvaDatabase(db);
+
+            await customAlert(
+                currentLang === 'en' ? "Weight Removed" : "Peso rimosso",
+                currentLang === 'en' ? "Weight has been successfully removed for this day." : "Il peso è stato rimosso correttamente per questo giorno.",
+                true
+            );
+
+            renderStorico();
+            aggiornaTotaleGiorno();
+            if (document.getElementById('panel-trend').classList.contains('active')) {
+                if (trendView === 'mesi') {
+                    renderTrendMensile();
+                } else {
+                    renderTrend();
+                }
+            }
+            caricaPesoDelGiorno();
         }
 
         async function eliminaInteroGiorno(giornoId) {
