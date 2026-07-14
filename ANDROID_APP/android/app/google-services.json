@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "995687440043",
+    "project_id": "ainutritracker",
+    "storage_bucket": "ainutritracker.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:995687440043:android:062fa21ea3905e3631a1ee",
+        "android_client_info": {
+          "package_name": "com.ff.ainutritracker"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyADQ__uBuKEB8pSZNgjUSgxlZnPR9kqcsU"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
