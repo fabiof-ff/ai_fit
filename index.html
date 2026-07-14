@@ -2365,7 +2365,7 @@
                         const textWidth = ctx.measureText(textMacro).width;
                         const boxWidth = textWidth + 6;
                         const boxHeight = 12;
-                        const boxX = left + 4;
+                        const boxX = right + 4;
                         const boxY = yPos - boxHeight / 2;
 
                         ctx.fillStyle = '#ffffff';
@@ -2392,7 +2392,7 @@
                         const textWidth = ctx.measureText(textCal).width;
                         const boxWidth = textWidth + 6;
                         const boxHeight = 12;
-                        const boxX = left + 4;
+                        const boxX = right + 4;
                         const boxY = yPos - boxHeight / 2;
 
                         ctx.fillStyle = '#ffffff';
@@ -2437,7 +2437,7 @@
                 ctx.lineTo(right, yTarget);
                 ctx.stroke();
 
-                // Disegna la scritta sul target peso (numero + kg) in un box bianco a sinistra
+                // Disegna la scritta sul target peso (numero + kg) in un box bianco a destra
                 ctx.font = "bold 8px 'Outfit', sans-serif";
                 ctx.textAlign = 'left';
                 ctx.textBaseline = 'middle';
@@ -2445,7 +2445,7 @@
                 const textWidth = ctx.measureText(textWeight).width;
                 const boxWidth = textWidth + 6;
                 const boxHeight = 12;
-                const boxX = left + 4;
+                const boxX = right + 4;
                 const boxY = yTarget - boxHeight / 2;
 
                 ctx.fillStyle = '#ffffff';
@@ -6000,12 +6000,8 @@ Rispondi ESCLUSIVAMENTE con un oggetto JSON valido. NO blocchi di codice (no \`\
                 }
 
                 // Imposta larghezza dinamica per i giorni (esattamente 7 giorni visibili contemporaneamente)
-                let containerWidth = document.getElementById('trendCalorieChartWrapper').parentElement.clientWidth;
-                if (!containerWidth || containerWidth <= 0) {
-                    const panelWidth = document.getElementById('panel-trend')?.clientWidth || window.innerWidth;
-                    containerWidth = panelWidth - 32;
-                }
-                if (containerWidth <= 0) containerWidth = 350;
+                let containerWidth = Math.min(window.innerWidth, 448) - 64;
+                if (containerWidth < 280) containerWidth = 280;
                 const widthCalculated = ultimiGiorni.length * (containerWidth / 7);
                 document.getElementById('trendCalorieChartWrapper').style.width = widthCalculated + 'px';
                 document.getElementById('trendPesoChartWrapper').style.width = widthCalculated + 'px';
@@ -6170,7 +6166,7 @@ Rispondi ESCLUSIVAMENTE con un oggetto JSON valido. NO blocchi di codice (no \`\
                         layout: {
                             padding: {
                                 left: 24,
-                                right: 24
+                                right: 55
                             }
                         },
                         scales: {
@@ -6253,7 +6249,7 @@ Rispondi ESCLUSIVAMENTE con un oggetto JSON valido. NO blocchi di codice (no \`\
                         layout: {
                             padding: {
                                 left: 24,
-                                right: 24
+                                right: 55
                             }
                         },
                         scales: {
@@ -6340,12 +6336,8 @@ Rispondi ESCLUSIVAMENTE con un oggetto JSON valido. NO blocchi di codice (no \`\
                 }
 
                 // Imposta larghezza dinamica per le settimane (esattamente 8 settimane visibili contemporaneamente)
-                let containerWidth = document.getElementById('weekCalorieChartWrapper').parentElement.clientWidth;
-                if (!containerWidth || containerWidth <= 0) {
-                    const panelWidth = document.getElementById('panel-trend')?.clientWidth || window.innerWidth;
-                    containerWidth = panelWidth - 32;
-                }
-                if (containerWidth <= 0) containerWidth = 350;
+                let containerWidth = Math.min(window.innerWidth, 448) - 64;
+                if (containerWidth < 280) containerWidth = 280;
                 const widthCalculated = datiSettimane.length * (containerWidth / 8);
                 document.getElementById('weekCalorieChartWrapper').style.width = widthCalculated + 'px';
                 document.getElementById('weekPesoChartWrapper').style.width = widthCalculated + 'px';
@@ -6519,7 +6511,7 @@ Rispondi ESCLUSIVAMENTE con un oggetto JSON valido. NO blocchi di codice (no \`\
                         layout: {
                             padding: {
                                 left: 24,
-                                right: 24
+                                right: 55
                             }
                         },
                         scales: {
@@ -6602,7 +6594,7 @@ Rispondi ESCLUSIVAMENTE con un oggetto JSON valido. NO blocchi di codice (no \`\
                         layout: {
                             padding: {
                                 left: 24,
-                                right: 24
+                                right: 55
                             }
                         },
                         scales: {
@@ -6794,12 +6786,8 @@ Rispondi ESCLUSIVAMENTE con un oggetto JSON valido. NO blocchi di codice (no \`\
             if (monthPesoChart) monthPesoChart.destroy();
 
             // Imposta la larghezza dinamica per i mesi (esattamente 6 mesi visibili contemporaneamente)
-            let containerWidth = document.getElementById('monthCalorieChartWrapper').parentElement.clientWidth;
-            if (!containerWidth || containerWidth <= 0) {
-                const panelWidth = document.getElementById('panel-trend')?.clientWidth || window.innerWidth;
-                containerWidth = panelWidth - 32;
-            }
-            if (containerWidth <= 0) containerWidth = 350;
+            let containerWidth = Math.min(window.innerWidth, 448) - 64;
+            if (containerWidth < 280) containerWidth = 280;
             const widthCalculated = labels.length * (containerWidth / 6);
             document.getElementById('monthCalorieChartWrapper').style.width = widthCalculated + 'px';
             document.getElementById('monthPesoChartWrapper').style.width = widthCalculated + 'px';
@@ -6947,7 +6935,7 @@ Rispondi ESCLUSIVAMENTE con un oggetto JSON valido. NO blocchi di codice (no \`\
                     layout: {
                         padding: {
                             left: 24,
-                            right: 24
+                            right: 55
                         }
                     },
                     scales: {
@@ -7030,7 +7018,7 @@ Rispondi ESCLUSIVAMENTE con un oggetto JSON valido. NO blocchi di codice (no \`\
                     layout: {
                         padding: {
                             left: 24,
-                            right: 24
+                            right: 55
                         }
                     },
                     scales: {
