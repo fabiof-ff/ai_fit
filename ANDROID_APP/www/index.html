@@ -2191,6 +2191,15 @@
 
                 console.log(`[Premium Tracking] User showed interest in ${featureKey}. Clicks: ${count}`);
 
+                // Invia l'evento a Firebase Analytics tramite il ponte nativo
+                if (window.AndroidAnalytics && typeof window.AndroidAnalytics.logPremiumClick === 'function') {
+                    try {
+                        window.AndroidAnalytics.logPremiumClick(featureKey);
+                    } catch (err) {
+                        console.warn("Errore durante l'invocazione di AndroidAnalytics.logPremiumClick:", err);
+                    }
+                }
+
                 await customAlert(
                     currentLang === 'en' ? "Thank you!" : "Grazie!",
                     currentLang === 'en'
