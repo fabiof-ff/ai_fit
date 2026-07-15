@@ -2149,7 +2149,7 @@
         // ================================================================
         // STATO GLOBALE
         // ================================================================
-        window.IS_PREMIUM = false;
+        window.IS_PREMIUM = true;
 
         window.mostraPopupPremium = async function (featureKey) {
             const feedbackKey = `premium_feedback_given_${featureKey}`;
@@ -2356,125 +2356,11 @@
                         ctx.restore();
                     });
                 });
-
-                // Disegna le scritte per le linee target
-                if (targets) {
-                    const yScale = chart.scales.y;
-                    const yCalorieScale = chart.scales.yCalorie;
-
-                    ctx.save();
-                    ctx.font = "bold 8px 'Outfit', sans-serif";
-                    ctx.textAlign = 'left';
-                    ctx.textBaseline = 'middle';
-
-                    // Scritta Target Macro (100%)
-                    if (yScale) {
-                        const yPos = yScale.getPixelForValue(100);
-                        const textMacro = '100%';
-                        const textWidth = ctx.measureText(textMacro).width;
-                        const boxWidth = textWidth + 6;
-                        const boxHeight = 12;
-                        const boxX = right + 4;
-                        const boxY = yPos - boxHeight / 2;
-
-                        ctx.fillStyle = '#ffffff';
-                        ctx.beginPath();
-                        if (ctx.roundRect) {
-                            ctx.roundRect(boxX, boxY, boxWidth, boxHeight, 2);
-                        } else {
-                            ctx.rect(boxX, boxY, boxWidth, boxHeight);
-                        }
-                        ctx.fill();
-
-                        ctx.strokeStyle = 'rgba(148, 163, 184, 0.25)';
-                        ctx.lineWidth = 1;
-                        ctx.stroke();
-
-                        ctx.fillStyle = '#475569';
-                        ctx.fillText(textMacro, boxX + 3, yPos);
-                    }
-
-                    // Scritta Target Calorie (con unità di misura)
-                    if (yCalorieScale && targets.calorie) {
-                        const yPos = yCalorieScale.getPixelForValue(targets.calorie);
-                        const textCal = Math.round(targets.calorie) + ' kcal';
-                        const textWidth = ctx.measureText(textCal).width;
-                        const boxWidth = textWidth + 6;
-                        const boxHeight = 12;
-                        const boxX = right + 4;
-                        const boxY = yPos - boxHeight / 2;
-
-                        ctx.fillStyle = '#ffffff';
-                        ctx.beginPath();
-                        if (ctx.roundRect) {
-                            ctx.roundRect(boxX, boxY, boxWidth, boxHeight, 2);
-                        } else {
-                            ctx.rect(boxX, boxY, boxWidth, boxHeight);
-                        }
-                        ctx.fill();
-
-                        ctx.strokeStyle = 'rgba(244, 63, 94, 0.25)';
-                        ctx.lineWidth = 1;
-                        ctx.stroke();
-
-                        ctx.fillStyle = '#e11d48';
-                        ctx.fillText(textCal, boxX + 3, yPos);
-                    }
-
-                    ctx.restore();
-                }
             }
         };
 
         const weightTargetLinePlugin = {
             id: 'weightTargetLine',
-            beforeDatasetsDraw(chart) {
-                const { ctx, chartArea: { left, right }, scales: { y } } = chart;
-                const targets = chart.config.data.customTargets;
-                if (!targets || !targets.peso) return;
-
-                const yTarget = y.getPixelForValue(targets.peso);
-                ctx.save();
-
-                ctx.shadowColor = 'rgba(99, 102, 241, 0.2)';
-                ctx.shadowBlur = 4;
-                ctx.strokeStyle = 'rgba(99, 102, 241, 0.5)';
-                ctx.lineWidth = 1.2;
-                ctx.setLineDash([5, 4]);
-                ctx.beginPath();
-                ctx.moveTo(left, yTarget);
-                ctx.lineTo(right, yTarget);
-                ctx.stroke();
-
-                // Disegna la scritta sul target peso (numero + kg) in un box bianco a destra
-                ctx.font = "bold 8px 'Outfit', sans-serif";
-                ctx.textAlign = 'left';
-                ctx.textBaseline = 'middle';
-                const textWeight = arrotondaPeso(targets.peso) + ' kg';
-                const textWidth = ctx.measureText(textWeight).width;
-                const boxWidth = textWidth + 6;
-                const boxHeight = 12;
-                const boxX = right + 4;
-                const boxY = yTarget - boxHeight / 2;
-
-                ctx.fillStyle = '#ffffff';
-                ctx.beginPath();
-                if (ctx.roundRect) {
-                    ctx.roundRect(boxX, boxY, boxWidth, boxHeight, 2);
-                } else {
-                    ctx.rect(boxX, boxY, boxWidth, boxHeight);
-                }
-                ctx.fill();
-
-                ctx.strokeStyle = 'rgba(99, 102, 241, 0.25)';
-                ctx.lineWidth = 1;
-                ctx.stroke();
-
-                ctx.fillStyle = '#4f46e5';
-                ctx.fillText(textWeight, boxX + 3, yTarget);
-
-                ctx.restore();
-            },
             afterDatasetsDraw(chart) {
                 const { ctx } = chart;
                 const isLight = document.body.classList.contains('light-theme');
@@ -5976,16 +5862,6 @@ Rispondi ESCLUSIVAMENTE con un oggetto JSON valido. NO blocchi di codice (no \`\
 
             if (trendView === 'giorni') {
                 let giorniDaMostrare = 7;
-                if (db.length > 0) {
-                    const dateTrovate = db.map(x => new Date(x.data)).filter(d => !isNaN(d.getTime()));
-                    if (dateTrovate.length > 0) {
-                        const oldestDate = new Date(Math.min(...dateTrovate));
-                        const today = new Date();
-                        const msecDiff = today.setHours(0, 0, 0, 0) - oldestDate.setHours(0, 0, 0, 0);
-                        const giorniDiff = Math.round(msecDiff / (1000 * 60 * 60 * 24)) + 1;
-                        giorniDaMostrare = Math.max(7, giorniDiff);
-                    }
-                }
 
                 if (titleEl) {
                     titleEl.innerText = currentLang === 'en'
@@ -6107,10 +5983,11 @@ Rispondi ESCLUSIVAMENTE con un oggetto JSON valido. NO blocchi di codice (no \`\
                                 type: 'line',
                                 label: 'Target Macro (100%)',
                                 data: etichetteGiorni.map(() => 100),
-                                borderColor: 'rgba(148, 163, 184, 0.35)',
-                                borderWidth: 1,
+                                borderColor: 'rgba(148, 163, 184, 0.65)',
+                                borderWidth: 2,
                                 borderDash: [5, 5],
                                 pointRadius: 0,
+                                pointHitRadius: 10,
                                 fill: false,
                                 yAxisID: 'y'
                             },
@@ -6118,10 +5995,11 @@ Rispondi ESCLUSIVAMENTE con un oggetto JSON valido. NO blocchi di codice (no \`\
                                 type: 'line',
                                 label: 'Target Calorie',
                                 data: etichetteGiorni.map(() => targetCalorie),
-                                borderColor: 'rgba(244, 63, 94, 0.35)',
-                                borderWidth: 1,
+                                borderColor: 'rgba(244, 63, 94, 0.65)',
+                                borderWidth: 2,
                                 borderDash: [3, 3],
                                 pointRadius: 0,
+                                pointHitRadius: 10,
                                 fill: false,
                                 yAxisID: 'yCalorie'
                             }
@@ -6147,6 +6025,12 @@ Rispondi ESCLUSIVAMENTE con un oggetto JSON valido. NO blocchi di codice (no \`\
                                         const item = rawData[idx];
                                         if (!item) return '';
 
+                                        if (ds.label.includes('Target Calorie')) {
+                                            return (currentLang === 'en' ? 'Target Calories: ' : 'Obiettivo Calorie: ') + Math.round(targets.calorie) + ' kcal';
+                                        }
+                                        if (ds.label.includes('Target Macro')) {
+                                            return (currentLang === 'en' ? 'Target Macros: ' : 'Obiettivo Macro: ') + '100%';
+                                        }
                                         if (ds.label.includes('Grassi') || ds.label.includes('Fats')) {
                                             const pct = context.raw;
                                             return (currentLang === 'en' ? 'Fats: ' : 'Grassi: ') + pct + '% (' + Math.round(item.grassi || 0) + 'g / ' + targets.grassi + 'g)';
@@ -6175,7 +6059,7 @@ Rispondi ESCLUSIVAMENTE con un oggetto JSON valido. NO blocchi di codice (no \`\
                         layout: {
                             padding: {
                                 left: 24,
-                                right: 55
+                                right: 24
                             }
                         },
                         scales: {
@@ -6224,10 +6108,11 @@ Rispondi ESCLUSIVAMENTE con un oggetto JSON valido. NO blocchi di codice (no \`\
                                 type: 'line',
                                 label: currentLang === 'en' ? 'Weight Target' : 'Obiettivo Peso',
                                 data: etichetteGiorni.map(() => pTarget ? arrotondaPeso(pTarget) : null),
-                                borderColor: 'transparent',
-                                borderWidth: 0,
-                                borderDash: [5, 5],
+                                borderColor: 'rgba(99, 102, 241, 0.65)',
+                                borderWidth: 2,
+                                borderDash: [5, 4],
                                 pointRadius: 0,
+                                pointHitRadius: 10,
                                 fill: false,
                                 yAxisID: 'y'
                             }
@@ -6258,7 +6143,7 @@ Rispondi ESCLUSIVAMENTE con un oggetto JSON valido. NO blocchi di codice (no \`\
                         layout: {
                             padding: {
                                 left: 24,
-                                right: 55
+                                right: 24
                             }
                         },
                         scales: {
@@ -6287,21 +6172,6 @@ Rispondi ESCLUSIVAMENTE con un oggetto JSON valido. NO blocchi di codice (no \`\
                 const diff = day === 0 ? 6 : day - 1;
                 lunedìCorrente.setDate(lunedìCorrente.getDate() - diff);
                 lunedìCorrente.setHours(0, 0, 0, 0);
-
-                if (db.length > 0) {
-                    const dateTrovate = db.map(x => new Date(x.data)).filter(d => !isNaN(d.getTime()));
-                    if (dateTrovate.length > 0) {
-                        const oldestDate = new Date(Math.min(...dateTrovate));
-                        const oldestDay = oldestDate.getDay();
-                        const oldestDiff = oldestDay === 0 ? 6 : oldestDay - 1;
-                        oldestDate.setDate(oldestDate.getDate() - oldestDiff);
-                        oldestDate.setHours(0, 0, 0, 0);
-
-                        const msecDiff = lunedìCorrente - oldestDate;
-                        const settimaneDiff = Math.round(msecDiff / (1000 * 60 * 60 * 24 * 7)) + 1;
-                        settimaneDaMostrare = Math.max(8, settimaneDiff);
-                    }
-                }
 
                 if (titleEl) {
                     titleEl.innerText = currentLang === 'en'
@@ -6452,10 +6322,11 @@ Rispondi ESCLUSIVAMENTE con un oggetto JSON valido. NO blocchi di codice (no \`\
                                 type: 'line',
                                 label: 'Target Macro (100%)',
                                 data: etichetteSettimane.map(() => 100),
-                                borderColor: 'rgba(148, 163, 184, 0.35)',
-                                borderWidth: 1,
+                                borderColor: 'rgba(148, 163, 184, 0.65)',
+                                borderWidth: 2,
                                 borderDash: [5, 5],
                                 pointRadius: 0,
+                                pointHitRadius: 10,
                                 fill: false,
                                 yAxisID: 'y'
                             },
@@ -6463,10 +6334,11 @@ Rispondi ESCLUSIVAMENTE con un oggetto JSON valido. NO blocchi di codice (no \`\
                                 type: 'line',
                                 label: 'Target Calorie',
                                 data: etichetteSettimane.map(() => targetCalorie),
-                                borderColor: 'rgba(244, 63, 94, 0.35)',
-                                borderWidth: 1,
+                                borderColor: 'rgba(244, 63, 94, 0.65)',
+                                borderWidth: 2,
                                 borderDash: [3, 3],
                                 pointRadius: 0,
+                                pointHitRadius: 10,
                                 fill: false,
                                 yAxisID: 'yCalorie'
                             }
@@ -6492,6 +6364,12 @@ Rispondi ESCLUSIVAMENTE con un oggetto JSON valido. NO blocchi di codice (no \`\
                                         const item = rawData[idx];
                                         if (!item) return '';
 
+                                        if (ds.label.includes('Target Calorie')) {
+                                            return (currentLang === 'en' ? 'Target Calories: ' : 'Obiettivo Calorie: ') + Math.round(targets.calorie) + ' kcal';
+                                        }
+                                        if (ds.label.includes('Target Macro')) {
+                                            return (currentLang === 'en' ? 'Target Macros: ' : 'Obiettivo Macro: ') + '100%';
+                                        }
                                         if (ds.label.includes('Grassi') || ds.label.includes('Fats')) {
                                             const pct = context.raw;
                                             return (currentLang === 'en' ? 'Fats: ' : 'Grassi: ') + pct + '% (' + Math.round(item.grassi || 0) + 'g / ' + targets.grassi + 'g)';
@@ -6520,7 +6398,7 @@ Rispondi ESCLUSIVAMENTE con un oggetto JSON valido. NO blocchi di codice (no \`\
                         layout: {
                             padding: {
                                 left: 24,
-                                right: 55
+                                right: 24
                             }
                         },
                         scales: {
@@ -6569,10 +6447,11 @@ Rispondi ESCLUSIVAMENTE con un oggetto JSON valido. NO blocchi di codice (no \`\
                                 type: 'line',
                                 label: currentLang === 'en' ? 'Weight Target' : 'Obiettivo Peso',
                                 data: etichetteSettimane.map(() => pTarget ? arrotondaPeso(pTarget) : null),
-                                borderColor: 'transparent',
-                                borderWidth: 0,
-                                borderDash: [5, 5],
+                                borderColor: 'rgba(99, 102, 241, 0.65)',
+                                borderWidth: 2,
+                                borderDash: [5, 4],
                                 pointRadius: 0,
+                                pointHitRadius: 10,
                                 fill: false,
                                 yAxisID: 'y'
                             }
@@ -6603,7 +6482,7 @@ Rispondi ESCLUSIVAMENTE con un oggetto JSON valido. NO blocchi di codice (no \`\
                         layout: {
                             padding: {
                                 left: 24,
-                                right: 55
+                                right: 24
                             }
                         },
                         scales: {
@@ -6655,16 +6534,6 @@ Rispondi ESCLUSIVAMENTE con un oggetto JSON valido. NO blocchi di codice (no \`\
             const monthKeys = [];
 
             let mesiDaMostrare = 6;
-            if (db.length > 0) {
-                const dateTrovate = db.map(x => new Date(x.data)).filter(dt => !isNaN(dt.getTime()));
-                if (dateTrovate.length > 0) {
-                    const oldestDate = new Date(Math.min(...dateTrovate));
-                    const oldestYear = oldestDate.getFullYear();
-                    const oldestMonth = oldestDate.getMonth();
-                    const diffMesi = (currentYear - oldestYear) * 12 + (currentMonth - oldestMonth) + 1;
-                    mesiDaMostrare = Math.max(6, diffMesi);
-                }
-            }
 
             for (let i = mesiDaMostrare - 1; i >= 0; i--) {
                 let targetMonth = currentMonth - i;
@@ -6876,10 +6745,11 @@ Rispondi ESCLUSIVAMENTE con un oggetto JSON valido. NO blocchi di codice (no \`\
                             type: 'line',
                             label: 'Target Macro (100%)',
                             data: labels.map(() => 100),
-                            borderColor: 'rgba(148, 163, 184, 0.35)',
-                            borderWidth: 1,
+                            borderColor: 'rgba(148, 163, 184, 0.65)',
+                            borderWidth: 2,
                             borderDash: [5, 5],
                             pointRadius: 0,
+                            pointHitRadius: 10,
                             fill: false,
                             yAxisID: 'y'
                         },
@@ -6887,10 +6757,11 @@ Rispondi ESCLUSIVAMENTE con un oggetto JSON valido. NO blocchi di codice (no \`\
                             type: 'line',
                             label: 'Target Calorie',
                             data: labels.map(() => targetCalorie),
-                            borderColor: 'rgba(244, 63, 94, 0.35)',
-                            borderWidth: 1,
+                            borderColor: 'rgba(244, 63, 94, 0.65)',
+                            borderWidth: 2,
                             borderDash: [3, 3],
                             pointRadius: 0,
+                            pointHitRadius: 10,
                             fill: false,
                             yAxisID: 'yCalorie'
                         }
@@ -6916,6 +6787,12 @@ Rispondi ESCLUSIVAMENTE con un oggetto JSON valido. NO blocchi di codice (no \`\
                                     const item = rawData[idx];
                                     if (!item) return '';
 
+                                    if (ds.label.includes('Target Calorie')) {
+                                        return (currentLang === 'en' ? 'Target Calories: ' : 'Obiettivo Calorie: ') + Math.round(targets.calorie) + ' kcal';
+                                    }
+                                    if (ds.label.includes('Target Macro')) {
+                                        return (currentLang === 'en' ? 'Target Macros: ' : 'Obiettivo Macro: ') + '100%';
+                                    }
                                     if (ds.label.includes('Grassi') || ds.label.includes('Fats')) {
                                         const pct = context.raw;
                                         return (currentLang === 'en' ? 'Fats: ' : 'Grassi: ') + pct + '% (' + Math.round(item.grassi || 0) + 'g / ' + targets.grassi + 'g)';
@@ -6944,7 +6821,7 @@ Rispondi ESCLUSIVAMENTE con un oggetto JSON valido. NO blocchi di codice (no \`\
                     layout: {
                         padding: {
                             left: 24,
-                            right: 55
+                            right: 24
                         }
                     },
                     scales: {
@@ -6993,10 +6870,11 @@ Rispondi ESCLUSIVAMENTE con un oggetto JSON valido. NO blocchi di codice (no \`\
                             type: 'line',
                             label: currentLang === 'en' ? 'Weight Target' : 'Obiettivo Peso',
                             data: labels.map(() => pTarget ? arrotondaPeso(pTarget) : null),
-                            borderColor: 'transparent',
-                            borderWidth: 0,
-                            borderDash: [5, 5],
+                            borderColor: 'rgba(99, 102, 241, 0.65)',
+                            borderWidth: 2,
+                            borderDash: [5, 4],
                             pointRadius: 0,
+                            pointHitRadius: 10,
                             fill: false,
                             yAxisID: 'y'
                         }
@@ -7027,7 +6905,7 @@ Rispondi ESCLUSIVAMENTE con un oggetto JSON valido. NO blocchi di codice (no \`\
                     layout: {
                         padding: {
                             left: 24,
-                            right: 55
+                            right: 24
                         }
                     },
                     scales: {
