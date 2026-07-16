@@ -1284,7 +1284,7 @@
                     </div>
 
                     <div class="border-t border-slate-700/50 pt-3 text-center text-slate-500 text-[10px]">
-                        <p>AI NutriTracker v1.5.0</p>
+                        <p>AI NutriTracker v1.1.0</p>
                         <p class="mt-0.5">Made with ❤️ for healthy living</p>
                     </div>
                 </div>
@@ -5862,6 +5862,16 @@ Rispondi ESCLUSIVAMENTE con un oggetto JSON valido. NO blocchi di codice (no \`\
 
             if (trendView === 'giorni') {
                 let giorniDaMostrare = 7;
+                if (db.length > 0) {
+                    const dateTrovate = db.map(x => new Date(x.data)).filter(d => !isNaN(d.getTime()));
+                    if (dateTrovate.length > 0) {
+                        const oldestDate = new Date(Math.min(...dateTrovate));
+                        const today = new Date();
+                        const msecDiff = today.setHours(0, 0, 0, 0) - oldestDate.setHours(0, 0, 0, 0);
+                        const giorniDiff = Math.round(msecDiff / (1000 * 60 * 60 * 24)) + 1;
+                        giorniDaMostrare = Math.max(7, giorniDiff);
+                    }
+                }
 
                 if (titleEl) {
                     titleEl.innerText = currentLang === 'en'
@@ -6172,6 +6182,21 @@ Rispondi ESCLUSIVAMENTE con un oggetto JSON valido. NO blocchi di codice (no \`\
                 const diff = day === 0 ? 6 : day - 1;
                 lunedìCorrente.setDate(lunedìCorrente.getDate() - diff);
                 lunedìCorrente.setHours(0, 0, 0, 0);
+
+                if (db.length > 0) {
+                    const dateTrovate = db.map(x => new Date(x.data)).filter(d => !isNaN(d.getTime()));
+                    if (dateTrovate.length > 0) {
+                        const oldestDate = new Date(Math.min(...dateTrovate));
+                        const oldestDay = oldestDate.getDay();
+                        const oldestDiff = oldestDay === 0 ? 6 : oldestDay - 1;
+                        oldestDate.setDate(oldestDate.getDate() - oldestDiff);
+                        oldestDate.setHours(0, 0, 0, 0);
+
+                        const msecDiff = lunedìCorrente - oldestDate;
+                        const settimaneDiff = Math.round(msecDiff / (1000 * 60 * 60 * 24 * 7)) + 1;
+                        settimaneDaMostrare = Math.max(8, settimaneDiff);
+                    }
+                }
 
                 if (titleEl) {
                     titleEl.innerText = currentLang === 'en'
@@ -6534,6 +6559,16 @@ Rispondi ESCLUSIVAMENTE con un oggetto JSON valido. NO blocchi di codice (no \`\
             const monthKeys = [];
 
             let mesiDaMostrare = 6;
+            if (db.length > 0) {
+                const dateTrovate = db.map(x => new Date(x.data)).filter(dt => !isNaN(dt.getTime()));
+                if (dateTrovate.length > 0) {
+                    const oldestDate = new Date(Math.min(...dateTrovate));
+                    const oldestYear = oldestDate.getFullYear();
+                    const oldestMonth = oldestDate.getMonth();
+                    const diffMesi = (currentYear - oldestYear) * 12 + (currentMonth - oldestMonth) + 1;
+                    mesiDaMostrare = Math.max(6, diffMesi);
+                }
+            }
 
             for (let i = mesiDaMostrare - 1; i >= 0; i--) {
                 let targetMonth = currentMonth - i;
