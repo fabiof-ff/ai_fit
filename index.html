@@ -4352,7 +4352,8 @@ Rispondi ESCLUSIVAMENTE con un oggetto JSON valido. NO blocchi di codice (no \`\
                         }],
                         generationConfig: {
                             responseMimeType: "application/json",
-                            temperature: 0.2
+                            temperature: 0.2,
+                            thinkingConfig: { thinkingBudget: 0 }
                         }
                     })
                 });
@@ -4504,7 +4505,8 @@ Rispondi ESCLUSIVAMENTE con un oggetto JSON valido. NO blocchi di codice (no \`\
                     body: JSON.stringify({
                         contents: [{ parts: [{ text: prompt }] }],
                         generationConfig: {
-                            temperature: 0.4
+                            temperature: 0.4,
+                            thinkingConfig: { thinkingBudget: 0 }
                         }
                     })
                 });
@@ -5573,7 +5575,7 @@ Rispondi ESCLUSIVAMENTE con un oggetto JSON valido. NO blocchi di codice (no \`\
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({
                         contents: [{ parts: [{ text: promptSistema + "\n\n" + (currentLang === 'en' ? "User text to analyze:" : "Testo utente da analizzare:") + "\n" + nuovoTesto }] }],
-                        generationConfig: { responseMimeType: "application/json", temperature: 0.2 }
+                        generationConfig: { responseMimeType: "application/json", temperature: 0.2, thinkingConfig: { thinkingBudget: 0 } }
                     })
                 });
                 if (!response.ok) {
@@ -7300,7 +7302,8 @@ Istruzioni per il calcolo e la risposta:
                         contents: [{ parts: [{ text: promptAI }] }],
                         generationConfig: {
                             responseMimeType: "application/json",
-                            temperature: 0.2
+                            temperature: 0.2,
+                            thinkingConfig: { thinkingBudget: 0 }
                         }
                     })
                 });
@@ -7799,7 +7802,8 @@ ${datiMedioPeriodo}
                     body: JSON.stringify({
                         contents: [{ parts: [{ text: promptAI }] }],
                         generationConfig: {
-                            temperature: 0.3
+                            temperature: 0.3,
+                            thinkingConfig: { thinkingBudget: 0 }
                         }
                     })
                 });
